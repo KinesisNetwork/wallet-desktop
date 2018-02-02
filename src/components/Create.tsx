@@ -20,7 +20,7 @@ export class CreateAccount extends React.Component<{setAccountKeys: Function, ap
     this.props.changeView(View.dashboard, {walletId: 0})
   }
 
-  public handleSumbit(e) {
+  public handleSubmit(e) {
     e.preventDefault()
     this.importKeys()
   }
@@ -42,7 +42,7 @@ export class CreateAccount extends React.Component<{setAccountKeys: Function, ap
         </div>
         <div className='column'>
           <h1>Import Account</h1>
-          <form onSubmit={(ev) => this.handleSumbit(ev)}>
+          <form onSubmit={(ev) => this.handleSubmit(ev)}>
             <label>Public Key</label>
             <input onChange={(ev) => this.handlePublic(ev)} type='text' />
             <label>Private Key</label>
