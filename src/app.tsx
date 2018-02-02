@@ -10,14 +10,15 @@ export enum View {
 export interface AppState {
   publicKey: string
   privateKey: string
-  view: View,
+  view: View
   viewParams?: any
+  serverLocation: string
 }
 
 export class App extends React.Component<undefined, AppState> {
   constructor (props) {
     super(props)
-    this.state = {publicKey: '', privateKey: '', view: View.create}
+    this.state = {publicKey: '', privateKey: '', view: View.create, serverLocation: 'https://stellar-local.abx.com'}
   }
 
   public viewMap(view: View) {
