@@ -58,14 +58,14 @@ export class App extends React.Component<undefined, AppState> {
         <div className='columns'>
           <div className='column is-one-quarter'>
             <strong>Kinesis</strong>
-            <WalletList appState={this.state} />
+            <WalletList appState={this.state} setWalletList={this.setWalletList.bind(this)} changeView={this.changeView.bind(this)} />
           </div>
           <div className='column'>
             { this.viewMap(this.state.view) }
           </div>
         </div>
         <div>
-          Clear all wallets
+          Footer bar
         </div>
       </div>
     )

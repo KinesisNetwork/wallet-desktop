@@ -38,7 +38,7 @@ export function saveWallets(newWalletList) {
 export function deleteWallet(index) {
   return retrieveWallets()
     .then((wallets) => {
-      const newWalletList = wallets.splice(index, 1)
-      return saveWallets(newWalletList)
+      wallets.splice(index, 1)
+      return saveWallets(wallets)
     })
 }
