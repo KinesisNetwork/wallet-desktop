@@ -6,7 +6,11 @@ import { encryptPrivateKey } from '../services/encryption'
 const StellarBase = require('stellar-sdk')
 
 
-export class CreateAccount extends React.Component<{setAccountKeys: Function, appState: AppState, changeView: Function}, {privateKey: string, publicKey: string, err: string, password: string}> {
+export class CreateAccount extends React.Component<{
+  walletList: Function, setAccountKeys: Function, appState: AppState, changeView: Function
+}, {
+  privateKey: string, publicKey: string, err: string, password: string
+}> {
   constructor (props) {
     super(props)
     this.state = {
@@ -27,7 +31,8 @@ export class CreateAccount extends React.Component<{setAccountKeys: Function, ap
   private addNewWallet(accountKey, privateKey, password) {
     let encryptedPrivateKey = encryptPrivateKey(privateKey, password)
     return addNewWallet(accountKey, encryptedPrivateKey)
-      .then(() => {
+      .then((walletList) => {
+        this.props.setWalletList(walletList)
         this.props.setAccountKeys(accountKey, privateKey)
         this.props.changeView(View.dashboard, {walletId: 0})
       }, (err: string) => {
