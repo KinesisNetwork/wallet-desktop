@@ -15,12 +15,13 @@ export interface AppState {
   view: View,
   walletList: any[],
   viewParams?: any
+  serverLocation: string
 }
 
 export class App extends React.Component<undefined, AppState> {
   constructor (props) {
     super(props)
-    this.state = {publicKey: '', privateKey: '', view: View.create, walletList: []}
+    this.state = {publicKey: '', privateKey: '', view: View.create, walletList: [], serverLocation: 'https://stellar-local.abx.com'}
   }
 
   public componentDidMount() {
