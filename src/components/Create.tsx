@@ -1,23 +1,43 @@
 import * as React from 'react'
+
 import { AppState, View } from '../app'
+import { addNewWallet } from '../services/wallet_persistance'
+import { encryptPrivateKey } from '../services/encryption'
 const StellarBase = require('stellar-sdk')
 
-export class CreateAccount extends React.Component<{setAccountKeys: Function, appState: AppState, changeView: Function}, {privateKey: string, publicKey: string}> {
+
+export class CreateAccount extends React.Component<{setAccountKeys: Function, appState: AppState, changeView: Function}, {privateKey: string, publicKey: string, err: string, password: string}> {
   constructor (props) {
     super(props)
+    this.state = {
+      err: '',
+      privateKey: '',
+      publicKey: '',
+      password: ''
+    }
   }
 
   public generate() {
     const accountKeys = StellarBase.Keypair.random()
-    this.props.setAccountKeys(accountKeys.publicKey(),accountKeys.secret())
+    const [accountKey, privateKey] = [accountKeys.publicKey(), accountKeys.secret()]
+    this.addNewWallet(accountKey, privateKey, this.state.password)
     // Call create wallet here...
-    this.props.changeView(View.dashboard, {walletId: 0})
+  }
+
+  private addNewWallet(accountKey, privateKey, password) {
+    let encryptedPrivateKey = encryptPrivateKey(privateKey, password)
+    return addNewWallet(accountKey, encryptedPrivateKey)
+      .then(() => {
+        this.props.setAccountKeys(accountKey, privateKey)
+        this.props.changeView(View.dashboard, {walletId: 0})
+      }, (err: string) => {
+        this.setState({err: err})
+      })
   }
 
   public importKeys() {
-    this.props.setAccountKeys(this.state.publicKey, this.state.privateKey)
     // Call create wallet here...
-    this.props.changeView(View.dashboard, {walletId: 0})
+    this.addNewWallet(this.state.publicKey, this.state.privateKey, this.state.password)
   }
 
   public handleSumbit(e) {
@@ -25,12 +45,16 @@ export class CreateAccount extends React.Component<{setAccountKeys: Function, ap
     this.importKeys()
   }
 
-  public handlePublic(ev) {
+  public handlePublic(ev: any) {
     this.setState({publicKey: ev.target.value})
   }
 
-  public handlePrivate(ev) {
+  public handlePrivate(ev: any) {
     this.setState({privateKey: ev.target.value})
+  }
+
+  public handlePassword(ev: any) {
+    this.setState({password: ev.target.value})
   }
 
   render() {
@@ -38,7 +62,12 @@ export class CreateAccount extends React.Component<{setAccountKeys: Function, ap
       <div className='columns'>
         <div className='column'>
           <h1>New Account</h1>
+          <label>Wallet Password</label>
+          <input onChange={(ev) => this.handlePassword(ev)} type='password' />
           <button className='button' onClick={() => this.generate()}>Create Account</button>
+          <p>
+            {this.state.err}
+          </p>
         </div>
         <div className='column'>
           <h1>Import Account</h1>
@@ -47,6 +76,8 @@ export class CreateAccount extends React.Component<{setAccountKeys: Function, ap
             <input onChange={(ev) => this.handlePublic(ev)} type='text' />
             <label>Private Key</label>
             <input onChange={(ev) => this.handlePrivate(ev)} type='text' />
+            <label>Wallet Password</label>
+            <input onChange={(ev) => this.handlePassword(ev)} type='password' />
             <input className='button' type='submit' />
           </form>
         </div>
