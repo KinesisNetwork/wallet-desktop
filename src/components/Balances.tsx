@@ -9,16 +9,24 @@ export class Balances extends React.Component<{appState: AppState}, {account: an
     this.state = { account: null, kinesisBalance: 0, accountActivated: true }
   }
 
-  async componentDidMount() {
-    StellarSdk.Network.use(new StellarSdk.Network('Test SDF Network ; September 2015'))
+  componentDidMount() {
+    this.loadBalances(this.props)
+  }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props !== nextProps) {
+      this.loadBalances(nextProps)
+    }
+  }
+
+  public async loadBalances(props) {
     try {
-      const server = new StellarSdk.Server(this.props.appState.serverLocation, {allowHttp: true})
-      const account = await server.loadAccount(getActiveWallet(this.props.appState).publicKey)
+      const server = new StellarSdk.Server(props.appState.serverLocation, {allowHttp: true})
+      const account = await server.loadAccount(getActiveWallet(props.appState).publicKey)
       const kinesisBalance = account.balances.filter(b => b.asset_type === 'native')[0].balance
-      this.setState({account, kinesisBalance})
+      this.setState({account, kinesisBalance, accountActivated: true})
     } catch (e) {
-      this.setState({accountActivated: false})
+      this.setState({accountActivated: false, kinesisBalance: 0})
     }
   }
 
