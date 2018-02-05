@@ -48,7 +48,7 @@ export class Dashboard extends React.Component<{appState: AppState, setWalletLis
         <Balances appState={this.props.appState}/>
         <Transfer appState={this.props.appState} account={this.state.account}/>
         <Transactions appState={this.props.appState} />
-        <button onClick={() => this.deleteW(getActiveWallet(this.props.appState).publicKey)}>Delete Wallet</button>
+        <input className='button' type='submit' value='Delete Wallet' onClick={() => this.deleteW(getActiveWallet(this.props.appState).publicKey)} />
         <input className="input is-small" type="password" placeholder="Password" onChange={(e) => this.setState({password: e.target.value})} />
         <input className='button' type='submit' onClick={this.setPassword.bind(this)} />
       </div>

@@ -7,13 +7,12 @@ $grey:         #4E5D6C;
 $grey-light:   #8694a4;
 $grey-lighter: #dee5ed;
 
-$orange:       #DF691A;
 $yellow:       #f0ad4e;
 $green:        #5cb85c;
 $blue:         #5bc0de;
 $red:          #d9534f;
 
-$primary: $orange !default;
+$primary: #ffc800 !default;
 
 $dark: darken($grey-darker, 3);
 

@@ -1,0 +1,8 @@
+@import "src/_variables.scss";
+@import "node_modules/bulma/bulma.sass";
+
+html, body, #App { height: 100%; width: 100%; padding: 0; }
+.button.is-primary.is-outlined:hover, .button.is-primary.is-outlined:focus {
+  color: #2b3e50;
+}
+.input, ::placeholder { background-color: #212c38; border-color: #4e5d6c; color: #8694a4; }
