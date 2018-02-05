@@ -38,7 +38,7 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
     await this.transactionPage()
   }
 
-  // TODO: We need to update this method to display views for all transaction types
+  // TODO: Hook this up to a next page button that is hidden if lastPage === true
   async transactionPage (): HumanTransactions[] {
     StellarSdk.Network.use(new StellarSdk.Network('Test SDF Network ; September 2015'))
     const server = new StellarSdk.Server(this.props.appState.serverLocation, {allowHttp: true})
@@ -56,7 +56,7 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
 
     const records = currentPage.records.concat(nextPage.records)
 
-    return _.flatten(await Promise.all(records.map(async (r) => {
+    const transactions = _.flatten(await Promise.all(records.map(async (r) => {
       const operations = await r.operations()
       return operations._embedded.records.map(o => {
         return {
@@ -68,6 +68,41 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
         }
       })
     })))
+
+    this.setState({transactions, currentPage: nextPage})
+  }
+
+  public renderTransactions () {
+    return this.state.transactions.map(t => {
+      const dynamicKeys = Object.keys(t.txData)
+      return (
+        <article className='message'>
+          <div className='message-header'>
+            <p>{t.txType}</p>
+          </div>
+          <div className='message-body'>
+            <p>
+              <strong>Tx Id: </strong>{t.txId}
+            </p>
+            <p>
+              <strong>Date: </strong>{t.date.toISOString()}
+            </p>
+            <p>
+              <strong>Fee: </strong>{t.fee}
+            </p>
+            {
+              dynamicKeys.map(d => {
+                return  (
+                  <p>
+                    <strong>{d}: </strong>{t.txData[d]}
+                  </p>
+                )
+              })
+            }
+          </div>
+        </article>
+      )
+    })
   }
 
   determineTxData (operation: any) {
@@ -91,6 +126,7 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
   render() {
     return (
       <div>
+        { this.renderTransactions() }
       </div>
     )
   }
