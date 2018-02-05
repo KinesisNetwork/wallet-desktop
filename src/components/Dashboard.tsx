@@ -11,10 +11,10 @@ const StellarSdk = require('stellar-sdk')
 // let rootSecret = 'SDHOAMBNLGCE2MV5ZKIVZAQD3VCLGP53P3OBSBI6UN5L5XZI5TKHFQL4'
 // GBFKKLA2BNMR2Q6MSQZWO5ZECDUL4TM3M6ZCWH2IVXTP2XSGY5IHVNPS, SCL2WJCPPNLSKCROIA3PV4W3N4NI5UIBO4Q35EUC7HH6WEJCEGZANE3M
 // GAFRGE3S4Y5V32RCDTOHI5IOSXKBUZ6RKOVEXRLRPEQZ54FHHDHA4CH7, SBBFSKLTWIFPVQK6O4EC6A6AXJ4UM2IQCBZVOI2T2AOPWMIJ3G4GGZ65
-export class Dashboard extends React.Component<{appState: AppState, setWalletList: Function, changeView: Function}, {account: any, kinesisBalance: number, accountActivated: boolean, targetAddress: string, transferAmount: number}> {
+export class Dashboard extends React.Component<{appState: AppState, setWalletList: Function, changeView: Function, setPassword: Function}, {account: any, kinesisBalance: number, accountActivated: boolean, targetAddress: string, transferAmount: number}> {
   constructor (props) {
     super(props)
-    this.state = { account: null, kinesisBalance: 0, accountActivated: true }
+    this.state = { account: null, kinesisBalance: 0, accountActivated: true, password: '' }
   }
 
   public deleteW(accountId: string) {
@@ -25,6 +25,9 @@ export class Dashboard extends React.Component<{appState: AppState, setWalletLis
       })
   }
 
+  public setPassword(){
+    this.props.setPassword(getActiveWallet(this.props.appState).publicKey, this.state.password))
+  }
 
   async componentDidMount() {
     StellarSdk.Network.use(new StellarSdk.Network('Test SDF Network ; September 2015'))
@@ -46,6 +49,8 @@ export class Dashboard extends React.Component<{appState: AppState, setWalletLis
         <Transfer appState={this.props.appState} account={this.state.account}/>
         <Transactions appState={this.props.appState} />
         <button onClick={() => this.deleteW(getActiveWallet(this.props.appState).publicKey)}>Delete Wallet</button>
+        <input className="input is-small" type="password" placeholder="Password" onChange={(e) => this.setState({password: e.target.value})} />
+        <input className='button' type='submit' onClick={this.setPassword.bind(this)} />
       </div>
     )
   }

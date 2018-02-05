@@ -32,6 +32,7 @@ export class CreateAccount extends React.Component<{
     let encryptedPrivateKey = encryptPrivateKey(privateKey, password)
     return addNewWallet(accountKey, encryptedPrivateKey)
       .then((walletList) => {
+        console.log(walletList);
         this.props.setWalletList(walletList)
         this.props.changeView(View.dashboard, {walletIndex: 0})
       }, (err: string) => {
