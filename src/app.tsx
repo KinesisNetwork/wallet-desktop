@@ -75,18 +75,13 @@ export class App extends React.Component<undefined, AppState> {
 
   render() {
     return (
-      <div>
-        <div className='columns'>
-          <div className='column is-one-quarter'>
-            <strong>Kinesis</strong>
-            <WalletList appState={this.state} setWalletList={this.setWalletList.bind(this)} changeView={this.changeView.bind(this)} />
-          </div>
-          <div className='column'>
-            { this.viewMap(this.state.view) }
-          </div>
+      <div className='columns' style={{height: '100%'}}>
+        <div className='column is-one-quarter' style={{backgroundColor:'#2b3e50'}}>
+          <img src="./logo.svg" style={{width: '54px', height: '59px'}} />
+          <WalletList appState={this.state} setWalletList={this.setWalletList.bind(this)} changeView={this.changeView.bind(this)} />
         </div>
-        <div>
-          Footer bar
+        <div className='column'>
+          { this.viewMap(this.state.view) }
         </div>
       </div>
     )
