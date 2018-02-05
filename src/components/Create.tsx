@@ -68,7 +68,7 @@ export class CreateAccount extends React.Component<{
           <h1 className='title-heading primary-font'>Add a new wallet</h1>
         </div>
         <div className='columns has-text-centered'>
-          <div className='column' style={{padding: '30px', borderRight: '1px solid #2b3e50'}}>
+          <div className='column' style={{padding: '60px', paddingTop: '40px', borderRight: '1px solid #2b3e50'}}>
               <i className="fas fa-user" style={{fontSize: '2.5em'}}></i>
             <h1 className='sub-heading primary-font'>New Account</h1>
             <label className='label'>Wallet Password</label>
@@ -78,7 +78,7 @@ export class CreateAccount extends React.Component<{
               {this.state.err}
             </p>
           </div>
-          <div className='column' style={{padding: '30px', paddingRight: '40px'}}>
+          <div className='column' style={{padding: '60px', paddingTop: '40px', paddingRight: '70px'}}>
             <i className="far fa-user" style={{fontSize: '2.5em'}}></i>
             <h1 className='sub-heading primary-font'>Import Account</h1>
             <form onSubmit={(ev) => this.handleSubmit(ev)}>
