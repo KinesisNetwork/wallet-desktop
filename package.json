@@ -1,6 +1,6 @@
 {
-  "name": "my-project",
-  "productName": "my-project",
+  "name": "kinesis-wallet",
+  "productName": "Kinesis Wallet",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": "src/index.ts",
