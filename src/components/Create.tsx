@@ -65,30 +65,30 @@ export class CreateAccount extends React.Component<{
     return (
       <div>
         <div className='has-text-centered'>
-          <h1 className='is-large'>Add a new wallet.</h1>
+          <h1 className='title-heading primary-font'>Add a new wallet</h1>
         </div>
         <div className='columns has-text-centered'>
-          <div className='column' style={{padding: '30px', paddingRight: '10px'}}>
+          <div className='column' style={{padding: '30px', borderRight: '1px solid #2b3e50'}}>
               <i className="fas fa-user" style={{fontSize: '2.5em'}}></i>
-            <h1 className='is-title'>New Account</h1>
-            <label>Wallet Password</label>
+            <h1 className='sub-heading primary-font'>New Account</h1>
+            <label className='label'>Wallet Password</label>
             <input placeholder='Password' className='input' onChange={(ev) => this.handlePassword(ev)} type='password' />
-            <button className='button' style={{marginTop: '6px'}} onClick={() => this.generate()}>Create Account</button>
+            <button className='button' style={{marginTop: '6px', width: '100%'}} onClick={() => this.generate()}>Create Account</button>
             <p>
               {this.state.err}
             </p>
           </div>
           <div className='column' style={{padding: '30px', paddingRight: '40px'}}>
             <i className="far fa-user" style={{fontSize: '2.5em'}}></i>
-            <h1>Import Account</h1>
+            <h1 className='sub-heading primary-font'>Import Account</h1>
             <form onSubmit={(ev) => this.handleSubmit(ev)}>
-              <label>Public Key</label>
+              <label className='label'>Public Key</label>
               <input placeholder='Public Key' className='input' onChange={(ev) => this.handlePublic(ev)} type='text' />
-              <label>Private Key</label>
+              <label className='label'>Private Key</label>
               <input placeholder='Private Key' className='input' onChange={(ev) => this.handlePrivate(ev)} type='text' />
-              <label>Wallet Password</label>
+              <label className='label'>Wallet Password</label>
               <input placeholder='Password' className='input' onChange={(ev) => this.handlePassword(ev)} type='password' />
-              <input className='button' value="Import" style={{marginTop: '6px'}} type='submit' />
+              <input className='button' value="Import" style={{marginTop: '8px', width: '100%'}} type='submit' />
             </form>
           </div>
         </div>

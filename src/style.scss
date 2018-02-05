@@ -6,3 +6,9 @@ html, body, #App { height: 100%; width: 100%; padding: 0; }
   color: #2b3e50;
 }
 .input, ::placeholder { background-color: #212c38; border-color: #4e5d6c; color: #8694a4; }
+.code-font { font-family: 'Fira Mono' }
+.primary-font { font-family: 'Open Sans' }
+.label { margin-top: 15px; color: #74889c; font-size: 15px; margin-bottom: 8px; display: block; font-weight: 400 }
+.sub-heading { font-size: 18px; display: block; margin-top: 8px; margin-bottom: 10px; }
+.title-heading { font-size: 19px; text-transform: uppercase; letter-spacing: 0.45em; color: #ffc800; margin-bottom: 50px; margin-top: 40px;}
+.button {font-family: 'Open Sans'}

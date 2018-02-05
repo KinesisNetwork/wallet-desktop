@@ -10,16 +10,16 @@ export class WalletList extends React.Component<{appState: AppState, changeView:
   render() {
     return (
       <nav className="panel">
-        <p className="panel-heading">
+        <p className="panel-heading" style={{fontFamily: 'Open Sans'}}>
          Wallets
         </p>
         { _.map(this.props.appState.walletList, (wallet: Wallet, index) => {
           return (
-            <a key={index} onClick={() => this.props.changeView(View.dashboard, { walletIndex: index })} className="panel-block is-active" style={{overflow: 'hidden'}}>
+            <a key={index} onClick={() => this.props.changeView(View.dashboard, { walletIndex: index })} className="panel-block is-active" style={{overflow: 'hidden', fontFamily: 'Fira Mono'}}>
               <span className="panel-icon">
                 <i className="fas fa-book"></i>
               </span>
-              {wallet.publicKey}
+              <span style={{fontSize: '13px'}}>{wallet.publicKey}</span>
             </a>
           )
         })}
