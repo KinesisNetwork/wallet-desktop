@@ -8,14 +8,16 @@ export class WalletList extends React.Component<{appState: AppState, changeView:
   }
 
   render() {
+    let activeIndex = _.get(this.props, 'appState.viewParams.walletIndex', null)
     return (
       <nav className="panel">
         <p className="panel-heading wallet-heading" style={{fontFamily: 'Open Sans'}}>
          Wallets
         </p>
         { _.map(this.props.appState.walletList, (wallet: Wallet, index) => {
+          let style = (index === activeIndex) ? { backgroundColor: '#33485d' } : {}
           return (
-            <a key={index} onClick={() => this.props.changeView(View.dashboard, { walletIndex: index })} className="panel-block" >
+            <a key={index} onClick={() => this.props.changeView(View.dashboard, { walletIndex: index })} className="panel-block" style={style} >
               <span className="panel-icon">
                 <i className="fas fa-book"></i>
               </span>
