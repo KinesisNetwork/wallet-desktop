@@ -24,7 +24,7 @@ export class WalletList extends React.Component<{appState: AppState, changeView:
           )
         })}
         <div className="panel-block">
-          <button className="button is-link is-outlined is-fullwidth" onClick={() => this.props.changeView(View.create)}>
+          <button className="button is-primary is-outlined is-fullwidth" onClick={() => this.props.changeView(View.create)}>
             Add Wallet
           </button>
         </div>

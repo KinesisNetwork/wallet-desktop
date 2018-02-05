@@ -76,7 +76,7 @@ export class App extends React.Component<undefined, AppState> {
   render() {
     return (
       <div className='columns' style={{height: '100%'}}>
-        <div className='column is-one-quarter' style={{backgroundColor:'#2b3e50'}}>
+        <div className='column is-one-quarter' style={{backgroundColor:'#2b3e50', paddingLeft: '25px'}}>
           <img src="./logo.svg" style={{width: '54px', height: '59px'}} />
           <WalletList appState={this.state} setWalletList={this.setWalletList.bind(this)} changeView={this.changeView.bind(this)} />
         </div>
