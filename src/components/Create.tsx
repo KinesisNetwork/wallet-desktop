@@ -7,7 +7,7 @@ const StellarBase = require('stellar-sdk')
 
 
 export class CreateAccount extends React.Component<{
-  walletList: Function, setAccountKeys: Function, appState: AppState, changeView: Function
+  setWalletList: Function, setAccountKeys: Function, appState: AppState, changeView: Function
 }, {
   privateKey: string, publicKey: string, err: string, password: string
 }> {
@@ -33,10 +33,9 @@ export class CreateAccount extends React.Component<{
     return addNewWallet(accountKey, encryptedPrivateKey)
       .then((walletList) => {
         this.props.setWalletList(walletList)
-        this.props.setAccountKeys(accountKey, privateKey)
-        this.props.changeView(View.dashboard, {walletId: 0})
+        this.props.changeView(View.dashboard, {walletIndex: 0})
       }, (err: string) => {
-        this.setState({err: err})
+        this.setState({err})
       })
   }
 

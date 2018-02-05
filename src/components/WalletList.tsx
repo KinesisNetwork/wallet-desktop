@@ -1,37 +1,34 @@
 import * as React from 'react'
-import { AppState, View } from '../app'
+import { AppState, View, Wallet } from '../app'
 import * as _ from 'lodash'
-import { deleteWallet } from '../services/wallet_persistance';
 
 export class WalletList extends React.Component<{appState: AppState, changeView: Function, setWalletList: Function}, undefined> {
   constructor (props) {
     super(props)
   }
 
-  public deleteW(index) {
-    console.log(index)
-    deleteWallet(index)
-      .then((wallets) => {
-        this.props.setWalletList(wallets)
-      })
-  }
-
   render() {
     return (
-      <div>
-      { _.map(this.props.appState.walletList, (wallet, index) => {
+      <nav className="panel">
+        <p className="panel-heading">
+         Wallets
+        </p>
+        { _.map(this.props.appState.walletList, (wallet: Wallet, index) => {
           return (
-            <div key={index}>
+            <a key={index} onClick={() => this.props.changeView(View.dashboard, { walletIndex: index })} className="panel-block is-active" style={{overflow: 'hidden'}}>
+              <span className="panel-icon">
+                <i className="fas fa-book"></i>
+              </span>
               {wallet.publicKey}
-              <button onClick={() => this.props.changeView(View.dashboard, index)}>Open Wallet</button>
-              <button onClick={() => this.deleteW(index)}>Delete Wallet</button>
-            </div>
+            </a>
           )
         })}
-        <div>
-          <button onClick={() => this.props.changeView(View.create)}> + </button>
+        <div className="panel-block">
+          <button className="button is-link is-outlined is-fullwidth" onClick={() => this.props.changeView(View.create)}>
+            Add Wallet
+          </button>
         </div>
-      </div>
+      </nav>
     )
   }
 }

@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { AppState } from '../app'
+import { getActiveWallet } from '../helpers/wallets';
 const StellarSdk = require('stellar-sdk')
 
 export class Transactions extends React.Component<{appState: AppState}, {transactions: any[]}> {
@@ -14,7 +15,7 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
     const server = new StellarSdk.Server(this.props.appState.serverLocation, {allowHttp: true})
 
     // TODO: Right a pager
-    const pageOne = await server.transactions().forAccount(this.props.appState.publicKey).call()
+    const pageOne = await server.transactions().forAccount(getActiveWallet(this.props.appState).publicKey).call()
     const pageTwo = await pageOne.next()
 
     console.log(StellarSdk.xdr.TransactionResult.fromXDR(pageOne.records[2].result_xdr, 'base64'))

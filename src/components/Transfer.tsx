@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { AppState } from '../app'
+import { getActiveWallet } from '../helpers/wallets';
 const StellarSdk = require('stellar-sdk')
 
 // let rootAccount = 'GBRPYHIL2CI3FNQ4BXLFMNDLFJUNPU2HY3ZMFSHONUCEOASW7QC7OX2H'
@@ -17,7 +18,7 @@ export class Transfer extends React.Component<{appState: AppState, account: any}
   }
 
   public async transferKinesis (targetAddress: string, amount: string) {
-    const account = new StellarSdk.Account(this.props.appState.publicKey, this.props.account.sequence)
+    const account = new StellarSdk.Account(getActiveWallet(this.state.appState).publicKey, this.props.account.sequence)
 
     const paymentTransaction = new StellarSdk.TransactionBuilder(account)
       .addOperation(StellarSdk.Operation.payment({

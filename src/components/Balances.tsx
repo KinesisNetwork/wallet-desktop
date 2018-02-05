@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { AppState } from '../app'
+import { getActiveWallet } from '../helpers/wallets';
 const StellarSdk = require('stellar-sdk')
 
 export class Balances extends React.Component<{appState: AppState}, {account: any, kinesisBalance: number, accountActivated: boolean}> {
@@ -13,7 +14,7 @@ export class Balances extends React.Component<{appState: AppState}, {account: an
 
     try {
       const server = new StellarSdk.Server(this.props.appState.serverLocation, {allowHttp: true})
-      const account = await server.loadAccount(this.props.appState.publicKey)
+      const account = await server.loadAccount(getActiveWallet(this.props.appState).publicKey)
       const kinesisBalance = account.balances.filter(b => b.asset_type === 'native')[0].balance
       this.setState({account, kinesisBalance})
     } catch (e) {
@@ -24,8 +25,8 @@ export class Balances extends React.Component<{appState: AppState}, {account: an
   render() {
     return (
       <div>
-        <p>Public Key: {this.props.appState && this.props.appState.publicKey}</p>
-        <p>Private Key: {this.props.appState.privateKey}</p>
+        <p>Public Key: {getActiveWallet(this.props.appState).publicKey}</p>
+        <p>Reveal Private Key: </p>
         <p>Account activated: {JSON.stringify(this.state.accountActivated)}</p>
         <p>Kinesis Balance: {this.state.kinesisBalance}</p>
       </div>
