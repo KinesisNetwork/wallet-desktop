@@ -1,25 +1,17 @@
 import * as React from 'react'
-import { AppState, View } from '../app'
+import { AppState } from '../app'
 import { Balances } from './Balances'
 import { Transfer } from './Transfer'
 import { Transactions } from './Transactions'
-import { deleteWallet } from '../services/wallet_persistance'
 import { getActiveWallet } from '../helpers/wallets';
 import { Password } from './Password';
+import { Delete } from './Delete';
 const StellarSdk = require('stellar-sdk')
 
 export class Dashboard extends React.Component<{appState: AppState, setWalletList: Function, changeView: Function, setPassword: Function}, {account: any, kinesisBalance: number, accountActivated: boolean}> {
   constructor (props) {
     super(props)
     this.state = { account: null, kinesisBalance: 0, accountActivated: true }
-  }
-
-  public deleteW(accountId: string) {
-    deleteWallet(accountId)
-      .then((wallets) => {
-        this.props.setWalletList(wallets)
-        this.props.changeView(View.create, {})
-      })
   }
 
   async componentDidMount() {
@@ -57,10 +49,7 @@ export class Dashboard extends React.Component<{appState: AppState, setWalletLis
             </div>
             <div className='column' style={{padding: '5px 70px 20px 60px'}}>
               <Transfer appState={this.props.appState} />
-              <h1 className='sub-heading primary-font' style={{marginTop: '18px'}}>Settings</h1>
-              <button type='submit' className='button is-danger' style={{width: '100%'}} onClick={() => this.deleteW(getActiveWallet(this.props.appState).publicKey)} >
-                  <i className='fa fa-trash-alt fa-lg' style={{marginRight:'6px'}}></i> Delete Wallet
-              </button>
+              <Delete appState={this.props.appState} setWalletList={this.props.setWalletList} changeView={this.props.changeView} />
             </div>
           </div>
         </div>
