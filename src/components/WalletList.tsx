@@ -21,7 +21,7 @@ export class WalletList extends React.Component<{appState: AppState, changeView:
               <span className="panel-icon">
                 <i className="fas fa-book"></i>
               </span>
-              <span style={{overflow: 'hidden', fontFamily: 'Fira Mono',fontSize: '13px'}}>{wallet.publicKey}</span>
+              <span className='info' style={{overflow: 'hidden'}}>{wallet.publicKey}</span>
             </a>
           )
         })}

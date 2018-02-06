@@ -34,10 +34,19 @@ export class Balances extends React.Component<{appState: AppState}, {account: an
     let activeWallet = getActiveWallet(this.props.appState) || {}
     return (
       <div>
-        <p>Public Key: {activeWallet.publicKey}</p>
-        <p>Reveal Private Key: {getPrivateKey(this.props.appState, activeWallet)}</p>
-        <p>Account activated: {JSON.stringify(this.state.accountActivated)}</p>
-        <p>Kinesis Balance: {this.state.kinesisBalance}</p>
+        <h1 className='sub-heading primary-font'>Account Information</h1>
+        <label className='label'>Public Key: </label>
+        <span className='info'>{activeWallet.publicKey}</span>
+        <label className='label'>Reveal Private Key: </label>
+        <span className='info'>{getPrivateKey(this.props.appState, activeWallet) || 'Please enter your wallet password'}</span>
+        <div style={{marginTop: '15px'}}>
+          <label className='label' style={{display: 'inline'}}>Account activated: </label>
+          <span className='info'>{JSON.stringify(this.state.accountActivated) ? 'Yes' : 'No'}</span>
+        </div>
+        <div style={{marginTop: '15px'}}>
+          <label className='label' style={{display: 'inline'}}>Kinesis Balance: </label>
+          <span className='info'>{this.state.kinesisBalance}</span>
+        </div>
       </div>
     )
   }

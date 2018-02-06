@@ -67,12 +67,12 @@ export class CreateAccount extends React.Component<{
         <div className='has-text-centered'>
           <h1 className='title-heading primary-font'>Add a new wallet</h1>
         </div>
-        <div className='columns has-text-centered'>
+        <div className='columns has-text-centered' style={{marginTop: '35px'}}>
           <div className='column' style={{padding: '25px 60px 60px 70px', borderRight: '1px solid #2b3e50'}}>
               <i className="fas fa-user" style={{fontSize: '2.5em'}}></i>
             <h1 className='sub-heading primary-font'>New Account</h1>
             <label className='label'>Wallet Password</label>
-            <input placeholder='Password' className='input' onChange={(ev) => this.handlePassword(ev)} type='password' />
+            <input className='input' onChange={(ev) => this.handlePassword(ev)} type='password' />
             <button className='button' style={{marginTop: '6px', width: '100%'}} onClick={() => this.generate()}>Create Account</button>
             <p>
               {this.state.err}
@@ -83,11 +83,11 @@ export class CreateAccount extends React.Component<{
             <h1 className='sub-heading primary-font'>Import Account</h1>
             <form onSubmit={(ev) => this.handleSubmit(ev)}>
               <label className='label'>Public Key</label>
-              <input placeholder='Public Key' className='input' onChange={(ev) => this.handlePublic(ev)} type='text' />
+              <input className='input' onChange={(ev) => this.handlePublic(ev)} type='text' />
               <label className='label'>Private Key</label>
-              <input placeholder='Private Key' className='input' onChange={(ev) => this.handlePrivate(ev)} type='text' />
+              <input className='input' onChange={(ev) => this.handlePrivate(ev)} type='text' />
               <label className='label'>Wallet Password</label>
-              <input placeholder='Password' className='input' onChange={(ev) => this.handlePassword(ev)} type='password' />
+              <input className='input' onChange={(ev) => this.handlePassword(ev)} type='password' />
               <input className='button' value="Import" style={{marginTop: '8px', width: '100%'}} type='submit' />
             </form>
           </div>

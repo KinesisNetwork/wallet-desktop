@@ -65,7 +65,7 @@ export class Transfer extends React.Component<{appState: AppState}, {targetAddre
   render() {
     return (
       <div>
-        <h1>Transfer Kinesis</h1>
+        <h1 className='sub-heading primary-font'>Transfer Kinesis</h1>
         <form onSubmit={(ev) => this.handleSubmit(ev)}>
           <label>Target Account</label>
           <input onChange={(ev) => this.handleAddress(ev)} type='text' />
