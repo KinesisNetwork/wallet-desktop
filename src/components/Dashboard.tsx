@@ -5,12 +5,13 @@ import { Transfer } from './Transfer'
 import { Transactions } from './Transactions'
 import { deleteWallet } from '../services/wallet_persistance'
 import { getActiveWallet } from '../helpers/wallets';
+import { Password } from './Password';
 const StellarSdk = require('stellar-sdk')
 
-export class Dashboard extends React.Component<{appState: AppState, setWalletList: Function, changeView: Function, setPassword: Function}, {account: any}> {
+export class Dashboard extends React.Component<{appState: AppState, setWalletList: Function, changeView: Function, setPassword: Function}, {account: any, kinesisBalance: number, accountActivated: boolean}> {
   constructor (props) {
     super(props)
-    this.state = { account: null, kinesisBalance: 0, accountActivated: true, password: '', name: '' }
+    this.state = { account: null, kinesisBalance: 0, accountActivated: true }
   }
 
   public deleteW(accountId: string) {
@@ -19,14 +20,6 @@ export class Dashboard extends React.Component<{appState: AppState, setWalletLis
         this.props.setWalletList(wallets)
         this.props.changeView(View.create, {})
       })
-  }
-
-  public setPassword(){
-    this.props.setPassword(getActiveWallet(this.props.appState).publicKey, this.state.password))
-  }
-
-  public setName(){
-    this.props.setPassword(getActiveWallet(this.props.appState).publicKey, this.state.name))
   }
 
   async componentDidMount() {
@@ -55,12 +48,7 @@ export class Dashboard extends React.Component<{appState: AppState, setWalletLis
     return (
       <div style={{display: 'table', width: '100%', height: '100%'}}>
         <div className='has-text-centered' style={{display: 'table-row'}}>
-          <form className='title-heading' onSubmit={(ev) => {ev.preventDefault(); this.setPassword()}} style={{ paddingBottom: '28px', paddingTop: '24px'}}>
-            <input className="input is-small" type="password" placeholder="Password" onChange={(e) => this.setState({password: e.target.value})} style={{display:'inline-block', maxWidth: '200px', padding: '17px 8px'}} />
-            <button type='submit' className='button' style={{display:'inline-block'}}>
-                <i className='fas fa-unlock-alt' style={{marginRight:'6px'}}></i> Unlock Wallet
-            </button>
-          </form>
+          <Password appState={this.props.appState} setPassword={this.props.setPassword} />
         </div>
         <div style={{display: 'table-row'}}>
           <div className='columns' style={{marginTop: '20px'}}>
@@ -84,6 +72,3 @@ export class Dashboard extends React.Component<{appState: AppState, setWalletLis
     )
   }
 }
-    <div>
-      <div>
-      </div>

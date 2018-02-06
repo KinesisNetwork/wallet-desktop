@@ -41,7 +41,7 @@ export class Balances extends React.Component<{appState: AppState}, {account: an
         <span className='info'>{getPrivateKey(this.props.appState, activeWallet) || 'Please enter your wallet password'}</span>
         <div style={{marginTop: '15px'}}>
           <label className='label' style={{display: 'inline'}}>Account activated: </label>
-          <span className='info'>{JSON.stringify(this.state.accountActivated) ? 'Yes' : 'No'}</span>
+          <span className='info'>{this.state.accountActivated ? 'Yes' : 'No'}</span>
         </div>
         <div style={{marginTop: '15px'}}>
           <label className='label' style={{display: 'inline'}}>Kinesis Balance: </label>

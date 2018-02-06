@@ -42,7 +42,6 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
   public async componentWillReceiveProps(nextProps: {appState: AppState}) {
     let currentWalletIndex = _.get(nextProps, 'appState.viewParams.walletIndex', null)
     let newWalletIndex =_.get(this.props, 'appState.viewParams.walletIndex', null)
-    console.log(currentWalletIndex)
     if (currentWalletIndex !== newWalletIndex && newWalletIndex !== null) {
       this.setState(_.cloneDeep(defaultState), () => {this.transactionPage()})
     }
@@ -83,10 +82,10 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
   }
 
   public renderTransactions () {
-    return this.state.transactions.map(t => {
+    return this.state.transactions.map((t: any, i: number) => {
       const dynamicKeys = Object.keys(t.txData)
       return (
-        <article className='message'>
+        <article className='message' key={i}>
           <div>
             <p style={{marginBottom: '4px'}}>{t.txType}</p>
           </div>
@@ -106,9 +105,9 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
                   <td>{t.fee}</td>
                 </tr>
                 {
-                  dynamicKeys.map(d => {
+                  dynamicKeys.map((d, k) => {
                     return  (
-                      <tr>
+                      <tr key={k}>
                         <td>{d}</td>
                         <td>{t.txData[d]}</td>
                       </tr>
