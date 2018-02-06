@@ -133,11 +133,12 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
 
   render() {
     return (
-      <div style={{margin: '0px 45px 0px 60px'}}>
-        <div>
-          <h1 className='sub-heading primary-font'>Transactions</h1>
+      <div style={{height: '100%', display: 'table-row'}}>
+        <div style={{margin: '0px 45px 0px 60px', position: 'relative', height: '100%'}}>
+          <div className="scrollable" >
+            { this.renderTransactions() }
+          </div>
         </div>
-        { this.renderTransactions() }
       </div>
     )
   }

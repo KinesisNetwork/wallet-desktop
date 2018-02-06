@@ -19,3 +19,8 @@ html, body, #App { height: 100%; width: 100%; padding: 0; }
 .transaction-list tr td:first-child { color: #74889c; font-size: 14px; font-weight: 400; text-align: right; }
 .transaction-list tr td:last-child { font-family: 'Fira Mono'; font-size: 13px; padding-left: 20px }
 .message { background-color: transparent; }
+
+.scrollable { overflow-y: scroll; overflow-x:hidden; padding-right: 8px; height: 100%; position: absolute; top: 0; bottom: 0; left: 0; right: 0;}
+.scrollable::-webkit-scrollbar { width: 5px; }
+.scrollable::-webkit-scrollbar-track { background: rgba(0,0,0,0); }
+.scrollable::-webkit-scrollbar-thumb { background: #4E5D6C; }
