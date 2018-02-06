@@ -28,14 +28,24 @@ export enum StellarTxType {
   'Manage Data' = 10
 }
 
+const defaultState = { transactions: [], lastPage: false, currentPage: undefined }
 export class Transactions extends React.Component<{appState: AppState}, {transactions: HumanTransactions[], currentPage: any, lastPage: boolean}> {
   constructor (props) {
     super(props)
-    this.state = { transactions: [], lastPage: false, currentPage: undefined }
+    this.state = _.cloneDeep(defaultState)
   }
 
   async componentDidMount() {
     await this.transactionPage()
+  }
+
+  public async componentWillReceiveProps(nextProps: {appState: AppState}) {
+    let currentWalletIndex = _.get(nextProps, 'appState.viewParams.walletIndex', null)
+    let newWalletIndex =_.get(this.props, 'appState.viewParams.walletIndex', null)
+    console.log(currentWalletIndex)
+    if (currentWalletIndex !== newWalletIndex && newWalletIndex !== null) {
+      this.setState(_.cloneDeep(defaultState), () => {this.transactionPage()})
+    }
   }
 
   // TODO: Hook this up to a next page button that is hidden if lastPage === true
