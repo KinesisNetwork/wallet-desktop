@@ -70,7 +70,7 @@ export class CreateAccount extends React.Component<{
         <div className='columns has-text-centered' style={{marginTop: '35px'}}>
           <div className='column' style={{padding: '25px 60px 60px 70px', borderRight: '1px solid #2b3e50'}}>
               <i className="fas fa-user" style={{fontSize: '2.5em'}}></i>
-            <h1 className='sub-heading primary-font'>New Account</h1>
+            <h1 className='sub-heading primary-font'>Generate Account</h1>
             <label className='label'>Wallet Password</label>
             <input className='input' onChange={(ev) => this.handlePassword(ev)} type='password' />
             <button className='button' style={{marginTop: '6px', width: '100%'}} onClick={() => this.generate()}>Create Account</button>
@@ -88,7 +88,7 @@ export class CreateAccount extends React.Component<{
               <input className='input' onChange={(ev) => this.handlePrivate(ev)} type='text' />
               <label className='label'>Wallet Password</label>
               <input className='input' onChange={(ev) => this.handlePassword(ev)} type='password' />
-              <input className='button' value="Import" style={{marginTop: '8px', width: '100%'}} type='submit' />
+              <input className='button' value="Import Account" style={{marginTop: '8px', width: '100%'}} type='submit' />
             </form>
           </div>
         </div>

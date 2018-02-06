@@ -77,28 +77,36 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
       const dynamicKeys = Object.keys(t.txData)
       return (
         <article className='message'>
-          <div className='message-header'>
-            <p>{t.txType}</p>
+          <div>
+            <p style={{marginBottom: '4px'}}>{t.txType}</p>
           </div>
           <div className='message-body'>
-            <p>
-              <strong>Tx Id: </strong>{t.txId}
-            </p>
-            <p>
-              <strong>Date: </strong>{t.date.toISOString()}
-            </p>
-            <p>
-              <strong>Fee: </strong>{t.fee}
-            </p>
-            {
-              dynamicKeys.map(d => {
-                return  (
-                  <p>
-                    <strong>{d}: </strong>{t.txData[d]}
-                  </p>
-                )
-              })
-            }
+            <table className='transaction-list'>
+              <tbody>
+                <tr>
+                  <td>Tx Id</td>
+                  <td>{t.txId}</td>
+                </tr>
+                <tr>
+                  <td>Date</td>
+                  <td>{t.date.toISOString()}</td>
+                </tr>
+                <tr>
+                  <td>Fee</td>
+                  <td>{t.fee}</td>
+                </tr>
+                {
+                  dynamicKeys.map(d => {
+                    return  (
+                      <tr>
+                        <td>{d}</td>
+                        <td>{t.txData[d]}</td>
+                      </tr>
+                    )
+                  })
+                }
+              </tbody>
+            </table>
           </div>
         </article>
       )
@@ -125,7 +133,10 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
 
   render() {
     return (
-      <div>
+      <div style={{margin: '0px 45px 0px 60px'}}>
+        <div>
+          <h1 className='sub-heading primary-font'>Transactions</h1>
+        </div>
         { this.renderTransactions() }
       </div>
     )

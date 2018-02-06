@@ -66,12 +66,12 @@ export class Dashboard extends React.Component<{appState: AppState, setWalletLis
           </form>
         </div>
         <div className='columns' style={{marginTop: '20px'}}>
-          <div className='column' style={{padding: '5px 60px 60px 70px', borderRight: '1px solid #2b3e50'}}>
+          <div className='column' style={{padding: '5px 60px 20px 70px', borderRight: '1px solid #2b3e50'}}>
             <Balances appState={this.props.appState}/>
           </div>
-          <div className='column' style={{padding: '5px 60px 60px 70px'}}>
+          <div className='column' style={{padding: '5px 70px 20px 60px'}}>
             <Transfer appState={this.props.appState} />
-            <h1 className='sub-heading primary-font' style={{marginTop: '15px'}}>Settings</h1>
+            <h1 className='sub-heading primary-font' style={{marginTop: '18px'}}>Settings</h1>
             <button type='submit' className='button is-danger' style={{width: '100%'}} onClick={() => this.deleteW(getActiveWallet(this.props.appState).publicKey)} >
                 <i className='fa fa-trash-alt fa-lg' style={{marginRight:'6px'}}></i> Delete Wallet
             </button>

@@ -16,4 +16,6 @@ html, body, #App { height: 100%; width: 100%; padding: 0; }
 .button {font-family: 'Open Sans'}
 .logo-sidebar { height: 86px; width: 100%; background-color: #2e4458; display: block; margin-top: 13px; margin-bottom: 22px; padding: 11px 0px; }
 .wallet-heading { font-family: "Open Sans"; font-size: 17px; text-transform: uppercase; letter-spacing: 0.2em; text-align: center; color: white;}
-
+.transaction-list tr td:first-child { color: #74889c; font-size: 14px; font-weight: 400; text-align: right; }
+.transaction-list tr td:last-child { font-family: 'Fira Mono'; font-size: 13px; padding-left: 20px }
+.message { background-color: transparent; }
