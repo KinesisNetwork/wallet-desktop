@@ -61,7 +61,7 @@ export class Dashboard extends React.Component<{appState: AppState, setWalletLis
           <form onSubmit={(ev) => {ev.preventDefault(); this.setPassword()}}>
             <input className="input is-small" type="password" placeholder="Password" onChange={(e) => this.setState({password: e.target.value})} style={{display:'inline-block', maxWidth: '200px', padding: '17px 8px'}} />
             <button type='submit' className='button' style={{display:'inline-block'}}>
-                <i className='fas fa-unlock-alt'></i> Unlock Wallet
+                <i className='fas fa-unlock-alt' style={{marginRight:'6px'}}></i> Unlock Wallet
             </button>
           </form>
         </div>
@@ -71,17 +71,10 @@ export class Dashboard extends React.Component<{appState: AppState, setWalletLis
           </div>
           <div className='column' style={{padding: '5px 60px 60px 70px'}}>
             <Transfer appState={this.props.appState} />
-            <h1 className='sub-heading primary-font'>Settings</h1>
-            <form onSubmit={(ev) => {ev.preventDefault(); this.setPassword()}}>
-              <label className='label'>Give wallet a readable name.</label>
-              <input className="input is-small" type="text" placeholder="Wallet Name" onChange={(e) => this.setState({name: e.target.value})} />
-              <button type='submit' className='button'>
-                  <i className='fa fa-arrow-circle-right fa-lg'></i> Wallet
-              </button>
-            </form>
-
-
-            <input className='button is-danger' type='submit' value='Delete Wallet' onClick={() => this.deleteW(getActiveWallet(this.props.appState).publicKey)} />
+            <h1 className='sub-heading primary-font' style={{marginTop: '15px'}}>Settings</h1>
+            <button type='submit' className='button is-danger' style={{width: '100%'}} onClick={() => this.deleteW(getActiveWallet(this.props.appState).publicKey)} >
+                <i className='fa fa-trash-alt fa-lg' style={{marginRight:'6px'}}></i> Delete Wallet
+            </button>
           </div>
         </div>
         <Transactions appState={this.props.appState} />

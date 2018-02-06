@@ -67,11 +67,13 @@ export class Transfer extends React.Component<{appState: AppState}, {targetAddre
       <div>
         <h1 className='sub-heading primary-font'>Transfer Kinesis</h1>
         <form onSubmit={(ev) => this.handleSubmit(ev)}>
-          <label>Target Account</label>
-          <input onChange={(ev) => this.handleAddress(ev)} type='text' />
-          <label>Amount</label>
-          <input onChange={(ev) => this.handleAmount(ev)} type='text' />
-          <input className='button' type='submit' />
+          <label className='label'>Target Account</label>
+          <input className='input' onChange={(ev) => this.handleAddress(ev)} type='text' />
+          <label className='label'>Amount</label>
+          <input className='input' onChange={(ev) => this.handleAmount(ev)} type='text' />
+          <button type='submit' className='button' style={{marginTop: '8px', width: '100%'}}>
+              <i className='fa fa-arrow-circle-right fa-lg' style={{marginRight:'6px'}} ></i> Transfer
+          </button>
         </form>
       </div>
     )
