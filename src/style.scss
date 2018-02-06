@@ -9,9 +9,9 @@ html, body, #App { height: 100%; width: 100%; padding: 0; }
 .code-font { font-family: 'Fira Mono' }
 .primary-font { font-family: 'Open Sans' }
 .label { margin-top: 15px; color: #74889c; font-size: 15px; margin-bottom: 8px; display: block; font-weight: 400 }
-.sub-heading { font-size: 18px; display: block; margin-top: 8px; margin-bottom: 10px; }
-.title-heading { font-size: 19px; text-transform: uppercase; letter-spacing: 0.45em; color: #ffc800; margin-bottom: 50px; margin-top: 40px;}
+.sub-heading {font-size: 15px; text-transform: uppercase; display: block; margin-top: 8px; margin-bottom: 10px; letter-spacing: 0.2em;}
+.title-heading { font-size: 19px; text-transform: uppercase; letter-spacing: 0.45em; color: #ffc800; padding-bottom: 32px; padding-top: 28px; margin-bottom: 35px; background-color: #1b2835; margin-top: 12px; }
 .button {font-family: 'Open Sans'}
-.logo-sidebar { width: 54px; height: 59px; display: block; margin: auto; margin-bottom: 15px; margin-top: 18px; }
+.logo-sidebar { height: 86px; width: 100%; background-color: #2e4458; display: block; margin-top: 13px; margin-bottom: 22px; padding: 11px 0px; }
 .wallet-heading { font-family: "Open Sans"; font-size: 17px; text-transform: uppercase; letter-spacing: 0.2em; text-align: center; color: white;}
 

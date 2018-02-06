@@ -10,7 +10,7 @@ export class WalletList extends React.Component<{appState: AppState, changeView:
   render() {
     let activeIndex = _.get(this.props, 'appState.viewParams.walletIndex', null)
     return (
-      <nav className="panel">
+      <nav className="panel"style={{ marginLeft: '25px', marginRight: '16px', marginTop: '35px' }}>
         <p className="panel-heading wallet-heading" style={{fontFamily: 'Open Sans'}}>
          Wallets
         </p>
