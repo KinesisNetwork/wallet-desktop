@@ -6,7 +6,7 @@ const StellarSdk = require('stellar-sdk')
 export class Balances extends React.Component<{appState: AppState}, {account: any, kinesisBalance: number, accountActivated: boolean}> {
   constructor (props) {
     super(props)
-    this.state = { account: null, kinesisBalance: 0, accountActivated: true }
+    this.state = { account: null, kinesisBalance: 0, accountActivated: false }
   }
 
   componentDidMount() {

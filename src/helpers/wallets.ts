@@ -16,3 +16,10 @@ export function getPrivateKey(appState: AppState, wallet: Wallet): string {
   }
   return decryptPrivateKey(privateKey, password)
 }
+
+export function getActivePrivateKey(appState: AppState): string {
+  let activeWallet = getActiveWallet(appState) || {}
+  return getPrivateKey(appState, activeWallet)
+}
+
+

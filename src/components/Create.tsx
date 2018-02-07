@@ -3,6 +3,7 @@ import * as React from 'react'
 import { AppState, View } from '../app'
 import { addNewWallet } from '../services/wallet_persistance'
 import { encryptPrivateKey } from '../services/encryption'
+import * as swal from 'sweetalert'
 const StellarBase = require('stellar-sdk')
 
 export class CreateAccount extends React.Component<{
@@ -20,7 +21,11 @@ export class CreateAccount extends React.Component<{
     }
   }
 
-  public generate() {
+  public async generate() {
+    if (!this.state.password) {
+      await swal('Oops!', 'Wallet password is required', 'error')
+      return document.getElementById('generate-password').focus();
+    }
     const accountKeys = StellarBase.Keypair.random()
     const [accountKey, privateKey] = [accountKeys.publicKey(), accountKeys.secret()]
     this.addNewWallet(accountKey, privateKey, this.state.password)
@@ -39,8 +44,19 @@ export class CreateAccount extends React.Component<{
       })
   }
 
-  public importKeys() {
-    // Call create wallet here...
+  public async importKeys() {
+    if (!this.state.publicKey) {
+      await swal('Oops!', 'A public key is required to import an account', 'error')
+      return document.getElementById('import-public-key').focus();
+    }
+    if (!this.state.privateKey) {
+      await swal('Oops!', 'A private key is required to import an account', 'error')
+      return document.getElementById('import-private-key').focus();
+    }
+    if (!this.state.password) {
+      await swal('Oops!', 'Wallet password is required', 'error')
+      return document.getElementById('import-password').focus();
+    }
     this.addNewWallet(this.state.publicKey, this.state.privateKey, this.state.password)
   }
 
@@ -72,7 +88,7 @@ export class CreateAccount extends React.Component<{
               <i className="fas fa-user" style={{fontSize: '2.5em'}}></i>
             <h1 className='sub-heading primary-font'>Generate Account</h1>
             <label className='label'>Wallet Password</label>
-            <input className='input' onChange={(ev) => this.handlePassword(ev)} type='password' />
+            <input id='generate-password' className='input' onChange={(ev) => this.handlePassword(ev)} type='password' />
             <button className='button' style={{marginTop: '6px', width: '100%'}} onClick={() => this.generate()}>Create Account</button>
             <p>
               {this.state.err}
@@ -83,11 +99,11 @@ export class CreateAccount extends React.Component<{
             <h1 className='sub-heading primary-font'>Import Account</h1>
             <form onSubmit={(ev) => this.handleSubmit(ev)}>
               <label className='label'>Public Key</label>
-              <input className='input' onChange={(ev) => this.handlePublic(ev)} type='text' />
+              <input id='input-public-key' className='input' onChange={(ev) => this.handlePublic(ev)} type='text' />
               <label className='label'>Private Key</label>
-              <input className='input' onChange={(ev) => this.handlePrivate(ev)} type='text' />
+              <input id='input-private-key' className='input' onChange={(ev) => this.handlePrivate(ev)} type='text' />
               <label className='label'>Wallet Password</label>
-              <input className='input' onChange={(ev) => this.handlePassword(ev)} type='password' />
+              <input id='input-password' className='input' onChange={(ev) => this.handlePassword(ev)} type='password' />
               <input className='button' value="Import Account" style={{marginTop: '8px', width: '100%'}} type='submit' />
             </form>
           </div>

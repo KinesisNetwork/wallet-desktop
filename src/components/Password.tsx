@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { AppState } from '../app'
-import { getActiveWallet, getPrivateKey } from '../helpers/wallets'
+import { getActiveWallet, getActivePrivateKey } from '../helpers/wallets'
+import * as swal from 'sweetalert'
+import { decryptPrivateKey } from '../services/encryption'
 
 export class Password extends React.Component<{appState: AppState, setPassword: Function}, {password: any}> {
   constructor (props) {
@@ -9,12 +11,22 @@ export class Password extends React.Component<{appState: AppState, setPassword: 
   }
 
   public setPassword(){
-    this.props.setPassword(getActiveWallet(this.props.appState).publicKey, this.state.password)
+      this.props.setPassword(getActiveWallet(this.props.appState).publicKey, this.state.password)
   }
 
-  public unlockWallet(ev) {
+  public async unlockWallet(ev) {
     ev.preventDefault()
-    this.setPassword()
+    let decryptedPrivateKey = decryptPrivateKey(getActiveWallet(this.props.appState).encryptedPrivateKey, this.state.password)
+    if (decryptedPrivateKey) {
+      this.setPassword()
+    } else {
+      await swal('Oops!', 'Incorrect password, try again.', 'error')
+      this.setState({
+        password: ''
+      }, () => {
+        document.getElementById('wallet-password').focus();
+      })
+    }
   }
 
   public lockWallet(ev) {
@@ -26,17 +38,13 @@ export class Password extends React.Component<{appState: AppState, setPassword: 
     })
   }
 
-  public privateKey() {
-    let activeWallet = getActiveWallet(this.props.appState) || {}
-    return getPrivateKey(this.props.appState, activeWallet)
-  }
-
   render() {
     return (
       <div>
-      {!this.privateKey() ?
+      {!getActivePrivateKey(this.props.appState) ?
         (<form className='title-heading' onSubmit={this.unlockWallet.bind(this)} style={{ paddingBottom: '28px', paddingTop: '24px'}}>
-          <input className="input is-small" type="password" placeholder="Password" onChange={(e: any) => this.setState({password: e.target.value})} style={{display:'inline-block', maxWidth: '200px', padding: '17px 8px'}} />
+          <input id='wallet-password' className="input is-small" value={this.state.password} type="password" placeholder="Password"
+            onChange={(e: any) => this.setState({password: e.target.value})} style={{display:'inline-block', maxWidth: '200px', padding: '17px 8px'}} />
           <button type='submit' className='button' style={{display:'inline-block'}}>
             <i className='fas fa-unlock-alt' style={{marginRight:'6px'}}></i> Unlock Wallet
           </button>
