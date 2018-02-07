@@ -7,14 +7,20 @@ export interface Connection {
   networkPassphrase: string
 }
 
+// This should most certainly be part of react state
+//
 export let defaultConnections: Connection[] = [{
   horizonServer: 'https://stellar-local.abx.com',
   networkPassphrase: 'Test SDF Network ; September 2015',
   connectionName: 'Local Development Network'
 }, {
-  horizonServer: 'https://kinesis-local.abx.com',
-  networkPassphrase: 'Test Kinesis Network ; February 2015',
-  connectionName: 'Local Kinesis Network'
+  horizonServer: 'https://kinesis-test-net.abx.com',
+  networkPassphrase: 'Kinesis Test Network ; February 2018',
+  connectionName: 'Kinesis Test Network'
+}, {
+  horizonServer: 'https://horizon-testnet.stellar.org/',
+  networkPassphrase: 'Test SDF Network ; September 2015',
+  connectionName: 'Stellar Test Network'
 }]
 
 export class AppSettings extends React.Component<{appState: AppState, changeConnection: Function}, {horizonServer: string, networkPassphrase: string, connectionName: string}> {
@@ -41,6 +47,18 @@ export class AppSettings extends React.Component<{appState: AppState, changeConn
 
   public async addConnection(ev) {
     ev.preventDefault()
+    if (!this.state.connectionName) {
+      await swal('Oops!', 'Please provide a connection name to keep track of what your wallet is currently connected to.', 'error')
+      return document.getElementById('settings-connection-name').focus();
+    }
+    if (!this.state.horizonServer) {
+      await swal('Oops!', 'A horizon server endpoint is required to connect to the network.', 'error')
+      return document.getElementById('settings-server-address').focus();
+    }
+    if (!this.state.networkPassphrase) {
+      await swal('Oops!', 'A network passphrase is required to connect to the network.', 'error')
+      return document.getElementById('settings-network-pass').focus();
+    }
 
     defaultConnections.push({
       horizonServer: this.state.horizonServer,
@@ -67,7 +85,7 @@ export class AppSettings extends React.Component<{appState: AppState, changeConn
             {
               defaultConnections.map((connection: Connection, index: number) => {
                 let activeNetwork = connection === this.props.appState.connection
-                let activeClass = activeNetwork ? 'active' : ''
+                let activeClass = activeNetwork ? 'is-focused' : ''
                 return (
                   <div key={index} style={{marginTop: '5px'}}>
                     <button onClick={() => {this.changeConnection(connection)}} className={'button ' + activeClass} style={{fontFamily: 'Fira Mono', fontSize: '12px', display: 'block', height: 'auto',  margin: 'auto', width: '100%'}}>
@@ -82,12 +100,12 @@ export class AppSettings extends React.Component<{appState: AppState, changeConn
             <i className="far fa-user" style={{fontSize: '2.5em'}}></i>
             <h1 className='sub-heading primary-font'>Add New Network</h1>
             <form onSubmit={(ev) => this.addConnection(ev)}>
+              <label className='label'>Connection Name</label>
+              <input id='settings-connection-name' value={this.state.connectionName} className='input' onChange={(ev) => this.changeConnectionName(ev.target.value)} type='text' />
               <label className='label'>Horizon Server Adress</label>
-              <input id='settings-server-address' className='input' onChange={(ev) => this.changeHorizonServer(ev)} type='text' />
+              <input id='settings-server-address' value={this.state.horizonServer} className='input' onChange={(ev) => this.changeHorizonServer(ev.target.value)} type='text' />
               <label className='label'>Network Passphrase</label>
-              <input id='settings-network-pass' className='input' onChange={(ev) => this.changeNetworkPassphrase(ev)} type='text' />
-              <label className='label'>Connection Name (optional)</label>
-              <input id='settings-connection-name' className='input' onChange={(ev) => this.changeNetworkPassphrase(ev)} type='text' />
+              <input id='settings-network-pass' value={this.state.networkPassphrase} className='input' onChange={(ev) => this.changeNetworkPassphrase(ev.target.value)} type='text' />
               <input className='button' value="Add Network" style={{marginTop: '8px', width: '100%'}} type='submit' />
             </form>
           </div>
