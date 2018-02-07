@@ -25,8 +25,9 @@ export class Transfer extends React.Component<{appState: AppState}, {targetAddre
     }
     const sequencedAccount = new StellarSdk.Account(getActiveWallet(this.props.appState).publicKey, account.sequence)
 
+    let paymentTransaction
     try {
-      const paymentTransaction = new StellarSdk.TransactionBuilder(sequencedAccount)
+      paymentTransaction = new StellarSdk.TransactionBuilder(sequencedAccount)
         .addOperation(StellarSdk.Operation.payment({
           destination: targetAddress,
           asset: StellarSdk.Asset.native(),
@@ -51,7 +52,7 @@ export class Transfer extends React.Component<{appState: AppState}, {targetAddre
 
     try {
       const transactionResult = await server.submitTransaction(paymentTransaction)
-      swal('Oops!', 'Successfully submitted transaction', 'success')
+      swal('Success!', 'Successfully submitted transaction', 'success')
     } catch (e) {
       // If this is the error, it means the account has not yet been created
       let opCode = _.get(e, 'data.extras.result_codes.operations[0]', _.get(e, 'message', 'Unkown Error'))
