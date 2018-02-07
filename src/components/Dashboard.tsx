@@ -25,10 +25,10 @@ export class Dashboard extends React.Component<{appState: AppState, setWalletLis
   }
 
   public async loadAccount(props) {
-    StellarSdk.Network.use(new StellarSdk.Network('Test SDF Network ; September 2015'))
+    StellarSdk.Network.use(new StellarSdk.Network(props.appState.connection.networkPassphrase))
 
     try {
-      const server = new StellarSdk.Server(props.appState.serverLocation, {allowHttp: true})
+      const server = new StellarSdk.Server(props.appState.connection.horizonServer, {allowHttp: true})
       const account = await server.loadAccount(getActiveWallet(props.appState).publicKey)
       this.setState({account})
     } catch (e) {

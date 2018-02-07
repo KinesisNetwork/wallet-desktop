@@ -12,11 +12,11 @@ export class Transfer extends React.Component<{appState: AppState}, {targetAddre
   }
 
   async componentDidMount() {
-    StellarSdk.Network.use(new StellarSdk.Network('Test SDF Network ; September 2015'))
+    StellarSdk.Network.use(new StellarSdk.Network(this.props.appState.connection.networkPassphrase))
   }
 
   public async transferKinesis (targetAddress: string, amount: string) {
-    const server = new StellarSdk.Server(this.props.appState.serverLocation, {allowHttp: true})
+    const server = new StellarSdk.Server(this.props.appState.connection.horizonServer, {allowHttp: true})
     let account
     try {
       account = await server.loadAccount(getActiveWallet(this.props.appState).publicKey)
