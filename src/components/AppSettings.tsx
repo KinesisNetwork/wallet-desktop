@@ -7,10 +7,14 @@ export interface Connection {
   networkPassphrase: string
 }
 
-export const defaultConnections: Connection[] = [{
+export let defaultConnections: Connection[] = [{
   horizonServer: 'https://stellar-local.abx.com',
   networkPassphrase: 'Test SDF Network ; September 2015',
-  connectionName: 'Local Dev'
+  connectionName: 'Local Development Network'
+}, {
+  horizonServer: 'https://kinesis-local.abx.com',
+  networkPassphrase: 'Test Kinesis Network ; February 2015',
+  connectionName: 'Local Kinesis Network'
 }]
 
 export class AppSettings extends React.Component<{appState: AppState, changeConnection: Function}, {horizonServer: string, networkPassphrase: string, connectionName: string}> {
@@ -31,13 +35,23 @@ export class AppSettings extends React.Component<{appState: AppState, changeConn
     this.setState({connectionName})
   }
 
-  public async changeConnection(index) {
-    this.props.changeConnection('hello', 'there')
+  public async changeConnection(connection: Connection) {
+    this.props.changeConnection(connection)
   }
 
   public async addConnection(ev) {
     ev.preventDefault()
-    console.log(this.state.horizonServer, this.state.networkPassphrase)
+
+    defaultConnections.push({
+      horizonServer: this.state.horizonServer,
+      networkPassphrase: this.state.networkPassphrase,
+      connectionName: this.state.connectionName,
+    })
+    this.setState({
+      horizonServer: '',
+      networkPassphrase: '',
+      connectionName: '',
+    })
   }
 
   render() {
@@ -45,10 +59,24 @@ export class AppSettings extends React.Component<{appState: AppState, changeConn
       <div>
         <div className='has-text-centered'>
           <h1 className='title-heading primary-font'>Application Settings</h1>
+
         </div>
         <div className='columns has-text-centered' style={{marginTop: '35px'}}>
           <div className='column' style={{padding: '25px 60px 60px 70px', borderRight: '1px solid #2b3e50'}}>
-            <h1 className='sub-heading primary-font'>Current Network</h1>
+            <h1 className='sub-heading primary-font'>Select Network</h1>
+            {
+              defaultConnections.map((connection: Connection, index: number) => {
+                let activeNetwork = connection === this.props.appState.connection
+                let activeClass = activeNetwork ? 'active' : ''
+                return (
+                  <div key={index} style={{marginTop: '5px'}}>
+                    <button onClick={() => {this.changeConnection(connection)}} className={'button ' + activeClass} style={{fontFamily: 'Fira Mono', fontSize: '12px', display: 'block', height: 'auto',  margin: 'auto', width: '100%'}}>
+                      {connection.connectionName} <br /> {connection.horizonServer} <br /> {connection.networkPassphrase}
+                    </button>
+                  </div>
+                )
+              })
+            }
           </div>
           <div className='column' style={{padding: '60px', paddingTop: '25px', paddingRight: '80px'}}>
             <i className="far fa-user" style={{fontSize: '2.5em'}}></i>
