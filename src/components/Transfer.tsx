@@ -38,6 +38,16 @@ export class Transfer extends React.Component<{appState: AppState}, {targetAddre
     } catch (e) {
       return swal('Oops!', `This transaction is invalid: ${_.capitalize(e.message)}.`, 'error')
     }
+    const continueTransfer = await swal({
+      title: 'Continue with transfer?',
+      text: 'Once submitted, the transaction can not be reverted!',
+      icon: 'warning',
+      dangerMode: true,
+      buttons: true
+    })
+    if (!continueTransfer) {
+      return
+    }
 
     try {
       const transactionResult = await server.submitTransaction(paymentTransaction)
@@ -46,14 +56,14 @@ export class Transfer extends React.Component<{appState: AppState}, {targetAddre
       // If this is the error, it means the account has not yet been created
       let opCode = _.get(e, 'data.extras.result_codes.operations[0]', _.get(e, 'message', 'Unkown Error'))
       if (opCode === 'op_no_destination') {
-        const willTransfer = await swal({
+        const willCreate = await swal({
           title: "Continue with transfer?",
           text: "The account that you are transfering with does not have any funds yet, are you sure you want to continue?",
           icon: "warning",
           dangerMode: true,
           buttons: true
         })
-        if (willTransfer) {
+        if (willCreate) {
           // If we get the correct error, we try call account creation
           const newAccountTransaction = new StellarSdk.TransactionBuilder(sequencedAccount)
             .addOperation(StellarSdk.Operation.createAccount({
@@ -88,7 +98,7 @@ export class Transfer extends React.Component<{appState: AppState}, {targetAddre
       await swal('Oops!', 'Please unlock your account to transfer funds', 'error')
       return document.getElementById('wallet-password').focus();
     }
-    this.transferKinesis(this.state.targetAddress, this.state.transferAmount.toString())
+    this.transferKinesis(this.state.targetAddress, this.state.transferAmount)
   }
 
   public handleAddress(ev) {
