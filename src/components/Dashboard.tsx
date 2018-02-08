@@ -9,6 +9,9 @@ import { Delete } from './Delete';
 const StellarSdk = require('stellar-sdk')
 
 export class Dashboard extends React.Component<{appState: AppState, setWalletList: Function, changeView: Function, setPassword: Function}, {account: any, kinesisBalance: number, accountActivated: boolean}> {
+  public tx
+  public balances
+
   constructor (props) {
     super(props)
     this.state = { account: null, kinesisBalance: 0, accountActivated: true }
@@ -22,6 +25,13 @@ export class Dashboard extends React.Component<{appState: AppState, setWalletLis
     if (this.props !== nextProps) {
       this.loadAccount(nextProps)
     }
+  }
+
+  // A bit a React antipattern. I should have lifted the state up instead.
+  // But eh.
+  public transferComplete() {
+    this.tx.reloadTrasactions()
+    this.balances.reloadBalances()
   }
 
   public async loadAccount(props) {
@@ -45,10 +55,10 @@ export class Dashboard extends React.Component<{appState: AppState, setWalletLis
         <div style={{display: 'table-row'}}>
           <div className='columns' style={{marginTop: '20px'}}>
             <div className='column' style={{padding: '5px 60px 20px 70px', borderRight: '1px solid #2b3e50'}}>
-              <Balances appState={this.props.appState}/>
+              <Balances ref={ref => (this.balances = ref)} appState={this.props.appState}/>
             </div>
             <div className='column' style={{padding: '5px 70px 20px 60px'}}>
-              <Transfer appState={this.props.appState} />
+              <Transfer appState={this.props.appState} transferComplete={this.transferComplete.bind(this)} />
               <Delete appState={this.props.appState} setWalletList={this.props.setWalletList} changeView={this.props.changeView} />
             </div>
           </div>
@@ -56,7 +66,7 @@ export class Dashboard extends React.Component<{appState: AppState, setWalletLis
         <div style={{paddingLeft: '60px', marginBottom: '15px'}}>
           <h1 className='sub-heading primary-font'>Transactions</h1>
         </div>
-        <Transactions appState={this.props.appState} />
+        <Transactions ref={ref => (this.tx = ref)} appState={this.props.appState} />
       </div>
     )
   }

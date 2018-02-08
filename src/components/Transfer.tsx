@@ -5,7 +5,7 @@ import { getActiveWallet, getPrivateKey, getActivePrivateKey } from '../helpers/
 import * as swal from 'sweetalert'
 const StellarSdk = require('stellar-sdk')
 
-export class Transfer extends React.Component<{appState: AppState}, {targetAddress: string, transferAmount: number}> {
+export class Transfer extends React.Component<{appState: AppState, transferComplete: Function}, {targetAddress: string, transferAmount: number}> {
   constructor (props) {
     super(props)
     this.state = {targetAddress: '', transferAmount: 0}
@@ -53,6 +53,7 @@ export class Transfer extends React.Component<{appState: AppState}, {targetAddre
     try {
       const transactionResult = await server.submitTransaction(paymentTransaction)
       swal('Success!', 'Successfully submitted transaction', 'success')
+      this.props.transferComplete()
     } catch (e) {
       // If this is the error, it means the account has not yet been created
       let opCode = _.get(e, 'data.extras.result_codes.operations[0]', _.get(e, 'message', 'Unkown Error'))
@@ -74,7 +75,8 @@ export class Transfer extends React.Component<{appState: AppState}, {targetAddre
             .build()
 
           newAccountTransaction.sign(StellarSdk.Keypair.fromSecret(getPrivateKey(this.props.appState, getActiveWallet(this.props.appState))))
-          const newAccountResult = await server.submitTransaction(newAccountTransaction)
+          await server.submitTransaction(newAccountTransaction)
+          this.props.transferComplete()
         }
       } else {
         console.error('Error occured submitting transaction', e)

@@ -39,6 +39,10 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
     await this.transactionPage()
   }
 
+  public reloadTrasactions() {
+    this.setState(_.cloneDeep(defaultState), () => {this.transactionPage()})
+  }
+
   public async componentWillReceiveProps(nextProps: {appState: AppState}) {
     let currentWalletIndex = _.get(nextProps, 'appState.viewParams.walletIndex', null)
     let newWalletIndex =_.get(this.props, 'appState.viewParams.walletIndex', null)
@@ -55,7 +59,7 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
     // Load 2 pages of records at a time, initializing if we do not yet have transactions
     const currentPage = this.state.currentPage
       ? this.state.currentPage
-      : await server.transactions().forAccount(getActiveWallet(this.props.appState).publicKey).call()
+      : await server.transactions().forAccount(getActiveWallet(this.props.appState).publicKey).order('desc').call()
 
     const nextPage = await currentPage.next()
 
@@ -137,7 +141,12 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
       },
     }
 
-    return ref[operation.type_i]
+    if (ref[operation.type_i]) {
+      return ref[operation.type_i]
+    } else {
+      // If we havent wrapped the operation type in human view, we just return the entire object
+      return operation
+    }
   }
 
   render() {

@@ -19,6 +19,10 @@ export class Balances extends React.Component<{appState: AppState}, {account: an
     }
   }
 
+  public reloadBalances() {
+    this.loadBalances(this.props)
+  }
+
   public async loadBalances(props) {
     try {
       const server = new StellarSdk.Server(props.appState.serverLocation, {allowHttp: true})
