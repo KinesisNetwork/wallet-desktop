@@ -27,7 +27,7 @@ export class Dashboard extends React.Component<{appState: AppState, setWalletLis
     }
   }
 
-  // A bit a React antipattern. I should have lifted the state up instead.
+  // A bit of a React antipattern. I should have lifted the state up instead.
   // But eh.
   public transferComplete() {
     this.tx.reloadTrasactions()

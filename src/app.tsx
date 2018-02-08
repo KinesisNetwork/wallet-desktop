@@ -90,7 +90,7 @@ export class App extends React.Component<undefined, AppState> {
         <div className='column is-one-quarter' style={{backgroundColor:'#2b3e50', padding: '0px', position: 'relative'}}>
           <img src="./logo.svg" className="logo-sidebar"/>
           <WalletList appState={this.state} setWalletList={this.setWalletList.bind(this)} changeView={this.changeView.bind(this)} />
-          <div style={{position: 'absolute', bottom: '0px', padding: '22px', width: '100%'}}>
+          <div className='settings-btn'>
             <label className="label" style={{fontSize: '0.8em', textAlign: 'center'}}> Connection: {this.state.connection.connectionName } </label>
             <button className="button is-outlined is-fullwidth" style={{fontSize: '14px', marginLeft: '8px'}} onClick={() => this.changeView(View.settings)}>
               Settings

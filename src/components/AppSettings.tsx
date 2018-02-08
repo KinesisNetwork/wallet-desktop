@@ -77,7 +77,6 @@ export class AppSettings extends React.Component<{appState: AppState, changeConn
       <div>
         <div className='has-text-centered'>
           <h1 className='title-heading primary-font'>Application Settings</h1>
-
         </div>
         <div className='columns has-text-centered' style={{marginTop: '35px'}}>
           <div className='column' style={{padding: '25px 60px 60px 70px', borderRight: '1px solid #2b3e50'}}>
@@ -114,5 +113,3 @@ export class AppSettings extends React.Component<{appState: AppState, changeConn
     )
   }
 }
-
-
