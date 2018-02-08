@@ -28,8 +28,8 @@ export enum StellarTxType {
   'Manage Data' = 10
 }
 
-const defaultState = { transactions: [], lastPage: false, currentPage: undefined }
-export class Transactions extends React.Component<{appState: AppState}, {transactions: HumanTransactions[], currentPage: any, lastPage: boolean}> {
+const defaultState = { transactions: [], lastPage: false, currentPage: undefined, recentlyLoaded: false }
+export class Transactions extends React.Component<{appState: AppState}, {transactions: HumanTransactions[], currentPage: any, lastPage: boolean, recentlyLoaded: boolean}> {
   constructor (props) {
     super(props)
     this.state = _.cloneDeep(defaultState)
@@ -37,6 +37,20 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
 
   async componentDidMount() {
     await this.transactionPage()
+  }
+
+  // To ensure we don't trigger the scroll event multiple times, we will force a wait of
+  // 10 seconds before we consider loading more docs
+  public handleScroll () {
+    const ele: any = document.getElementById('transactions')
+    const triggerLoad = ele.scrollHeight - ele.scrollTop <= ele.clientHeight + 100
+    if (triggerLoad && !this.state.lastPage && !this.state.recentlyLoaded) {
+      console.log('loading!')
+      this.setState({recentlyLoaded: true})
+      this.transactionPage()
+
+      setTimeout(() => this.setState({recentlyLoaded: false}), 3000)
+    }
   }
 
   public reloadTrasactions() {
@@ -77,12 +91,12 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
           txType: StellarTxType[o.type_i],
           txData: this.determineTxData(o),
           date: new Date(r.created_at),
-          fee: r.fee_paid * 0.0000001
+          fee: _.round(r.fee_paid * 0.0000001, 8)
         }
       })
     })))
 
-    this.setState({transactions, currentPage: nextPage})
+    this.setState({transactions: this.state.transactions.concat(transactions), currentPage: nextPage})
   }
 
   public renderTransactions () {
@@ -153,7 +167,7 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
     return (
       <div style={{height: '100%', display: 'table-row'}}>
         <div style={{margin: '0px 45px 0px 60px', position: 'relative', height: '100%'}}>
-          <div className="scrollable" >
+          <div onScroll={() => this.handleScroll()} className="scrollable" id='transactions' >
             { this.renderTransactions() }
           </div>
         </div>
