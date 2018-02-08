@@ -1,14 +1,15 @@
 import * as React from 'react'
 import * as _ from 'lodash'
 import { AppState } from '../app'
+import { Loader } from './Loader'
 import { getActiveWallet, getPrivateKey, getActivePrivateKey } from '../helpers/wallets';
 import * as swal from 'sweetalert'
 const StellarSdk = require('stellar-sdk')
 
-export class Transfer extends React.Component<{appState: AppState, transferComplete: Function}, {targetAddress: string, transferAmount?: any}> {
+export class Transfer extends React.Component<{appState: AppState, transferComplete: Function}, {targetAddress: string, transferAmount?: any, loading: boolean}> {
   constructor (props) {
     super(props)
-    this.state = {targetAddress: ''}
+    this.state = {targetAddress: '', loading: false}
   }
 
   async componentDidMount() {
@@ -58,6 +59,8 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
         return
       }
 
+      this.setState({loading: true})
+
       // If we get the correct error, we try call account creation
       const newAccountTransaction = new StellarSdk.TransactionBuilder(sequencedAccount, {fee: currentBaseFeeInStroops})
         .addOperation(StellarSdk.Operation.createAccount({
@@ -70,7 +73,7 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
       await server.submitTransaction(newAccountTransaction)
       swal('Success!', 'Successfully submitted transaction', 'success')
       this.props.transferComplete()
-
+      this.setState({loading: false})
       return
     }
 
@@ -102,6 +105,7 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
     }
 
     try {
+      this.setState({loading: true})
       await server.submitTransaction(paymentTransaction)
       swal('Success!', 'Successfully submitted transaction', 'success')
       this.props.transferComplete()
@@ -110,6 +114,8 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
       console.error('Error occured submitting transaction', e)
       swal('Oops!', `An error occurred while submitting the transaction to the network: ${opCode}`, 'error')
     }
+
+    this.setState({loading: false})
   }
 
   public async handleSubmit(e) {
@@ -142,16 +148,24 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
   render() {
     return (
       <div>
-        <h1 className='sub-heading primary-font'>Transfer Kinesis</h1>
-        <form onSubmit={(ev) => this.handleSubmit(ev)}>
-          <label className='label'>Target Account</label>
-          <input id='transfer-public-key' value={this.state.targetAddress} className='input' onChange={(ev) => this.handleAddress(ev)} type='text' />
-          <label className='label'>Amount</label>
-          <input id='transfer-amount' value={this.state.transferAmount} className='input' onChange={(ev) => this.handleAmount(ev)} type='text' />
-          <button type='submit' className='button' style={{marginTop: '8px', width: '100%'}}>
-              <i className='fa fa-arrow-circle-right fa-lg' style={{marginRight:'6px'}} ></i> Transfer
-          </button>
-        </form>
+        {
+          this.state.loading ? (
+            <Loader />
+          ) : (
+            <div>
+              <h1 className='sub-heading primary-font'>Transfer Kinesis</h1>
+              <form onSubmit={(ev) => this.handleSubmit(ev)}>
+                <label className='label'>Target Account</label>
+                <input id='transfer-public-key' value={this.state.targetAddress} className='input' onChange={(ev) => this.handleAddress(ev)} type='text' />
+                <label className='label'>Amount</label>
+                <input id='transfer-amount' value={this.state.transferAmount} className='input' onChange={(ev) => this.handleAmount(ev)} type='text' />
+                <button type='submit' className='button' style={{marginTop: '8px', width: '100%'}}>
+                    <i className='fa fa-arrow-circle-right fa-lg' style={{marginRight:'6px'}} ></i> Transfer
+                </button>
+              </form>
+            </div>
+          )
+        }
       </div>
     )
   }
