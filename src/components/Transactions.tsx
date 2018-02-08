@@ -53,8 +53,8 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
 
   // TODO: Hook this up to a next page button that is hidden if lastPage === true
   async transactionPage (): HumanTransactions[] {
-    StellarSdk.Network.use(new StellarSdk.Network('Test SDF Network ; September 2015'))
-    const server = new StellarSdk.Server(this.props.appState.serverLocation, {allowHttp: true})
+    StellarSdk.Network.use(new StellarSdk.Network(this.props.appState.connection.networkPassphrase))
+    const server = new StellarSdk.Server(this.props.appState.connection.horizonServer, {allowHttp: true})
 
     // Load 2 pages of records at a time, initializing if we do not yet have transactions
     const currentPage = this.state.currentPage
