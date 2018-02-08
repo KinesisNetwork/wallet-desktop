@@ -1,6 +1,21 @@
 @import "src/_variables.scss";
 @import "node_modules/bulma/bulma.sass";
 
+@font-face {
+  font-family: 'Fira Mono';
+  src: url('./fonts/FiraMono-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('./fonts/OpenSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('./fonts/Roboto-Regular.ttf') format('truetype');
+}
+
 html, body, #App { height: 100%; width: 100%; padding: 0; }
 .button.is-primary.is-outlined:hover, .button.is-primary.is-outlined:focus {
   color: #2b3e50;
