@@ -165,13 +165,13 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
 
   render() {
     return (
-      <div style={{height: '100%', display: 'table-row'}}>
-        <div style={{margin: '0px 45px 0px 60px', position: 'relative', height: '100%'}}>
-          <div onScroll={() => this.handleScroll()} className="scrollable" id='transactions' >
-            { this.renderTransactions() }
+        <div style={{height: '450px', display: 'table-row' }}>
+          <div style={{margin: '0px 45px 0px 60px', position: 'relative', height: '100%'}}>
+            <div onScroll={() => this.handleScroll()} className="scrollable" id='transactions' >
+              { this.renderTransactions() }
+            </div>
           </div>
         </div>
-      </div>
     )
   }
 }

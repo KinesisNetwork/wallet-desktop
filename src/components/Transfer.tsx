@@ -18,12 +18,47 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
   public async transferKinesis (targetAddress: string, amount: string) {
     const server = new StellarSdk.Server(this.props.appState.connection.horizonServer, {allowHttp: true})
     let account
+
     try {
       account = await server.loadAccount(getActiveWallet(this.props.appState).publicKey)
     } catch (e) {
      return swal('Oops!', 'Your account does not have any funds to send money with', 'error')
     }
+
     const sequencedAccount = new StellarSdk.Account(getActiveWallet(this.props.appState).publicKey, account.sequence)
+
+    try {
+      // We attempt to look up the target account. If this throws an error, we create
+      // the account instead of transfering
+      await server.loadAccount(getActiveWallet(targetAddress).publicKey)
+    } catch (e) {
+      const willCreate = await swal({
+        title: "Continue with transfer?",
+        text: "The account that you are transfering with does not have any funds yet, are you sure you want to continue?",
+        icon: "warning",
+        dangerMode: true,
+        buttons: true
+      })
+
+      if (!willCreate) {
+        return
+      }
+
+      // If we get the correct error, we try call account creation
+      const newAccountTransaction = new StellarSdk.TransactionBuilder(sequencedAccount)
+        .addOperation(StellarSdk.Operation.createAccount({
+          destination: targetAddress,
+          startingBalance: amount
+        }))
+        .build()
+
+      newAccountTransaction.sign(StellarSdk.Keypair.fromSecret(getPrivateKey(this.props.appState, getActiveWallet(this.props.appState))))
+      await server.submitTransaction(newAccountTransaction)
+      swal('Success!', 'Successfully submitted transaction', 'success')
+      this.props.transferComplete()
+
+      return
+    }
 
     let paymentTransaction
     try {
@@ -39,6 +74,7 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
     } catch (e) {
       return swal('Oops!', `This transaction is invalid: ${_.capitalize(e.message)}.`, 'error')
     }
+
     const continueTransfer = await swal({
       title: 'Continue with transfer?',
       text: 'Once submitted, the transaction can not be reverted!',
@@ -46,42 +82,19 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
       dangerMode: true,
       buttons: true
     })
+
     if (!continueTransfer) {
       return
     }
 
     try {
-      const transactionResult = await server.submitTransaction(paymentTransaction)
+      await server.submitTransaction(paymentTransaction)
       swal('Success!', 'Successfully submitted transaction', 'success')
       this.props.transferComplete()
     } catch (e) {
-      // If this is the error, it means the account has not yet been created
       let opCode = _.get(e, 'data.extras.result_codes.operations[0]', _.get(e, 'message', 'Unkown Error'))
-      if (opCode === 'op_no_destination') {
-        const willCreate = await swal({
-          title: "Continue with transfer?",
-          text: "The account that you are transfering with does not have any funds yet, are you sure you want to continue?",
-          icon: "warning",
-          dangerMode: true,
-          buttons: true
-        })
-        if (willCreate) {
-          // If we get the correct error, we try call account creation
-          const newAccountTransaction = new StellarSdk.TransactionBuilder(sequencedAccount)
-            .addOperation(StellarSdk.Operation.createAccount({
-              destination: targetAddress,
-              startingBalance: amount
-            }))
-            .build()
-
-          newAccountTransaction.sign(StellarSdk.Keypair.fromSecret(getPrivateKey(this.props.appState, getActiveWallet(this.props.appState))))
-          await server.submitTransaction(newAccountTransaction)
-          this.props.transferComplete()
-        }
-      } else {
-        console.error('Error occured submitting transaction', e)
-        swal('Oops!', `An error occurred while submitting the transaction to the network: ${opCode}`, 'error')
-      }
+      console.error('Error occured submitting transaction', e)
+      swal('Oops!', `An error occurred while submitting the transaction to the network: ${opCode}`, 'error')
     }
   }
 
