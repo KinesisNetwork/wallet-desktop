@@ -5,14 +5,20 @@ import { getActiveWallet, getPrivateKey, getActivePrivateKey } from '../helpers/
 import * as swal from 'sweetalert'
 const StellarSdk = require('stellar-sdk')
 
-export class Transfer extends React.Component<{appState: AppState, transferComplete: Function}, {targetAddress: string, transferAmount: number}> {
+export class Transfer extends React.Component<{appState: AppState, transferComplete: Function}, {targetAddress: string, transferAmount?: any}> {
   constructor (props) {
     super(props)
-    this.state = {targetAddress: '', transferAmount: 0}
+    this.state = {targetAddress: ''}
   }
 
   async componentDidMount() {
     StellarSdk.Network.use(new StellarSdk.Network(this.props.appState.connection.networkPassphrase))
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props !== nextProps) {
+      this.setState({targetAddress: '', transferAmount: ''})
+    }
   }
 
   public async transferKinesis (targetAddress: string, amount: string) {
@@ -20,7 +26,9 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
     // Get the most recent ledger to determine the correct baseFee
     const mostRecentLedger = await server.ledgers().order('desc').call()
     const currentBaseFeeInStroops = mostRecentLedger.records[0].base_fee_in_stroops
-    console.log(currentBaseFeeInStroops)
+      ? mostRecentLedger.records[0].base_fee_in_stroops
+      : mostRecentLedger.records[0].base_fee
+
     const currentBaseFee = _.round(currentBaseFeeInStroops * 0.0000001, 8)
 
     let account
@@ -137,9 +145,9 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
         <h1 className='sub-heading primary-font'>Transfer Kinesis</h1>
         <form onSubmit={(ev) => this.handleSubmit(ev)}>
           <label className='label'>Target Account</label>
-          <input id='transfer-public-key' className='input' onChange={(ev) => this.handleAddress(ev)} type='text' />
+          <input id='transfer-public-key' value={this.state.targetAddress} className='input' onChange={(ev) => this.handleAddress(ev)} type='text' />
           <label className='label'>Amount</label>
-          <input id='transfer-amount' className='input' onChange={(ev) => this.handleAmount(ev)} type='text' />
+          <input id='transfer-amount' value={this.state.transferAmount} className='input' onChange={(ev) => this.handleAmount(ev)} type='text' />
           <button type='submit' className='button' style={{marginTop: '8px', width: '100%'}}>
               <i className='fa fa-arrow-circle-right fa-lg' style={{marginRight:'6px'}} ></i> Transfer
           </button>
