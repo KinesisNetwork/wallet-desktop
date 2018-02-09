@@ -43,9 +43,8 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
   // 10 seconds before we consider loading more docs
   public handleScroll () {
     const ele: any = document.getElementById('transactions')
-    const triggerLoad = ele.scrollHeight - ele.scrollTop <= ele.clientHeight + 100
+    const triggerLoad = ele.scrollHeight - ele.scrollTop <= ele.clientHeight + 250
     if (triggerLoad && !this.state.lastPage && !this.state.recentlyLoaded) {
-      console.log('loading!')
       this.setState({recentlyLoaded: true})
       this.transactionPage()
 

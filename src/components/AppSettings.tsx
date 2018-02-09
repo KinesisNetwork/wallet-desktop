@@ -42,6 +42,7 @@ export class AppSettings extends React.Component<{appState: AppState, changeConn
   }
 
   public async changeConnection(connection: Connection) {
+    await swal('Success', `Connected to ${connection.connectionName}`, 'success')
     this.props.changeConnection(connection)
   }
 
@@ -96,7 +97,7 @@ export class AppSettings extends React.Component<{appState: AppState, changeConn
             }
           </div>
           <div className='column' style={{padding: '60px', paddingTop: '25px', paddingRight: '80px'}}>
-            <i className="far fa-user" style={{fontSize: '2.5em'}}></i>
+            <i className="fas fa-globe" style={{fontSize: '2.5em'}}></i>
             <h1 className='sub-heading primary-font'>Add New Network</h1>
             <form onSubmit={(ev) => this.addConnection(ev)}>
               <label className='label'>Connection Name</label>

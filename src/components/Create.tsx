@@ -21,7 +21,8 @@ export class CreateAccount extends React.Component<{
     }
   }
 
-  public async generate() {
+  public async generate(ev) {
+    ev.preventDefault()
     if (!this.state.password) {
       await swal('Oops!', 'Wallet password is required', 'error')
       return document.getElementById('generate-password').focus();
@@ -87,9 +88,11 @@ export class CreateAccount extends React.Component<{
           <div className='column' style={{padding: '25px 60px 60px 70px', borderRight: '1px solid #2b3e50'}}>
               <i className="fas fa-user" style={{fontSize: '2.5em'}}></i>
             <h1 className='sub-heading primary-font'>Generate Account</h1>
-            <label className='label'>Wallet Password</label>
-            <input id='generate-password' className='input' onChange={(ev) => this.handlePassword(ev)} type='password' />
-            <button className='button' style={{marginTop: '6px', width: '100%'}} onClick={() => this.generate()}>Create Account</button>
+            <form onSubmit={(ev) => this.generate(ev)}>
+              <label className='label'>Wallet Password</label>
+              <input id='generate-password' className='input' onChange={(ev) => this.handlePassword(ev)} type='password' />
+              <button className='button' type='submit' style={{marginTop: '6px', width: '100%'}}>Create Account</button>
+            </form>
             <p>
               {this.state.err}
             </p>

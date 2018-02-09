@@ -25,7 +25,6 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
     const server = new StellarSdk.Server(this.props.appState.connection.horizonServer, {allowHttp: true})
     // Get the most recent ledger to determine the correct baseFee
     const mostRecentLedger = await server.ledgers().order('desc').call()
-    console.log(mostRecentLedger)
     const currentBaseFeeInStroops = mostRecentLedger.records[0].base_fee_in_stroops
       ? mostRecentLedger.records[0].base_fee_in_stroops
       : mostRecentLedger.records[0].base_fee
