@@ -1,12 +1,11 @@
 import * as React from 'react'
 import * as _ from 'lodash'
 import { AppState } from '../app'
-import { Loader } from './Loader'
 import { getActiveWallet, getPrivateKey, getActivePrivateKey } from '../helpers/wallets';
 import * as swal from 'sweetalert'
 const StellarSdk = require('stellar-sdk')
 
-export class Transfer extends React.Component<{appState: AppState, transferComplete: Function}, {targetAddress: string, transferAmount?: any, loading: boolean}> {
+export class Transfer extends React.Component<{appState: AppState, transferComplete: Function, transferInitialised: Function}, {targetAddress: string, transferAmount?: any, loading: boolean}> {
   constructor (props) {
     super(props)
     this.state = {targetAddress: '', loading: false}
@@ -59,7 +58,7 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
         return
       }
 
-      this.setState({loading: true})
+      this.props.transferInitialised()
 
       // If we get the correct error, we try call account creation
       const newAccountTransaction = new StellarSdk.TransactionBuilder(sequencedAccount, {fee: currentBaseFeeInStroops})
@@ -73,7 +72,6 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
       await server.submitTransaction(newAccountTransaction)
       swal('Success!', 'Successfully submitted transaction', 'success')
       this.props.transferComplete()
-      this.setState({loading: false})
       return
     }
 
@@ -105,17 +103,16 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
     }
 
     try {
-      this.setState({loading: true})
+      this.props.transferInitialised()
       await server.submitTransaction(paymentTransaction)
       swal('Success!', 'Successfully submitted transaction', 'success')
-      this.props.transferComplete()
     } catch (e) {
       let opCode = _.get(e, 'data.extras.result_codes.operations[0]', _.get(e, 'message', 'Unkown Error'))
       console.error('Error occured submitting transaction', e)
       swal('Oops!', `An error occurred while submitting the transaction to the network: ${opCode}`, 'error')
     }
 
-    this.setState({loading: false})
+    this.props.transferComplete()
   }
 
   public async handleSubmit(e) {
