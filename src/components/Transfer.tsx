@@ -16,7 +16,7 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props !== nextProps) {
+    if (this.props !== nextProps && this.props.appState.viewParams.walletIndex !== nextProps.appState.viewParams.walletIndex) {
       this.setState({targetAddress: '', transferAmount: ''})
     }
   }
@@ -25,11 +25,19 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
     const server = new StellarSdk.Server(this.props.appState.connection.horizonServer, {allowHttp: true})
     // Get the most recent ledger to determine the correct baseFee
     const mostRecentLedger = await server.ledgers().order('desc').call()
+    console.log(mostRecentLedger)
     const currentBaseFeeInStroops = mostRecentLedger.records[0].base_fee_in_stroops
       ? mostRecentLedger.records[0].base_fee_in_stroops
       : mostRecentLedger.records[0].base_fee
 
+    const currentBaseReserveInStroops = mostRecentLedger.records[0].base_reserve_in_stroops
+      ? mostRecentLedger.records[0].base_reserve_in_stroops
+      : mostRecentLedger.records[0].base_reserve
+
     const currentBaseFee = _.round(currentBaseFeeInStroops * 0.0000001, 8)
+
+    // The multiplier is defined here: https://www.stellar.org/developers/guides/concepts/fees.html
+    const currentBaseReserve = 2 * _.round(currentBaseReserveInStroops * 0.0000001, 8)
 
     let account
 
@@ -46,6 +54,11 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
       // the account instead of transfering
       await server.loadAccount(targetAddress)
     } catch (e) {
+      if (this.state.transferAmount < currentBaseReserve) {
+        swal('Oops!', `You are transfering to an account without any funds. The minimum transfer required is ${currentBaseReserve} Kinesis`, 'error')
+        return
+      }
+
       const willCreate = await swal({
         title: `Continue with transfer?`,
         text: `The account that you are transfering with does not have any funds yet, are you sure you want to continue? The fee will be ${currentBaseFee} Kinesis`,
@@ -69,8 +82,16 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
         .build()
 
       newAccountTransaction.sign(StellarSdk.Keypair.fromSecret(getPrivateKey(this.props.appState, getActiveWallet(this.props.appState))))
-      await server.submitTransaction(newAccountTransaction)
-      swal('Success!', 'Successfully submitted transaction', 'success')
+
+      try {
+        await server.submitTransaction(newAccountTransaction)
+        swal('Success!', 'Successfully submitted transaction', 'success')
+      } catch (e) {
+        let opCode = _.get(e, 'data.extras.result_codes.operations[0]', _.get(e, 'message', 'Unkown Error'))
+        console.error('Error occured submitting transaction', e)
+        swal('Oops!', `An error occurred while submitting the transaction to the network: ${opCode}`, 'error')
+      }
+
       this.props.transferComplete()
       return
     }
