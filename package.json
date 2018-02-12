@@ -29,7 +29,7 @@
         ]
       },
       "electronPackagerConfig": {
-        "packageManager": "yarn"
+        "packageManager": "npm"
       },
       "electronWinstallerConfig": {
         "name": "my_project"
