@@ -2,7 +2,7 @@
   "name": "kinesis-wallet",
   "productName": "Kinesis Wallet",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Stellar compliant hard wallet",
   "main": "src/index.ts",
   "scripts": {
     "start": "electron-forge start",
@@ -12,7 +12,7 @@
     "lint": "tslint --project tsconfig.json --type-check --force"
   },
   "keywords": [],
-  "author": "sam",
+  "author": "ABX",
   "license": "MIT",
   "config": {
     "forge": {
