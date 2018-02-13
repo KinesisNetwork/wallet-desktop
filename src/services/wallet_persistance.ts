@@ -15,7 +15,11 @@ export function addNewWallet(publicKey: string, encryptedPrivateKey: string): Pr
 export function retrieveWallets(): Promise<Wallet[]> {
   const error = 'Something appeared to be wrong while attempting to retrieve your wallet'
   return new Promise((res, rej) => {
-    storage.get(walletsKey, (getErr, data = []) => {
+    storage.get(walletsKey, (getErr, data) => {
+      if (!data.length) {
+        data = []
+      }
+
       if (getErr) {
         return rej(error)
       }
