@@ -5,10 +5,10 @@ import { getActiveWallet, getPrivateKey, getActivePrivateKey } from '../helpers/
 import * as swal from 'sweetalert'
 const StellarSdk = require('stellar-sdk')
 
-export class Transfer extends React.Component<{appState: AppState, transferComplete: Function, transferInitialised: Function}, {targetAddress: string, transferAmount?: any, loading: boolean}> {
+export class Transfer extends React.Component<{appState: AppState, transferComplete: Function, transferInitialised: Function}, {targetAddress: string, transferAmount?: any, memo?: string, loading: boolean}> {
   constructor (props) {
     super(props)
-    this.state = {targetAddress: '', loading: false}
+    this.state = {targetAddress: '', loading: false, memo: ''}
   }
 
   async componentDidMount() {
@@ -17,7 +17,7 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
 
   componentWillReceiveProps(nextProps) {
     if (this.props !== nextProps && this.props.appState.viewParams.walletIndex !== nextProps.appState.viewParams.walletIndex) {
-      this.setState({targetAddress: '', transferAmount: ''})
+      this.setState({targetAddress: '', transferAmount: '', memo: ''})
     }
   }
 
@@ -73,12 +73,13 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
       this.props.transferInitialised()
 
       // If we get the correct error, we try call account creation
-      const newAccountTransaction = new StellarSdk.TransactionBuilder(sequencedAccount, {fee: currentBaseFeeInStroops})
+      let newAccountTransaction = new StellarSdk.TransactionBuilder(sequencedAccount, {fee: currentBaseFeeInStroops})
         .addOperation(StellarSdk.Operation.createAccount({
           destination: targetAddress,
-          startingBalance: amount
+          startingBalance: amount,
         }))
-        .build()
+      .addMemo(StellarSdk.Memo.text(this.state.memo))
+      .build()
 
       newAccountTransaction.sign(StellarSdk.Keypair.fromSecret(getPrivateKey(this.props.appState, getActiveWallet(this.props.appState))))
 
@@ -101,8 +102,9 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
         .addOperation(StellarSdk.Operation.payment({
           destination: targetAddress,
           asset: StellarSdk.Asset.native(),
-          amount: amount
+          amount: amount,
         }))
+        .addMemo(StellarSdk.Memo.text(this.state.memo))
         .build()
 
       paymentTransaction.sign(StellarSdk.Keypair.fromSecret(getPrivateKey(this.props.appState, getActiveWallet(this.props.appState))))
@@ -158,6 +160,14 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
     this.setState({targetAddress: ev.target.value})
   }
 
+  public async handleMemo(ev) {
+    const memo = ev.target.value
+    if (memo.length >= 25) {
+      return await swal('Oops!', 'The message field must be fewer than 25 characters long', 'error')
+    }
+    this.setState({memo: memo})
+  }
+
   public handleAmount(ev) {
     this.setState({transferAmount: ev.target.value})
   }
@@ -176,6 +186,8 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
                 <input id='transfer-public-key' value={this.state.targetAddress} className='input' onChange={(ev) => this.handleAddress(ev)} type='text' />
                 <label className='label'>Amount</label>
                 <input id='transfer-amount' value={this.state.transferAmount} className='input' onChange={(ev) => this.handleAmount(ev)} type='text' />
+                <label className='label'>Message (Optional)</label>
+                <input id='transfer-memo' value={this.state.memo} className='input' onChange={(ev) => this.handleMemo(ev)} type='text' />
                 <button type='submit' className='button' style={{marginTop: '8px', width: '100%'}}>
                     <i className='fa fa-arrow-circle-right fa-lg' style={{marginRight:'6px'}} ></i> Transfer
                 </button>

@@ -62,11 +62,11 @@ export class Dashboard extends React.Component<{appState: AppState, setWalletLis
           <div className='columns' style={{marginTop: '20px'}}>
             <div className='column' style={{padding: '5px 60px 20px 70px', borderRight: '1px solid #2b3e50'}}>
               <Balances ref={ref => (this.balances = ref)} appState={this.props.appState}/>
+              <Delete appState={this.props.appState} setWalletList={this.props.setWalletList} changeView={this.props.changeView} />
             </div>
             <div className='column' style={{padding: '5px 70px 20px 60px', position: 'relative'}}>
               <div style={this.state.transfering ? {opacity: 0.3} : {}}>
                 <Transfer appState={this.props.appState} transferComplete={this.transferComplete.bind(this)} transferInitialised={this.transferInitialised.bind(this)} />
-                <Delete appState={this.props.appState} setWalletList={this.props.setWalletList} changeView={this.props.changeView} />
               </div>
               { this.state.transfering &&
                 <div style={{position: 'absolute', zIndex: 10000000, height: '100%', width: '100%', top: '30%', left: '0%' }}>

@@ -15,7 +15,7 @@ export class WalletList extends React.Component<{appState: AppState, changeView:
          Wallets
         </p>
         { _.map(this.props.appState.walletList, (wallet: Wallet, index) => {
-          let style = (index === activeIndex) ? { backgroundColor: '#33485d' } : {}
+          let style = (index === activeIndex) ? { backgroundColor: 'rgb(63, 89, 115)', fontWeight: 'bold' } : {}
           return (
             <a key={index} onClick={() => this.props.changeView(View.dashboard, { walletIndex: index })} className="panel-block" style={style} >
               <span className="panel-icon">

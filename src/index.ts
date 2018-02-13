@@ -16,8 +16,8 @@ if (isDevMode) {
 const createWindow = async () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1200,
+    height: 792,
     icon: path.join(__dirname, 'icons/png/64x64.png')
   });
 
