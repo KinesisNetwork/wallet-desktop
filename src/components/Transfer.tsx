@@ -78,11 +78,8 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
           destination: targetAddress,
           startingBalance: amount,
         }))
-        .build()
-      if (this.state.memo)  {
-        newAccountTransaction = newAccountTransaction.addMemo(StellarSdk.Memo.text(this.state.memo))
-      }
-      newAccountTransaction.build()
+      .addMemo(StellarSdk.Memo.text(this.state.memo))
+      .build()
 
       newAccountTransaction.sign(StellarSdk.Keypair.fromSecret(getPrivateKey(this.props.appState, getActiveWallet(this.props.appState))))
 
@@ -107,10 +104,8 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
           asset: StellarSdk.Asset.native(),
           amount: amount,
         }))
-      if (this.state.memo)  {
-        paymentTransaction = paymentTransaction.addMemo(StellarSdk.Memo.text(this.state.memo))
-      }
-      paymentTransaction.build()
+        .addMemo(StellarSdk.Memo.text(this.state.memo))
+        .build()
 
       paymentTransaction.sign(StellarSdk.Keypair.fromSecret(getPrivateKey(this.props.appState, getActiveWallet(this.props.appState))))
     } catch (e) {
@@ -165,7 +160,7 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
     this.setState({targetAddress: ev.target.value})
   }
 
-  public async handleAmount(ev) {
+  public async handleMemo(ev) {
     const memo = ev.target.value
     if (memo.length >= 25) {
       return await swal('Oops!', 'The message field must be fewer than 25 characters long', 'error')
