@@ -8,7 +8,7 @@ const StellarSdk = require('stellar-sdk')
 export class Transfer extends React.Component<{appState: AppState, transferComplete: Function, transferInitialised: Function}, {targetAddress: string, transferAmount?: any, memo?: string, loading: boolean}> {
   constructor (props) {
     super(props)
-    this.state = {targetAddress: '', loading: false}
+    this.state = {targetAddress: '', loading: false, memo: ''}
   }
 
   async componentDidMount() {
@@ -77,7 +77,6 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
         .addOperation(StellarSdk.Operation.createAccount({
           destination: targetAddress,
           startingBalance: amount,
-          memo: memo
         }))
         .build()
       if (this.state.memo)  {
@@ -166,7 +165,7 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
     this.setState({targetAddress: ev.target.value})
   }
 
-  public handleAmount(ev) {
+  public async handleAmount(ev) {
     const memo = ev.target.value
     if (memo.length >= 25) {
       return await swal('Oops!', 'The message field must be fewer than 25 characters long', 'error')

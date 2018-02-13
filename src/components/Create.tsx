@@ -40,7 +40,7 @@ export class CreateAccount extends React.Component<{
         this.props.changeView(View.dashboard, {walletIndex: 0})
       }, (err: any) => {
         console.error(err)
-        await swal('Something went wrong', err.message, 'error')
+        swal('Something went wrong', err.message, 'error')
       })
   }
 
