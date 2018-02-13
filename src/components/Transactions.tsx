@@ -90,6 +90,7 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
           txType: StellarTxType[o.type_i],
           txData: this.determineTxData(o),
           date: new Date(r.created_at),
+          memo: r.memo,
           fee: _.round(r.fee_paid * 0.0000001, 8)
         }
       })
@@ -112,6 +113,10 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
                 <tr>
                   <td>Tx Id</td>
                   <td>{t.txId}</td>
+                </tr>
+                <tr>
+                  <td>Message</td>
+                  <td>{t.memo}</td>
                 </tr>
                 <tr>
                   <td>Date</td>
