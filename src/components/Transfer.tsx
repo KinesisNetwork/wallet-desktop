@@ -3,6 +3,7 @@ import * as _ from 'lodash'
 import { AppState } from '../app'
 import { getActiveWallet, getPrivateKey, getActivePrivateKey } from '../helpers/wallets';
 import * as swal from 'sweetalert'
+import { TransferPresentation } from './TransferPresentation';
 const StellarSdk = require('stellar-sdk')
 
 export class Transfer extends React.Component<{appState: AppState, transferComplete: Function, transferInitialised: Function}, {targetAddress: string, transferAmount?: any, memo?: string, loading: boolean}> {
@@ -174,28 +175,19 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
 
   render() {
     return (
-      <div>
-        {
-          this.state.loading ? (
-            <Loader />
-          ) : (
-            <div>
-              <h1 className='sub-heading primary-font'>Transfer Kinesis</h1>
-              <form onSubmit={(ev) => this.handleSubmit(ev)}>
-                <label className='label'>Target Account</label>
-                <input id='transfer-public-key' value={this.state.targetAddress} className='input' onChange={(ev) => this.handleAddress(ev)} type='text' />
-                <label className='label'>Amount</label>
-                <input id='transfer-amount' value={this.state.transferAmount} className='input' onChange={(ev) => this.handleAmount(ev)} type='text' />
-                <label className='label'>Message (Optional)</label>
-                <input id='transfer-memo' value={this.state.memo} className='input' onChange={(ev) => this.handleMemo(ev)} type='text' />
-                <button type='submit' className='button' style={{marginTop: '8px', width: '100%'}}>
-                    <i className='fa fa-arrow-circle-right fa-lg' style={{marginRight:'6px'}} ></i> Transfer
-                </button>
-              </form>
-            </div>
-          )
-        }
-      </div>
+      <TransferPresentation
+        appState={this.props.appState}
+        transferComplete={this.props.transferComplete}
+        transferInitialised={this.props.transferInitialised}
+        handleAddress={this.handleAddress.bind(this)}
+        handleAmount={this.handleAmount.bind(this)}
+        handleSubmit={this.handleSubmit.bind(this)}
+        handleMemo={this.handleMemo.bind(this)}
+        targetAddress={this.state.targetAddress}
+        transferAmount={this.state.transferAmount}
+        memo={this.state.memo}
+        loading={this.state.loading}
+      />
     )
   }
 }
