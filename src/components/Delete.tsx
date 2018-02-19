@@ -3,6 +3,7 @@ import { AppState, View } from '../app'
 import { getActiveWallet } from '../helpers/wallets'
 import { deleteWallet } from '../services/wallet_persistance';
 import * as swal from 'sweetalert'
+import { DeletePresentation } from './DeletePresentation';
 
 export class Delete extends React.Component<{appState: AppState, setWalletList: Function, changeView: Function}, {}> {
   constructor (props) {
@@ -11,9 +12,9 @@ export class Delete extends React.Component<{appState: AppState, setWalletList: 
 
   public async deleteW(accountId: string) {
     const willDelete = await swal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this wallet.",
-      icon: "warning",
+      title: 'Are you sure?',
+      text: 'Once deleted, you will not be able to recover this wallet.',
+      icon: 'warning',
       dangerMode: true,
       buttons: true
     })
@@ -28,11 +29,7 @@ export class Delete extends React.Component<{appState: AppState, setWalletList: 
 
   render() {
     return (
-      <div>
-        <button type='submit' className='button is-danger' style={{width: '100%', maxWidth: '200px' marginTop: '15px'}} onClick={() => this.deleteW(getActiveWallet(this.props.appState).publicKey)} >
-            <i className='fa fa-trash-alt fa-lg' style={{marginRight:'6px'}}></i> Delete Wallet
-        </button>
-      </div>
+      <DeletePresentation appState={this.props.appState} deleteW={this.deleteW.bind(this)} />
     )
   }
 }
