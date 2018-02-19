@@ -20,6 +20,11 @@ export class Balances extends React.Component<{appState: AppState}, {account: an
     }
   }
 
+  // React antipattern (this is used via ref)
+  public reloadBalances() {
+    this.loadBalances(this.props)
+  }
+
   public async loadBalances(props) {
     try {
       const server = new StellarSdk.Server(props.appState.connection.horizonServer, {allowHttp: true})
