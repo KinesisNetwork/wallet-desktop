@@ -1,10 +1,6 @@
 import * as React from 'react'
 
-import { AppState, View } from '../app'
-import { addNewWallet } from '../services/wallet_persistance'
-import { encryptPrivateKey } from '../services/encryption'
-import * as swal from 'sweetalert'
-const StellarBase = require('stellar-sdk')
+import { AppState } from '../app'
 
 export class CreateAccountPresentation extends React.Component<{
   setWalletList: Function,

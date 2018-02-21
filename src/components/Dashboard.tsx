@@ -2,9 +2,11 @@ import * as React from 'react'
 import { AppState } from '../app'
 import { getActiveWallet } from '../helpers/wallets';
 import { DashboardPresentation } from './DashboardPresentation';
-const StellarSdk = require('stellar-sdk')
+import * as StellarSdk from 'stellar-sdk'
 
-export class Dashboard extends React.Component<{appState: AppState, setWalletList: Function, changeView: Function, setPassword: Function}, {account: any, transfering: boolean}> {
+export class Dashboard extends React.Component<
+  {appState: AppState, setWalletList: Function, changeView: Function, setPassword: Function},
+  {account: StellarSdk.AccountResponse | null, transfering: boolean}> {
   public tx
   public balances
 

@@ -7,16 +7,15 @@ declare module 'stellar-sdk' {
     public incrementSequenceNumber(): void
   }
 
-  export class CallBuilder<T extends CallBuilder.Record> {
+  export class CallBuilder<T extends Record> {
     constructor(serverUrl: string)
-    public call(): Promise<CallBuilder.CollectionPage<T>>
+    public call(): Promise<CollectionPage<T>>
     public cursor(cursor: string): this
     public limit(limit: number): this
     public order(direction: 'asc' | 'desc'): this
     public stream(options?: {onmessage?: () => void, onerror?: () => void}): () => void
   }
 
-  export namespace CallBuilder {
     export interface CollectionPage<T extends Record> {
       records: T[],
       next: () => Promise<CollectionPage<T>>,
@@ -289,7 +288,7 @@ declare module 'stellar-sdk' {
       value: string
     }
 
-    type OperationRecord = CreateAccountOperationRecord
+    export type OperationRecord = CreateAccountOperationRecord
       | PaymentOperationRecord
       | PathPaymentOperationRecord
       | ManageOfferOperationRecord
@@ -383,12 +382,11 @@ declare module 'stellar-sdk' {
       self: CallFunction<TransactionRecord>
       succeeds: CallFunction<TransactionRecord>
     }
-  }
 
-  export class AccountCallBuilder extends CallBuilder<CallBuilder.AccountRecord> {
+  export class AccountCallBuilder extends CallBuilder<AccountRecord> {
     public accountId(id: string): this
   }
-  export class AccountResponse implements CallBuilder.AccountRecord {
+  export class AccountResponse implements AccountRecord {
     public _links: { [key: string]: { href: string } }
     public id: string
     public paging_token: string
@@ -427,12 +425,12 @@ declare module 'stellar-sdk' {
       [key: string]: string
     }
 
-    public effects: CallBuilder.CallCollectionFunction<CallBuilder.EffectRecord>
-    public offers: CallBuilder.CallCollectionFunction<CallBuilder.OfferRecord>
-    public operations: CallBuilder.CallCollectionFunction<CallBuilder.OperationRecord>
-    public payments: CallBuilder.CallCollectionFunction<CallBuilder.PaymentOperationRecord>
-    public trades: CallBuilder.CallCollectionFunction<CallBuilder.TradeRecord>
-    constructor(response: CallBuilder.AccountRecord)
+    public effects: CallCollectionFunction<EffectRecord>
+    public offers: CallCollectionFunction<OfferRecord>
+    public operations: CallCollectionFunction<OperationRecord>
+    public payments: CallCollectionFunction<PaymentOperationRecord>
+    public trades: CallCollectionFunction<TradeRecord>
+    constructor(response: AccountRecord)
     public accountId(): string
     public sequenceNumber(): string
     public incrementSequenceNumber(): void
@@ -449,7 +447,7 @@ declare module 'stellar-sdk' {
     public equals(other: Asset): boolean
   }
 
-  export class AssetsCallBuilder extends CallBuilder<CallBuilder.AssetRecord> {
+  export class AssetsCallBuilder extends CallBuilder<AssetRecord> {
     public forCode(value: string): this
     public forIssuer(value: string): this
   }
@@ -460,7 +458,7 @@ declare module 'stellar-sdk' {
     export function setDefault(): void
   }
 
-  export class EffectCallBuilder extends CallBuilder<CallBuilder.EffectRecord> {
+  export class EffectCallBuilder extends CallBuilder<EffectRecord> {
     public forAccount(accountId: string): this
     public forLedger(sequence: string): this
     public forOperation(operationId: number): this
@@ -486,7 +484,7 @@ declare module 'stellar-sdk' {
     public resolveTransactionId(transactionId: string): Promise<FederationRecord>
   }
 
-  export class LedgerCallBuilder extends CallBuilder<CallBuilder.LedgerRecord> {}
+  export class LedgerCallBuilder extends CallBuilder<LedgerRecord> {}
 
   export class Memo {
     public static hash(hash: string): Memo
@@ -516,7 +514,7 @@ declare module 'stellar-sdk' {
     public networkId(): string
   }
 
-  export class OfferCallBuilder extends CallBuilder<CallBuilder.OfferRecord> {}
+  export class OfferCallBuilder extends CallBuilder<OfferRecord> {}
 
   export namespace Operation {
     export interface AccountMergeOptions {
@@ -615,10 +613,10 @@ declare module 'stellar-sdk' {
     export function setOptions(options: SetOptionsOptions): xdr.Operation
   }
 
-  export class OperationCallBuilder extends CallBuilder<CallBuilder.OperationRecord> {}
-  export class OrderbookCallBuilder extends CallBuilder<CallBuilder.OrderbookRecord> {}
-  export class PathCallBuilder extends CallBuilder<CallBuilder.PaymentPathRecord> {}
-  export class PaymentCallBuilder extends CallBuilder<CallBuilder.PaymentOperationRecord> {}
+  export class OperationCallBuilder extends CallBuilder<OperationRecord> {}
+  export class OrderbookCallBuilder extends CallBuilder<OrderbookRecord> {}
+  export class PathCallBuilder extends CallBuilder<PaymentPathRecord> {}
+  export class PaymentCallBuilder extends CallBuilder<PaymentOperationRecord> {}
 
   export class Server {
     constructor(serverURL: string, options?: {allowHttp: boolean})
@@ -665,8 +663,8 @@ declare module 'stellar-sdk' {
     export function decodeSha256Hash(data: string): Buffer
   }
 
-  export class TradeAggregationCallBuilder extends CallBuilder<CallBuilder.TradeAggregationRecord> {}
-  export class TradesCallBuilder extends CallBuilder<CallBuilder.TradeRecord> {
+  export class TradeAggregationCallBuilder extends CallBuilder<TradeAggregationRecord> {}
+  export class TradesCallBuilder extends CallBuilder<TradeRecord> {
     public forAssetPair(base: Asset, counter: Asset): this
     public forOffer(offerId: string): this
   }
@@ -681,7 +679,7 @@ declare module 'stellar-sdk' {
   }
 
   export class TransactionBuilder {
-    constructor(sourceAccount: string, options: TransactionBuilder.TransactionBuilderOptions)
+    constructor(sourceAccount: Account, options: TransactionBuilder.TransactionBuilderOptions)
     public addOperation(operation: xdr.Operation): this
     public addMemo(memo: Memo): this
     public build(): Transaction
@@ -689,16 +687,16 @@ declare module 'stellar-sdk' {
 
   export namespace TransactionBuilder {
     export interface TransactionBuilderOptions {
-      fee: number
-      timebounds: {
-        minTime: number | string
-        maxTime: number | string
+      fee?: number
+      timebounds?: {
+        minTime?: number | string
+        maxTime?: number | string
       }
-      memo: Memo
+      memo?: Memo
     }
   }
 
-  export class TransactionCallBuilder extends CallBuilder<CallBuilder.TransactionRecord> {
+  export class TransactionCallBuilder extends CallBuilder<TransactionRecord> {
     public transaction(transactionId: string): this
     public forAccount(accountId: string): this
     public forLedger(sequence: string | number): this

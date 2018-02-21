@@ -14,7 +14,7 @@ export interface AppState {
   view: View,
   walletList: Wallet[],
   passwordMap: PasswordMap,
-  viewParams?: ViewParams,
+  viewParams: ViewParams,
   connection: Connection
 }
 

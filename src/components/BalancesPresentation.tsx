@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { AppState } from '../app'
 import { getActiveWallet, getPrivateKey } from '../helpers/wallets';
-const StellarSdk = require('stellar-sdk')
 
 export class BalancesPresentation extends React.Component<{
   appState: AppState,

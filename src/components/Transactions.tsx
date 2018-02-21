@@ -2,7 +2,7 @@ import * as React from 'react'
 import { AppState } from '../app'
 import { getActiveWallet } from '../helpers/wallets'
 import * as StellarSdk from 'stellar-sdk'
-import { CallBuilder } from 'stellar-sdk'
+import { CollectionPage, TransactionRecord } from 'stellar-sdk'
 import * as _ from 'lodash'
 
 export interface HumanTransactions {
@@ -31,7 +31,7 @@ export enum StellarTxType {
 
 export interface IState {
   transactions: HumanTransactions[]
-  currentPage: CallBuilder.CollectionPage<CallBuilder.TransactionRecord>
+  currentPage: CollectionPage<TransactionRecord>
   lastPage: boolean
   recentlyLoaded: boolean
 }
