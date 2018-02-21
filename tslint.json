@@ -22,7 +22,7 @@
     "quotemark": [true,
       "single",
       "avoid-escape"],
-    "semicolon": [true, "always"],
+    "semicolon": false,
     "typedef-whitespace": [true, {
       "call-signature": "nospace",
       "index-signature": "nospace",

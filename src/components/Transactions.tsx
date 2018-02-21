@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { AppState } from '../app'
 import { getActiveWallet } from '../helpers/wallets'
-const StellarSdk = require('stellar-sdk')
+import * as StellarSdk from 'stellar-sdk'
+import { CallBuilder } from 'stellar-sdk'
 import * as _ from 'lodash'
 
 export interface HumanTransactions {
@@ -28,8 +29,15 @@ export enum StellarTxType {
   'Manage Data' = 10
 }
 
+export interface IState {
+  transactions: HumanTransactions[]
+  currentPage: CallBuilder.CollectionPage<CallBuilder.TransactionRecord>
+  lastPage: boolean
+  recentlyLoaded: boolean
+}
+
 const defaultState = { transactions: [], lastPage: false, currentPage: undefined, recentlyLoaded: false }
-export class Transactions extends React.Component<{appState: AppState}, {transactions: HumanTransactions[], currentPage: any, lastPage: boolean, recentlyLoaded: boolean}> {
+export class Transactions extends React.Component<{appState: AppState}, IState> {
   constructor (props) {
     super(props)
     this.state = _.cloneDeep(defaultState)
@@ -58,14 +66,14 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
 
   public async componentWillReceiveProps(nextProps: {appState: AppState}) {
     let currentWalletIndex = _.get(nextProps, 'appState.viewParams.walletIndex', null)
-    let newWalletIndex =_.get(this.props, 'appState.viewParams.walletIndex', null)
+    let newWalletIndex = _.get(this.props, 'appState.viewParams.walletIndex', null)
     if (currentWalletIndex !== newWalletIndex && newWalletIndex !== null) {
       this.setState(_.cloneDeep(defaultState), () => {this.transactionPage()})
     }
   }
 
   // TODO: Hook this up to a next page button that is hidden if lastPage === true
-  async transactionPage (): HumanTransactions[] {
+  async transactionPage (): Promise<void> {
     StellarSdk.Network.use(new StellarSdk.Network(this.props.appState.connection.networkPassphrase))
     const server = new StellarSdk.Server(this.props.appState.connection.horizonServer, {allowHttp: true})
 
@@ -171,7 +179,7 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
     return (
         <div style={{height: '450px', display: 'table-row' }}>
           <div style={{margin: '0px 45px 0px 60px', position: 'relative', height: '100%'}}>
-            <div onScroll={() => this.handleScroll()} className="scrollable" id='transactions' >
+            <div onScroll={() => this.handleScroll()} className='scrollable' id='transactions' >
               { this.renderTransactions() }
             </div>
           </div>
