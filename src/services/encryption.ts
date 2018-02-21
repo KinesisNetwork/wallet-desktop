@@ -1,4 +1,4 @@
-var CryptoJS = require("crypto-js");
+let CryptoJS = require('crypto-js');
 
 export function encryptPrivateKey(privateKey: string, password: string) {
   let encryptedPrivateKey = CryptoJS.AES.encrypt(privateKey, password).toString()

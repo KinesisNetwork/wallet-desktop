@@ -36,7 +36,7 @@ export class TransferPresentation extends React.Component<{
                 <label className='label'>Message (Optional)</label>
                 <input id='transfer-memo' value={this.props.memo} className='input' onChange={(ev) => this.props.handleMemo(ev)} type='text' />
                 <button type='submit' className='button' style={{marginTop: '8px', width: '100%'}}>
-                    <i className='fa fa-arrow-circle-right fa-lg' style={{marginRight:'6px'}} ></i> Transfer
+                    <i className='fa fa-arrow-circle-right fa-lg' style={{marginRight: '6px'}} ></i> Transfer
                 </button>
               </form>
             </div>

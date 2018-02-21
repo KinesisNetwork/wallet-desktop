@@ -11,10 +11,9 @@ export class DeletePresentation extends React.Component<{appState: AppState, del
     return (
       <div>
         <button type='submit' className='button is-danger' style={{width: '100%', maxWidth: '200px', marginTop: '15px'}} onClick={() => this.props.deleteW(getActiveWallet(this.props.appState).publicKey)} >
-          <i className='fa fa-trash-alt fa-lg' style={{marginRight:'6px'}}></i> Delete Wallet
+          <i className='fa fa-trash-alt fa-lg' style={{marginRight: '6px'}}></i> Delete Wallet
         </button>
       </div>
     )
   }
 }
-

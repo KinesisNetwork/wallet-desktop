@@ -42,7 +42,7 @@ export class AppSettingsPresentation extends React.Component<{
             }
           </div>
           <div className='column' style={{padding: '60px', paddingTop: '25px', paddingRight: '80px'}}>
-            <i className="fas fa-globe" style={{fontSize: '2.5em'}}></i>
+            <i className='fas fa-globe' style={{fontSize: '2.5em'}}></i>
             <h1 className='sub-heading primary-font'>Add New Network</h1>
             <form onSubmit={(ev) => this.props.addConnection(ev)}>
               <label className='label'>Connection Name</label>
@@ -51,7 +51,7 @@ export class AppSettingsPresentation extends React.Component<{
               <input id='settings-server-address' value={this.props.horizonServer} className='input' onChange={(ev) => this.props.changeHorizonServer(ev.target.value)} type='text' />
               <label className='label'>Network Passphrase</label>
               <input id='settings-network-pass' value={this.props.networkPassphrase} className='input' onChange={(ev) => this.props.changeNetworkPassphrase(ev.target.value)} type='text' />
-              <input className='button' value="Add Network" style={{marginTop: '8px', width: '100%'}} type='submit' />
+              <input className='button' value='Add Network' style={{marginTop: '8px', width: '100%'}} type='submit' />
             </form>
           </div>
         </div>
