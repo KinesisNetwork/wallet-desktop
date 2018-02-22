@@ -16,372 +16,373 @@ declare module 'stellar-sdk' {
     public stream(options?: {onmessage?: () => void, onerror?: () => void}): () => void
   }
 
-    export interface CollectionPage<T extends Record> {
-      records: T[],
-      next: () => Promise<CollectionPage<T>>,
-      prev: () => Promise<CollectionPage<T>>,
+  export interface CollectionPage<T extends Record> {
+    records: T[],
+    next: () => Promise<CollectionPage<T>>,
+    prev: () => Promise<CollectionPage<T>>,
+  }
+
+  export interface Record {
+    _links: {
+      [key: string]: RecordLink
     }
+  }
 
-    export interface Record {
-      _links: {
-        [key: string]: RecordLink
-      }
+  export interface RecordLink {
+    href: string
+    templated?: boolean
+  }
+
+  /* Due to a bug with the recursive function requests */
+  export interface CollectionRecord<T extends Record> {
+    _links: {
+      next: RecordLink
+      prev: RecordLink
+      self: RecordLink
     }
-
-    export interface RecordLink {
-      href: string
-      templated?: boolean
+    _embedded: {
+      records: T[]
     }
+  }
 
-    /* Due to a bug with the recursive function requests */
-    export interface CollectionRecord<T extends Record> {
-      _links: {
-        next: RecordLink
-        prev: RecordLink
-        self: RecordLink
-      }
-      _embedded: {
-        records: T[]
-      }
+  export interface CallFunctionTemplateOptions {
+    cursor?: string | number
+    limit?: number
+    order?: 'asc' | 'desc'
+  }
+
+  export type CallFunction<T extends Record> = () => Promise<T>
+  export type CallCollectionFunction<T extends Record> =
+    (options?: CallFunctionTemplateOptions) => Promise<CollectionRecord<T>>
+
+  export interface AccountRecord extends Record {
+    id: string
+    paging_token: string
+    account_id: string
+    sequence: number
+    subentry_count: number
+    thresholds: {
+      low_threshold: number
+      med_threshold: number
+      high_threshold: number
     }
-
-    export interface CallFunctionTemplateOptions {
-      cursor?: string | number
-      limit?: number
-      order?: 'asc' | 'desc'
+    flags: {
+      auth_required: boolean
+      auth_revocable: boolean
     }
-
-    export type CallFunction<T extends Record> = () => Promise<T>
-    export type CallCollectionFunction<T extends Record> = (options?: CallFunctionTemplateOptions) => Promise<CollectionRecord<T>>
-
-    export interface AccountRecord extends Record {
-      id: string
-      paging_token: string
-      account_id: string
-      sequence: number
-      subentry_count: number
-      thresholds: {
-        low_threshold: number
-        med_threshold: number
-        high_threshold: number
-      }
-      flags: {
-        auth_required: boolean
-        auth_revocable: boolean
-      }
-      balances: Array<
-        {
-          balance: string
-          asset_type: 'native'
-        } |
-        {
-          balance: string
-          limit: string
-          asset_type: 'credit_alphanum4' | 'credit_alphanum12'
-          asset_code: string
-          asset_issuer: string
-        }
-      >
-      signers: Array<
-        {
-          public_key: string
-          weight: number
-        }
-      >
-      data: {
-        [key: string]: string
-      }
-
-      effects: CallCollectionFunction<EffectRecord>
-      offers: CallCollectionFunction<OfferRecord>
-      operations: CallCollectionFunction<OperationRecord>
-      payments: CallCollectionFunction<PaymentOperationRecord>
-      trades: CallCollectionFunction<TradeRecord>
-    }
-
-    export interface AssetRecord extends Record {
-      asset_type: 'credit_alphanum4' | 'credit_alphanum12'
-      asset_code: string
-      asset_issuer: string
-      paging_token: string
-      amount: string
-      num_accounts: number
-      flags: {
-        auth_required: boolean
-        auth_revocable: boolean
-      }
-    }
-
-    export interface EffectRecord extends Record {
-      account: string
-      paging_token: string
-      starting_balance: string
-      type_i: string
-      type: string
-
-      operation?: CallFunction<OperationRecord>
-      precedes?: CallFunction<EffectRecord>
-      succeeds?: CallFunction<EffectRecord>
-    }
-
-    export interface LedgerRecord extends Record {
-      id: string
-      paging_token: string
-      hash: string
-      prev_hash: string
-      sequence: number
-      transaction_count: number
-      operation_count: number
-      closed_at: string
-      total_coins: string
-      fee_pool: string
-      base_fee: number
-      base_reserve: string
-      max_tx_set_size: number
-      protocol_version: number
-      header_xdr: string
-      base_fee_in_stroops: number
-      base_reserve_in_stroops: number
-
-      effects: CallCollectionFunction<EffectRecord>
-      operations: CallCollectionFunction<OperationRecord>
-      self: CallFunction<LedgerRecord>
-      transactions: CallCollectionFunction<TransactionRecord>
-    }
-
-    export interface OfferRecord extends Record {
-      id: string
-      paging_token: string
-      seller_attr: string
-      selling: Asset
-      buying: Asset
-      amount: string
-      price_r: { numerator: number, denominator: number }
-      price: string
-
-      seller?: CallFunction<AccountRecord>
-    }
-
-    export interface BaseOperationRecord extends Record {
-      id: string
-      paging_token: string
-      type: string
-      type_i: number
-
-      self: CallFunction<OperationRecord>
-      succeeds: CallFunction<OperationRecord>
-      precedes: CallFunction<OperationRecord>
-      effects: CallCollectionFunction<EffectRecord>
-      transaction: CallFunction<TransactionRecord>
-    }
-
-    export interface CreateAccountOperationRecord extends BaseOperationRecord {
-      type: 'create_account'
-      account: string
-      funder: string
-      starting_balance: string
-    }
-
-    export interface PaymentOperationRecord extends BaseOperationRecord {
-      type: 'payment'
-      from: string
-      to: string
-      asset_type: string
-      asset_code?: string
-      asset_issuer?: string
-      amount: string
-
-      sender: CallFunction<AccountRecord>
-      receiver: CallFunction<AccountRecord>
-    }
-
-    export interface PathPaymentOperationRecord extends BaseOperationRecord {
-      type: 'path_payment'
-      from: string
-      to: string
-      asset_code?: string
-      asset_issuer?: string
-      asset_type: string
-      amount: string
-      source_asset_code?: string
-      source_asset_issuer?: string
-      source_asset_type: string
-      source_max: string
-      source_amount: string
-    }
-
-    export interface ManageOfferOperationRecord extends BaseOperationRecord {
-      type: 'manage_offer'
-      offer_id: number
-      amount: string
-      buying_asset_code?: string
-      buying_asset_issuer?: string
-      buying_asset_type: string
-      price: string
-      price_r: { numerator: number, denominator: number }
-      selling_asset_code?: string
-      selling_asset_issuer?: string
-      selling_asset_type: string
-    }
-
-    export interface PassiveOfferOperationRecord extends BaseOperationRecord {
-      type: 'create_passive_offer'
-      offer_id: number
-      amount: string
-      buying_asset_code?: string
-      buying_asset_issuer?: string
-      buying_asset_type: string
-      price: string
-      price_r: { numerator: number, denominator: number }
-      selling_asset_code?: string
-      selling_asset_issuer?: string
-      selling_asset_type: string
-    }
-
-    export interface SetOptionsOperationRecord extends BaseOperationRecord {
-      type: 'set_options'
-      signer_key?: string
-      signer_weight?: number
-      master_key_weight?: number
-      low_threshold?: number
-      med_threshold?: number
-      high_threshold?: number
-      home_domain?: string
-      set_flags: Array<(1 | 2)>
-      set_flags_s: Array<('auth_required_flag' | 'auth_revocable_flag')>
-      clear_flags: Array<(1 | 2)>
-      clear_flags_s: Array<('auth_required_flag' | 'auth_revocable_flag')>
-    }
-
-    export interface ChangeTrustOperationRecord extends BaseOperationRecord {
-      type: 'change_trust'
-      asset_code: string
-      asset_issuer: string
-      asset_type: string
-      trustee: string
-      trustor: string
-      limit: string
-    }
-
-    export interface AllowTrustOperationRecord extends BaseOperationRecord {
-      type: 'allow_trust'
-      asset_code: string
-      asset_issuer: string
-      asset_type: string
-      authorize: boolean
-      trustee: string
-      trustor: string
-    }
-
-    export interface AccountMergeOperationRecord extends BaseOperationRecord {
-      type: 'account_merge'
-      into: string
-    }
-
-    export interface InflationOperationRecord extends BaseOperationRecord {
-      type: 'inflation'
-    }
-
-    export interface ManageDataOperationRecord extends BaseOperationRecord {
-      type: 'manage_data'
-      name: string
-      value: string
-    }
-
-    export type OperationRecord = CreateAccountOperationRecord
-      | PaymentOperationRecord
-      | PathPaymentOperationRecord
-      | ManageOfferOperationRecord
-      | PassiveOfferOperationRecord
-      | SetOptionsOperationRecord
-      | ChangeTrustOperationRecord
-      | AllowTrustOperationRecord
-      | AccountMergeOperationRecord
-      | InflationOperationRecord
-      | ManageDataOperationRecord
-
-    export interface OrderbookRecord extends Record {
-      bids: Array<{price_r: {}, price: number, amount: string}>
-      asks: Array<{price_r: {}, price: number, amount: string}>
-      selling: Asset
-      buying: Asset
-    }
-
-    export interface PaymentPathRecord extends Record {
-      path: Array<{
+    balances: Array<
+      {
+        balance: string
+        asset_type: 'native'
+      } |
+      {
+        balance: string
+        limit: string
+        asset_type: 'credit_alphanum4' | 'credit_alphanum12'
         asset_code: string
         asset_issuer: string
-        asset_type: string
-      }>
-      source_amount: string
-      source_asset_type: string
-      source_asset_code: string
-      source_asset_issuer: string
-      destination_amount: string
-      destination_asset_type: string
-      destination_asset_code: string
-      destination_asset_issuer: string
+      }
+    >
+    signers: Array<
+      {
+        public_key: string
+        weight: number
+      }
+    >
+    data: {
+      [key: string]: string
     }
 
-    export interface TradeRecord extends Record {
-      id: string
-      paging_token: string
-      ledger_close_time: string
-      base_account: string
-      base_amount: string
-      base_asset_type: string
-      base_asset_code: string
-      base_asset_issuer: string
-      counter_account: string
-      counter_amount: string
-      counter_asset_type: string
-      counter_asset_code: string
-      counter_asset_issuer: string
-      base_is_seller: boolean
+    effects: CallCollectionFunction<EffectRecord>
+    offers: CallCollectionFunction<OfferRecord>
+    operations: CallCollectionFunction<OperationRecord>
+    payments: CallCollectionFunction<PaymentOperationRecord>
+    trades: CallCollectionFunction<TradeRecord>
+  }
 
-      base: CallFunction<AccountRecord>
-      counter: CallFunction<AccountRecord>
-      operation: CallFunction<OperationRecord>
+  export interface AssetRecord extends Record {
+    asset_type: 'credit_alphanum4' | 'credit_alphanum12'
+    asset_code: string
+    asset_issuer: string
+    paging_token: string
+    amount: string
+    num_accounts: number
+    flags: {
+      auth_required: boolean
+      auth_revocable: boolean
     }
+  }
 
-    export interface TradeAggregationRecord extends Record {
-      timestamp: string
-      trade_count: number
-      base_volume: string
-      counter_volume: string
-      avg: string
-      high: string
-      low: string
-      open: string
-      close: string
-    }
+  export interface EffectRecord extends Record {
+    account: string
+    paging_token: string
+    starting_balance: string
+    type_i: string
+    type: string
 
-    export interface TransactionRecord extends Record {
-      id: string
-      paging_token: string
-      hash: string
-      ledger_attr: number
-      created_at: string
-      account_attr: string
-      account_seuqence: number
-      max_fee: number
-      fee_paid: number
-      operation_count: number
-      result_code: number
-      result_code_s: string
-      envelope_xdr: string
-      result_xdr: string
-      result_meta_xdr: string
-      memo: string
+    operation?: CallFunction<OperationRecord>
+    precedes?: CallFunction<EffectRecord>
+    succeeds?: CallFunction<EffectRecord>
+  }
 
-      account: CallFunction<AccountRecord>
-      effects: CallCollectionFunction<EffectRecord>
-      ledger: CallFunction<LedgerRecord>
-      operations: CallCollectionFunction<OperationRecord>
-      precedes: CallFunction<TransactionRecord>
-      self: CallFunction<TransactionRecord>
-      succeeds: CallFunction<TransactionRecord>
-    }
+  export interface LedgerRecord extends Record {
+    id: string
+    paging_token: string
+    hash: string
+    prev_hash: string
+    sequence: number
+    transaction_count: number
+    operation_count: number
+    closed_at: string
+    total_coins: string
+    fee_pool: string
+    base_fee: number
+    base_reserve: string
+    max_tx_set_size: number
+    protocol_version: number
+    header_xdr: string
+    base_fee_in_stroops: number
+    base_reserve_in_stroops: number
+
+    effects: CallCollectionFunction<EffectRecord>
+    operations: CallCollectionFunction<OperationRecord>
+    self: CallFunction<LedgerRecord>
+    transactions: CallCollectionFunction<TransactionRecord>
+  }
+
+  export interface OfferRecord extends Record {
+    id: string
+    paging_token: string
+    seller_attr: string
+    selling: Asset
+    buying: Asset
+    amount: string
+    price_r: { numerator: number, denominator: number }
+    price: string
+
+    seller?: CallFunction<AccountRecord>
+  }
+
+  export interface BaseOperationRecord extends Record {
+    id: string
+    paging_token: string
+    type: string
+    type_i: number
+
+    self: CallFunction<OperationRecord>
+    succeeds: CallFunction<OperationRecord>
+    precedes: CallFunction<OperationRecord>
+    effects: CallCollectionFunction<EffectRecord>
+    transaction: CallFunction<TransactionRecord>
+  }
+
+  export interface CreateAccountOperationRecord extends BaseOperationRecord {
+    type: 'create_account'
+    account: string
+    funder: string
+    starting_balance: string
+  }
+
+  export interface PaymentOperationRecord extends BaseOperationRecord {
+    type: 'payment'
+    from: string
+    to: string
+    asset_type: string
+    asset_code?: string
+    asset_issuer?: string
+    amount: string
+
+    sender: CallFunction<AccountRecord>
+    receiver: CallFunction<AccountRecord>
+  }
+
+  export interface PathPaymentOperationRecord extends BaseOperationRecord {
+    type: 'path_payment'
+    from: string
+    to: string
+    asset_code?: string
+    asset_issuer?: string
+    asset_type: string
+    amount: string
+    source_asset_code?: string
+    source_asset_issuer?: string
+    source_asset_type: string
+    source_max: string
+    source_amount: string
+  }
+
+  export interface ManageOfferOperationRecord extends BaseOperationRecord {
+    type: 'manage_offer'
+    offer_id: number
+    amount: string
+    buying_asset_code?: string
+    buying_asset_issuer?: string
+    buying_asset_type: string
+    price: string
+    price_r: { numerator: number, denominator: number }
+    selling_asset_code?: string
+    selling_asset_issuer?: string
+    selling_asset_type: string
+  }
+
+  export interface PassiveOfferOperationRecord extends BaseOperationRecord {
+    type: 'create_passive_offer'
+    offer_id: number
+    amount: string
+    buying_asset_code?: string
+    buying_asset_issuer?: string
+    buying_asset_type: string
+    price: string
+    price_r: { numerator: number, denominator: number }
+    selling_asset_code?: string
+    selling_asset_issuer?: string
+    selling_asset_type: string
+  }
+
+  export interface SetOptionsOperationRecord extends BaseOperationRecord {
+    type: 'set_options'
+    signer_key?: string
+    signer_weight?: number
+    master_key_weight?: number
+    low_threshold?: number
+    med_threshold?: number
+    high_threshold?: number
+    home_domain?: string
+    set_flags: Array<(1 | 2)>
+    set_flags_s: Array<('auth_required_flag' | 'auth_revocable_flag')>
+    clear_flags: Array<(1 | 2)>
+    clear_flags_s: Array<('auth_required_flag' | 'auth_revocable_flag')>
+  }
+
+  export interface ChangeTrustOperationRecord extends BaseOperationRecord {
+    type: 'change_trust'
+    asset_code: string
+    asset_issuer: string
+    asset_type: string
+    trustee: string
+    trustor: string
+    limit: string
+  }
+
+  export interface AllowTrustOperationRecord extends BaseOperationRecord {
+    type: 'allow_trust'
+    asset_code: string
+    asset_issuer: string
+    asset_type: string
+    authorize: boolean
+    trustee: string
+    trustor: string
+  }
+
+  export interface AccountMergeOperationRecord extends BaseOperationRecord {
+    type: 'account_merge'
+    into: string
+  }
+
+  export interface InflationOperationRecord extends BaseOperationRecord {
+    type: 'inflation'
+  }
+
+  export interface ManageDataOperationRecord extends BaseOperationRecord {
+    type: 'manage_data'
+    name: string
+    value: string
+  }
+
+  export type OperationRecord = CreateAccountOperationRecord
+    | PaymentOperationRecord
+    | PathPaymentOperationRecord
+    | ManageOfferOperationRecord
+    | PassiveOfferOperationRecord
+    | SetOptionsOperationRecord
+    | ChangeTrustOperationRecord
+    | AllowTrustOperationRecord
+    | AccountMergeOperationRecord
+    | InflationOperationRecord
+    | ManageDataOperationRecord
+
+  export interface OrderbookRecord extends Record {
+    bids: Array<{price_r: {}, price: number, amount: string}>
+    asks: Array<{price_r: {}, price: number, amount: string}>
+    selling: Asset
+    buying: Asset
+  }
+
+  export interface PaymentPathRecord extends Record {
+    path: Array<{
+      asset_code: string
+      asset_issuer: string
+      asset_type: string
+    }>
+    source_amount: string
+    source_asset_type: string
+    source_asset_code: string
+    source_asset_issuer: string
+    destination_amount: string
+    destination_asset_type: string
+    destination_asset_code: string
+    destination_asset_issuer: string
+  }
+
+  export interface TradeRecord extends Record {
+    id: string
+    paging_token: string
+    ledger_close_time: string
+    base_account: string
+    base_amount: string
+    base_asset_type: string
+    base_asset_code: string
+    base_asset_issuer: string
+    counter_account: string
+    counter_amount: string
+    counter_asset_type: string
+    counter_asset_code: string
+    counter_asset_issuer: string
+    base_is_seller: boolean
+
+    base: CallFunction<AccountRecord>
+    counter: CallFunction<AccountRecord>
+    operation: CallFunction<OperationRecord>
+  }
+
+  export interface TradeAggregationRecord extends Record {
+    timestamp: string
+    trade_count: number
+    base_volume: string
+    counter_volume: string
+    avg: string
+    high: string
+    low: string
+    open: string
+    close: string
+  }
+
+  export interface TransactionRecord extends Record {
+    id: string
+    paging_token: string
+    hash: string
+    ledger_attr: number
+    created_at: string
+    account_attr: string
+    account_seuqence: number
+    max_fee: number
+    fee_paid: number
+    operation_count: number
+    result_code: number
+    result_code_s: string
+    envelope_xdr: string
+    result_xdr: string
+    result_meta_xdr: string
+    memo: string
+
+    account: CallFunction<AccountRecord>
+    effects: CallCollectionFunction<EffectRecord>
+    ledger: CallFunction<LedgerRecord>
+    operations: CallCollectionFunction<OperationRecord>
+    precedes: CallFunction<TransactionRecord>
+    self: CallFunction<TransactionRecord>
+    succeeds: CallFunction<TransactionRecord>
+  }
 
   export class AccountCallBuilder extends CallBuilder<AccountRecord> {
     public accountId(id: string): this
@@ -679,7 +680,7 @@ declare module 'stellar-sdk' {
   }
 
   export class TransactionBuilder {
-    constructor(sourceAccount: Account, options: TransactionBuilder.TransactionBuilderOptions)
+    constructor(sourceAccount: Account, options?: TransactionBuilder.TransactionBuilderOptions)
     public addOperation(operation: xdr.Operation): this
     public addMemo(memo: Memo): this
     public build(): Transaction
