@@ -446,6 +446,9 @@ declare module 'stellar-sdk' {
     public getAssetType(): 'native' | 'credit_alphanum4' | 'credit_alphanum12'
     public isNative(): boolean
     public equals(other: Asset): boolean
+
+    public code: string
+    public issuer: string
   }
 
   export class AssetsCallBuilder extends CallBuilder<AssetRecord> {
@@ -517,31 +520,95 @@ declare module 'stellar-sdk' {
 
   export class OfferCallBuilder extends CallBuilder<OfferRecord> {}
 
+  export type TransactionOperation =
+      Operation.CreateAccount
+    | Operation.Payment
+    | Operation.PathPayment
+    | Operation.CreatePassiveOffer
+    | Operation.ManageOffer
+    | Operation.SetOptions
+    | Operation.ChangeTrust
+    | Operation.AllowTrust
+    | Operation.AccountMerge
+    | Operation.Inflation
+    | Operation.ManageData
+
+  enum OperationType {
+    createAccount = 'createAccount',
+    payment = 'payment',
+    pathPayment = 'pathPayment',
+    createPassiveOffer = 'createPassiveOffer',
+    manageOffer = 'manageOffer',
+    setOptions = 'setOptions',
+    changeTrust = 'changeTrust',
+    allowTrust = 'allowTrust',
+    accountMerge = 'accountMerge',
+    inflation = 'inflation',
+    manageData = 'manageData',
+  }
+
   export namespace Operation {
+
+    export interface Operation {
+      type: OperationType
+      source: string | null
+    }
+    export interface AccountMerge extends Operation {
+      type: OperationType.accountMerge
+      destination: string
+    }
     export interface AccountMergeOptions {
       destination: string
       source?: string
     }
-    export function accountMerge(options: AccountMergeOptions): xdr.Operation
+    export function accountMerge(options: AccountMergeOptions): xdr.Operation<AccountMerge>
+
+    export interface AllowTrust extends Operation {
+      type: OperationType.allowTrust
+      trustor: string
+      assetCode: string
+      authorize: boolean
+    }
     export interface AllowTrustOptions {
       trustor: string
       assetCode: string
       authorize: boolean
       source?: string
     }
-    export function allowTrust(options: AllowTrustOptions): xdr.Operation
+    export function allowTrust(options: AllowTrustOptions): xdr.Operation<AllowTrust>
+
+    export interface ChangeTrust extends Operation {
+      type: OperationType.changeTrust
+      line: Asset
+      limit: string | number
+    }
     export interface ChangeTrustOptions {
       asset: Asset
       limit: string
       source?: string
     }
-    export function changeTrust(options: ChangeTrustOptions): xdr.Operation
+    export function changeTrust(options: ChangeTrustOptions): xdr.Operation<ChangeTrust>
+
+    export interface CreateAccount extends Operation {
+      type: OperationType.createAccount
+      source: string
+      destination: string
+      startingBalance: string | number
+    }
     export interface CreateAccountOptions {
       destination: string
       startingBalance: string
       source?: string
     }
-    export function createAccount(options: CreateAccountOptions): xdr.Operation
+    export function createAccount(options: CreateAccountOptions): xdr.Operation<CreateAccount>
+
+    export interface CreatePassiveOffer extends Operation {
+      type: OperationType.createPassiveOffer
+      selling: Asset
+      buying: Asset
+      amount: string | number
+      price: string | number
+    }
     export interface CreatePassiveOfferOptions {
       selling: Asset
       buying: Asset
@@ -549,21 +616,47 @@ declare module 'stellar-sdk' {
       price: number | string | object
       source?: string
     }
-    export function createPassiveOffer(options: CreatePassiveOfferOptions): xdr.Operation
-    export function inflation(options: {source?: string}): xdr.Operation
+    export function createPassiveOffer(options: CreatePassiveOfferOptions): xdr.Operation<CreatePassiveOffer>
 
+    export interface Inflation extends Operation {
+      type: OperationType.inflation
+    }
+    export function inflation(options: {source?: string}): xdr.Operation<Inflation>
+
+    export interface ManageData extends Operation {
+      type: OperationType.manageData
+      name: string
+      value: string
+    }
     export interface ManageDataOptions {
       name: string
       value: string | Buffer
       source?: string
     }
-    export function manageData(options: ManageDataOptions): xdr.Operation
+    export function manageData(options: ManageDataOptions): xdr.Operation<ManageData>
 
+    export interface ManageOffer extends Operation {
+      type: OperationType.manageOffer
+      selling: Asset
+      buying: Asset
+      amount: string | number
+      price: string | number
+      offerId: string
+    }
     export interface ManageOfferOptions extends CreatePassiveOfferOptions {
       offerId: number | string
     }
-    export function manageOffer(options: ManageOfferOptions): xdr.Operation
+    export function manageOffer(options: ManageOfferOptions): xdr.Operation<ManageOffer>
 
+    export interface PathPayment extends Operation {
+      type: OperationType.pathPayment
+      sendAsset: Asset
+      sendMax: string | number
+      destination: string
+      destAsset: Asset
+      destAmount: string | number
+      path: Asset[]
+    }
     export interface PathPaymentOptions {
       sendAsset: Asset
       sendMax: string
@@ -573,15 +666,21 @@ declare module 'stellar-sdk' {
       path: Asset[]
       source?: string
     }
-    export function pathPayment(options: PathPaymentOptions): xdr.Operation
+    export function pathPayment(options: PathPaymentOptions): xdr.Operation<PathPayment>
 
+    export interface Payment extends Operation {
+      type: OperationType.payment
+      destination: string
+      asset: Asset
+      amount: string | number
+    }
     export interface PaymentOptions {
       destination: string
       asset: Asset
       amount: string
       source?: string
     }
-    export function payment(options: PaymentOptions): xdr.Operation
+    export function payment(options: PaymentOptions): xdr.Operation<Payment>
 
     /*
      * Required = 1 << 0
@@ -599,6 +698,18 @@ declare module 'stellar-sdk' {
       preAuthTx?: Buffer | string
       weight?: number | string
     }
+    export interface SetOptions extends Operation {
+      type: OperationType.setOptions
+      inflationDest?: string
+      clearFlags?: AuthFlags
+      setFlags?: AuthFlags
+      masterWeight?: number | string
+      lowThreshold?: number | string
+      medThreshold?: number | string
+      highThreshold?: number | string
+      homeDomain?: string
+      signer?: Signer
+    }
     export interface SetOptionsOptions {
       inflationDest?: string
       clearFlags?: AuthFlags
@@ -611,7 +722,9 @@ declare module 'stellar-sdk' {
       homeDomain?: string
       source?: string
     }
-    export function setOptions(options: SetOptionsOptions): xdr.Operation
+    export function setOptions(options: SetOptionsOptions): xdr.Operation<SetOptions>
+
+    export function fromXDRObject<T extends Operation>(xdrOperation: xdr.Operation<T>): T
   }
 
   export class OperationCallBuilder extends CallBuilder<OperationRecord> {}
@@ -677,11 +790,17 @@ declare module 'stellar-sdk' {
     public signatureBase(): Buffer
     public signHashX(preimage: Buffer | string): void
     public toEnvelope(): xdr.TransactionEnvelope
+
+    public operations: TransactionOperation[]
+    public sequence: number
+    public fee: number
+    public source: string
+    public memo: Memo
   }
 
   export class TransactionBuilder {
     constructor(sourceAccount: Account, options?: TransactionBuilder.TransactionBuilderOptions)
-    public addOperation(operation: xdr.Operation): this
+    public addOperation<T extends Operation.Operation>(operation: xdr.Operation<T>): this
     public addMemo(memo: Memo): this
     public build(): Transaction
   }
@@ -721,9 +840,12 @@ declare module 'stellar-sdk' {
   }
 
   export namespace xdr {
-    export class Operation {}
-    export class Asset {}
-    export class Memo {}
-    export class TransactionEnvelope {}
+    export class XDRStruct {
+      public toXDR(): Buffer
+    }
+    export class Operation<T extends Operation.Operation> extends XDRStruct { }
+    export class Asset extends XDRStruct {}
+    export class Memo extends XDRStruct {}
+    export class TransactionEnvelope extends XDRStruct {}
   }
 }

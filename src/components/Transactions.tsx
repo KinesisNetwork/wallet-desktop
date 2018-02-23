@@ -107,8 +107,7 @@ export class Transactions extends React.Component<{appState: AppState}, IState> 
     this.setState({transactions: this.state.transactions.concat(transactions), currentPage: nextPage})
   }
 
-  public renderTransactions () {
-    return this.state.transactions.map((t: any, i: number) => {
+  public renderTransactions (t: any, i: number) {
       const dynamicKeys = Object.keys(t.txData)
       return (
         <article className='message' key={i}>
@@ -149,7 +148,6 @@ export class Transactions extends React.Component<{appState: AppState}, IState> 
           </div>
         </article>
       )
-    })
   }
 
   determineTxData (operation: any) {
@@ -180,7 +178,7 @@ export class Transactions extends React.Component<{appState: AppState}, IState> 
         <div style={{height: '450px', display: 'table-row' }}>
           <div style={{margin: '0px 45px 0px 60px', position: 'relative', height: '100%'}}>
             <div onScroll={() => this.handleScroll()} className='scrollable' id='transactions' >
-              { this.renderTransactions() }
+              { this.state.transactions.map((t, i) => this.renderTransactions(t, i)) }
             </div>
           </div>
         </div>

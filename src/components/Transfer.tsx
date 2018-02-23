@@ -2,9 +2,10 @@ import * as React from 'react'
 import * as _ from 'lodash'
 import { AppState } from '../app'
 import { getActiveWallet, getPrivateKey, getActivePrivateKey } from '../helpers/wallets';
-import swal from 'sweetalert'
+import * as swal from 'sweetalert'
 import { TransferPresentation } from './TransferPresentation';
 import * as StellarSdk from 'stellar-sdk'
+import { isPaymentMultiSig, showMultiSigTransaction } from '../helpers/accounts';
 
 export interface Props {
   appState: AppState
@@ -57,8 +58,10 @@ export class Transfer extends React.Component<Props, State> {
     try {
       account = await server.loadAccount(getActiveWallet(this.props.appState).publicKey)
     } catch (e) {
-     return swal('Oops!', 'Your account does not have any funds to send money with', 'error')
+      return swal('Oops!', 'Your account does not have any funds to send money with', 'error')
     }
+
+    const needMoreSigners = isPaymentMultiSig(account)
 
     const sequencedAccount = new StellarSdk.Account(getActiveWallet(this.props.appState).publicKey, account.sequence)
 
@@ -80,14 +83,13 @@ export class Transfer extends React.Component<Props, State> {
         `,
         icon: `warning`,
         dangerMode: true,
-        buttons: [true]
+        buttons: true
       })
 
       if (!willCreate) {
         return
       }
 
-      this.props.transferInitialised()
 
       // If we get the correct error, we try call account creation
       let newAccountTransaction = new StellarSdk.TransactionBuilder(sequencedAccount, {fee: currentBaseFeeInStroops})
@@ -100,7 +102,12 @@ export class Transfer extends React.Component<Props, State> {
 
       newAccountTransaction.sign(StellarSdk.Keypair.fromSecret(getPrivateKey(this.props.appState, getActiveWallet(this.props.appState))))
 
+      if (needMoreSigners) {
+        return showMultiSigTransaction(newAccountTransaction)
+      }
+
       try {
+        this.props.transferInitialised()
         await server.submitTransaction(newAccountTransaction)
         swal('Success!', 'Successfully submitted transaction', 'success')
       } catch (e) {
@@ -113,7 +120,7 @@ export class Transfer extends React.Component<Props, State> {
       return
     }
 
-    let paymentTransaction
+    let paymentTransaction: StellarSdk.Transaction
     try {
       paymentTransaction = new StellarSdk.TransactionBuilder(sequencedAccount, {fee: currentBaseFeeInStroops})
         .addOperation(StellarSdk.Operation.payment({
@@ -125,6 +132,10 @@ export class Transfer extends React.Component<Props, State> {
         .build()
 
       paymentTransaction.sign(StellarSdk.Keypair.fromSecret(getPrivateKey(this.props.appState, getActiveWallet(this.props.appState))))
+
+      if (needMoreSigners) {
+        return showMultiSigTransaction(paymentTransaction)
+      }
     } catch (e) {
       return swal('Oops!', `This transaction is invalid: ${_.capitalize(e.message)}.`, 'error')
     }
@@ -134,7 +145,7 @@ export class Transfer extends React.Component<Props, State> {
       text: `Once submitted, the transaction can not be reverted! The fee will be ${currentBaseFee} Kinesis`,
       icon: 'warning',
       dangerMode: true,
-      buttons: [true]
+      buttons: true
     })
 
     if (!continueTransfer) {

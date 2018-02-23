@@ -3,11 +3,13 @@ import { CreateAccount, Dashboard } from './components'
 import { WalletList } from './components/WalletList';
 import { retrieveWallets } from './services/wallet_persistance';
 import { AppSettings, defaultConnections, Connection } from './components/AppSettings';
+import { MultiSigTransfer } from './components/MultiSigTransfer'
 
 export enum View {
   create,
   settings,
-  dashboard
+  dashboard,
+  multiSigTransfer,
 }
 
 export interface AppState {
@@ -53,6 +55,7 @@ export class App extends React.Component<undefined, AppState> {
       [View.create]: <CreateAccount setWalletList={this.setWalletList.bind(this)} appState={this.state} changeView={this.changeView.bind(this)} />,
       [View.dashboard]: <Dashboard appState={this.state} setWalletList={this.setWalletList.bind(this)} changeView={this.changeView.bind(this)} setPassword={this.setPassword.bind(this)} />,
       [View.settings]: <AppSettings appState={this.state} changeConnection={this.changeConnection.bind(this)} />,
+      [View.multiSigTransfer]: <MultiSigTransfer appState={this.state} changeView={this.changeView.bind(this)} />
     }
 
     return ref[view]

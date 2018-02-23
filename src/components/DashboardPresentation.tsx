@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AppState } from '../app'
+import { AppState, View } from '../app'
 import { Balances } from './Balances'
 import { Transfer } from './Transfer'
 import { Transactions } from './Transactions'
@@ -33,6 +33,9 @@ export class DashboardPresentation extends React.Component<{
             <div className='column' style={{padding: '5px 70px 20px 60px', position: 'relative'}}>
               <div style={this.props.transfering ? {opacity: 0.3} : {}}>
                 <Transfer appState={this.props.appState} transferComplete={this.props.transferComplete} transferInitialised={this.props.transferInitialised} />
+                <button type='button' className='button' style={{ width: '100%', marginTop: '15px' }} onClick={() => this.props.changeView(View.multiSigTransfer)} >
+                  <i className='fa fa-arrow-circle-right fa-lg' style={{ marginRight: '6px' }}></i> Multi-Signature Transfer Management
+                </button>
               </div>
               { this.props.transfering &&
                 <div style={{position: 'absolute', zIndex: 10000000, height: '100%', width: '100%', top: '30%', left: '0%' }}>

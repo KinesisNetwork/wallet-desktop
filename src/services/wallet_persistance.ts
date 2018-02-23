@@ -1,7 +1,7 @@
-const storage = require('electron-json-storage')
+import { Wallet } from '../app';
+import storage = require('electron-json-storage')
 const walletsKey = 'wallets'
 
-import { Wallet } from '../app';
 export function addNewWallet(publicKey: string, encryptedPrivateKey: string): Promise<Wallet[]> {
   const walletEntry = { publicKey, encryptedPrivateKey }
 
