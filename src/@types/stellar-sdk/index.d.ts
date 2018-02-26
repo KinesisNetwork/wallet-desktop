@@ -533,7 +533,7 @@ declare module 'stellar-sdk' {
     | Operation.Inflation
     | Operation.ManageData
 
-  enum OperationType {
+  export const enum OperationType {
     createAccount = 'createAccount',
     payment = 'payment',
     pathPayment = 'pathPayment',

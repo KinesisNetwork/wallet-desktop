@@ -135,7 +135,7 @@ export class Transactions extends React.Component<{appState: AppState}, IState> 
                 </tr>
                 {
                   dynamicKeys.map((d, k) => {
-                    return  (
+                    return t.txData[d] && (
                       <tr key={k}>
                         <td>{d}</td>
                         <td>{t.txData[d]}</td>
@@ -150,26 +150,35 @@ export class Transactions extends React.Component<{appState: AppState}, IState> 
       )
   }
 
-  determineTxData (operation: any) {
-    const ref = {
-      [StellarTxType['Create Account']]: {
-        'Funder': operation.funder,
-        'Starting Balance': operation.starting_balance,
-        'Account Created': operation.account
-      },
-      [StellarTxType['Payment']]: {
-        'Asset Type': operation.asset_type === 'native' ? 'Kinesis' : operation.asset_type,
-        'From': operation.from,
-        'To': operation.to,
-        'Amount': operation.amount
-      },
-    }
-
-    if (ref[operation.type_i]) {
-      return ref[operation.type_i]
-    } else {
-      // If we havent wrapped the operation type in human view, we just return the entire object
-      return operation
+  determineTxData (operation: StellarSdk.OperationRecord) {
+    switch(operation.type) {
+      case 'create_account':
+        return {
+          'Funder': operation.funder,
+          'Starting Balance': operation.starting_balance,
+          'Account Created': operation.account
+        }
+      case 'payment':
+        return {
+          'Asset Type': operation.asset_type === 'native' ? 'Kinesis' : operation.asset_type,
+          'From': operation.from,
+          'To': operation.to,
+          'Amount': operation.amount
+        }
+      case 'set_options':
+        return {
+          'Signer Key': operation.signer_key,
+          'Signer Weight': operation.signer_weight,
+          'Master Key Weight': operation.master_key_weight,
+          'Low Threshold': operation.low_threshold,
+          'Mid Threshold': operation.med_threshold,
+          'High Threshold': operation.high_threshold,
+          'Home Domain': operation.home_domain,
+          'Set Flags': operation.set_flags_s,
+          'Clear Flags': operation.clear_flags_s,
+        }
+      default:
+        return operation
     }
   }
 

@@ -3,21 +3,50 @@ import { AppState, View } from '../app'
 import { Balances } from './Balances'
 import { Transfer } from './Transfer'
 import { Transactions } from './Transactions'
+import { MultiSigTransfer } from './MultiSigTransfer'
 import { Password } from './Password';
 import { Delete } from './Delete';
 import { Loader } from './Loader';
 
-export class DashboardPresentation extends React.Component<{
+export interface IProps {
   appState: AppState,
   setWalletList: Function,
   changeView: Function,
   setPassword: Function,
-  transferInitialised: Function,
-  transferComplete: Function,
+  transferInitialised: () => void,
+  transferComplete: () => void,
   transfering: boolean,
   tx: Function,
-  balances: Function
-}, {}> {
+  balances: Function,
+  transferView: 'multi' | 'payment',
+  updateTransferView: (view: 'multi' | 'payment') => void,
+}
+
+export class DashboardPresentation extends React.Component<IProps, {}> {
+
+  private switchTransferView = () => {
+    switch(this.props.transferView) {
+      case 'payment':
+        return (
+        <div>
+          <Transfer appState={this.props.appState} transferComplete={this.props.transferComplete} transferInitialised={this.props.transferInitialised} />
+          <button type='button' className='button' style={{ width: '100%', marginTop: '15px' }} onClick={() => this.props.updateTransferView('multi')} >
+            <i className='fa fa-arrow-circle-right fa-lg' style={{ marginRight: '6px' }}></i> Multi-Signature Transfer Management
+          </button>
+        </div>
+        )
+      case 'multi':
+        return (<MultiSigTransfer
+          appState={this.props.appState}
+          transactionSubmit={this.props.transferInitialised}
+          transactionFinish={this.props.transferComplete}
+          updateTransferView={this.props.updateTransferView}
+          />)
+      default:
+        return (<div />)
+    }
+  }
+
   render() {
     return (
       <div style={{display: 'table', width: '100%', height: '100%'}}>
@@ -32,10 +61,7 @@ export class DashboardPresentation extends React.Component<{
             </div>
             <div className='column' style={{padding: '5px 70px 20px 60px', position: 'relative'}}>
               <div style={this.props.transfering ? {opacity: 0.3} : {}}>
-                <Transfer appState={this.props.appState} transferComplete={this.props.transferComplete} transferInitialised={this.props.transferInitialised} />
-                <button type='button' className='button' style={{ width: '100%', marginTop: '15px' }} onClick={() => this.props.changeView(View.multiSigTransfer)} >
-                  <i className='fa fa-arrow-circle-right fa-lg' style={{ marginRight: '6px' }}></i> Multi-Signature Transfer Management
-                </button>
+                { this.switchTransferView(this.props.transferView) }
               </div>
               { this.props.transfering &&
                 <div style={{position: 'absolute', zIndex: 10000000, height: '100%', width: '100%', top: '30%', left: '0%' }}>

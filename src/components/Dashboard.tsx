@@ -6,13 +6,13 @@ import * as StellarSdk from 'stellar-sdk'
 
 export class Dashboard extends React.Component<
   {appState: AppState, setWalletList: Function, changeView: Function, setPassword: Function},
-  {account: StellarSdk.AccountResponse | null, transfering: boolean}> {
+  {account: StellarSdk.AccountResponse | null, transfering: boolean, transferViewState: 'multi' | 'payment'}> {
   public tx
   public balances
 
   constructor (props) {
     super(props)
-    this.state = { account: null, transfering: false }
+    this.state = { account: null, transfering: false, transferViewState: 'payment'}
   }
 
   async componentDidMount() {
@@ -22,6 +22,7 @@ export class Dashboard extends React.Component<
   componentWillReceiveProps(nextProps) {
     if (this.props !== nextProps) {
       this.loadAccount(nextProps)
+      this.setState({transferViewState: 'payment'})
     }
   }
 
@@ -49,6 +50,11 @@ export class Dashboard extends React.Component<
     }
   }
 
+  public updateTransferView = (view: 'multi' | 'payment') => {
+    this.setState({transferViewState: view})
+  }
+
+
   render() {
     return (
       <DashboardPresentation
@@ -61,6 +67,8 @@ export class Dashboard extends React.Component<
         transfering={this.state.transfering}
         tx={(tx) => {this.tx = tx}}
         balances={(balances) => {this.balances = balances}}
+        transferView={this.state.transferViewState}
+        updateTransferView={this.updateTransferView}
       />
     )
   }

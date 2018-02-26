@@ -8,9 +8,10 @@ export interface IProps {
 
 export const TransactionView: React.SFC<IProps> = ({transaction}) => (
   <div>
-    <h1 className='title'>Operations</h1>
-    <div>
-      { transaction.operations.map((op, i) => ( <OperationView operation={op} key={i} />)) }
-    </div>
+    { transaction.operations.map((op, i) => {
+        op.source = op.source || transaction.source
+        return (<OperationView operation={op} key={i} />)
+      })
+    }
   </div>
 )

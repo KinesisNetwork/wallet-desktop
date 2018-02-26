@@ -1,25 +1,23 @@
 import * as React from 'react'
+import { capitalize } from 'lodash'
 import { Operation, TransactionOperation, } from 'stellar-sdk'
 
 export interface IProps {
   operation: TransactionOperation
 }
 
-export const OperationView: React.SFC<IProps> = ({operation}) => {
-  return (
-    <div className='message'>
-      <div className='message-header'>
-        <h3 className='subtitle'>{ operation.type }</h3>
-      </div>
-      <div className='message-body'>
-        <OperationSwitch operation={operation} />
-      </div>
+export const OperationView: React.SFC<IProps> = ({operation}) => (
+  <div className='message is-dark is-transparent'>
+    <div className='message-header'>
+      <p>{ capitalize(operation.type) }</p>
     </div>
-  )
-}
+    <div className='message-body'>
+      <OperationSwitch operation={operation} />
+    </div>
+  </div>
+)
 
 const OperationSwitch: React.SFC<IProps> = ({operation}) => {
-
   switch (operation.type) {
     case 'payment':
       return <PaymentOperationView operation={operation} />
