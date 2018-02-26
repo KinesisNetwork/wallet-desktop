@@ -7,15 +7,20 @@ export interface IProps {
 }
 
 export const OperationView: React.SFC<IProps> = ({operation}) => (
-  <div className='message is-dark is-transparent'>
+  <div className='message'>
     <div className='message-header'>
-      <p>{ capitalize(operation.type) }</p>
+      <p>{ formatType(operation.type) }</p>
     </div>
     <div className='message-body'>
       <OperationSwitch operation={operation} />
     </div>
   </div>
 )
+
+const formatType = (operationType: string): string => {
+  const [start, ...others] = operationType.split(/([A-Z])/)
+  return `${capitalize(start)} ${others.reduce((end, current, index) => index % 2 === 0 ? `${end} ${current}` : `${end}${current}`, '')}`
+}
 
 const OperationSwitch: React.SFC<IProps> = ({operation}) => {
   switch (operation.type) {
@@ -30,14 +35,14 @@ const OperationSwitch: React.SFC<IProps> = ({operation}) => {
 
 const ReadOnlyField: React.SFC<{ title: string, text: string | number }> = ({title, text}) => (
   <div className='field is-horizontal'>
-    <div className='field-label is-normal'>
-      <label className='label' style={{margin: 0}}>{ title }</label>
+    <div className='field-label is-small'>
+      <label className='label is-marginless'>{ title }</label>
     </div>
     <div className='field-body'>
       <div className='field'>
         <p className='control'>
           <input
-            className='input is-static'
+            className='input is-static is-small'
             value={text}
             readOnly={true}
           />
