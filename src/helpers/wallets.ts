@@ -1,6 +1,7 @@
 import { AppState, Wallet } from '../app'
 import * as _ from 'lodash'
 import { decryptPrivateKey } from '../services/encryption';
+import { clipboard } from 'electron'
 
 export function getActiveWallet(appState: AppState): Wallet {
   let walletList = appState.walletList
@@ -22,4 +23,8 @@ export function getActivePrivateKey(appState: AppState): string {
   return getPrivateKey(appState, activeWallet)
 }
 
+export function copyPrivateKey(appState: AppState) {
+  const key = getActivePrivateKey(appState)
+  clipboard.writeText(key)
+}
 

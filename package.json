@@ -68,12 +68,13 @@
     "tslib": "^1.4.0"
   },
   "devDependencies": {
-    "node-sass": "^4.7.2",
+    "@types/electron": "^1.6.10",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "electron-forge": "^5.0.0",
     "electron-prebuilt-compile": "1.7.11",
+    "node-sass": "^4.7.2",
     "tslint": "^5.1.0",
     "typescript": "~2.2.2"
   }
