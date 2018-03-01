@@ -3,21 +3,21 @@ import { CreateAccount, Dashboard } from './components'
 import { WalletList } from './components/WalletList';
 import { retrieveWallets } from './services/wallet_persistance';
 import { AppSettings, defaultConnections, Connection } from './components/AppSettings';
+import { MultiSigTransfer } from './components/MultiSigTransfer'
 
 export enum View {
   create,
   settings,
-  dashboard
+  dashboard,
 }
 
 export interface AppState {
   view: View,
   walletList: Wallet[],
   passwordMap: PasswordMap,
-  viewParams?: ViewParams,
+  viewParams: ViewParams,
   connection: Connection
 }
-
 
 export interface PasswordMap {
   [accountId: string]: {
@@ -87,17 +87,17 @@ export class App extends React.Component<undefined, AppState> {
   render() {
     return (
       <div className='columns' style={{height: '100%'}}>
-        <div className='column is-one-quarter' style={{backgroundColor:'#2b3e50', padding: '0px', position: 'relative'}}>
-          <img src="./logo.svg" className="logo-sidebar"/>
+        <div className='column is-one-quarter' style={{backgroundColor: '#2b3e50', padding: '0px', position: 'relative'}}>
+          <img src='./logo.svg' className='logo-sidebar'/>
           <WalletList appState={this.state} setWalletList={this.setWalletList.bind(this)} changeView={this.changeView.bind(this)} />
           <div className='settings-btn'>
-            <label className="label" style={{fontSize: '0.8em', textAlign: 'center'}}> Connection: {this.state.connection.connectionName } </label>
-            <button className="button is-outlined is-fullwidth" style={{fontSize: '14px', marginLeft: '8px'}} onClick={() => this.changeView(View.settings)}>
+            <label className='label' style={{fontSize: '0.8em', textAlign: 'center'}}> Connection: {this.state.connection.connectionName } </label>
+            <button className='button is-outlined is-fullwidth' style={{fontSize: '14px', marginLeft: '8px'}} onClick={() => this.changeView(View.settings)}>
               Settings
             </button>
           </div>
         </div>
-        <div className='column' style={{padding:'0px'}}>
+        <div className='column' style={{padding: '0px'}}>
           { this.viewMap(this.state.view) }
         </div>
       </div>

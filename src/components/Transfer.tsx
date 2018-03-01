@@ -4,12 +4,26 @@ import { AppState } from '../app'
 import { getActiveWallet, getPrivateKey, getActivePrivateKey } from '../helpers/wallets';
 import * as swal from 'sweetalert'
 import { TransferPresentation } from './TransferPresentation';
-const StellarSdk = require('stellar-sdk')
+import * as StellarSdk from 'stellar-sdk'
+import { isPaymentMultiSig, showMultiSigTransaction } from '../helpers/accounts';
 
-export class Transfer extends React.Component<{appState: AppState, transferComplete: Function, transferInitialised: Function}, {targetAddress: string, transferAmount?: any, memo?: string, loading: boolean}> {
+export interface Props {
+  appState: AppState
+  transferComplete: () => void
+  transferInitialised: () => void
+}
+
+export interface State {
+  targetAddress: string
+  transferAmount: string
+  memo: string
+  loading: boolean
+}
+
+export class Transfer extends React.Component<Props, State> {
   constructor (props) {
     super(props)
-    this.state = {targetAddress: '', loading: false, memo: ''}
+    this.state = {targetAddress: '', loading: false, memo: '', transferAmount: ''}
   }
 
   async componentDidMount() {
@@ -32,20 +46,22 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
 
     const currentBaseReserveInStroops = mostRecentLedger.records[0].base_reserve_in_stroops
       ? mostRecentLedger.records[0].base_reserve_in_stroops
-      : mostRecentLedger.records[0].base_reserve
+      : Number(mostRecentLedger.records[0].base_reserve)
 
     const currentBaseFee = _.round(currentBaseFeeInStroops * 0.0000001, 8)
 
     // The multiplier is defined here: https://www.stellar.org/developers/guides/concepts/fees.html
-    const currentBaseReserve = 2 * _.round(currentBaseReserveInStroops * 0.0000001, 8)
+    const currentBaseReserve = _.round(currentBaseReserveInStroops * 0.0000001, 8) * 2
 
     let account
 
     try {
       account = await server.loadAccount(getActiveWallet(this.props.appState).publicKey)
     } catch (e) {
-     return swal('Oops!', 'Your account does not have any funds to send money with', 'error')
+      return swal('Oops!', 'Your account does not have any funds to send money with', 'error')
     }
+
+    const needMoreSigners = isPaymentMultiSig(account)
 
     const sequencedAccount = new StellarSdk.Account(getActiveWallet(this.props.appState).publicKey, account.sequence)
 
@@ -54,14 +70,17 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
       // the account instead of transfering
       await server.loadAccount(targetAddress)
     } catch (e) {
-      if (this.state.transferAmount < currentBaseReserve) {
+      if (Number(amount) < currentBaseReserve) {
         swal('Oops!', `You are transfering to an account without any funds. The minimum transfer required is ${currentBaseReserve} Kinesis`, 'error')
         return
       }
 
       const willCreate = await swal({
         title: `Continue with transfer?`,
-        text: `The account that you are transfering with does not have any funds yet, are you sure you want to continue? The fee will be ${currentBaseFee} Kinesis`,
+        text: `
+          The account that you are transfering with does not have any funds yet, are you sure you want to continue?
+          The fee will be ${currentBaseFee} Kinesis
+        `,
         icon: `warning`,
         dangerMode: true,
         buttons: true
@@ -71,7 +90,6 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
         return
       }
 
-      this.props.transferInitialised()
 
       // If we get the correct error, we try call account creation
       let newAccountTransaction = new StellarSdk.TransactionBuilder(sequencedAccount, {fee: currentBaseFeeInStroops})
@@ -84,7 +102,12 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
 
       newAccountTransaction.sign(StellarSdk.Keypair.fromSecret(getPrivateKey(this.props.appState, getActiveWallet(this.props.appState))))
 
+      if (needMoreSigners) {
+        return showMultiSigTransaction(newAccountTransaction)
+      }
+
       try {
+        this.props.transferInitialised()
         await server.submitTransaction(newAccountTransaction)
         swal('Success!', 'Successfully submitted transaction', 'success')
       } catch (e) {
@@ -97,7 +120,7 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
       return
     }
 
-    let paymentTransaction
+    let paymentTransaction: StellarSdk.Transaction
     try {
       paymentTransaction = new StellarSdk.TransactionBuilder(sequencedAccount, {fee: currentBaseFeeInStroops})
         .addOperation(StellarSdk.Operation.payment({
@@ -109,6 +132,10 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
         .build()
 
       paymentTransaction.sign(StellarSdk.Keypair.fromSecret(getPrivateKey(this.props.appState, getActiveWallet(this.props.appState))))
+
+      if (needMoreSigners) {
+        return showMultiSigTransaction(paymentTransaction)
+      }
     } catch (e) {
       return swal('Oops!', `This transaction is invalid: ${_.capitalize(e.message)}.`, 'error')
     }
@@ -142,19 +169,26 @@ export class Transfer extends React.Component<{appState: AppState, transferCompl
     e.preventDefault()
     if (!this.state.targetAddress) {
       await swal('Oops!', 'A target public key is required to transfer funds', 'error')
-      return document.getElementById('transfer-public-key').focus();
+      return this.focusElement('transfer-public-key')
     }
     if (!this.state.transferAmount) {
       await swal('Oops!', 'A transfer amount is required to transfer funds', 'error')
-      return document.getElementById('transfer-amount').focus();
+      return this.focusElement('transfer-amount')
     }
 
     let privateKey = getActivePrivateKey(this.props.appState)
     if (!privateKey) {
       await swal('Oops!', 'Please unlock your account to transfer funds', 'error')
-      return document.getElementById('wallet-password').focus();
+      return this.focusElement('wallet-password')
     }
     this.transferKinesis(this.state.targetAddress, this.state.transferAmount)
+  }
+
+  private focusElement = (id: string): void => {
+    const element = document.getElementById(id)
+    if (element !== null) {
+      return element.focus()
+    }
   }
 
   public handleAddress(ev) {

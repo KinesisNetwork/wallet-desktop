@@ -21,5 +21,3 @@ export function getActivePrivateKey(appState: AppState): string {
   let activeWallet = getActiveWallet(appState) || {}
   return getPrivateKey(appState, activeWallet)
 }
-
-

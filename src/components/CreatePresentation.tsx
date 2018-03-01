@@ -1,10 +1,6 @@
 import * as React from 'react'
 
-import { AppState, View } from '../app'
-import { addNewWallet } from '../services/wallet_persistance'
-import { encryptPrivateKey } from '../services/encryption'
-import * as swal from 'sweetalert'
-const StellarBase = require('stellar-sdk')
+import { AppState } from '../app'
 
 export class CreateAccountPresentation extends React.Component<{
   setWalletList: Function,
@@ -30,7 +26,7 @@ export class CreateAccountPresentation extends React.Component<{
         </div>
         <div className='columns has-text-centered' style={{marginTop: '35px'}}>
           <div className='column' style={{padding: '25px 60px 60px 70px', borderRight: '1px solid #2b3e50'}}>
-              <i className="fas fa-user" style={{fontSize: '2.5em'}}></i>
+              <i className='fas fa-user' style={{fontSize: '2.5em'}}></i>
             <h1 className='sub-heading primary-font'>Generate Account</h1>
             <form onSubmit={(ev) => this.props.generate(ev)}>
               <label className='label'>Wallet Password</label>
@@ -41,7 +37,7 @@ export class CreateAccountPresentation extends React.Component<{
             </form>
           </div>
           <div className='column' style={{padding: '60px', paddingTop: '25px', paddingRight: '80px'}}>
-            <i className="far fa-user" style={{fontSize: '2.5em'}}></i>
+            <i className='far fa-user' style={{fontSize: '2.5em'}}></i>
             <h1 className='sub-heading primary-font'>Import Account</h1>
             <form onSubmit={(ev) => this.props.handleSubmit(ev)}>
               <label className='label'>Public Key</label>
@@ -52,7 +48,7 @@ export class CreateAccountPresentation extends React.Component<{
               <input id='input-password' className='input' onChange={(ev) => this.props.handlePassword(ev)} type='password' />
               <label className='label'>Repeat Wallet Password</label>
               <input id='input-verify-password' className='input' onChange={(ev) => this.props.handleVerifyPassword(ev)} type='password' />
-              <input className='button' value="Import Account" style={{marginTop: '8px', width: '100%'}} type='submit' />
+              <input className='button' value='Import Account' style={{marginTop: '8px', width: '100%'}} type='submit' />
             </form>
           </div>
         </div>
