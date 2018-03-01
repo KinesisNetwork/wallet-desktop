@@ -22,7 +22,7 @@ export class MultiSigTransfer extends React.Component<IProps, IState> {
   constructor(props) {
     super(props)
     this.state = {
-      serializedTransaction: 'AAAAAMWEYznj3jiBHIC85L3DsUiTY6fIP6L4Kdlv/Xnx2V96AAAH0AAAAKgAAAACAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAKy46XIaZR8wg8C/l3elIHPw7Z8IrdbXI1EHjuLCXikOAAAAAAAAAAAO5rKAAAAAAAAAAAHx2V96AAAAQMU0kayrJV/vNfp4VLtsuG6WCnhrK3ikLUCmFaDToq/DLG58Dqbg+i8vql301uesQ08UCURXJuOSixoC4ZpNGws=',
+      serializedTransaction: '',
       transaction: null,
     }
   }

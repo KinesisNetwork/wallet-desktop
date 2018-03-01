@@ -17,6 +17,7 @@ export const OperationView: React.SFC<IProps> = ({operation}) => (
   </div>
 )
 
+// Splitting a camel cased string into splitted capitalised string
 const formatType = (operationType: string): string => {
   const [start, ...others] = operationType.split(/([A-Z])/)
   return `${capitalize(start)} ${others.reduce((end, current, index) => index % 2 === 0 ? `${end} ${current}` : `${end}${current}`, '')}`
