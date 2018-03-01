@@ -12,7 +12,7 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "tslint --project tsconfig.json --type-check --force"
+    "lint": "tslint --project tsconfig.json --force"
   },
   "keywords": [],
   "author": "ABX",
@@ -51,8 +51,6 @@
   },
   "dependencies": {
     "@types/electron-devtools-installer": "^2.0.2",
-    "@types/react": "^0.14.55",
-    "@types/react-dom": "^0.14.20",
     "bulma": "^0.6.2",
     "crypto-js": "^3.1.9-1",
     "electron-compile": "^6.4.2",
@@ -65,17 +63,20 @@
     "react-hot-loader": "^3.0.0-beta.6",
     "stellar-sdk": "^0.8.0",
     "sweetalert": "^2.1.0",
-    "tslib": "^1.4.0"
+    "tslib": "^1.9.0"
   },
   "devDependencies": {
     "@types/electron": "^1.6.10",
+    "@types/react": "^15.6.14",
+    "@types/react-dom": "^15.5.7",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "electron": "^1.8.2",
     "electron-forge": "^5.0.0",
     "electron-prebuilt-compile": "1.7.11",
     "node-sass": "^4.7.2",
     "tslint": "^5.1.0",
-    "typescript": "~2.2.2"
+    "typescript": "^2.7.2"
   }
 }

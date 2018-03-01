@@ -11,7 +11,7 @@ export class Password extends React.Component<{appState: AppState, setPassword: 
     this.state = { password: '' }
   }
 
-  public setPassword(){
+  public setPassword() {
       this.props.setPassword(getActiveWallet(this.props.appState).publicKey, this.state.password)
   }
 
@@ -56,4 +56,3 @@ export class Password extends React.Component<{appState: AppState, setPassword: 
     )
   }
 }
-

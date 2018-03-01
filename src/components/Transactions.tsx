@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { AppState } from '../app'
 import { getActiveWallet } from '../helpers/wallets'
-const StellarSdk = require('stellar-sdk')
+import * as StellarSdk from 'stellar-sdk'
+import { CollectionPage, TransactionRecord } from 'stellar-sdk'
 import * as _ from 'lodash'
 
 export interface HumanTransactions {
@@ -28,8 +29,15 @@ export enum StellarTxType {
   'Manage Data' = 10
 }
 
+export interface IState {
+  transactions: HumanTransactions[]
+  currentPage: CollectionPage<TransactionRecord>
+  lastPage: boolean
+  recentlyLoaded: boolean
+}
+
 const defaultState = { transactions: [], lastPage: false, currentPage: undefined, recentlyLoaded: false }
-export class Transactions extends React.Component<{appState: AppState}, {transactions: HumanTransactions[], currentPage: any, lastPage: boolean, recentlyLoaded: boolean}> {
+export class Transactions extends React.Component<{appState: AppState}, IState> {
   constructor (props) {
     super(props)
     this.state = _.cloneDeep(defaultState)
@@ -58,14 +66,14 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
 
   public async componentWillReceiveProps(nextProps: {appState: AppState}) {
     let currentWalletIndex = _.get(nextProps, 'appState.viewParams.walletIndex', null)
-    let newWalletIndex =_.get(this.props, 'appState.viewParams.walletIndex', null)
+    let newWalletIndex = _.get(this.props, 'appState.viewParams.walletIndex', null)
     if (currentWalletIndex !== newWalletIndex && newWalletIndex !== null) {
       this.setState(_.cloneDeep(defaultState), () => {this.transactionPage()})
     }
   }
 
   // TODO: Hook this up to a next page button that is hidden if lastPage === true
-  async transactionPage (): HumanTransactions[] {
+  async transactionPage (): Promise<void> {
     StellarSdk.Network.use(new StellarSdk.Network(this.props.appState.connection.networkPassphrase))
     const server = new StellarSdk.Server(this.props.appState.connection.horizonServer, {allowHttp: true})
 
@@ -99,8 +107,7 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
     this.setState({transactions: this.state.transactions.concat(transactions), currentPage: nextPage})
   }
 
-  public renderTransactions () {
-    return this.state.transactions.map((t: any, i: number) => {
+  public renderTransactions (t: any, i: number) {
       const dynamicKeys = Object.keys(t.txData)
       return (
         <article className='message' key={i}>
@@ -128,7 +135,7 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
                 </tr>
                 {
                   dynamicKeys.map((d, k) => {
-                    return  (
+                    return t.txData[d] && (
                       <tr key={k}>
                         <td>{d}</td>
                         <td>{t.txData[d]}</td>
@@ -141,29 +148,37 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
           </div>
         </article>
       )
-    })
   }
 
-  determineTxData (operation: any) {
-    const ref = {
-      [StellarTxType['Create Account']]: {
-        'Funder': operation.funder,
-        'Starting Balance': operation.starting_balance,
-        'Account Created': operation.account
-      },
-      [StellarTxType['Payment']]: {
-        'Asset Type': operation.asset_type === 'native' ? 'Kinesis' : operation.asset_type,
-        'From': operation.from,
-        'To': operation.to,
-        'Amount': operation.amount
-      },
-    }
-
-    if (ref[operation.type_i]) {
-      return ref[operation.type_i]
-    } else {
-      // If we havent wrapped the operation type in human view, we just return the entire object
-      return operation
+  determineTxData (operation: StellarSdk.OperationRecord) {
+    switch(operation.type) {
+      case 'create_account':
+        return {
+          'Funder': operation.funder,
+          'Starting Balance': operation.starting_balance,
+          'Account Created': operation.account
+        }
+      case 'payment':
+        return {
+          'Asset Type': operation.asset_type === 'native' ? 'Kinesis' : operation.asset_type,
+          'From': operation.from,
+          'To': operation.to,
+          'Amount': operation.amount
+        }
+      case 'set_options':
+        return {
+          'Signer Key': operation.signer_key,
+          'Signer Weight': operation.signer_weight,
+          'Master Key Weight': operation.master_key_weight,
+          'Low Threshold': operation.low_threshold,
+          'Mid Threshold': operation.med_threshold,
+          'High Threshold': operation.high_threshold,
+          'Home Domain': operation.home_domain,
+          'Set Flags': operation.set_flags_s,
+          'Clear Flags': operation.clear_flags_s,
+        }
+      default:
+        return operation
     }
   }
 
@@ -171,8 +186,8 @@ export class Transactions extends React.Component<{appState: AppState}, {transac
     return (
         <div style={{height: '450px', display: 'table-row' }}>
           <div style={{margin: '0px 45px 0px 60px', position: 'relative', height: '100%'}}>
-            <div onScroll={() => this.handleScroll()} className="scrollable" id='transactions' >
-              { this.renderTransactions() }
+            <div onScroll={() => this.handleScroll()} className='scrollable' id='transactions' >
+              { this.state.transactions.map((t, i) => this.renderTransactions(t, i)) }
             </div>
           </div>
         </div>

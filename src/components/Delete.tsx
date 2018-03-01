@@ -45,4 +45,3 @@ export class Delete extends React.Component<{appState: AppState, setWalletList: 
     )
   }
 }
-

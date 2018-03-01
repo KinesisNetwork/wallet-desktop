@@ -27,4 +27,3 @@ export function copyPrivateKey(appState: AppState) {
   const key = getActivePrivateKey(appState)
   clipboard.writeText(key)
 }
-
