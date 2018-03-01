@@ -23,8 +23,9 @@ class PasswordInput extends React.Component<{activeWallet: Wallet}, {password: s
   }
 
   public render() {
+    setTimeout(() => document.getElementById('popup-password-confirmation').focus())
     return (
-      <input type='password' className='input is-large' value={this.state.password} onChange={(ev) => this.changeText(ev)} />
+      <input id='popup-password-confirmation' type='password' className='input is-large has-text-centered' value={this.state.password} onChange={(ev) => this.changeText(ev)} />
     )
   }
 }
