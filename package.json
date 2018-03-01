@@ -1,7 +1,7 @@
 {
   "name": "kinesis-wallet",
   "productName": "Kinesis Wallet",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Stellar compliant hard wallet",
   "main": "src/index.ts",
   "scripts": {
