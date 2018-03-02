@@ -40,8 +40,8 @@
       "electronInstallerDebian": {},
       "electronInstallerRedhat": {},
       "github_repository": {
-        "owner": "",
-        "name": ""
+        "owner": "bullioncapital",
+        "name": "kinesis-wallet"
       },
       "windowsStoreConfig": {
         "packageName": "",
