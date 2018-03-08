@@ -94,6 +94,7 @@ export class Transactions extends React.Component<{appState: AppState}, IState> 
       const operations = await r.operations()
       return operations._embedded.records.map(o => {
         return {
+          source: r.source_account,
           txId: r.id,
           txType: StellarTxType[o.type_i],
           txData: this.determineTxData(o),
@@ -120,6 +121,10 @@ export class Transactions extends React.Component<{appState: AppState}, IState> 
                 <tr>
                   <td>Tx Id</td>
                   <td>{t.txId}</td>
+                </tr>
+                <tr>
+                  <td>Source Account</td>
+                  <td>{t.source}</td>
                 </tr>
                 <tr>
                   <td>Message</td>
@@ -176,6 +181,10 @@ export class Transactions extends React.Component<{appState: AppState}, IState> 
           'Home Domain': operation.home_domain,
           'Set Flags': operation.set_flags_s,
           'Clear Flags': operation.clear_flags_s,
+        }
+      case 'account_merge':
+        return {
+          'Account Into': operation.into,
         }
       default:
         return operation

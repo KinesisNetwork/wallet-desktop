@@ -363,13 +363,13 @@ declare module 'stellar-sdk' {
     hash: string
     ledger_attr: number
     created_at: string
-    account_attr: string
-    account_seuqence: number
     max_fee: number
     fee_paid: number
     operation_count: number
     result_code: number
     result_code_s: string
+    source_account: string
+    source_account_sequence: string
     envelope_xdr: string
     result_xdr: string
     result_meta_xdr: string
