@@ -8,6 +8,8 @@ addons:
       - rpm
 before_install:
   - npm install -g electron-forge
+before_script:
+  - npm run sass-compile
 jobs:
   include:
     - stage: test

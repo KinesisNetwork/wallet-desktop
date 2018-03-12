@@ -57,6 +57,7 @@
       "s3": {
         "bucket": "kinesis-wallet",
         "public": false
+      }
     }
   },
   "dependencies": {
