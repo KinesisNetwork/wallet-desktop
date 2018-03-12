@@ -1,5 +1,9 @@
 language: node_js
+mono: latest
 addons:
+  artifaces:
+    region: ap-southeast-2
+    working_dir: out
   apt:
     packages:
       - wine
@@ -8,17 +12,11 @@ addons:
       - rpm
 before_install:
   - npm install -g electron-forge
-  - sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-  - echo "deb http://download.mono-project.com/repo/ubuntu stable-xenial main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
-  - sudo apt-get update
-  - sudo apt install mono-complete
 before_script:
   - npm run sass-compile
 jobs:
   include:
-    - stage: test
-      script: electron-forge package --platform=linux
-    - script: electron-forge package --platform=win32
-    - stage: publish
-      script: electron-forge publish --platform=win32 --arch=x64
-    - script: electron-forge publish --platform=linux --arch=x64
+    - stage: make
+      script: electron-forge make --platform=linux
+    - script: electron-forge make --platform=win32
+    - script: electron-forge make --platform=darwin
