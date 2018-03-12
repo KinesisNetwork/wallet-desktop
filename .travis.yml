@@ -1,7 +1,4 @@
 language: node_js
-os:
-  - linux
-  - osx
 addons:
   apt:
     packages:
@@ -16,3 +13,6 @@ jobs:
   include:
     - stage: make
       script: electron-forge publish --target=s3
+      os:
+        - linux
+        - osx
