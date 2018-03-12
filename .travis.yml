@@ -13,7 +13,7 @@ before_script:
 jobs:
   include:
     - stage: test
-      script: electron-forge package --targets=linux
-    - script: electron-forge package --targets=win32
+      script: electron-forge package --platform=linux
+    - script: electron-forge package --platform=win32
     - stage: publish
-      script: electron-forge publish --targets=linux,win32 --arch=64
+      script: electron-forge publish --targets=linux,win32 --arch=x64
