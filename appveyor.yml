@@ -4,5 +4,5 @@ install:
   - ps: Install-Product node $env:nodejs_version
   - npm install -g electron-forge
   - npm install
-build:
-  - electron-forge publish --target=s3
+build_script:
+  - ps: electron-forge publish --target=s3
