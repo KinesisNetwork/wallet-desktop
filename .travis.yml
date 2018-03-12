@@ -9,6 +9,7 @@ addons:
       - dpkg
       - rpm
 before_install:
+  - if [ $TRAVIS_OS_NAME = osx ]; then brew install openssl; fi
   - npm install -g electron-forge
 before_script:
   - npm run sass-compile
