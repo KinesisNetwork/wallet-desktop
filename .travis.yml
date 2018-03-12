@@ -2,8 +2,8 @@ language: node_js
 mono: latest
 addons:
   artifacts:
-    region: ap-southeast-2
-    working_dir: out
+    region: 'ap-southeast-2'
+    working_dir: 'out/make'
   apt:
     sources:
       - mono
