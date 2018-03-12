@@ -1,15 +1,18 @@
 language: node_js
 mono: latest
 addons:
-  artifaces:
+  artifacts:
     region: ap-southeast-2
     working_dir: out
   apt:
+    sources:
+      - mono
     packages:
       - wine
       - fakeroot
       - dpkg
       - rpm
+      - mono-complete
 before_install:
   - npm install -g electron-forge
 before_script:
