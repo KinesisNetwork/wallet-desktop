@@ -1,5 +1,4 @@
 language: node_js
-mono: latest
 addons:
   apt:
     sources:
@@ -18,5 +17,5 @@ jobs:
   include:
     - stage: make
       script: electron-forge publish --platform=linux --target=s3
-    - script: electron-forge publish --platform=win32 --target=s3
+    - script: travis_wait electron-forge publish --platform=win32 --target=s3
     - script: electron-forge publish --platform=darwin --target=s3
