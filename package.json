@@ -20,7 +20,8 @@
     "forge": {
       "make_targets": {
         "win32": [
-          "squirrel"
+          "squirrel",
+          "wix"
         ],
         "darwin": [
           "zip",
@@ -33,15 +34,12 @@
       },
       "publish_targets": {
         "win32": [
-          "github",
           "s3"
         ],
         "darwin": [
-          "github",
           "s3"
         ],
         "linux": [
-          "github",
           "s3"
         ]
       },

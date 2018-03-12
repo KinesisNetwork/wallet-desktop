@@ -1,4 +1,7 @@
 language: node_js
+os:
+  - linux
+  - osx
 addons:
   apt:
     packages:
@@ -9,10 +12,5 @@ before_install:
   - npm install -g electron-forge
 before_script:
   - npm run sass-compile
-jobs:
-  include:
-    - stage: make
-      script: electron-forge publish --target=s3
-      os:
-        - linux
-        - osx
+script:
+  - electron-forge publish
