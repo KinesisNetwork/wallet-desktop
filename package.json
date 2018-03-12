@@ -36,10 +36,12 @@
           "s3"
         ],
         "darwin": [
-          "github"
+          "github",
+          "s3"
         ],
         "linux": [
-          "github"
+          "github",
+          "s3"
         ]
       },
       "electronPackagerConfig": {

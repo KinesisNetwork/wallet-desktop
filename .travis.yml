@@ -1,9 +1,6 @@
 language: node_js
 mono: latest
 addons:
-  artifacts:
-    region: 'ap-southeast-2'
-    working_dir: 'out/make'
   apt:
     sources:
       - mono
@@ -20,6 +17,6 @@ before_script:
 jobs:
   include:
     - stage: make
-      script: electron-forge make --platform=linux
-    - script: electron-forge make --platform=win32
-    - script: electron-forge make --platform=darwin
+      script: electron-forge publish --platform=linux --target=s3
+    - script: electron-forge publish --platform=win32 --target=s3
+    - script: electron-forge publish --platform=darwin --target=s3
