@@ -1,12 +1,15 @@
 language: node_js
 addons:
   apt:
+    sources:
+      - sourceline: 'deb http://download.mono-project.com/repo/ubuntu stable-xenial main'
+        key_url: 'hkp://keyserver.ubuntu.com:80'
     packages:
       - wine
       - fakeroot
       - dpkg
       - rpm
-      - mono
+      - mono-complete
 before_install:
   - npm install -g electron-forge
 before_script:
