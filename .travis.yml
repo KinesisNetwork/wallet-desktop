@@ -6,6 +6,7 @@ addons:
       - fakeroot
       - dpkg
       - rpm
+      - mono
 before_install:
   - npm install -g electron-forge
 before_script:
