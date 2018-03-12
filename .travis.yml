@@ -1,14 +1,13 @@
 language: node_js
+os:
+  - linux
+  - osx
 addons:
   apt:
-    sources:
-      - mono
     packages:
-      - wine
       - fakeroot
       - dpkg
       - rpm
-      - mono-complete
 before_install:
   - npm install -g electron-forge
 before_script:
@@ -16,6 +15,4 @@ before_script:
 jobs:
   include:
     - stage: make
-      script: electron-forge publish --platform=linux --target=s3
-    - script: travis_wait electron-forge publish --platform=win32 --target=s3
-    - script: electron-forge publish --platform=darwin --target=s3
+      script: electron-forge publish --target=s3
