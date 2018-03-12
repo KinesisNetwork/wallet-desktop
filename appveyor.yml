@@ -1,10 +1,20 @@
+image: Visual Studio 2017
+platform: x64
 environment:
   nodejs_version: 8
 install:
+  - ps: |
+      $wixToolsetBinPath = ";C:\Program Files (x86)\WiX Toolset v3.11\bin;"
+      $env:PATH = $env:PATH + $wixToolsetBinPath
+      [Environment]::SetEnvironmentVariable("Path", $env:PATH, [EnvironmentVariableTarget]::Machine)
+      if ((Get-Command "light.exe" -ErrorAction SilentlyContinue) -eq $null)
+      {
+        Write-Host "Unable to find light.exe in your PATH"
+      }
   - ps: Install-Product node $env:nodejs_version
   - npm install -g electron-forge
   - npm install
 before_build:
-  - ps: npm run sass-compile
+  - npm run sass-compile
 build_script:
-  - ps: electron-forge publish --target=s3
+  - electron-forge publish --target=s3
