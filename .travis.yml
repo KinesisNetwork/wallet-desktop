@@ -1,0 +1,17 @@
+language: node_js
+addons:
+  apt:
+    packages:
+      - wine
+      - fakeroot
+      - dpkg
+      - rpm
+before_install:
+  - npm install -g electron-forge
+jobs:
+  include:
+    - stage: test
+      script: electron-forge package --targets=linux
+    - script: electron-forge package --targets=win32
+    - stage: publish
+      script: electron-forge publish --targets=linux,win32 --arch=64
