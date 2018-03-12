@@ -16,4 +16,4 @@ jobs:
       script: electron-forge package --platform=linux
     - script: electron-forge package --platform=win32
     - stage: publish
-      script: electron-forge publish --targets=linux,win32 --arch=x64
+      script: electron-forge publish --targets=squirrel,zip,deb,rpm --arch=x64
