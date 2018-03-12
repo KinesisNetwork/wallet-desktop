@@ -3,7 +3,6 @@ addons:
   apt:
     sources:
       - sourceline: 'deb http://download.mono-project.com/repo/ubuntu stable-xenial main'
-        key_url: 'hkp://keyserver.ubuntu.com:80'
     packages:
       - wine
       - fakeroot
