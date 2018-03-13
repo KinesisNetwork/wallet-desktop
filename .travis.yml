@@ -9,7 +9,7 @@ addons:
       - dpkg
       - rpm
 before_install:
-  - if [ $TRAVIS_OS_NAME = "osx" ]; then brew link openssl --force; fi
+  - if [ $TRAVIS_OS_NAME = "osx" ]; then export LDFLAGS="$LDFLAGS -L/usr/local/opt/openssl/lib"; fi
   - npm install -g electron-forge
 before_script:
   - npm run sass-compile
