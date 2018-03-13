@@ -25,5 +25,5 @@ jobs:
     - stage: deploy
       script: electron-forge publish
       os: linux
-    - script: electron-forge-publish
+    - script: electron-forge publish
       os: osx
