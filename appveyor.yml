@@ -1,9 +1,5 @@
 image: Visual Studio 2017
 platform: x64
-branches:
-  only:
-    - master
-skip_branch_with_pr: true
 environment:
   nodejs_version: 8
 install:
@@ -12,5 +8,16 @@ install:
   - npm install
 before_build:
   - npm run sass-compile
-build_script:
-  - electron-forge publish --target=s3
+for:
+-
+  branches:
+    only:
+      - master
+  build_script:
+    - electron-forge publish
+-
+  branches:
+    except:
+      - master
+  build_script:
+    - electron-forge package
