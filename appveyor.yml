@@ -8,15 +8,6 @@ install:
   - npm install
 before_build:
   - npm run sass-compile
-for:
--
-  on:
-    branch: master
-    appveyor_pull_request_number: false
-  build_script:
-    - electron-forge publish
--
-  on:
-    appveyor_pull_request_number: true
-  build_script:
-    - electron-forge package
+build_script:
+  - ps: if (!$env:APPVEYOR_PULL_REQUEST_NUMBER) { electron-forge publish }
+  - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { electron-forge package }
