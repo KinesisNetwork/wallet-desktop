@@ -10,5 +10,4 @@ before_build:
   - npm run sass-compile
 skip_branch_with_pr: true
 build_script:
-  - if "%APPVEYOR_PULL_REQUEST_NUMBER%" == "" electron-forge publish
-  - if "%APPVEYOR_PULL_REQUEST_NUMBER%" != "" electron-forge package
+  - if "%APPVEYOR_PULL_REQUEST_NUMBER%"=="" (electron-forge publish) else (electron-forge package)
