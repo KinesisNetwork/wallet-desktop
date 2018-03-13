@@ -8,17 +8,15 @@ install:
   - npm install
 before_build:
   - npm run sass-compile
-skip_branch_with_pr: true
 for:
 -
-  branches:
-    only:
-      - master
+  on:
+    branch: master
+    appveyor_pull_request_number: false
   build_script:
     - electron-forge publish
 -
-  branches:
-    except:
-      - master
+  on:
+    appveyor_pull_request_number: true
   build_script:
     - electron-forge package
