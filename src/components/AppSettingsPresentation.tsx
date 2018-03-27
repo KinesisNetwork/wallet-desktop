@@ -11,7 +11,6 @@ export class AppSettingsPresentation extends React.Component<{
   connectionName: string
   changeHorizonServer: Function,
   changeNetworkPassphrase: Function,
-  defaultConnections: Connection[],
   addConnection: Function
 }, {}> {
   constructor (props) {
@@ -28,7 +27,7 @@ export class AppSettingsPresentation extends React.Component<{
           <div className='column' style={{padding: '25px 60px 60px 70px', borderRight: '1px solid #2b3e50'}}>
             <h1 className='sub-heading primary-font'>Select Network</h1>
             {
-              this.props.defaultConnections.map((connection: Connection, index: number) => {
+              this.props.appState.connectionList.map((connection: Connection, index: number) => {
                 let activeNetwork = connection === this.props.appState.connection
                 let activeClass = activeNetwork ? 'is-focused' : ''
                 return (

@@ -2,29 +2,13 @@ import * as React from 'react'
 import { AppState } from '../app'
 import * as swal from 'sweetalert'
 import { AppSettingsPresentation } from './AppSettingsPresentation';
-export interface Connection {
-  horizonServer: string,
-  connectionName: string,
-  networkPassphrase: string
-}
+import { saveConnections } from '../services/connection_persistance';
 
-// This should most certainly be part of react state
-//
-export let defaultConnections: Connection[] = [{
-  horizonServer: 'https://stellar-local.abx.com',
-  networkPassphrase: 'Test SDF Network ; September 2015',
-  connectionName: 'Local Development Network'
+export class AppSettings extends React.Component<{
+  setConnectionList: Function, appState: AppState, changeConnection: Function
 }, {
-  horizonServer: 'https://kinesis-test-net.abx.com',
-  networkPassphrase: 'Kinesis Test Network ; February 2018',
-  connectionName: 'Kinesis Test Network'
-}, {
-  horizonServer: 'https://horizon-testnet.stellar.org/',
-  networkPassphrase: 'Test SDF Network ; September 2015',
-  connectionName: 'Stellar Test Network'
-}]
-
-export class AppSettings extends React.Component<{appState: AppState, changeConnection: Function}, {horizonServer: string, networkPassphrase: string, connectionName: string}> {
+  horizonServer: string, networkPassphrase: string, connectionName: string
+}> {
   constructor (props) {
     super(props)
     this.state = {horizonServer: '', networkPassphrase: '', connectionName: ''}
@@ -62,16 +46,23 @@ export class AppSettings extends React.Component<{appState: AppState, changeConn
       return document.getElementById('settings-network-pass').focus();
     }
 
-    defaultConnections.push({
-      horizonServer: this.state.horizonServer,
-      networkPassphrase: this.state.networkPassphrase,
-      connectionName: this.state.connectionName,
-    })
-    this.setState({
-      horizonServer: '',
-      networkPassphrase: '',
-      connectionName: '',
-    })
+    const newConnections = [
+      ...this.props.appState.connectionList,
+      {
+        horizonServer: this.state.horizonServer,
+        networkPassphrase: this.state.networkPassphrase,
+        connectionName: this.state.connectionName,
+      }
+    ]
+    saveConnections(newConnections)
+      .then(() => {
+        this.props.setConnectionList(newConnections)
+        this.setState({
+          horizonServer: '',
+          networkPassphrase: '',
+          connectionName: '',
+        })
+      })
   }
 
   render() {
@@ -86,7 +77,6 @@ export class AppSettings extends React.Component<{appState: AppState, changeConn
         horizonServer={this.state.horizonServer}
         networkPassphrase={this.state.networkPassphrase}
         connectionName={this.state.connectionName}
-        defaultConnections={defaultConnections}
       />
     )
   }
