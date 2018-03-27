@@ -2,8 +2,8 @@ import * as React from 'react'
 import { CreateAccount, Dashboard } from './components'
 import { WalletList } from './components/WalletList';
 import { retrieveWallets } from './services/wallet_persistance';
-import { AppSettings, defaultConnections, Connection } from './components/AppSettings';
-import { MultiSigTransfer } from './components/MultiSigTransfer'
+import { AppSettings } from './components/AppSettings';
+import { retrieveConnections, defaultConnections } from './services/connection_persistance';
 
 export enum View {
   create,
@@ -14,6 +14,7 @@ export enum View {
 export interface AppState {
   view: View,
   walletList: Wallet[],
+  connectionList: Connection[],
   passwordMap: PasswordMap,
   viewParams: ViewParams,
   connection: Connection
@@ -36,10 +37,22 @@ export interface Wallet {
   accountName?: string
 }
 
+export interface Connection {
+  horizonServer: string,
+  connectionName: string,
+  networkPassphrase: string
+}
+
 export class App extends React.Component<undefined, AppState> {
   constructor (props) {
     super(props)
-    this.state = {view: View.create, walletList: [], connection: defaultConnections[0], passwordMap: {}}
+    this.state = {
+      view: View.create,
+      walletList: [],
+      connection: defaultConnections[0],
+      connectionList: [],
+      passwordMap: {}
+    }
   }
 
   public componentDidMount() {
@@ -47,16 +60,25 @@ export class App extends React.Component<undefined, AppState> {
       .then((walletList: Wallet[]) => {
         this.setWalletList(walletList || [])
       })
+    retrieveConnections()
+      .then((connectionList: Connection[]) => {
+        this.setConnectionList(connectionList)
+        this.changeConnection(connectionList[0])
+      })
   }
 
   public viewMap(view: View) {
     const ref = {
       [View.create]: <CreateAccount setWalletList={this.setWalletList.bind(this)} appState={this.state} changeView={this.changeView.bind(this)} />,
       [View.dashboard]: <Dashboard appState={this.state} setWalletList={this.setWalletList.bind(this)} changeView={this.changeView.bind(this)} setPassword={this.setPassword.bind(this)} />,
-      [View.settings]: <AppSettings appState={this.state} changeConnection={this.changeConnection.bind(this)} />,
+      [View.settings]: <AppSettings setConnectionList={this.setConnectionList.bind(this)} appState={this.state} changeConnection={this.changeConnection.bind(this)} />,
     }
 
     return ref[view]
+  }
+
+  public setConnectionList (connectionList: Connection[]): void {
+    this.setState({connectionList})
   }
 
   public setWalletList (walletList: Wallet[]): void {
