@@ -6,6 +6,7 @@ import * as swal from 'sweetalert'
 import { TransferPresentation } from './TransferPresentation';
 import * as StellarSdk from 'stellar-sdk'
 import { isPaymentMultiSig, showMultiSigTransaction } from '../helpers/accounts';
+const stroopsInLumen: number = 10000000
 
 export interface Props {
   appState: AppState
@@ -47,11 +48,14 @@ export class Transfer extends React.Component<Props, State> {
     const currentBaseReserveInStroops = mostRecentLedger.records[0].base_reserve_in_stroops
       ? mostRecentLedger.records[0].base_reserve_in_stroops
       : Number(mostRecentLedger.records[0].base_reserve)
-
-    const currentBaseFee = _.round(currentBaseFeeInStroops * 0.0000001, 8)
+    const currentTransactionPercent = (mostRecentLedger.records[0].base_percentage_fee || 0) / 10000 //(convert from basis points to percent)
 
     // The multiplier is defined here: https://www.stellar.org/developers/guides/concepts/fees.html
     const currentBaseReserve = _.round(currentBaseReserveInStroops * 0.0000001, 8) * 2
+    const currentBaseFee = _.round(currentBaseFeeInStroops * 0.0000001, 8)
+    const percentFee = _.round(Number(amount) * currentTransactionPercent, 8)
+    const totalFeeLumens = _.round(percentFee + currentBaseFee, 8)
+    const totalFeeStroops = _.round((percentFee * stroopsInLumen) + currentBaseFeeInStroops)
 
     let account
 
@@ -79,7 +83,7 @@ export class Transfer extends React.Component<Props, State> {
         title: `Continue with transfer?`,
         text: `
           The account that you are transfering with does not have any funds yet, are you sure you want to continue?
-          The fee will be ${currentBaseFee} Kinesis
+          The total fee will be ${totalFeeLumens} Kinesis
         `,
         icon: `warning`,
         dangerMode: true,
@@ -92,7 +96,7 @@ export class Transfer extends React.Component<Props, State> {
 
 
       // If we get the correct error, we try call account creation
-      let newAccountTransaction = new StellarSdk.TransactionBuilder(sequencedAccount, {fee: currentBaseFeeInStroops})
+      let newAccountTransaction = new StellarSdk.TransactionBuilder(sequencedAccount, {fee: String(totalFeeStroops)})
         .addOperation(StellarSdk.Operation.createAccount({
           destination: targetAddress,
           startingBalance: amount,
@@ -122,7 +126,7 @@ export class Transfer extends React.Component<Props, State> {
 
     let paymentTransaction: StellarSdk.Transaction
     try {
-      paymentTransaction = new StellarSdk.TransactionBuilder(sequencedAccount, {fee: currentBaseFeeInStroops})
+      paymentTransaction = new StellarSdk.TransactionBuilder(sequencedAccount, {fee: String(totalFeeStroops)})
         .addOperation(StellarSdk.Operation.payment({
           destination: targetAddress,
           asset: StellarSdk.Asset.native(),
@@ -142,7 +146,7 @@ export class Transfer extends React.Component<Props, State> {
 
     const continueTransfer = await swal({
       title: 'Continue with transfer?',
-      text: `Once submitted, the transaction can not be reverted! The fee will be ${currentBaseFee} Kinesis`,
+      text: `Once submitted, the transaction can not be reverted! The fee will be ${totalFeeLumens} Kinesis`,
       icon: 'warning',
       dangerMode: true,
       buttons: true
