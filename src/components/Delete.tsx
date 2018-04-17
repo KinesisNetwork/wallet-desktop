@@ -5,7 +5,7 @@ import { getActiveWallet } from '../helpers/wallets'
 import * as swal from 'sweetalert'
 import { DeletePresentation } from './DeletePresentation';
 import { getPasswordConfirmation } from './helpers'
-import StellarSdk = require('stellar-sdk')
+import StellarSdk = require('js-kinesis-sdk')
 
 export class Delete extends React.Component<{appState: AppState, setWalletList: Function, changeView: Function}, {}> {
   constructor (props) {

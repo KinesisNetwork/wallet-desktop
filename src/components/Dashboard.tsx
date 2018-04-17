@@ -2,7 +2,7 @@ import * as React from 'react'
 import { AppState } from '../app'
 import { getActiveWallet } from '../helpers/wallets';
 import { DashboardPresentation } from './DashboardPresentation';
-import * as StellarSdk from 'stellar-sdk'
+import * as StellarSdk from 'js-kinesis-sdk'
 
 export class Dashboard extends React.Component<
   {appState: AppState, setWalletList: Function, changeView: Function, setPassword: Function},

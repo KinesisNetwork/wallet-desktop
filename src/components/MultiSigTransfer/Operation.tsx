@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { capitalize } from 'lodash'
-import { Operation, TransactionOperation, } from 'stellar-sdk'
+import { Operation, TransactionOperation, } from 'js-kinesis-sdk'
 
 export interface IProps {
   operation: TransactionOperation

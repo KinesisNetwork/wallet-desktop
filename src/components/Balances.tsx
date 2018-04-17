@@ -2,7 +2,7 @@ import * as React from 'react'
 import { AppState } from '../app'
 import { getActiveWallet  } from '../helpers/wallets';
 import { BalancesPresentation } from './BalancesPresentation';
-import * as StellarSdk from 'stellar-sdk'
+import * as StellarSdk from 'js-kinesis-sdk'
 
 export class Balances extends React.Component<{appState: AppState}, {account: any, kinesisBalance: number, accountActivated: boolean}> {
   constructor (props) {

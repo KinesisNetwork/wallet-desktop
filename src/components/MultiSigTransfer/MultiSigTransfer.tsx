@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Keypair, Server, Transaction } from 'stellar-sdk'
+import { Keypair, Server, Transaction } from 'js-kinesis-sdk'
 import * as swal from 'sweetalert'
 import { AppState } from '../../app'
 import { getActivePrivateKey } from '../../helpers/wallets'
