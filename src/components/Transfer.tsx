@@ -4,7 +4,7 @@ import { AppState } from '../app'
 import { getActiveWallet, getPrivateKey, getActivePrivateKey } from '../helpers/wallets';
 import * as swal from 'sweetalert'
 import { TransferPresentation } from './TransferPresentation';
-import * as StellarSdk from 'stellar-sdk'
+import * as StellarSdk from 'js-kinesis-sdk'
 import { isPaymentMultiSig, showMultiSigTransaction } from '../helpers/accounts';
 const stroopsInLumen: number = 10000000
 

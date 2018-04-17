@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { AppState } from '../app'
 import { getActiveWallet } from '../helpers/wallets'
-import * as StellarSdk from 'stellar-sdk'
-import { CollectionPage, TransactionRecord } from 'stellar-sdk'
+import * as StellarSdk from 'js-kinesis-sdk'
+import { CollectionPage, TransactionRecord } from 'js-kinesis-sdk'
 import * as _ from 'lodash'
 
 export interface HumanTransactions {

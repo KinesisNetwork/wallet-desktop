@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Transaction } from 'stellar-sdk'
+import { Transaction } from 'js-kinesis-sdk'
 import { OperationView } from './Operation'
 
 export interface IProps {

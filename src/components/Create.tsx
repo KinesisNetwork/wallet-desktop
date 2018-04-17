@@ -5,7 +5,7 @@ import { addNewWallet } from '../services/wallet_persistance'
 import { encryptPrivateKey } from '../services/encryption'
 import swal from 'sweetalert'
 import { CreateAccountPresentation } from './CreatePresentation';
-import * as StellarBase from 'stellar-sdk'
+import * as StellarBase from 'js-kinesis-sdk'
 
 export class CreateAccount extends React.Component<{
   setWalletList: Function, setAccountKeys: Function, appState: AppState, changeView: Function

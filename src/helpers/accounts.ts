@@ -1,4 +1,4 @@
-import { AccountResponse, Transaction } from 'stellar-sdk'
+import { AccountResponse, Transaction } from 'js-kinesis-sdk'
 import { showCopyAlert } from './textAlerts'
 
 export function isPaymentMultiSig(account: AccountResponse): boolean {
