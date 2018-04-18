@@ -92,7 +92,7 @@ export class Transactions extends React.Component<{appState: AppState}, IState> 
 
     const transactions = _.flatten(await Promise.all(records.map(async (r) => {
       const operations = await r.operations()
-      return operations._embedded.records.map(o => {
+      return operations.records.map(o => {
         return {
           source: r.source_account,
           txId: r.id,
