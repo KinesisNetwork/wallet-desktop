@@ -1,20 +1,21 @@
 import { Wallet } from '../app';
 import { addNewItem, retrieveItems, saveItems, deleteItem } from './persistance';
-const walletsKey = 'wallets'
+const WALLETS_KEY = 'wallets'
 
-export function addNewWallet(publicKey: string, encryptedPrivateKey: string) {
-  return addNewItem<Wallet>(walletsKey, {publicKey, encryptedPrivateKey})
+export function addNewWallet(newWallet: Wallet): Promise<Wallet[]> {
+  return addNewItem(WALLETS_KEY, newWallet)
 }
 
-export function retrieveWallets() {
-  return retrieveItems<Wallet>(walletsKey)
+export function retrieveWallets(): Promise<Wallet[]> {
+  const errorMessage = 'Something appeared to be wrong while attempting to retrieve your wallet'
+  return retrieveItems<Wallet>(WALLETS_KEY, errorMessage)
 }
 
 export function saveWallets(wallets: Wallet[]) {
-  return saveItems<Wallet>(walletsKey, wallets)
+  const error = 'Something appeared to be wrong while attempting to save the new address to your wallet'
+  return saveItems(WALLETS_KEY, wallets, error)
 }
 
-export function deleteWallets(accountId: string) {
-  return deleteItem<Wallet>(walletsKey, (wallet: any) => wallet.publicKey !== accountId)
+export function deleteWallet(accountId: string) {
+  return deleteItem<Wallet>(WALLETS_KEY, (wallet) => wallet.publicKey !== accountId)
 }
-

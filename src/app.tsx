@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { CreateAccount, Dashboard } from './components'
+import { CreateWallet, Dashboard } from './components'
 import { WalletList } from './components/WalletList';
 import { retrieveWallets } from './services/wallet_persistance';
 import { AppSettings } from './components/AppSettings';
@@ -28,13 +28,13 @@ export interface PasswordMap {
 }
 
 export interface ViewParams {
-  walletIndex?: number
+  walletIndex: number
 }
 
 export interface Wallet {
   publicKey: string,
   encryptedPrivateKey: string,
-  accountName?: string
+  accountName: string
 }
 
 export interface Connection {
@@ -51,53 +51,54 @@ export class App extends React.Component<undefined, AppState> {
       walletList: [],
       connection: defaultConnections[0],
       connectionList: [],
-      passwordMap: {}
+      passwordMap: {},
+      viewParams: {
+        walletIndex: 0,
+      },
     }
   }
 
-  public componentDidMount() {
-    retrieveWallets()
-      .then((walletList: Wallet[]) => {
-        this.setWalletList(walletList || [])
-      })
-    retrieveConnections()
-      .then((connectionList: Connection[]) => {
-        this.setConnectionList(connectionList)
-        this.changeConnection(connectionList[0])
-      })
+  public async componentDidMount() {
+    const wallets = await retrieveWallets()
+    this.setWalletList(wallets)
+    const connections = await retrieveConnections()
+    this.setConnectionList(connections)
+    this.changeConnection(connections[0])
   }
 
   public viewMap(view: View) {
     const ref = {
-      [View.create]: <CreateAccount setWalletList={this.setWalletList.bind(this)} appState={this.state} changeView={this.changeView.bind(this)} />,
-      [View.dashboard]: <Dashboard appState={this.state} setWalletList={this.setWalletList.bind(this)} changeView={this.changeView.bind(this)} setPassword={this.setPassword.bind(this)} />,
-      [View.settings]: <AppSettings setConnectionList={this.setConnectionList.bind(this)} appState={this.state} changeConnection={this.changeConnection.bind(this)} />,
+      [View.create]: <CreateWallet setWalletList={this.setWalletList} appState={this.state} changeView={this.changeView} />,
+      [View.dashboard]: <Dashboard appState={this.state} setWalletList={this.setWalletList} changeView={this.changeView} setPassword={this.setPassword} />,
+      [View.settings]: <AppSettings setConnectionList={this.setConnectionList} appState={this.state} changeConnection={this.changeConnection} />,
     }
 
     return ref[view]
   }
 
-  public setConnectionList (connectionList: Connection[]): void {
+  public setConnectionList = (connectionList: Connection[]): void => {
     this.setState({connectionList})
   }
 
-  public setWalletList (walletList: Wallet[]): void {
+  public setWalletList = (walletList: Wallet[]): void => {
     this.setState({walletList})
   }
 
-  public changeConnection (connection) {
+  public changeConnection = (connection) => {
     this.setState({connection})
   }
 
-  public changeView (view: View, viewParams?: ViewParams) {
-    this.setState({view, viewParams})
+  public changeView = (view: View, viewParams?: ViewParams) => {
+    this.setState({
+      view,
+      viewParams: {
+        ...this.state.viewParams,
+        ...viewParams,
+      }
+    })
   }
 
-  public changeView (view: View, viewParams?: ViewParams) {
-    this.setState({view, viewParams})
-  }
-
-  public setPassword (accountId: string, password: string) {
+  public setPassword = (accountId: string, password: string) => {
     this.setState({
       passwordMap: {
         ...this.state.passwordMap,
@@ -111,10 +112,10 @@ export class App extends React.Component<undefined, AppState> {
       <div className='columns' style={{height: '100%'}}>
         <div className='column is-one-quarter' style={{backgroundColor: '#2b3e50', padding: '0px', position: 'relative'}}>
           <img src='./logo.svg' className='logo-sidebar'/>
-          <WalletList appState={this.state} setWalletList={this.setWalletList.bind(this)} changeView={this.changeView.bind(this)} />
+          <WalletList changeView={this.changeView} wallets={this.state.walletList} currentWallet={this.state.viewParams.walletIndex} />
           <div className='settings-btn'>
-            <label className='label' style={{fontSize: '0.8em', textAlign: 'center'}}> Connection: {this.state.connection.connectionName } </label>
-            <button className='button is-outlined is-fullwidth' style={{fontSize: '14px', marginLeft: '8px'}} onClick={() => this.changeView(View.settings)}>
+            <label className='label'> Connection: {this.state.connection.connectionName } </label>
+            <button className='button is-outlined is-fullwidth' onClick={() => this.changeView(View.settings)}>
               Settings
             </button>
           </div>
