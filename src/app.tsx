@@ -110,13 +110,11 @@ export class App extends React.Component<undefined, AppState> {
   render() {
     return (
       <div className='columns is-marginless' style={{height: '100vh'}}>
-        <div className='column is-one-quarter'
+        <div className='column is-one-quarter vertical-spaced'
           style={{
             backgroundColor: '#2b3e50',
-            position: 'relative',
-            display: 'flex',
-            flexDirection: 'column',
-           }}>
+          }}
+        >
           <img src='./logo.svg' className='logo-sidebar'/>
           <WalletList changeView={this.changeView} wallets={this.state.walletList} currentWallet={this.state.viewParams.walletIndex} />
           <div style={{

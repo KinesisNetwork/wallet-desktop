@@ -25,6 +25,12 @@ body {
   padding: 0;
 }
 
+.vertical-spaced {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .button.is-primary.is-outlined:focus,
 .button.is-primary.is-outlined:hover {
   color: #2b3e50;
@@ -118,13 +124,6 @@ body {
 .scrollable {
   overflow-y: scroll;
   overflow-x: hidden;
-  padding-right: 8px;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
 }
 
 .scrollable::-webkit-scrollbar {

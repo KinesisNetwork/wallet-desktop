@@ -72,7 +72,6 @@ export class Transactions extends React.Component<{appState: AppState}, IState> 
     }
   }
 
-  // TODO: Hook this up to a next page button that is hidden if lastPage === true
   async transactionPage (): Promise<void> {
     StellarSdk.Network.use(new StellarSdk.Network(this.props.appState.connection.networkPassphrase))
     const server = new StellarSdk.Server(this.props.appState.connection.horizonServer, {allowHttp: true})
@@ -156,7 +155,7 @@ export class Transactions extends React.Component<{appState: AppState}, IState> 
   }
 
   determineTxData (operation: StellarSdk.OperationRecord) {
-    switch(operation.type) {
+    switch (operation.type) {
       case 'create_account':
         return {
           'Funder': operation.funder,
@@ -193,13 +192,9 @@ export class Transactions extends React.Component<{appState: AppState}, IState> 
 
   render() {
     return (
-        <div style={{height: '450px', display: 'table-row' }}>
-          <div style={{margin: '0px 45px 0px 60px', position: 'relative', height: '100%'}}>
-            <div onScroll={() => this.handleScroll()} className='scrollable' id='transactions' >
-              { this.state.transactions.map((t, i) => this.renderTransactions(t, i)) }
-            </div>
-          </div>
-        </div>
+      <div onScroll={() => this.handleScroll()} className='scrollable' id='transactions' style={{flexShrink: 10}} >
+        {this.state.transactions.map((t, i) => this.renderTransactions(t, i))}
+      </div>
     )
   }
 }
