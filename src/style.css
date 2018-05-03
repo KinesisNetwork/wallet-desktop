@@ -6608,8 +6608,7 @@ body {
 
 .scrollable {
   overflow-y: scroll;
-  overflow-x: hidden;
-  flex-shrink: 10; }
+  overflow-x: hidden; }
 
 .scrollable::-webkit-scrollbar {
   display: initial;
