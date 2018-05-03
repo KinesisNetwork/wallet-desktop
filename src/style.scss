@@ -13,11 +13,15 @@
   src: url("./fonts/Roboto-Regular.ttf") format('truetype');
 }
 
-#App,
-body,
-html {
+::-webkit-scrollbar {
+  display: none;
+}
+
+body {
   height: 100%;
   width: 100%;
+  min-width: 1200px;
+  min-height: 700px;
   padding: 0;
 }
 
@@ -72,10 +76,7 @@ html {
   text-transform: uppercase;
   letter-spacing: 0.45em;
   color: #ffc800;
-  padding-bottom: 32px;
-  padding-top: 28px;
-  background-color: #1b2835;
-  margin-top: 12px;
+  padding: 30px 0;
 }
 
 .button {
@@ -85,11 +86,7 @@ html {
 .logo-sidebar {
   height: 86px;
   width: 100%;
-  background-color: #2e4458;
   display: block;
-  margin-top: 13px;
-  margin-bottom: 22px;
-  padding: 11px 0;
 }
 
 .wallet-heading {
@@ -131,6 +128,7 @@ html {
 }
 
 .scrollable::-webkit-scrollbar {
+  display: initial;
   width: 5px;
 }
 
@@ -141,14 +139,12 @@ html {
 .scrollable::-webkit-scrollbar-thumb {
   background: #4E5D6C;
 }
-@media (min-width: 769px) {
-  .settings-btn {
-    position: absolute;
-    bottom: 0;
-    padding: 22px;
-    width: 100%;
-  }
-}
+// @media (min-width: 769px) {
+//   .settings-btn {
+//     position: absolute;
+//     bottom: 5%;
+//   }
+// }
 
 .sk-folding-cube {
   margin: 20px auto;

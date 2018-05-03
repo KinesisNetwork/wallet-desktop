@@ -109,18 +109,29 @@ export class App extends React.Component<undefined, AppState> {
 
   render() {
     return (
-      <div className='columns' style={{height: '100%'}}>
-        <div className='column is-one-quarter' style={{backgroundColor: '#2b3e50', padding: '0px', position: 'relative'}}>
+      <div className='columns is-marginless' style={{height: '100vh'}}>
+        <div className='column is-one-quarter'
+          style={{
+            backgroundColor: '#2b3e50',
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
+           }}>
           <img src='./logo.svg' className='logo-sidebar'/>
           <WalletList changeView={this.changeView} wallets={this.state.walletList} currentWallet={this.state.viewParams.walletIndex} />
-          <div className='settings-btn'>
+          <div style={{
+            flexGrow: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+          }} className='has-text-centered'>
             <label className='label'> Connection: {this.state.connection.connectionName } </label>
             <button className='button is-outlined is-fullwidth' onClick={() => this.changeView(View.settings)}>
               Settings
             </button>
           </div>
         </div>
-        <div className='column' style={{padding: '0px'}}>
+        <div className='column'>
           { this.viewMap(this.state.view) }
         </div>
       </div>

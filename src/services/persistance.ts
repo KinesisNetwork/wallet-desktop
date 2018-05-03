@@ -12,11 +12,12 @@ export async function addNewItem<T extends object>(typeKey: string, item: T): Pr
 
 export function retrieveItems<T>(typeKey: string, errorMessage?: string): Promise<T[]> {
   return new Promise<T[]>((res, rej) => {
-    storage.get(typeKey, (err, data: T[]) => {
+    storage.get(typeKey, (err, data) => {
       if (err) {
         return rej(errorMessage)
       }
-      return res([...data] as T[])
+      const items = Array.isArray(data) ? data as T[] : []
+      return res([...items])
     })
   })
 }

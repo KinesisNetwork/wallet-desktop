@@ -12,7 +12,7 @@ export const ImportWallet: React.SFC<IProps> = ({handleChange, importWallet}) =>
       <span className='icon is-large'>
         <i className='far fa-user' />
       </span>
-      <h1 className='sub-heading primary-font'>Import Account</h1>
+      <h1 className='title is-4 heading primary-font'>Import Account</h1>
     </div>
     <form onSubmit={(ev) => importWallet(ev)}>
       <div className='field'>
