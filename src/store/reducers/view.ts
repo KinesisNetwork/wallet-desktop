@@ -3,7 +3,10 @@ import { getType } from 'typesafe-actions'
 import { RootAction } from '@store'
 import { changeView } from '@actions'
 import { View } from '@types'
-import { ViewState } from '../state/view'
+
+export interface ViewState {
+  readonly currentView: View
+}
 
 export const view = combineReducers<ViewState, RootAction>({
   currentView: (state = View.create, action) => {

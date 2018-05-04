@@ -3,7 +3,7 @@
     "removeComments": false,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "declaration": true,
+    "declaration": false,
     "noImplicitAny": false,
     "noImplicitReturns": true,
     "suppressImplicitAnyIndexErrors": true,
@@ -38,6 +38,9 @@
       ],
       "@actions": [
         "store/actions"
+      ],
+      "@containers": [
+        "containers"
       ]
     }
   },

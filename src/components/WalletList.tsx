@@ -2,13 +2,12 @@ import * as React from 'react'
 import {
   Wallet,
   View,
-  ViewParams,
 } from '@types'
 
 export interface Props {
   wallets: Wallet[]
   currentWallet: number
-  changeView: (view: View, options?: ViewParams) => void
+  changeView: (view: View) => any
 }
 
 export const WalletList: React.SFC<Props> = ({ wallets, currentWallet, changeView }) => (
@@ -19,7 +18,7 @@ export const WalletList: React.SFC<Props> = ({ wallets, currentWallet, changeVie
     {wallets.map((wallet, walletIndex) => (
       <a key={walletIndex}
         className='panel-block'
-        onClick={() => changeView(View.dashboard, { walletIndex })}>
+        onClick={() => changeView(View.dashboard)}>
         <span className='panel-icon'>
           <i className='fas fa-book' />
         </span>

@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
-// @ts-ignore
-import * as types from '@types'
 import { RootAction } from './root-action'
-import { RootState } from './state'
 import * as reducers from './reducers'
 
+export type RootState = {
+  [P in keyof typeof reducers]: ReturnType<typeof reducers[P]>
+}
 export const rootReducer = combineReducers<RootState, RootAction>(reducers)

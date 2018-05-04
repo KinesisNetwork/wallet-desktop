@@ -3,7 +3,7 @@ import {
   AppSettings,
   CreateWallet,
   Dashboard,
-  WalletList,
+  Sidebar,
 } from '@components'
 import {
   Connection,
@@ -91,24 +91,8 @@ export class App extends React.Component<{}, AppState> {
   render() {
     return (
       <div className='columns is-marginless' style={{height: '100vh'}}>
-        <div className='column is-one-quarter vertical-spaced'
-          style={{
-            backgroundColor: '#2b3e50',
-          }}
-        >
-          <img src='./logo.svg' className='logo-sidebar'/>
-          <WalletList changeView={this.changeView} wallets={this.state.walletList} currentWallet={this.state.viewParams.walletIndex} />
-          <div style={{
-            flexGrow: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-          }} className='has-text-centered'>
-            <label className='label'> Connection: {this.state.connection.connectionName } </label>
-            <button className='button is-outlined is-fullwidth' onClick={() => this.changeView(View.settings)}>
-              Settings
-            </button>
-          </div>
+        <div className='column is-one-quarter' style={{ backgroundColor: '#2b3e50', }} >
+          <Sidebar />
         </div>
         <div className='column'>
           { this.viewMap(this.state.view) }
