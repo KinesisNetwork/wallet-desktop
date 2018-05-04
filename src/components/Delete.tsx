@@ -1,11 +1,11 @@
 import * as React from 'react'
+import * as StellarSdk from 'js-kinesis-sdk'
+import * as swal from 'sweetalert'
 import { AppState, View } from '../app'
 import { deleteWallet } from '../services/wallet_persistance';
 import { getActiveWallet } from '../helpers/wallets'
-import * as swal from 'sweetalert'
 import { DeletePresentation } from './DeletePresentation';
 import { getPasswordConfirmation } from './helpers'
-import StellarSdk = require('js-kinesis-sdk')
 
 export class Delete extends React.Component<{appState: AppState, setWalletList: Function, changeView: Function}, {}> {
   constructor (props) {
@@ -24,6 +24,8 @@ export class Delete extends React.Component<{appState: AppState, setWalletList: 
       const activeWallet = getActiveWallet(this.props.appState)
       const server = new StellarSdk.Server(this.props.appState.connection.horizonServer, {allowHttp: true})
       try {
+        // Want to check whether an account exists, and if so request password confirmation
+        // Otherwise just delete
         const account = await server.loadAccount(activeWallet.publicKey)
         const balance = Number(account.balances.find(b => b.asset_type === 'native').balance)
         if (balance > 0) {
@@ -32,12 +34,11 @@ export class Delete extends React.Component<{appState: AppState, setWalletList: 
             return
           }
         }
-      } catch (e) {null}
-      deleteWallet(accountId)
-        .then((wallets) => {
-          this.props.setWalletList(wallets)
-          this.props.changeView(View.create, {})
-        })
+      } finally {
+        const wallets = await deleteWallet(accountId)
+        this.props.setWalletList(wallets)
+        this.props.changeView(View.create)
+      }
     }
   }
 
