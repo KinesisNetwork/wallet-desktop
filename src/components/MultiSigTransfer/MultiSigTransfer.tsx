@@ -6,19 +6,19 @@ import { getActivePrivateKey } from '../../helpers/wallets'
 import { TransactionView } from './Transaction'
 import { get } from 'lodash'
 
-export interface IState {
+export interface State {
   serializedTransaction: string
   transaction: Transaction | null
 }
 
-export interface IProps {
+export interface Props {
   appState: AppState
   transactionSubmit: () => void
   transactionFinish: () => void
   updateTransferView: (view: 'payment') => void
 }
 
-export class MultiSigTransfer extends React.Component<IProps, IState> {
+export class MultiSigTransfer extends React.Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {

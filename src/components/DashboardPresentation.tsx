@@ -8,7 +8,7 @@ import { Password } from './Password';
 import { Delete } from './Delete';
 import { Loader } from './Loader';
 
-export interface IProps {
+export interface Props {
   appState: AppState,
   setWalletList: Function,
   changeView: Function,
@@ -22,7 +22,7 @@ export interface IProps {
   updateTransferView: (view: 'multi' | 'payment') => void,
 }
 
-export class DashboardPresentation extends React.Component<IProps, {}> {
+export class DashboardPresentation extends React.Component<Props, {}> {
 
   private switchTransferView = () => {
     switch (this.props.transferView) {

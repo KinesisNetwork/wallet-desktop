@@ -17,7 +17,29 @@
     "moduleResolution": "node",
     "pretty": true,
     "target": "es2015",
-    "jsx": "react"
+    "jsx": "react",
+    "rootDir": "src",
+    "baseUrl": "src",
+    "paths": {
+      "@services/*": [
+        "services/*"
+      ],
+      "@types": [
+        "types"
+      ],
+      "@helpers/*": [
+        "helpers/*"
+      ],
+      "@components": [
+        "components"
+      ],
+      "@store": [
+        "store"
+      ],
+      "@actions": [
+        "store/actions"
+      ]
+    }
   },
   "formatCodeOptions": {
     "indentSize": 2,

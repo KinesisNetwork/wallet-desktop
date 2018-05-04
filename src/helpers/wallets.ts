@@ -1,4 +1,5 @@
-import { AppState, Wallet } from '../app'
+import { AppState } from '../app'
+import { Wallet } from '@services/wallets'
 import * as _ from 'lodash'
 import { decryptPrivateKey } from '../services/encryption';
 import { clipboard } from 'electron'

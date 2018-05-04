@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { StateChanges } from './CreateWallet'
 
-export interface IProps {
+export interface Props {
   generate: (ev: React.FormEvent<HTMLFormElement>) => void
   handleChange: (ev: React.ChangeEvent<HTMLInputElement>, key: StateChanges) => void
 }
 
-export const GenerateWallet: React.SFC<IProps> = ({generate, handleChange}) => (
+export const GenerateWallet: React.SFC<Props> = ({generate, handleChange}) => (
   <div>
     <div>
       <span className='icon is-large'>

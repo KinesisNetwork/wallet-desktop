@@ -1,11 +1,11 @@
 import * as React from 'react'
 
-import { GenerateWallet, IProps as GenerateWalletProps } from './GenerateWallet'
-import { ImportWallet, IProps as ImportWalletProps } from './ImportWallet'
+import { GenerateWallet, Props as GenerateWalletProps } from './GenerateWallet'
+import { ImportWallet, Props as ImportWalletProps } from './ImportWallet'
 
-export interface IProps extends GenerateWalletProps, ImportWalletProps { }
+export interface Props extends GenerateWalletProps, ImportWalletProps { }
 
-export const CreateAccountPresentation: React.SFC<IProps> = (props) => (
+export const CreateAccountPresentation: React.SFC<Props> = (props) => (
   <div>
     <div className='has-text-centered'>
       <h1 className='title-heading primary-font'>Add a new wallet</h1>

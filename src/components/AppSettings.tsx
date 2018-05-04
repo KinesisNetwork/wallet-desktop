@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { AppState } from '../app'
 import * as swal from 'sweetalert'
-import { AppSettingsPresentation } from './AppSettingsPresentation';
-import { saveConnections } from '../services/connection_persistance';
+import { AppSettingsPresentation } from './AppSettingsPresentation'
+import { saveConnections, Connection } from '@services/connections'
 
 export class AppSettings extends React.Component<{
   setConnectionList: Function, appState: AppState, changeConnection: Function

@@ -2,18 +2,23 @@ import * as React from 'react'
 import swal from 'sweetalert'
 import { Keypair } from 'js-kinesis-sdk'
 
-import { AppState, View, ViewParams, Wallet } from '../../app'
-import { addNewWallet } from '../../services/wallet_persistance'
-import { encryptPrivateKey } from '../../services/encryption'
+import {
+  Wallet,
+  View,
+  ViewParams,
+} from '@types'
+import { AppState } from '../../app'
+import { addNewWallet } from '@services/wallets'
+import { encryptPrivateKey } from '@services/encryption'
 import { CreateAccountPresentation } from './CreatePresentation';
 
-export interface IProps {
+export interface Props {
   setWalletList: (wallets: Wallet[]) => void
   appState: AppState
   changeView: (view: View, options: ViewParams) => void
 }
 
-export interface IState {
+export interface State {
   accountName: string
   privateKey: string
   publicKey: string
@@ -21,10 +26,10 @@ export interface IState {
   passwordVerify: string
 }
 
-export type StateChanges = keyof IState
+export type StateChanges = keyof State
 
-export class CreateWallet extends React.Component<IProps, IState> {
-  constructor (props: IProps) {
+export class CreateWallet extends React.Component<Props, State> {
+  constructor (props: Props) {
     super(props)
     this.state = {
       accountName: '',

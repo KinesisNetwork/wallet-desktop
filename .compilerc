@@ -19,7 +19,14 @@
         "experimentalDecorators": true,
         "target": "es2015",
         "module": "commonjs",
-        "jsx": "react"
+        "jsx": "react",
+        "rootDir": "src",
+        "baseUrl": "src",
+        "paths": {
+          "@services/*": [
+            "services/*"
+          ]
+        }
       }
     },
     "production": {

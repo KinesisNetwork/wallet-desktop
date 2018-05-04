@@ -2,7 +2,7 @@ import * as React from 'react'
 import * as StellarSdk from 'js-kinesis-sdk'
 import * as swal from 'sweetalert'
 import { AppState, View } from '../app'
-import { deleteWallet } from '../services/wallet_persistance';
+import { deleteWallet } from '@services/wallets';
 import { getActiveWallet } from '../helpers/wallets'
 import { DeletePresentation } from './DeletePresentation';
 import { getPasswordConfirmation } from './helpers'

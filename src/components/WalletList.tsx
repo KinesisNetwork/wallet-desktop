@@ -1,17 +1,21 @@
 import * as React from 'react'
-import { View, Wallet, ViewParams } from '../app'
+import {
+  Wallet,
+  View,
+  ViewParams,
+} from '@types'
 
-export interface IProps {
+export interface Props {
   wallets: Wallet[]
   currentWallet: number
   changeView: (view: View, options?: ViewParams) => void
 }
 
-export const WalletList: React.SFC<IProps> = ({ wallets, currentWallet, changeView }) => (
+export const WalletList: React.SFC<Props> = ({ wallets, currentWallet, changeView }) => (
   <nav className='panel'>
     <p className='panel-heading wallet-heading'>
       Wallets
-        </p>
+    </p>
     {wallets.map((wallet, walletIndex) => (
       <a key={walletIndex}
         className='panel-block'

@@ -1,6 +1,7 @@
 {
   "name": "kinesis-wallet",
   "productName": "Kinesis Wallet",
+  "repository": "https://github.com/KinesisNetwork/wallet-desktop",
   "version": "0.1.0",
   "description": "Stellar compliant hard wallet",
   "main": "src/index.ts",
@@ -72,14 +73,19 @@
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-hot-loader": "^3.0.0-beta.6",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0",
     "sweetalert": "^2.1.0",
-    "tslib": "^1.9.0"
+    "tsconfig-paths": "^3.3.1",
+    "tslib": "^1.9.0",
+    "typesafe-actions": "^2.0.0-1"
   },
   "devDependencies": {
     "@types/electron": "^1.6.10",
     "@types/electron-json-storage": "^4.0.0",
     "@types/react": "^15.6.14",
     "@types/react-dom": "^15.5.7",
+    "@types/react-redux": "^5.0.19",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
@@ -89,6 +95,6 @@
     "electron-prebuilt-compile": "1.7.11",
     "node-sass": "^4.7.2",
     "tslint": "^5.1.0",
-    "typescript": "^2.7.2"
+    "typescript": "^2.8.3"
   }
 }

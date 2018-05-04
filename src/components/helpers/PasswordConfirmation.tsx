@@ -1,7 +1,8 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import * as swal from 'sweetalert'
-import { Wallet } from '../../app'
+import { focus } from '@helpers/focus'
+import { Wallet } from '@types'
 import { decryptPrivateKey } from '../../services/encryption'
 
 class PasswordInput extends React.Component<{activeWallet: Wallet}, {password: string}> {
@@ -23,9 +24,14 @@ class PasswordInput extends React.Component<{activeWallet: Wallet}, {password: s
   }
 
   public render() {
-    setTimeout(() => document.getElementById('popup-password-confirmation').focus())
+    setTimeout(() => focus('popup-password-confirmation'))
     return (
-      <input id='popup-password-confirmation' type='password' className='input is-large has-text-centered' value={this.state.password} onChange={(ev) => this.changeText(ev)} />
+      <input id='popup-password-confirmation'
+        type='password'
+        className='input is-large has-text-centered'
+        value={this.state.password}
+        onChange={(ev) => this.changeText(ev)}
+      />
     )
   }
 }

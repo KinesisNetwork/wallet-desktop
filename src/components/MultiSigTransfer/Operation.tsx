@@ -2,11 +2,11 @@ import * as React from 'react'
 import { capitalize } from 'lodash'
 import { Operation, TransactionOperation, } from 'js-kinesis-sdk'
 
-export interface IProps {
+export interface Props {
   operation: TransactionOperation
 }
 
-export const OperationView: React.SFC<IProps> = ({operation}) => (
+export const OperationView: React.SFC<Props> = ({operation}) => (
   <div className='message'>
     <div className='message-header'>
       <p>{ formatType(operation.type) }</p>
@@ -23,7 +23,7 @@ const formatType = (operationType: string): string => {
   return `${capitalize(start)} ${others.reduce((end, current, index) => index % 2 === 0 ? `${end} ${current}` : `${end}${current}`, '')}`
 }
 
-const OperationSwitch: React.SFC<IProps> = ({operation}) => {
+const OperationSwitch: React.SFC<Props> = ({operation}) => {
   switch (operation.type) {
     case 'payment':
       return <PaymentOperationView operation={operation} />

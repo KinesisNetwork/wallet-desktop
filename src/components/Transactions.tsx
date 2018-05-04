@@ -29,7 +29,7 @@ export enum StellarTxType {
   'Manage Data' = 10
 }
 
-export interface IState {
+export interface State {
   transactions: HumanTransactions[]
   currentPage: CollectionPage<TransactionRecord>
   lastPage: boolean
@@ -37,7 +37,7 @@ export interface IState {
 }
 
 const defaultState = { transactions: [], lastPage: false, currentPage: undefined, recentlyLoaded: false }
-export class Transactions extends React.Component<{appState: AppState}, IState> {
+export class Transactions extends React.Component<{appState: AppState}, State> {
   constructor (props) {
     super(props)
     this.state = _.cloneDeep(defaultState)
