@@ -20,3 +20,11 @@ export interface PasswordMap {
 export interface ViewParams {
   walletIndex: number
 }
+
+export interface CreateWalletForm {
+  readonly accountName: string
+  readonly publicKey: string
+  readonly privateKey: string
+  readonly password: string
+  readonly passwordVerify: string
+}

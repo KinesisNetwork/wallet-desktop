@@ -3,3 +3,9 @@ export enum View {
   settings,
   dashboard,
 }
+
+export enum CreateWalletFormView {
+  select,
+  generate,
+  import,
+}

@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 import { RootAction } from '@store'
-import { changeView } from '@actions'
+import { changeView, addWallet } from '@actions'
 import { View } from '@types'
 
 export interface ViewState {
@@ -11,8 +11,8 @@ export interface ViewState {
 export const view = combineReducers<ViewState, RootAction>({
   currentView: (state = View.create, action) => {
     switch (action.type) {
-      case getType(changeView):
-        return action.payload
+      case getType(changeView): return action.payload
+      case getType(addWallet): return View.dashboard
       default: return state
     }
   },

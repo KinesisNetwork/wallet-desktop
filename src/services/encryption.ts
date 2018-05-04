@@ -1,13 +1,9 @@
-let CryptoJS = require('crypto-js');
+import { AES, enc } from 'crypto-js'
 
 export function encryptPrivateKey(privateKey: string, password: string) {
-  let encryptedPrivateKey = CryptoJS.AES.encrypt(privateKey, password).toString()
-  return encryptedPrivateKey
+  return AES.encrypt(privateKey, password).toString()
 }
 
 export function decryptPrivateKey(privateKey: string, password: string) {
-  let decryptedPrivateKeyByte = CryptoJS.AES.decrypt(privateKey, password)
-  let decryptedPrivateKey = decryptedPrivateKeyByte.toString(CryptoJS.enc.Utf8);
-
-  return decryptedPrivateKey
+  return AES.decrypt(privateKey, password).toString(enc.Utf8)
 }

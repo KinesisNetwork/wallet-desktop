@@ -4,7 +4,7 @@ import { changeView } from '@actions'
 import { WalletList as WalletsPresentation } from '@components'
 
 const mapStateToProps = ({wallets}: RootState) => ({
-  wallets: wallets.wallets,
+  wallets: wallets.walletList,
   currentWallet: wallets.currentlySelected,
 })
 
