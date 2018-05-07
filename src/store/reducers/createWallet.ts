@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 import { RootAction } from '@store'
 import { getType } from 'typesafe-actions'
-import { updateCreateWalletForm, addWallet, changeCreateWalletView } from '@actions';
+import { updateCreateWalletForm, addWallet, changeCreateWalletView, changeView } from '@actions';
 import { CreateWalletForm, CreateWalletFormView } from '@types'
 
 export interface CreateWalletState {
@@ -31,6 +31,8 @@ export const createWallet = combineReducers<CreateWalletState, RootAction>({
   formView: (state = CreateWalletFormView.select, action) => {
     switch (action.type) {
       case getType(changeCreateWalletView): return action.payload
+      case getType(changeView): return CreateWalletFormView.select
+      case getType(addWallet): return CreateWalletFormView.select
       default: return state
     }
   },

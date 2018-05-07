@@ -15,7 +15,7 @@ export interface Props extends CreateWalletForm {
 export const CreateWallet: React.SFC<Props> = (props) => (
   <div className='vertical-spaced has-text-centered'>
     <h1 className='title-heading'>Add a new wallet</h1>
-    <div style={{flexGrow: 2}}> { props.currentView === CreateWalletFormView.select
+    <div> { props.currentView === CreateWalletFormView.select
         ? <FormSelection changeFormView={props.changeFormView} />
         : <WalletForm {...props} />
       }
@@ -24,14 +24,14 @@ export const CreateWallet: React.SFC<Props> = (props) => (
 )
 
 const FormSelection: React.SFC<Pick<Props, 'changeFormView'>> = ({changeFormView}) => (
-  <React.Fragment>
+  <div className='buttons is-centered'>
     <button className='button' onClick={() => changeFormView(CreateWalletFormView.generate)}>
       Generate New Account
     </button>
     <button className='button' onClick={() => changeFormView(CreateWalletFormView.import)}>
       Import Existing Account
     </button>
-  </React.Fragment>
+  </div>
 )
 
 class InputError extends Error {
@@ -93,6 +93,7 @@ export class WalletForm extends React.Component<Props> {
       privateKey,
       password,
       passwordVerify,
+      changeFormView,
       handleChange,
     } = this.props
     const action = currentView === CreateWalletFormView.import ? 'Import' : 'Generate'
@@ -106,32 +107,37 @@ export class WalletForm extends React.Component<Props> {
             {`${action} Account`}
           </h1>
         </div>
-        <form onSubmit={this.createNewWallet}>
-          <InputField label='Wallet Name' value={accountName}
-            id='account-name' onChangeHandler={(newValue) => handleChange('accountName', newValue)}
-          />
-          {currentView === CreateWalletFormView.import && (
-            <React.Fragment>
-              <InputField label='Public Key' value={publicKey}
-                id='public-key' onChangeHandler={(newValue) => handleChange('publicKey', newValue)}
-              />
-              <InputField label='Private Key' value={privateKey}
-                id='private-key' onChangeHandler={(newValue) => handleChange('privateKey', newValue)}
-              />
-            </React.Fragment>
-          )}
-          <InputField label='Wallet Password' value={password} isPassword={true}
-            id='password' onChangeHandler={(newValue) => handleChange('password', newValue)}
-          />
-          <InputField label='Repeat Password' value={passwordVerify} isPassword={true}
-            id='password-verify' onChangeHandler={(newValue) => handleChange('passwordVerify', newValue)}
-          />
-          <div className='field'>
-            <div className='control'>
-              <button className='button' type='submit'>{`${action} Account`}</button>
+        <div className='columns is-centered'>
+          <form onSubmit={this.createNewWallet} className='column is-half'>
+            <InputField label='Wallet Name' value={accountName}
+              id='account-name' onChangeHandler={(newValue) => handleChange('accountName', newValue)}
+            />
+            {currentView === CreateWalletFormView.import && (
+              <React.Fragment>
+                <InputField label='Public Key' value={publicKey}
+                  id='public-key' onChangeHandler={(newValue) => handleChange('publicKey', newValue)}
+                />
+                <InputField label='Private Key' value={privateKey}
+                  id='private-key' onChangeHandler={(newValue) => handleChange('privateKey', newValue)}
+                />
+              </React.Fragment>
+            )}
+            <InputField label='Wallet Password' value={password} isPassword={true}
+              id='password' onChangeHandler={(newValue) => handleChange('password', newValue)}
+            />
+            <InputField label='Repeat Password' value={passwordVerify} isPassword={true}
+              id='password-verify' onChangeHandler={(newValue) => handleChange('passwordVerify', newValue)}
+            />
+            <div className='field is-grouped'>
+              <div className='control is-expanded'>
+                <button className='button is-fullwidth' type='submit'>{`${action} Account`}</button>
+              </div>
+              <div className='control'>
+                <button className='button is-danger' type='button' onClick={() => changeFormView(CreateWalletFormView.select)}>Back</button>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     )
   }
