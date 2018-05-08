@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Connection } from '@types'
 import { LabelledField } from '@components'
+import { DeleteWallet } from '@containers';
 
 export interface Props {
   publicKey: string
@@ -33,6 +34,7 @@ export class WalletInfo extends React.Component<Props> {
         <LabelledField label='Account Name' value={this.props.accountName} />
         <LabelledField label='Public Key' value={this.props.publicKey} />
         <LabelledField label='Kinesis Balance' value={this.props.accountBalance} isLoading={this.props.isAccountLoading} />
+        <DeleteWallet />
       </div>
     )
   }
