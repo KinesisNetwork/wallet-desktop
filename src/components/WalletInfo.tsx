@@ -8,7 +8,7 @@ export interface Props {
   accountName: string
   isAccountLoading: boolean
   connection: Connection
-  loadAccount: (key: string, conn: Connection) => any
+  loadAccount: (key: string) => any
 }
 
 export class WalletInfo extends React.Component<Props> {
@@ -17,10 +17,13 @@ export class WalletInfo extends React.Component<Props> {
   }
 
   componentDidMount() {
-    this.props.loadAccount(this.props.publicKey, this.props.connection)
+    this.props.loadAccount(this.props.publicKey)
   }
+
   componentDidUpdate() {
-    this.props.loadAccount(this.props.publicKey, this.props.connection)
+    if (!this.props.isAccountLoading) {
+      this.props.loadAccount(this.props.publicKey)
+    }
   }
 
   render() {

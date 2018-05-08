@@ -7,9 +7,9 @@ import {
   addWallet,
   unlockWallet,
   lockWallet,
-  accountLoadRequest,
   accountLoadFailure,
-  accountLoadSuccess ,
+  accountLoadSuccess,
+  accountIsLoading,
 } from '@actions'
 import { getBalance } from '@services/accounts';
 
@@ -61,9 +61,11 @@ export const accounts = combineReducers<AccountsState, RootAction>({
   },
   isAccountLoading: (state = false, action) => {
     switch (action.type) {
-      case getType(accountLoadRequest): return true
-      case getType(accountLoadSuccess): return false
-      case getType(accountLoadFailure): return false
+      case getType(accountIsLoading): return true
+
+      case getType(accountLoadSuccess):
+      case getType(accountLoadFailure):
+        return false
       default: return state
     }
   }

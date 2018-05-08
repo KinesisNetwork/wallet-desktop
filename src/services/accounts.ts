@@ -6,6 +6,7 @@ export async function loadAccount (
   publicKey: string,
   connection: Connection,
 ): Promise<AccountResponse> {
+  console.log('Loading account')
   const server = getServer(connection)
   return await server.loadAccount(publicKey)
 }
