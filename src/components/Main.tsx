@@ -1,14 +1,7 @@
 import * as React from 'react'
-import {
-  Sidebar,
-} from '@components'
-import {
-  CreateWallet,
-} from '@containers'
-import {
-  PasswordMap,
-  View,
-} from '@types'
+import { Sidebar, Dashboard } from '@components'
+import { CreateWallet } from '@containers'
+import { PasswordMap, View } from '@types'
 
 export interface AppState {
   passwordMap: PasswordMap
@@ -36,6 +29,7 @@ export class Main extends React.PureComponent<Props, AppState> {
   public viewMap(view: View) {
     switch (view) {
       case View.create: return <CreateWallet />
+      case View.dashboard: return <Dashboard />
       default: return <div />
     }
   }

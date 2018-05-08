@@ -1,58 +1,65 @@
 import * as React from 'react'
-import { AppState } from '../app'
-import { getActiveWallet } from '../helpers/wallets'
-import * as swal from 'sweetalert'
-import { decryptPrivateKey } from '../services/encryption'
-import { PasswordPresentation } from './PasswordPresentation';
+import { Wallet } from '@types'
 
-export class Password extends React.Component<{appState: AppState, setPassword: Function}, {password: any}> {
-  constructor (props) {
-    super(props)
-    this.state = { password: '' }
-  }
-
-  public setPassword() {
-      this.props.setPassword(getActiveWallet(this.props.appState).publicKey, this.state.password)
-  }
-
-  public async unlockWallet(ev) {
-    ev.preventDefault()
-    let decryptedPrivateKey = decryptPrivateKey(getActiveWallet(this.props.appState).encryptedPrivateKey, this.state.password)
-    if (decryptedPrivateKey) {
-      this.setPassword()
-    } else {
-      await swal('Oops!', 'Incorrect password, try again.', 'error')
-      this.setState({
-        password: ''
-      }, () => {
-        document.getElementById('wallet-password').focus();
-      })
-    }
-  }
-
-  public lockWallet(ev) {
-    ev.preventDefault();
-    this.setState({
-      password: ''
-    }, () => {
-      this.setPassword()
-    })
-  }
-
-  public setPasswordInput(password: string) {
-    this.setState({password: password})
-  }
-
-  render() {
-    return (
-      <PasswordPresentation
-        appState={this.props.appState}
-        setPassword={this.props.setPassword}
-        unlockWallet={this.unlockWallet.bind(this)}
-        lockWallet={this.lockWallet.bind(this)}
-        setPasswordInput={this.setPasswordInput.bind(this)}
-        password={this.state.password}
-      />
-    )
-  }
+export interface Props {
+  isAccountUnlocked: boolean
+  activeWallet: Wallet
+  password: string
+  unlockWallet: (wallet: Wallet, password: string) => any
+  setPasswordInput: (input: string) => any
+  copyDecryptedPrivateKey: () => any
+  lockWallet: (wallet: Wallet) => any
 }
+
+const LockedWallet: React.SFC<Props> = ({password, unlockWallet, activeWallet, setPasswordInput}) => (
+  <div>
+    <div className='field has-addons has-addons-centered'>
+      <div className='control'>
+        <input id='wallet-unlock-password'
+          className='input' value={password}
+          type='password' placeholder='Password'
+          onChange={(e) => setPasswordInput(e.currentTarget.value)}
+        />
+      </div>
+      <div className='control'>
+        <button type='button' className='button' onClick={() => unlockWallet(activeWallet, password)}>
+          <span className='icon'>
+            <i className='fas fa-lock-open' />
+          </span>
+          <span>Unlock Wallet</span>
+        </button>
+      </div>
+    </div>
+  </div>
+)
+
+const UnlockedWallet: React.SFC<Props> = ({copyDecryptedPrivateKey, activeWallet, lockWallet}) => (
+  <div>
+    <div className='field is-grouped is-grouped-centered'>
+      <div className='control'>
+        <button type='button' className='button' onClick={() => copyDecryptedPrivateKey()} >
+          <span className='icon'>
+            <i className='fas fa-copy' />
+          </span>
+          <span>Copy Private Key</span>
+        </button>
+      </div>
+      <div className='control'>
+        <button type='submit' className='button'
+          onClick={() => lockWallet(activeWallet)}
+        >
+          <span className='icon'>
+            <i className='fas fa-lock' />
+          </span>
+          <span>Lock Wallet</span>
+        </button>
+      </div>
+    </div>
+  </div>
+)
+
+export const Password: React.SFC<Props> = (props) => (
+  <React.Fragment>
+    { props.isAccountUnlocked ? <UnlockedWallet {...props} /> : <LockedWallet {...props} /> }
+  </React.Fragment>
+)

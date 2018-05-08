@@ -2,8 +2,8 @@ import * as React from 'react'
 import { startCase, kebabCase } from 'lodash'
 import { CreateWalletForm, CreateWalletFormView, Wallet } from '@types'
 import { InputField } from '@components'
-import { focus } from '@helpers/focus'
 import { encryptPrivateKey } from '@services/encryption';
+import { InputError } from '@helpers/inputError'
 
 export interface Props extends CreateWalletForm {
   currentView: CreateWalletFormView
@@ -34,14 +34,6 @@ const FormSelection: React.SFC<Pick<Props, 'changeFormView'>> = ({changeFormView
   </div>
 )
 
-class InputError extends Error {
-  public key: string
-  constructor(message: string, key: string) {
-    super(message)
-    this.key = key
-  }
-}
-
 export class WalletForm extends React.Component<Props> {
   constructor(props: Props) {
     super(props)
@@ -58,8 +50,9 @@ export class WalletForm extends React.Component<Props> {
         publicKey: this.props.publicKey,
       })
     } catch (e) {
-      await sweetAlert('Oops!', e.message, 'error')
-      focus(`input-${kebabCase(e.key)}`)
+      if (e instanceof InputError) {
+        e.alert()
+      }
     }
   }
 
@@ -75,13 +68,13 @@ export class WalletForm extends React.Component<Props> {
 
   checkValidEntry = (key: keyof CreateWalletForm) => {
     if (!this.props[key]) {
-      throw new InputError(`${startCase(key)} is required`, key)
+      throw new InputError(`${startCase(key)} is required`, `input-${kebabCase(key)}`)
     }
   }
 
   checkValidPassword = () => {
     if (this.props.password !== this.props.passwordVerify) {
-      throw new InputError(`Passwords don't match`, 'passwordVerify')
+      throw new InputError(`Passwords don't match`, `input-${kebabCase('passwordVerify')}`)
     }
   }
 

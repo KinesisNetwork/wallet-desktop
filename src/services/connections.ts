@@ -1,5 +1,5 @@
-import { Connection } from '@interfaces'
-import { addNewItem, retrieveItems, saveItems } from './persistance';
+import { Connection } from '@types'
+import { addNewItem, retrieveItems, saveItems } from '@services/persistance'
 const CONNECTION_KEY = 'connection'
 
 export const DEFAULT_CONNECTIONS: Connection[] = [

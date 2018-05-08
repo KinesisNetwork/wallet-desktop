@@ -11,8 +11,8 @@ export interface Connection {
 }
 
 export interface PasswordMap {
-  [accountId: string]: {
-    timestamp: number
+  [publicKey: string]: {
+    timestamp: Date
     password: string
   }
 }
@@ -27,4 +27,9 @@ export interface CreateWalletForm {
   readonly privateKey: string
   readonly password: string
   readonly passwordVerify: string
+}
+
+export interface Account {
+  readonly balance: string
+  readonly isUnlocked: boolean
 }

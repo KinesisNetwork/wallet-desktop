@@ -1,16 +1,14 @@
 import * as React from 'react'
-import {
-  Wallet,
-  View,
-} from '@types'
+import { Wallet } from '@types'
 
 export interface Props {
   wallets: Wallet[]
   currentWallet: number
-  changeView: (view: View) => any
+  selectWallet: (walletIndex: number) => any
+  addWallet: () => any
 }
 
-export const WalletList: React.SFC<Props> = ({ wallets, currentWallet, changeView }) => (
+export const WalletList: React.SFC<Props> = ({ wallets, addWallet, selectWallet }) => (
   <nav className='panel'>
     <p className='panel-heading wallet-heading'>
       Wallets
@@ -18,7 +16,7 @@ export const WalletList: React.SFC<Props> = ({ wallets, currentWallet, changeVie
     {wallets.map((wallet, walletIndex) => (
       <a key={walletIndex}
         className='panel-block'
-        onClick={() => changeView(View.dashboard)}>
+        onClick={() => selectWallet(walletIndex)}>
         <span className='panel-icon'>
           <i className='fas fa-book' />
         </span>
@@ -26,7 +24,7 @@ export const WalletList: React.SFC<Props> = ({ wallets, currentWallet, changeVie
       </a>
     ))}
     <div className='panel-block'>
-      <button className='button is-primary is-outlined is-fullwidth' onClick={() => changeView(View.create)}>
+      <button className='button is-primary is-outlined is-fullwidth' onClick={() => addWallet()}>
         Add Wallet
       </button>
     </div>
