@@ -50,17 +50,22 @@ export class Transfer extends React.Component<Props> {
   render() {
     return (
       <div>
-        { this.props.isTransferring && <Loader />}
+        {/* { this.props.isTransferring && <Loader />} */}
         <h1 className='sub-heading primary-font'>Transfer</h1>
-        <InputField label='Target Address' value={this.props.targetAddress} id='transfer-target-address'
-          onChangeHandler={(newValue) => this.props.updateTransferForm({field: 'targetAddress', newValue})} />
-        <InputField label='Transfer Amount' value={this.props.amount} id='transfer-amount'
-          onChangeHandler={(newValue) => this.props.updateTransferForm({field: 'amount', newValue})} />
-        <InputField label='Message' value={this.props.memo} id='transfer-memo'
-          onChangeHandler={(newValue) => this.props.updateTransferForm({field: 'memo', newValue})} />
-        <div className='field'>
-          <div className='control is-expanded'>
-            <button className='button is-fullwidth' onClick={this.initTransfer}>Transfer</button>
+        <div style={{ position: 'relative' }}>
+          {this.props.isTransferring && <Loader />}
+          <div style={this.props.isTransferring ? { filter: 'blur(2px)' } : {}}>
+            <InputField label='Target Address' value={this.props.targetAddress} id='transfer-target-address'
+              onChangeHandler={(newValue) => this.props.updateTransferForm({ field: 'targetAddress', newValue })} />
+            <InputField label='Transfer Amount' value={this.props.amount} id='transfer-amount'
+              onChangeHandler={(newValue) => this.props.updateTransferForm({ field: 'amount', newValue })} />
+            <InputField label='Message' value={this.props.memo} id='transfer-memo'
+              onChangeHandler={(newValue) => this.props.updateTransferForm({ field: 'memo', newValue })} />
+            <div className='field'>
+              <div className='control is-expanded'>
+                <button className='button is-fullwidth' onClick={this.initTransfer}>Transfer</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

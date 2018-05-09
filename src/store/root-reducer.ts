@@ -10,6 +10,4 @@ export type RootState = {
   [P in keyof typeof reducers]: ReturnType<typeof reducers[P]>
 }
 export const rootReducer = combineReducers<RootState, RootAction>(reducers)
-export const rootEpic = combineEpics<Epic>(
-  ...values(epics),
-)
+export const rootEpic = combineEpics<Epic>(...values(epics))

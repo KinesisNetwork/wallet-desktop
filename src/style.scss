@@ -136,20 +136,15 @@ body {
 .scrollable::-webkit-scrollbar-thumb {
   background: #4E5D6C;
 }
-// @media (min-width: 769px) {
-//   .settings-btn {
-//     position: absolute;
-//     bottom: 5%;
-//   }
-// }
 
 .sk-folding-cube {
-  margin: 20px auto;
   width: 40px;
   height: 40px;
-  position: relative;
-  -webkit-transform: rotateZ(45deg);
-  transform: rotateZ(45deg);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: rotateZ(45deg) translate(-50%);
+  z-index: 100;
 }
 
 .sk-folding-cube .sk-cube {
@@ -157,8 +152,6 @@ body {
   width: 50%;
   height: 50%;
   position: relative;
-  -webkit-transform: scale(1.1);
-  -ms-transform: scale(1.1);
   transform: scale(1.1);
 }
 
