@@ -23,7 +23,6 @@ export async function getAccountIfExists (
     const account = await server.loadAccount(publicKey)
     return new Account(publicKey, account.sequence)
   } catch (e) {
-    console.error(e)
     throw new AccountMissingError()
   }
 }

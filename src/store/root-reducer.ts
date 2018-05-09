@@ -1,3 +1,4 @@
+import { values } from 'lodash'
 import { combineReducers } from 'redux'
 import { combineEpics } from 'redux-observable'
 import { RootAction } from './root-action'
@@ -10,6 +11,5 @@ export type RootState = {
 }
 export const rootReducer = combineReducers<RootState, RootAction>(reducers)
 export const rootEpic = combineEpics<Epic>(
-  epics.loadAccount$,
-  epics.deleteWallet$,
+  ...values(epics),
 )

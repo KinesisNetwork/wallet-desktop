@@ -1,6 +1,7 @@
 import * as React from 'react'
 import {
   Password,
+  Transfer,
   WalletInfo,
 } from '@containers'
 
@@ -14,7 +15,7 @@ export const Dashboard: React.SFC = () => (
         <WalletInfo />
       </div>
       <div className='column'>
-        {/* <Transfers /> */}
+        <Transfer />
       </div>
     </div>
     <div style={{flexShrink: 10}}>

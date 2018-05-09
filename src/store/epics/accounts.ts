@@ -3,14 +3,13 @@ import { loadAccount } from '@services/accounts'
 import { Epic } from '@store'
 import { of, merge } from 'rxjs'
 import { fromPromise } from 'rxjs/observable/fromPromise'
-import { catchError, filter, map, mergeMap, withLatestFrom, distinctUntilChanged } from 'rxjs/operators'
+import { catchError, filter, map, mergeMap, withLatestFrom, delay } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 
 export const loadAccount$: Epic = (action$, state$) => {
   const accountLoadRequest$ = action$.pipe(
     filter(isActionOf(accountLoadRequest)),
-    distinctUntilChanged((prev, curr) => prev.payload === curr.payload),
-    map(({ payload }) => payload),
+    map(({payload}) => payload),
   )
 
   const accountIsLoading$ = accountLoadRequest$.pipe(
@@ -18,6 +17,7 @@ export const loadAccount$: Epic = (action$, state$) => {
   )
 
   const accountLoad$ = accountLoadRequest$.pipe(
+    delay(500),
     withLatestFrom(state$),
     mergeMap(
       ([publicKey, state]) => fromPromise(loadAccount(publicKey, state.connections.currentConnection))

@@ -34,15 +34,6 @@ export class Main extends React.PureComponent<Props, AppState> {
     }
   }
 
-  public setPassword = (accountId: string, password: string) => {
-    this.setState({
-      passwordMap: {
-        ...this.state.passwordMap,
-        [accountId]: {password: password, timestamp: Date.now()}
-      }
-    })
-  }
-
   render() {
     return (
       <div className='columns is-marginless' style={{height: '100vh'}}>

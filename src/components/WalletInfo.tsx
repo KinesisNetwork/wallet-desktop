@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { Connection } from '@types'
 import { LabelledField } from '@components'
 import { DeleteWallet } from '@containers';
 
@@ -8,23 +7,11 @@ export interface Props {
   accountBalance: string
   accountName: string
   isAccountLoading: boolean
-  connection: Connection
-  loadAccount: (key: string) => any
 }
 
 export class WalletInfo extends React.Component<Props> {
   constructor(props: Props) {
     super(props)
-  }
-
-  componentDidMount() {
-    this.props.loadAccount(this.props.publicKey)
-  }
-
-  componentDidUpdate() {
-    if (!this.props.isAccountLoading) {
-      this.props.loadAccount(this.props.publicKey)
-    }
   }
 
   render() {

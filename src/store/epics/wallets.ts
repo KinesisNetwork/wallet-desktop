@@ -1,9 +1,9 @@
 import { Epic } from '@store'
-import { filter, mergeMap, map } from 'rxjs/operators';
+import { filter, mergeMap, map, withLatestFrom } from 'rxjs/operators';
 import { merge } from 'rxjs'
 import { fromPromise } from 'rxjs/observable/fromPromise'
 import { isActionOf } from 'typesafe-actions';
-import { deleteWallet as deleteWalletAction, walletsSaved, changeView } from '@actions';
+import { deleteWallet as deleteWalletAction, walletsSaved, changeView, selectWallet, accountLoadRequest } from '@actions';
 import { deleteWallet } from '@services/wallets';
 import { View } from '@types';
 
@@ -27,3 +27,10 @@ export const deleteWallet$: Epic = (action$) => {
 
   return merge(switchView$, persistWalletDeletion$)
 }
+
+export const switchWallet$: Epic = (action$, state$) =>
+  action$.pipe(
+    filter(isActionOf(selectWallet)),
+    withLatestFrom(state$),
+    map(([{payload}, state]) => accountLoadRequest(state.wallets.walletList[payload].publicKey))
+  )

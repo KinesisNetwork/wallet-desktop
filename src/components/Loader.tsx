@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-export class Loader extends React.Component<undefined, undefined> {
+export class Loader extends React.Component {
   constructor (props) {
     super(props)
   }

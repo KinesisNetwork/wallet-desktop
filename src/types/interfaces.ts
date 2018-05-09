@@ -44,4 +44,10 @@ export interface UnlockWallet {
 export interface TransferRequest {
   readonly targetAddress: string
   readonly amount: string
+  readonly memo: string
+}
+
+export interface FormUpdate<T> {
+  field: keyof T
+  newValue: string
 }

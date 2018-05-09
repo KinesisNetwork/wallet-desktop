@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 import { RootAction } from '@store'
 import { Wallet } from '@types'
-import { loadWallets, addWallet, selectWallet, deleteWallet, walletsSaved } from '@actions'
+import { loadWallets, addWallet, selectWallet, deleteWallet, walletsSaved, unlockWallet, lockWallet } from '@actions'
 
 export interface WalletsState {
   readonly walletList: Wallet[]
@@ -15,6 +15,20 @@ export const wallets = combineReducers<WalletsState, RootAction>({
       case getType(loadWallets): return [...action.payload]
       case getType(addWallet): return [...state, action.payload]
       case getType(walletsSaved): return [...action.payload]
+
+      case getType(unlockWallet):
+        return state.map(
+          (wallet): Wallet => wallet.publicKey === action.payload.publicKey
+            ? {...wallet, decryptedPrivateKey: action.payload.decryptedPrivateKey}
+            : wallet
+          )
+
+      case getType(lockWallet):
+        return state.map(
+          (wallet): Wallet => wallet.publicKey === action.payload.publicKey
+            ? {...wallet, decryptedPrivateKey: undefined}
+            : wallet
+        )
       default: return state
     }
   },
