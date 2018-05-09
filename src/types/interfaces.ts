@@ -2,6 +2,7 @@ export interface Wallet {
   publicKey: string
   encryptedPrivateKey: string
   accountName: string
+  decryptedPrivateKey?: string
 }
 
 export interface Connection {
@@ -32,4 +33,15 @@ export interface CreateWalletForm {
 export interface Account {
   readonly balance: string
   readonly isUnlocked: boolean
+}
+
+export interface UnlockWallet {
+  readonly password: string
+  readonly publicKey: string
+  readonly decryptedPrivateKey: string
+}
+
+export interface TransferRequest {
+  readonly targetAddress: string
+  readonly amount: string
 }

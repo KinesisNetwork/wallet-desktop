@@ -12,3 +12,15 @@ export class InputError extends Error {
     focus(this.key)
   }
 }
+
+export class WalletLockError extends InputError {
+  constructor() {
+    super('Wallet must be unlocked', 'wallet-unlock-password')
+  }
+}
+
+export class AccountMissingError extends Error {
+  constructor() {
+    super('Account does not exist on the network')
+  }
+}

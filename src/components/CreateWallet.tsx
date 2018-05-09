@@ -1,9 +1,10 @@
 import * as React from 'react'
 import { startCase, kebabCase } from 'lodash'
+import { Keypair } from 'js-kinesis-sdk'
 import { CreateWalletForm, CreateWalletFormView, Wallet } from '@types'
 import { InputField } from '@components'
 import { encryptPrivateKey } from '@services/encryption';
-import { InputError } from '@helpers/inputError'
+import { InputError } from '@helpers/errors'
 
 export interface Props extends CreateWalletForm {
   currentView: CreateWalletFormView
@@ -43,11 +44,12 @@ export class WalletForm extends React.Component<Props> {
     ev.preventDefault()
     try {
       this.validateProps()
-      const encryptedPrivateKey = encryptPrivateKey(this.props.privateKey, this.props.password)
+      const { publicKey, privateKey } = this.generateKeyOrExtractFromProps()
+      const encryptedPrivateKey = encryptPrivateKey(privateKey, this.props.password)
       this.props.addWallet({
         encryptedPrivateKey,
+        publicKey,
         accountName: this.props.accountName,
-        publicKey: this.props.publicKey,
       })
     } catch (e) {
       if (e instanceof InputError) {
@@ -64,6 +66,15 @@ export class WalletForm extends React.Component<Props> {
     }
     this.checkValidEntry('password')
     this.checkValidPassword()
+  }
+
+  generateKeyOrExtractFromProps = () => {
+    if (this.props.currentView === CreateWalletFormView.import) {
+      return { publicKey: this.props.publicKey, privateKey: this.props.privateKey }
+    } else {
+      const keypair = Keypair.random()
+      return { publicKey: keypair.publicKey(), privateKey: keypair.secret() }
+    }
   }
 
   checkValidEntry = (key: keyof CreateWalletForm) => {

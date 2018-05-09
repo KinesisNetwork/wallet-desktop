@@ -5,7 +5,7 @@ import { decryptPrivateKey } from '@services/encryption'
 import { unlockWallet, changeUnlockPasswordInput, lockWallet } from '@actions';
 import { Wallet } from '@types'
 import { copyToClipboard } from '@helpers/copy';
-import { InputError } from '@helpers/inputError';
+import { InputError } from '@helpers/errors';
 
 const mapStateToProps = ({wallets, accounts, passwords}: RootState) => {
   const activeWallet = wallets.walletList[wallets.currentlySelected]
@@ -26,10 +26,10 @@ const mapStateToProps = ({wallets, accounts, passwords}: RootState) => {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  unlockWallet: (wallet: Wallet, password: string) => {
+  unlockWallet: ({encryptedPrivateKey, publicKey}: Wallet, password: string) => {
     try {
-      decryptPrivateKey(wallet.encryptedPrivateKey, password)
-      dispatch(unlockWallet({ password, publicKey: wallet.publicKey }))
+      const decryptedPrivateKey = decryptPrivateKey(encryptedPrivateKey, password)
+      dispatch(unlockWallet({ password, publicKey, decryptedPrivateKey }))
     } catch (e) {
       if (e instanceof InputError) {
         e.alert()

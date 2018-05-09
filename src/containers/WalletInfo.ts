@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { Dispatch, RootState } from '@store'
 import { WalletInfo as WalletInfoPresentation } from '@components'
-import { accountLoad } from '@actions'
+import { accountLoadRequest } from '@actions'
 
 const mapStateToProps = ({accounts, wallets}: RootState) => {
   const {accountName, publicKey} = wallets.walletList[wallets.currentlySelected]
@@ -16,7 +16,7 @@ const mapStateToProps = ({accounts, wallets}: RootState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   loadAccount: (publicKey: string) => {
-    dispatch(accountLoad(publicKey))
+    dispatch(accountLoadRequest(publicKey))
   }
 })
 

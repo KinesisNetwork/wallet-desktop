@@ -1,8 +1,6 @@
 import * as React from 'react'
 import * as _ from 'lodash'
-import { AppState } from '../app'
-import { getActiveWallet, getPrivateKey, getActivePrivateKey } from '../helpers/wallets';
-import * as swal from 'sweetalert'
+import { getActiveWallet, getPrivateKey, getActivePrivateKey } from '@helpers/wallets'
 import { TransferPresentation } from './TransferPresentation';
 import * as StellarSdk from 'js-kinesis-sdk'
 import { isPaymentMultiSig, showMultiSigTransaction } from '../helpers/accounts';
