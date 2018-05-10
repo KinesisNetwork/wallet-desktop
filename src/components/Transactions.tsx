@@ -7,6 +7,7 @@ export interface Props {
   operations: TransactionOperationView[]
   loadNextTransactionPage: () => any
   isLastPage: boolean
+  isLoading: boolean
 }
 
 export class Transactions extends React.Component<Props> {
@@ -24,10 +25,20 @@ export class Transactions extends React.Component<Props> {
   }
 
   render() {
+    const {
+      isLoading,
+      operations,
+    } = this.props
     return (
-      <div className='scrollable' onScroll={this.handleScroll} style={{flexShrink: 10}}>
-        {this.props.operations.map((t, i) => <TransactionOperation key={i} transactionWithOperation={t} />)}
-      </div>
+      <React.Fragment>
+        <h1 className='sub-heading primary-font'>
+          Transactions
+          {isLoading && <span className='loader' style={{display: 'inline-block'}} />}
+        </h1>
+        <div className='scrollable' onScroll={this.handleScroll}>
+          {!isLoading && operations.map((t, i) => <TransactionOperation key={i} transactionWithOperation={t} />)}
+        </div>
+      </React.Fragment>
     )
   }
 }

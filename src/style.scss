@@ -56,6 +56,10 @@ body {
   color: #74889c;
 }
 
+.is-constant-height {
+  flex-shrink: 0;
+}
+
 .sub-heading {
   font-size: 15px;
   text-transform: uppercase;

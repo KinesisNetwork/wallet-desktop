@@ -1,4 +1,4 @@
-import { accountTransactionsLoaded } from '@actions'
+import { accountTransactionsLoaded, loadAccountTransactions } from '@actions'
 import { RootAction } from '@store'
 import { TransactionOperationView } from '@types'
 import { CollectionPage, TransactionRecord } from 'js-kinesis-sdk'
@@ -9,12 +9,20 @@ export interface TransactionsState {
   transactionOperations: TransactionOperationView[]
   currentPage: CollectionPage<TransactionRecord> | null
   isLastPage: boolean
+  isLoading: boolean
 }
 
 export const transactions = combineReducers<TransactionsState, RootAction>({
   transactionOperations,
-  currentPage: (state = null, action) => state,
+  currentPage: (state = null) => state,
   isLastPage: (state = false) => state,
+  isLoading: (state = false, action) => {
+    switch (action.type) {
+      case getType(loadAccountTransactions): return true
+      case getType(accountTransactionsLoaded): return false
+      default: return state
+    }
+  },
 })
 
 function transactionOperations(
@@ -22,6 +30,7 @@ function transactionOperations(
   action: RootAction,
 ): TransactionOperationView[] {
   switch (action.type) {
+    case getType(loadAccountTransactions): return []
     case getType(accountTransactionsLoaded): return [...action.payload]
     default: return state
   }

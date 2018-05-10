@@ -38,9 +38,13 @@ export async function getTransactions(
   accountKey: string,
 ): Promise<TransactionOperationView[]> {
   const server = getServer(connection)
-  const transactionPage = await server.transactions().forAccount(accountKey).order('desc').call()
-  const nestedArray = await Promise.all(transactionPage.records.map(transactionWithOperations))
-  return flatten(nestedArray)
+  try {
+    const transactionPage = await server.transactions().forAccount(accountKey).order('desc').call()
+    const nestedArray = await Promise.all(transactionPage.records.map(transactionWithOperations))
+    return flatten(nestedArray)
+  } catch (e) {
+    return []
+  }
 }
 
 async function transactionWithOperations(

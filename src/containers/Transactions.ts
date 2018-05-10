@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 
 const mapStateToProps = ({transactions}: RootState) => ({
   isLastPage: transactions.isLastPage,
+  isLoading: transactions.isLoading,
   operations: transactions.transactionOperations,
 })
 
