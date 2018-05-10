@@ -1,8 +1,8 @@
-import { combineReducers } from 'redux'
-import { PasswordMap } from '@types'
+import { changeUnlockPasswordInput, lockWallet, unlockWallet } from '@actions'
 import { RootAction } from '@store'
-import { getType } from 'typesafe-actions';
-import { changeUnlockPasswordInput, unlockWallet, lockWallet } from '@actions'
+import { PasswordMap } from '@types'
+import { combineReducers } from 'redux'
+import { getType } from 'typesafe-actions'
 
 export interface PasswordsState {
   currentInput: string
@@ -25,7 +25,7 @@ export const passwords = combineReducers<PasswordsState, RootAction>({
           [action.payload.publicKey]: {
             password: action.payload.password,
             timestamp: new Date(),
-          }
+          },
         }
       case getType(lockWallet):
         return Object.keys(state)

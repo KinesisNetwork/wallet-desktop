@@ -1,9 +1,9 @@
-import * as React from 'react'
-import * as _ from 'lodash'
-import { getActiveWallet, getPrivateKey, getActivePrivateKey } from '@helpers/wallets'
-import { TransferPresentation } from './TransferPresentation';
+import { getActivePrivateKey, getActiveWallet, getPrivateKey } from '@helpers/wallets'
 import * as StellarSdk from 'js-kinesis-sdk'
-import { isPaymentMultiSig, showMultiSigTransaction } from '../helpers/accounts';
+import * as _ from 'lodash'
+import * as React from 'react'
+import { isPaymentMultiSig, showMultiSigTransaction } from '../helpers/accounts'
+import { TransferPresentation } from './TransferPresentation'
 const stroopsInLumen: number = 10000000
 
 export interface Props {
@@ -20,7 +20,7 @@ export interface State {
 }
 
 export class Transfer extends React.Component<Props, State> {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {targetAddress: '', loading: false, memo: '', transferAmount: ''}
   }
@@ -35,7 +35,7 @@ export class Transfer extends React.Component<Props, State> {
     }
   }
 
-  public async transferKinesis (targetAddress: string, amount: string) {
+  public async transferKinesis(targetAddress: string, amount: string) {
     const server = new StellarSdk.Server(this.props.appState.connection.horizonServer, {allowHttp: true})
     // Get the most recent ledger to determine the correct baseFee
     const mostRecentLedger = await server.ledgers().order('desc').call()
@@ -85,16 +85,15 @@ export class Transfer extends React.Component<Props, State> {
         `,
         icon: `warning`,
         dangerMode: true,
-        buttons: true
+        buttons: true,
       })
 
       if (!willCreate) {
         return
       }
 
-
       // If we get the correct error, we try call account creation
-      let newAccountTransaction = new StellarSdk.TransactionBuilder(sequencedAccount, {fee: String(totalFeeStroops)})
+      const newAccountTransaction = new StellarSdk.TransactionBuilder(sequencedAccount, {fee: String(totalFeeStroops)})
         .addOperation(StellarSdk.Operation.createAccount({
           destination: targetAddress,
           startingBalance: amount,
@@ -113,7 +112,7 @@ export class Transfer extends React.Component<Props, State> {
         await server.submitTransaction(newAccountTransaction)
         swal('Success!', 'Successfully submitted transaction', 'success')
       } catch (e) {
-        let opCode = _.get(e, 'data.extras.result_codes.operations[0]', _.get(e, 'message', 'Unkown Error'))
+        const opCode = _.get(e, 'data.extras.result_codes.operations[0]', _.get(e, 'message', 'Unkown Error'))
         console.error('Error occured submitting transaction', e)
         swal('Oops!', `An error occurred while submitting the transaction to the network: ${opCode}`, 'error')
       }
@@ -128,7 +127,7 @@ export class Transfer extends React.Component<Props, State> {
         .addOperation(StellarSdk.Operation.payment({
           destination: targetAddress,
           asset: StellarSdk.Asset.native(),
-          amount: amount,
+          amount,
         }))
         .addMemo(StellarSdk.Memo.text(this.state.memo))
         .build()
@@ -147,7 +146,7 @@ export class Transfer extends React.Component<Props, State> {
       text: `Once submitted, the transaction can not be reverted! The fee will be ${totalFeeLumens} Kinesis`,
       icon: 'warning',
       dangerMode: true,
-      buttons: true
+      buttons: true,
     })
 
     if (!continueTransfer) {
@@ -159,7 +158,7 @@ export class Transfer extends React.Component<Props, State> {
       await server.submitTransaction(paymentTransaction)
       swal('Success!', 'Successfully submitted transaction', 'success')
     } catch (e) {
-      let opCode = _.get(e, 'data.extras.result_codes.operations[0]', _.get(e, 'message', 'Unkown Error'))
+      const opCode = _.get(e, 'data.extras.result_codes.operations[0]', _.get(e, 'message', 'Unkown Error'))
       console.error('Error occured submitting transaction', e)
       swal('Oops!', `An error occurred while submitting the transaction to the network: ${opCode}`, 'error')
     }
@@ -178,7 +177,7 @@ export class Transfer extends React.Component<Props, State> {
       return this.focusElement('transfer-amount')
     }
 
-    let privateKey = getActivePrivateKey(this.props.appState)
+    const privateKey = getActivePrivateKey(this.props.appState)
     if (!privateKey) {
       await swal('Oops!', 'Please unlock your account to transfer funds', 'error')
       return this.focusElement('wallet-password')
@@ -202,7 +201,7 @@ export class Transfer extends React.Component<Props, State> {
     if (memo.length >= 25) {
       return await swal('Oops!', 'The message field must be fewer than 25 characters long', 'error')
     }
-    this.setState({memo: memo})
+    this.setState({memo})
   }
 
   public handleAmount(ev) {

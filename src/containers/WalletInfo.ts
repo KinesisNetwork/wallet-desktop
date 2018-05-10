@@ -1,6 +1,6 @@
-import { connect } from 'react-redux'
-import { RootState } from '@store'
 import { WalletInfo as WalletInfoPresentation } from '@components'
+import { RootState } from '@store'
+import { connect } from 'react-redux'
 
 const mapStateToProps = ({accounts, wallets}: RootState) => {
   const {accountName, publicKey} = wallets.walletList[wallets.currentlySelected]

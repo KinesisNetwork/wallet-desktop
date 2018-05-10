@@ -1,8 +1,8 @@
+import { focus } from '@helpers/focus'
+import { decryptPrivateKey } from '@services/encryption'
+import { Wallet } from '@types'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { focus } from '@helpers/focus'
-import { Wallet } from '@types'
-import { decryptPrivateKey } from '@services/encryption'
 
 class PasswordInput extends React.Component<{activeWallet: Wallet}, {password: string}> {
   constructor(props) {
@@ -57,7 +57,7 @@ export const getPasswordConfirmation = async (activeWallet: Wallet, mode: string
       cancel: {
         value: '',
         visible: false,
-      }
+      },
     },
     ...typeOfPopup,
   })

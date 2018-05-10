@@ -1,10 +1,10 @@
-import * as React from 'react'
 import { Keypair, Server, Transaction } from 'js-kinesis-sdk'
+import { get } from 'lodash'
+import * as React from 'react'
 import * as swal from 'sweetalert'
 import { AppState } from '../../app'
 import { getActivePrivateKey } from '../../helpers/wallets'
 import { TransactionView } from './Transaction'
-import { get } from 'lodash'
 
 export interface State {
   serializedTransaction: string
@@ -47,7 +47,7 @@ export class MultiSigTransfer extends React.Component<Props, State> {
   }
 
   private signTransaction = async (transaction: Transaction) => {
-    let privateKey = getActivePrivateKey(this.props.appState)
+    const privateKey = getActivePrivateKey(this.props.appState)
     if (!privateKey) {
       await swal('Oops!', 'Please unlock your account sign the transaction', 'error')
       return this.focusElement('wallet-password')
@@ -56,9 +56,9 @@ export class MultiSigTransfer extends React.Component<Props, State> {
       title: 'Confirm Signature',
       text: 'Are you sure you want to sign this transaction?',
       icon: 'warning',
-      buttons: true
+      buttons: true,
     })
-    if (!continueTransfer) return
+    if (!continueTransfer) { return }
     transaction.sign(Keypair.fromSecret(getActivePrivateKey(this.props.appState)))
     try {
       this.props.transactionSubmit()
@@ -66,7 +66,7 @@ export class MultiSigTransfer extends React.Component<Props, State> {
       await server.submitTransaction(transaction)
       this.props.updateTransferView('payment')
     } catch (e) {
-      let opCode = get(e, 'data.extras.result_codes.operations[0]', get(e, 'message', 'Unkown Error'))
+      const opCode = get(e, 'data.extras.result_codes.operations[0]', get(e, 'message', 'Unkown Error'))
       console.error('Error occured submitting transaction', e)
       await swal('Oops!', `An error occurred while submitting the transaction to the network: ${opCode}`, 'error')
     } finally {

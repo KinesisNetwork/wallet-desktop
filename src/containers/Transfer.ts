@@ -1,7 +1,7 @@
-import { connect } from 'react-redux'
+import { transferRequest, updateTransferForm } from '@actions'
 import { Transfer  as TransferPresentation } from '@components'
-import { RootState } from '@store';
-import { updateTransferForm, transferRequest } from '@actions';
+import { RootState } from '@store'
+import { connect } from 'react-redux'
 
 const mapStateToProps = ({transfer}: RootState) => ({
   ...transfer.form,

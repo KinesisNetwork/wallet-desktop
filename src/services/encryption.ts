@@ -1,5 +1,5 @@
+import { InputError } from '@helpers/errors'
 import { AES, enc } from 'crypto-js'
-import { InputError } from '@helpers/errors';
 
 export function encryptPrivateKey(privateKey: string, password: string) {
   return AES.encrypt(privateKey, password).toString()

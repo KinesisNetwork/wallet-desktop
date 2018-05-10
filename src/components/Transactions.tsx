@@ -1,9 +1,9 @@
-import * as React from 'react'
-import { AppState } from '../app'
-import { getActiveWallet } from '../helpers/wallets'
 import * as StellarSdk from 'js-kinesis-sdk'
 import { CollectionPage, TransactionRecord } from 'js-kinesis-sdk'
 import * as _ from 'lodash'
+import * as React from 'react'
+import { AppState } from '../app'
+import { getActiveWallet } from '../helpers/wallets'
 
 export interface HumanTransactions {
   txId: string
@@ -26,7 +26,7 @@ export enum StellarTxType {
   'Allow Trust' = 7,
   'Account Merge' = 8,
   'Inflation' = 9,
-  'Manage Data' = 10
+  'Manage Data' = 10,
 }
 
 export interface State {
@@ -38,7 +38,7 @@ export interface State {
 
 const defaultState = { transactions: [], lastPage: false, currentPage: undefined, recentlyLoaded: false }
 export class Transactions extends React.Component<{appState: AppState}, State> {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = _.cloneDeep(defaultState)
   }
@@ -49,7 +49,7 @@ export class Transactions extends React.Component<{appState: AppState}, State> {
 
   // To ensure we don't trigger the scroll event multiple times, we will force a wait of
   // 10 seconds before we consider loading more docs
-  public handleScroll () {
+  public handleScroll() {
     const ele: any = document.getElementById('transactions')
     const triggerLoad = ele.scrollHeight - ele.scrollTop <= ele.clientHeight + 250
     if (triggerLoad && !this.state.lastPage && !this.state.recentlyLoaded) {
@@ -65,14 +65,14 @@ export class Transactions extends React.Component<{appState: AppState}, State> {
   }
 
   public async componentWillReceiveProps(nextProps: {appState: AppState}) {
-    let currentWalletIndex = _.get(nextProps, 'appState.viewParams.walletIndex', null)
-    let newWalletIndex = _.get(this.props, 'appState.viewParams.walletIndex', null)
+    const currentWalletIndex = _.get(nextProps, 'appState.viewParams.walletIndex', null)
+    const newWalletIndex = _.get(this.props, 'appState.viewParams.walletIndex', null)
     if (currentWalletIndex !== newWalletIndex && newWalletIndex !== null) {
       this.setState(_.cloneDeep(defaultState), () => {this.transactionPage()})
     }
   }
 
-  async transactionPage (): Promise<void> {
+  async transactionPage(): Promise<void> {
     StellarSdk.Network.use(new StellarSdk.Network(this.props.appState.connection.networkPassphrase))
     const server = new StellarSdk.Server(this.props.appState.connection.horizonServer, {allowHttp: true})
 
@@ -91,7 +91,7 @@ export class Transactions extends React.Component<{appState: AppState}, State> {
 
     const transactions = _.flatten(await Promise.all(records.map(async (r) => {
       const operations = await r.operations()
-      return operations.records.map(o => {
+      return operations.records.map((o) => {
         return {
           source: r.source_account,
           txId: r.id,
@@ -99,7 +99,7 @@ export class Transactions extends React.Component<{appState: AppState}, State> {
           txData: this.determineTxData(o),
           date: new Date(r.created_at),
           memo: r.memo,
-          fee: _.round(r.fee_paid * 0.0000001, 8)
+          fee: _.round(r.fee_paid * 0.0000001, 8),
         }
       })
     })))
@@ -107,7 +107,7 @@ export class Transactions extends React.Component<{appState: AppState}, State> {
     this.setState({transactions: this.state.transactions.concat(transactions), currentPage: nextPage})
   }
 
-  public renderTransactions (t: any, i: number) {
+  public renderTransactions(t: any, i: number) {
       const dynamicKeys = Object.keys(t.txData)
       return (
         <article className='message' key={i}>
@@ -154,20 +154,20 @@ export class Transactions extends React.Component<{appState: AppState}, State> {
       )
   }
 
-  determineTxData (operation: StellarSdk.OperationRecord) {
+  determineTxData(operation: StellarSdk.OperationRecord) {
     switch (operation.type) {
       case 'create_account':
         return {
           'Funder': operation.funder,
           'Starting Balance': operation.starting_balance,
-          'Account Created': operation.account
+          'Account Created': operation.account,
         }
       case 'payment':
         return {
           'Asset Type': operation.asset_type === 'native' ? 'Kinesis' : operation.asset_type,
           'From': operation.from,
           'To': operation.to,
-          'Amount': operation.amount
+          'Amount': operation.amount,
         }
       case 'set_options':
         return {

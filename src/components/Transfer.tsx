@@ -1,9 +1,9 @@
+import { InputField } from '@components'
+import { InputError } from '@helpers/errors'
+import { FormUpdate, TransferRequest } from '@types'
+import { kebabCase, startCase } from 'lodash'
 import * as React from 'react'
-import { TransferRequest, FormUpdate } from '@types';
-import { InputError } from '@helpers/errors';
-import { startCase, kebabCase } from 'lodash';
-import { InputField } from '@components';
-import { Loader } from './Loader';
+import { Loader } from './Loader'
 
 export interface Props extends TransferRequest {
   transferRequest: (req: TransferRequest) => any

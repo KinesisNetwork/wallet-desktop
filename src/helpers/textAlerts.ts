@@ -6,7 +6,7 @@ export async function showCopyAlert(text: string, content: string): Promise<any>
     buttons: {
       copy: {
         value: content,
-      }
+      },
     },
     icon: 'info',
     title: 'Notice!',

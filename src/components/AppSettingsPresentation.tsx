@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { AppState } from '../app'
 import * as swal from 'sweetalert'
-import { Connection } from './AppSettings';
+import { AppState } from '../app'
+import { Connection } from './AppSettings'
 export class AppSettingsPresentation extends React.Component<{
   appState: AppState,
   changeConnection: Function,
@@ -11,9 +11,9 @@ export class AppSettingsPresentation extends React.Component<{
   connectionName: string
   changeHorizonServer: Function,
   changeNetworkPassphrase: Function,
-  addConnection: Function
+  addConnection: Function,
 }, {}> {
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
@@ -28,8 +28,8 @@ export class AppSettingsPresentation extends React.Component<{
             <h1 className='sub-heading primary-font'>Select Network</h1>
             {
               this.props.appState.connectionList.map((connection: Connection, index: number) => {
-                let activeNetwork = connection === this.props.appState.connection
-                let activeClass = activeNetwork ? 'is-focused' : ''
+                const activeNetwork = connection === this.props.appState.connection
+                const activeClass = activeNetwork ? 'is-focused' : ''
                 return (
                   <div key={index} style={{marginTop: '5px'}}>
                     <button onClick={() => {this.props.changeConnection(connection)}} className={'button ' + activeClass} style={{fontFamily: 'Fira Mono', fontSize: '12px', display: 'block', height: 'auto',  margin: 'auto', width: '100%'}}>

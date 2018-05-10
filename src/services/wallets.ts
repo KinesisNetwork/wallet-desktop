@@ -1,5 +1,5 @@
-import { addNewItem, retrieveItems, saveItems, deleteItem } from './persistance';
 import { Wallet } from '@types'
+import { addNewItem, deleteItem, retrieveItems, saveItems } from './persistance'
 const WALLETS_KEY = 'wallets'
 
 export function addNewWallet(newWallet: Wallet): Promise<Wallet[]> {

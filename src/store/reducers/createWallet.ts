@@ -1,8 +1,8 @@
-import { combineReducers } from 'redux'
+import { addWallet, changeCreateWalletView, changeView, updateCreateWalletForm } from '@actions'
 import { RootAction } from '@store'
-import { getType } from 'typesafe-actions'
-import { updateCreateWalletForm, addWallet, changeCreateWalletView, changeView } from '@actions';
 import { CreateWalletForm, CreateWalletFormView } from '@types'
+import { combineReducers } from 'redux'
+import { getType } from 'typesafe-actions'
 
 export interface CreateWalletState {
   readonly form: CreateWalletForm

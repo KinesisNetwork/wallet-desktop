@@ -14,7 +14,7 @@ export interface Connection {
 export interface PasswordMap {
   [publicKey: string]: {
     timestamp: Date
-    password: string
+    password: string,
   }
 }
 

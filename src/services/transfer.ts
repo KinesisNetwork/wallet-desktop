@@ -1,10 +1,10 @@
-import { Wallet, Connection, TransferRequest } from '@types';
-import { getServer, getFeeInStroops } from '@services/kinesis';
-import { Server, Account, Transaction, TransactionBuilder, Operation, Asset, Keypair, Memo } from 'js-kinesis-sdk';
-import { getAccountIfExists } from '@services/accounts';
-import { WalletLockError } from '@helpers/errors';
+import { WalletLockError } from '@helpers/errors'
+import { getAccountIfExists } from '@services/accounts'
+import { getFeeInStroops, getServer } from '@services/kinesis'
+import { Connection, TransferRequest, Wallet } from '@types'
+import { Account, Asset, Keypair, Memo, Operation, Server, Transaction, TransactionBuilder } from 'js-kinesis-sdk'
 
-export async function transferKinesis (
+export async function transferKinesis(
   sourceWallet: Wallet,
   connection: Connection,
   request: TransferRequest,
@@ -21,7 +21,7 @@ export async function transferKinesis (
   await server.submitTransaction(transaction)
 }
 
-async function newTransferTransaction (
+async function newTransferTransaction(
   server: Server,
   source: Account,
   request: TransferRequest,
@@ -34,7 +34,7 @@ async function newTransferTransaction (
   }
 }
 
-async function newPaymentTransferTransaction (
+async function newPaymentTransferTransaction(
   server: Server,
   source: Account,
   {amount, targetAddress: destination, memo}: TransferRequest,
@@ -52,7 +52,7 @@ async function newPaymentTransferTransaction (
   return paymentTransaction
 }
 
-async function newCreateAccountTransaction (
+async function newCreateAccountTransaction(
   server: Server,
   source: Account,
   {amount: startingBalance, targetAddress: destination, memo}: TransferRequest,

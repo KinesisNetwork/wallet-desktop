@@ -1,13 +1,13 @@
-import { Connection } from '@types';
-import { Server, Network } from 'js-kinesis-sdk';
+import { Connection } from '@types'
+import { Network, Server } from 'js-kinesis-sdk'
 const STROOPS_IN_ONE_KINESIS = 10000000
 
-export function getServer (connection: Connection): Server {
+export function getServer(connection: Connection): Server {
   Network.use(new Network(connection.networkPassphrase))
   return new Server(connection.horizonServer)
 }
 
-export async function getFeeInStroops (
+export async function getFeeInStroops(
   server: Server,
   amountInKinesis: string,
 ): Promise<string> {

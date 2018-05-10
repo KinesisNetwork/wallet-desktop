@@ -1,17 +1,17 @@
-import { combineReducers } from 'redux'
-import { RootAction } from '@store'
-import { Account } from '@types'
-import { getType } from 'typesafe-actions';
 import {
-  loadWallets,
-  addWallet,
-  unlockWallet,
-  lockWallet,
+  accountIsLoading,
   accountLoadFailure,
   accountLoadSuccess,
-  accountIsLoading,
+  addWallet,
+  loadWallets,
+  lockWallet,
+  unlockWallet,
 } from '@actions'
-import { getBalance } from '@services/accounts';
+import { getBalance } from '@services/accounts'
+import { RootAction } from '@store'
+import { Account } from '@types'
+import { combineReducers } from 'redux'
+import { getType } from 'typesafe-actions'
 
 export interface AccountsState {
   readonly accountsMap: {[key: string]: Account}
@@ -30,7 +30,7 @@ export const accounts = combineReducers<AccountsState, RootAction>({
           [action.payload.publicKey]: {
             balance: '0',
             isUnlocked: false,
-          }
+          },
         }
       case getType(unlockWallet):
         return {
@@ -38,7 +38,7 @@ export const accounts = combineReducers<AccountsState, RootAction>({
           [action.payload.publicKey]: {
             ...state[action.payload.publicKey],
             isUnlocked: true,
-          }
+          },
         }
       case getType(lockWallet):
         return {
@@ -46,7 +46,7 @@ export const accounts = combineReducers<AccountsState, RootAction>({
           [action.payload.publicKey]: {
             ...state[action.payload.publicKey],
             isUnlocked: false,
-          }
+          },
         }
       case getType(accountLoadSuccess):
         return {
@@ -54,7 +54,7 @@ export const accounts = combineReducers<AccountsState, RootAction>({
           [action.payload.account_id]: {
             ...state[action.payload.account_id],
             balance: getBalance(action.payload),
-          }
+          },
         }
       default: return state
     }
@@ -68,5 +68,5 @@ export const accounts = combineReducers<AccountsState, RootAction>({
         return false
       default: return state
     }
-  }
+  },
 })

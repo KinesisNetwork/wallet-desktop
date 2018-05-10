@@ -1,4 +1,4 @@
-import { focus } from '@helpers/focus';
+import { focus } from '@helpers/focus'
 
 export class InputError extends Error {
   public key: string

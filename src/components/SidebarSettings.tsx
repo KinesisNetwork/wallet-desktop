@@ -1,5 +1,5 @@
-import * as React from 'react'
 import { View } from '@types'
+import * as React from 'react'
 
 export interface Props {
   connectionName: string

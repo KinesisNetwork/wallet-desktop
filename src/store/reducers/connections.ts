@@ -1,7 +1,7 @@
-import { combineReducers } from 'redux'
-import { Connection } from '@types'
-import { RootAction } from '@store'
 import { DEFAULT_CONNECTIONS } from '@services/connections'
+import { RootAction } from '@store'
+import { Connection } from '@types'
+import { combineReducers } from 'redux'
 
 export interface ConnectionsState {
   connectionList: Connection[]

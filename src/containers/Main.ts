@@ -1,9 +1,9 @@
-import { connect } from 'react-redux'
-import { Dispatch, RootState } from '@store'
-import { loadWallets, loadConnections } from '@actions'
-import { retrieveWallets } from '@services/wallets'
-import { retrieveConnections } from '@services/connections'
+import { loadConnections, loadWallets } from '@actions'
 import { Main as MainPresentation } from '@components'
+import { retrieveConnections } from '@services/connections'
+import { retrieveWallets } from '@services/wallets'
+import { Dispatch, RootState } from '@store'
+import { connect } from 'react-redux'
 
 const mapStateToProps = ({view}: RootState) => ({
   currentView: view.currentView,

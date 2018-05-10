@@ -1,9 +1,9 @@
-import { Account, AccountResponse, Asset, Server } from 'js-kinesis-sdk';
-import { Connection } from '@types'
+import { AccountMissingError } from '@helpers/errors'
 import { getServer } from '@services/kinesis'
-import { AccountMissingError } from '@helpers/errors';
+import { Connection } from '@types'
+import { Account, AccountResponse, Asset, Server } from 'js-kinesis-sdk'
 
-export async function loadAccount (
+export async function loadAccount(
   publicKey: string,
   connection: Connection,
 ): Promise<AccountResponse> {
@@ -15,7 +15,7 @@ export async function loadAccount (
   }
 }
 
-export async function getAccountIfExists (
+export async function getAccountIfExists(
   server: Server,
   publicKey: string,
 ): Promise<Account> {
@@ -27,7 +27,7 @@ export async function getAccountIfExists (
   }
 }
 
-export function getBalance (
+export function getBalance(
   account: AccountResponse,
 ): string {
   const nativeBalance = account.balances.find((balance) => balance.asset_type === Asset.native().getAssetType())

@@ -1,11 +1,11 @@
-import { connect } from 'react-redux'
-import { Dispatch, RootState } from '@store'
+import { changeUnlockPasswordInput, lockWallet, unlockWallet } from '@actions'
 import { Password as PasswordPresentation } from '@components'
+import { copyToClipboard } from '@helpers/copy'
+import { InputError } from '@helpers/errors'
 import { decryptPrivateKey } from '@services/encryption'
-import { unlockWallet, changeUnlockPasswordInput, lockWallet } from '@actions';
+import { Dispatch, RootState } from '@store'
 import { Wallet } from '@types'
-import { copyToClipboard } from '@helpers/copy';
-import { InputError } from '@helpers/errors';
+import { connect } from 'react-redux'
 
 const mapStateToProps = ({wallets, accounts, passwords}: RootState) => {
   const activeWallet = wallets.walletList[wallets.currentlySelected]

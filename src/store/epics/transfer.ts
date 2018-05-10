@@ -1,10 +1,10 @@
-import { Epic } from '@store';
-import { filter, map, mergeMap, withLatestFrom, catchError } from 'rxjs/operators';
+import { accountLoadRequest, transferFailed, transferRequest, transferSuccess } from '@actions'
+import { transferKinesis } from '@services/transfer'
+import { Epic } from '@store'
+import { of } from 'rxjs'
 import { fromPromise } from 'rxjs/observable/fromPromise'
-import { isActionOf } from 'typesafe-actions';
-import { transferRequest, transferSuccess, transferFailed, accountLoadRequest } from '@actions';
-import { transferKinesis } from '@services/transfer';
-import { of } from 'rxjs';
+import { catchError, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators'
+import { isActionOf } from 'typesafe-actions'
 
 export const transferRequest$: Epic = (action$, state$) =>
   action$.pipe(
@@ -18,14 +18,14 @@ export const transferRequest$: Epic = (action$, state$) =>
         return fromPromise(transferKinesis(sourceWallet, connection, request))
           .pipe(
             map(() => transferSuccess(sourceWallet.publicKey)),
-            catchError((err) => of(transferFailed(err)))
+            catchError((err) => of(transferFailed(err))),
           )
-      }
-    )
+      },
+    ),
   )
 
 export const transferSuccess$: Epic = (action$) =>
   action$.pipe(
     filter(isActionOf(transferSuccess)),
-    map(({payload}) => accountLoadRequest(payload))
+    map(({payload}) => accountLoadRequest(payload)),
   )

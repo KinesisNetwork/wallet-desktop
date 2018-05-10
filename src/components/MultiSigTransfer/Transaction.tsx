@@ -1,5 +1,5 @@
-import * as React from 'react'
 import { Transaction } from 'js-kinesis-sdk'
+import * as React from 'react'
 import { OperationView } from './Operation'
 
 export interface Props {

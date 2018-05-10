@@ -1,11 +1,11 @@
+import { accountLoadRequest, changeView, deleteWallet as deleteWalletAction, selectWallet, walletsSaved } from '@actions'
+import { deleteWallet } from '@services/wallets'
 import { Epic } from '@store'
-import { filter, mergeMap, map, withLatestFrom } from 'rxjs/operators';
+import { View } from '@types'
 import { merge } from 'rxjs'
 import { fromPromise } from 'rxjs/observable/fromPromise'
-import { isActionOf } from 'typesafe-actions';
-import { deleteWallet as deleteWalletAction, walletsSaved, changeView, selectWallet, accountLoadRequest } from '@actions';
-import { deleteWallet } from '@services/wallets';
-import { View } from '@types';
+import { filter, map, mergeMap, withLatestFrom } from 'rxjs/operators'
+import { isActionOf } from 'typesafe-actions'
 
 export const deleteWallet$: Epic = (action$) => {
   const deleteWalletAction$ = action$.pipe(
@@ -16,13 +16,13 @@ export const deleteWallet$: Epic = (action$) => {
     mergeMap(
       (action) => fromPromise(deleteWallet(action.payload.publicKey))
         .pipe(
-          map((wallets) => walletsSaved(wallets))
-        )
+          map((wallets) => walletsSaved(wallets)),
+        ),
     ),
   )
 
   const switchView$ = deleteWalletAction$.pipe(
-    map(() => changeView(View.create))
+    map(() => changeView(View.create)),
   )
 
   return merge(switchView$, persistWalletDeletion$)
@@ -32,5 +32,5 @@ export const switchWallet$: Epic = (action$, state$) =>
   action$.pipe(
     filter(isActionOf(selectWallet)),
     withLatestFrom(state$),
-    map(([{payload}, state]) => accountLoadRequest(state.wallets.walletList[payload].publicKey))
+    map(([{payload}, state]) => accountLoadRequest(state.wallets.walletList[payload].publicKey)),
   )

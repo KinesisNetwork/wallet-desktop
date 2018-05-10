@@ -1,5 +1,5 @@
-import { buildAction } from 'typesafe-actions'
 import { AccountResponse } from 'js-kinesis-sdk'
+import { buildAction } from 'typesafe-actions'
 
 export const accountLoadRequest = buildAction('LOAD_ACCOUNT_REQUEST').payload<string>()
 export const accountLoadSuccess = buildAction('LOAD_ACCOUNT_SUCCESS').payload<AccountResponse>()

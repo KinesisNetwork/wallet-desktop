@@ -1,10 +1,10 @@
+import { Epic } from '@store'
 import { values } from 'lodash'
 import { combineReducers } from 'redux'
 import { combineEpics } from 'redux-observable'
-import { RootAction } from './root-action'
-import * as reducers from './reducers'
 import * as epics from './epics'
-import { Epic } from '@store'
+import * as reducers from './reducers'
+import { RootAction } from './root-action'
 
 export type RootState = {
   [P in keyof typeof reducers]: ReturnType<typeof reducers[P]>

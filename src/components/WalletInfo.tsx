@@ -1,6 +1,6 @@
-import * as React from 'react'
 import { LabelledField } from '@components'
-import { DeleteWallet } from '@containers';
+import { DeleteWallet } from '@containers'
+import * as React from 'react'
 
 export interface Props {
   publicKey: string

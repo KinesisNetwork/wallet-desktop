@@ -1,8 +1,8 @@
-import { TransferRequest } from '@types';
-import { combineReducers } from 'redux';
-import { RootAction } from '@store';
-import { getType } from 'typesafe-actions';
-import { updateTransferForm, transferRequest, transferSuccess, transferFailed } from '@actions';
+import { transferFailed, transferRequest, transferSuccess, updateTransferForm } from '@actions'
+import { RootAction } from '@store'
+import { TransferRequest } from '@types'
+import { combineReducers } from 'redux'
+import { getType } from 'typesafe-actions'
 
 export interface TransferState {
   readonly form: TransferRequest
@@ -25,10 +25,10 @@ export const transfer = combineReducers<TransferState, RootAction>({
 
       default: return state
     }
-  }
+  },
 })
 
-function handleChange (name: keyof TransferRequest) {
+function handleChange(name: keyof TransferRequest) {
   return (state = '', action: RootAction) => {
     switch (action.type) {
       case getType(updateTransferForm):

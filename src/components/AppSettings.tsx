@@ -1,15 +1,15 @@
+import { Connection, saveConnections } from '@services/connections'
 import * as React from 'react'
-import { AppState } from '../app'
 import * as swal from 'sweetalert'
+import { AppState } from '../app'
 import { AppSettingsPresentation } from './AppSettingsPresentation'
-import { saveConnections, Connection } from '@services/connections'
 
 export class AppSettings extends React.Component<{
-  setConnectionList: Function, appState: AppState, changeConnection: Function
+  setConnectionList: Function, appState: AppState, changeConnection: Function,
 }, {
-  horizonServer: string, networkPassphrase: string, connectionName: string
+  horizonServer: string, networkPassphrase: string, connectionName: string,
 }> {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {horizonServer: '', networkPassphrase: '', connectionName: ''}
   }
@@ -35,15 +35,15 @@ export class AppSettings extends React.Component<{
     ev.preventDefault()
     if (!this.state.connectionName) {
       await swal('Oops!', 'Please provide a connection name to keep track of what your wallet is currently connected to.', 'error')
-      return document.getElementById('settings-connection-name').focus();
+      return document.getElementById('settings-connection-name').focus()
     }
     if (!this.state.horizonServer) {
       await swal('Oops!', 'A horizon server endpoint is required to connect to the network.', 'error')
-      return document.getElementById('settings-server-address').focus();
+      return document.getElementById('settings-server-address').focus()
     }
     if (!this.state.networkPassphrase) {
       await swal('Oops!', 'A network passphrase is required to connect to the network.', 'error')
-      return document.getElementById('settings-network-pass').focus();
+      return document.getElementById('settings-network-pass').focus()
     }
 
     const newConnections = [
@@ -52,7 +52,7 @@ export class AppSettings extends React.Component<{
         horizonServer: this.state.horizonServer,
         networkPassphrase: this.state.networkPassphrase,
         connectionName: this.state.connectionName,
-      }
+      },
     ]
     saveConnections(newConnections)
       .then(() => {

@@ -1,17 +1,17 @@
-import { Connection } from '@types'
 import { addNewItem, retrieveItems, saveItems } from '@services/persistance'
+import { Connection } from '@types'
 const CONNECTION_KEY = 'connection'
 
 export const DEFAULT_CONNECTIONS: Connection[] = [
   {
     horizonServer: 'https://stellar-local.abx.com',
     networkPassphrase: 'Test SDF Network ; September 2015',
-    connectionName: 'Local Development Network'
+    connectionName: 'Local Development Network',
   },
   {
     horizonServer: 'https://kinesis-uat.abx.com',
     networkPassphrase: 'Kinesis UAT',
-    connectionName: 'Kinesis UAT Network'
+    connectionName: 'Kinesis UAT Network',
   },
 ]
 
@@ -26,7 +26,7 @@ export async function retrieveConnections() {
 export function saveConnections(connections: Connection[]) {
   // don't persist default connections
   const savedConnections = connections.filter(
-    (conn) => DEFAULT_CONNECTIONS.find(({horizonServer}) => horizonServer === conn.horizonServer)
+    (conn) => DEFAULT_CONNECTIONS.find(({horizonServer}) => horizonServer === conn.horizonServer),
   )
   return saveItems<Connection>(CONNECTION_KEY, savedConnections)
 }

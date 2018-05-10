@@ -1,7 +1,7 @@
-import { createStore, applyMiddleware, Dispatch, } from 'redux'
+import { applyMiddleware, createStore, Dispatch } from 'redux'
 import { createEpicMiddleware, Epic } from 'redux-observable'
-import { rootEpic, rootReducer, RootState } from './root-reducer'
 import { RootAction } from './root-action'
+import { rootEpic, rootReducer, RootState } from './root-reducer'
 
 const epicMiddleware = createEpicMiddleware(rootEpic)
 

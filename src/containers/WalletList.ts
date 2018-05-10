@@ -1,8 +1,8 @@
-import { connect } from 'react-redux'
-import { Dispatch, RootState } from '@store'
 import { changeView, selectWallet } from '@actions'
 import { WalletList as WalletsPresentation } from '@components'
-import { View } from '@types';
+import { Dispatch, RootState } from '@store'
+import { View } from '@types'
+import { connect } from 'react-redux'
 
 const mapStateToProps = ({wallets}: RootState) => ({
   wallets: wallets.walletList,
@@ -14,7 +14,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch(selectWallet(walletIndex))
     dispatch(changeView(View.dashboard))
   },
-  addWallet: () => dispatch(changeView(View.create))
+  addWallet: () => dispatch(changeView(View.create)),
 })
 
 export const WalletList = connect(mapStateToProps, mapDispatchToProps)(WalletsPresentation)

@@ -1,9 +1,9 @@
-import * as React from 'react'
 import {
   Password,
   Transfer,
   WalletInfo,
 } from '@containers'
+import * as React from 'react'
 
 export const Dashboard: React.SFC = () => (
   <div className='vertical-spaced'>
