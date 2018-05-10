@@ -20,7 +20,9 @@ export class WalletLockError extends InputError {
 }
 
 export class AccountMissingError extends Error {
-  constructor() {
+  publicKey: string
+  constructor(key: string) {
     super('Account does not exist on the network')
+    this.publicKey = key
   }
 }

@@ -1,5 +1,6 @@
 import {
   Password,
+  Transactions,
   Transfer,
   WalletInfo,
 } from '@containers'
@@ -18,8 +19,6 @@ export const Dashboard: React.SFC = () => (
         <Transfer />
       </div>
     </div>
-    <div style={{flexShrink: 10}}>
-      {/* <Transactions /> */}
-    </div>
+    <Transactions />
   </div>
 )

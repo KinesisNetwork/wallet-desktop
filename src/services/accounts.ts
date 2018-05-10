@@ -11,7 +11,7 @@ export async function loadAccount(
     const server = getServer(connection)
     return await server.loadAccount(publicKey)
   } catch (e) {
-    throw new AccountMissingError()
+    throw new AccountMissingError(publicKey)
   }
 }
 
@@ -23,7 +23,7 @@ export async function getAccountIfExists(
     const account = await server.loadAccount(publicKey)
     return new Account(publicKey, account.sequence)
   } catch (e) {
-    throw new AccountMissingError()
+    throw new AccountMissingError(publicKey)
   }
 }
 

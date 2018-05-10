@@ -34,7 +34,7 @@ export class Main extends React.PureComponent<Props> {
           <Sidebar />
         </div>
         <div className='column'>
-          { this.viewMap(this.props.currentView) }
+          {this.viewMap(this.props.currentView)}
         </div>
       </div>
     )

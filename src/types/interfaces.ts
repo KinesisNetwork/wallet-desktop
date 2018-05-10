@@ -1,3 +1,5 @@
+import { OperationRecord } from 'js-kinesis-sdk'
+
 export interface Wallet {
   publicKey: string
   encryptedPrivateKey: string
@@ -50,4 +52,12 @@ export interface TransferRequest {
 export interface FormUpdate<T> {
   field: keyof T
   newValue: string
+}
+
+export interface TransactionOperationView {
+  readonly source: string
+  readonly fee: string
+  readonly memo: string
+  readonly operation: OperationRecord
+  readonly date: Date
 }

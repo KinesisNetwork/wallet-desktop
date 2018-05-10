@@ -7,6 +7,7 @@ import {
   lockWallet,
   unlockWallet,
 } from '@actions'
+import { AccountMissingError } from '@helpers/errors'
 import { getBalance } from '@services/accounts'
 import { RootAction } from '@store'
 import { Account } from '@types'
@@ -56,6 +57,17 @@ export const accounts = combineReducers<AccountsState, RootAction>({
             balance: getBalance(action.payload),
           },
         }
+      case getType(accountLoadFailure):
+        const e = action.payload
+        return e instanceof AccountMissingError
+          ? {
+            ...state,
+            [e.publicKey]: {
+              ...state[e.publicKey],
+              balance: '0',
+            },
+          }
+          : state
       default: return state
     }
   },

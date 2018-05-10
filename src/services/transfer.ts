@@ -39,12 +39,12 @@ async function newPaymentTransferTransaction(
   source: Account,
   {amount, targetAddress: destination, memo}: TransferRequest,
 ): Promise<Transaction> {
-  const fee = await getFeeInStroops(server, amount)
+  const fee = await getFeeInStroops(server, Number(amount))
   const paymentTransaction = new TransactionBuilder(source, {fee})
     .addOperation(Operation.payment({
       amount,
-      destination,
       asset: Asset.native(),
+      destination,
     }))
     .addMemo(Memo.text(memo || ''))
     .build()
@@ -57,7 +57,7 @@ async function newCreateAccountTransaction(
   source: Account,
   {amount: startingBalance, targetAddress: destination, memo}: TransferRequest,
 ): Promise<Transaction> {
-  const fee = await getFeeInStroops(server, startingBalance)
+  const fee = await getFeeInStroops(server, Number(startingBalance))
   const createAccountTransaction = new TransactionBuilder(source, {fee})
     .addOperation(Operation.createAccount({
       destination,

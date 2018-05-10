@@ -1,11 +1,22 @@
 import { transferRequest, updateTransferForm } from '@actions'
 import { Transfer  as TransferPresentation } from '@components'
+import { getFeeInKinesis } from '@services/kinesis'
 import { RootState } from '@store'
 import { connect } from 'react-redux'
 
-const mapStateToProps = ({transfer}: RootState) => ({
+const mapStateToProps = ({ connections, transfer }: RootState) => ({
   ...transfer.form,
+  getFee: (amount: number) => getFeeInKinesis(connections.currentConnection, amount),
   isTransferring: transfer.isTransferring,
 })
 
-export const Transfer = connect(mapStateToProps, {transferRequest, updateTransferForm})(TransferPresentation)
+const mapDispatchToProps = {
+  transferRequest,
+  updateTransferForm,
+}
+
+export type TransferProps = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
+export const Transfer = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TransferPresentation)

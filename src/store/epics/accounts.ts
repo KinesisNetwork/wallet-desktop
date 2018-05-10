@@ -1,4 +1,10 @@
-import { accountIsLoading, accountLoadFailure, accountLoadRequest, accountLoadSuccess } from '@actions'
+import {
+  accountIsLoading,
+  accountLoadFailure,
+  accountLoadRequest,
+  accountLoadSuccess,
+  loadAccountTransactions,
+} from '@actions'
 import { loadAccount } from '@services/accounts'
 import { Epic } from '@store'
 import { merge, of } from 'rxjs'
@@ -28,5 +34,9 @@ export const loadAccount$: Epic = (action$, state$) => {
     ),
   )
 
-  return merge(accountIsLoading$, accountLoad$)
+  const loadAccountTransactions$ = accountLoadRequest$.pipe(
+    map((publicKey) => loadAccountTransactions(publicKey)),
+  )
+
+  return merge(accountIsLoading$, accountLoad$, loadAccountTransactions$)
 }
