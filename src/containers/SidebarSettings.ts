@@ -4,7 +4,7 @@ import { RootState } from '@store'
 import { connect } from 'react-redux'
 
 const mapStateToProps = ({connections}: RootState) => ({
-  connectionName: connections.currentConnection.connectionName,
+  connectionName: connections.currentConnection.name,
 })
 
 export const SidebarSettings = connect(mapStateToProps, {changeView})(SidebarSettingsPresentation)

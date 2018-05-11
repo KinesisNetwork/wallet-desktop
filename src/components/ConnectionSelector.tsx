@@ -30,7 +30,12 @@ export class ConnectionSelector extends React.Component<Props> {
   render() {
     return (
       <section className='section'>
-        <h1 className='sub-heading primary-font'>Select a Network</h1>
+        <div>
+          <span className='icon is-large'>
+            <i className='fas fa-wifi' />
+          </span>
+          <h1 className='title is-4 heading primary-font'>Select a Network</h1>
+        </div>
         {this.renderConnections()}
       </section>
     )
@@ -59,9 +64,9 @@ class ConnectionButton extends React.Component<ConnectionButtonProps> {
       <a className='level' onClick={this.handleClick}>
         <div className='level-left has-text-left'>
             <div className='content'>
-              <strong>{connection.connectionName}</strong>
+              <strong>{connection.name}</strong>
               <p>
-                {connection.horizonServer}<br/>
+                {connection.horizonURL}<br/>
                 {connection.networkPassphrase}
               </p>
             </div>

@@ -16,10 +16,10 @@ export interface Props extends CreateWalletForm {
 export const CreateWallet: React.SFC<Props> = (props) => (
   <div className='vertical-spaced has-text-centered'>
     <h1 className='title-heading'>Add a new wallet</h1>
-    <div>
+    <section className='section'>
       {props.currentView === FormView.select && <FormSelection changeFormView={props.changeFormView} />}
       {props.currentView !== FormView.select && <WalletForm {...props} />}
-    </div>
+    </section>
   </div>
 )
 

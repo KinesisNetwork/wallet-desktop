@@ -6,7 +6,7 @@ const STROOPS_IN_ONE_KINESIS = 10000000
 
 export function getServer(connection: Connection): Server {
   Network.use(new Network(connection.networkPassphrase))
-  return new Server(connection.horizonServer)
+  return new Server(connection.horizonURL)
 }
 
 export async function getFeeInStroops(

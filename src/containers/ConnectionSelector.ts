@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 const mapStateToProps = ({connections}: RootState) => ({
   connections: connections.connectionList,
   currentlySelected: connections.connectionList.findIndex(
-    (conn) => conn.horizonServer === connections.currentConnection.horizonServer,
+    (conn) => conn.horizonURL === connections.currentConnection.horizonURL,
   ),
 })
 

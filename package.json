@@ -12,7 +12,8 @@
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "watch": "tsc -w",
+    "compile:tsc": "tsc",
+    "watch:tsc": "npm run compile:tsc -- -w",
     "lint": "tslint --project tsconfig.json --force"
   },
   "keywords": [],

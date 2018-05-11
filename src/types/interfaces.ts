@@ -8,8 +8,8 @@ export interface Wallet {
 }
 
 export interface Connection {
-  horizonServer: string
-  connectionName: string
+  horizonURL: string
+  name: string
   networkPassphrase: string
 }
 

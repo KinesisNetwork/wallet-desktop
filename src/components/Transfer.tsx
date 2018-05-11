@@ -1,6 +1,6 @@
 import { InputField } from '@components'
 import { TransferProps } from '@containers'
-import { InputError } from '@helpers/errors'
+import { InputError, WalletLockError } from '@helpers/errors'
 import { TransferRequest } from '@types'
 import { kebabCase, startCase } from 'lodash'
 import * as React from 'react'
@@ -41,6 +41,7 @@ export class Transfer extends React.Component<TransferProps> {
     this.checkValidEntry('targetAddress')
     this.checkValidEntry('amount')
     this.checkValidMemo()
+    this.checkWalletIsUnlocked()
   }
 
   checkValidEntry = (name: keyof TransferRequest) => {
@@ -55,10 +56,15 @@ export class Transfer extends React.Component<TransferProps> {
     }
   }
 
+  checkWalletIsUnlocked = () => {
+    if (!this.props.isWalletUnlocked) {
+      throw new WalletLockError()
+    }
+  }
+
   render() {
     return (
       <div>
-        {/* { this.props.isTransferring && <Loader />} */}
         <h1 className='sub-heading primary-font'>Transfer</h1>
         <div style={{ position: 'relative' }}>
           {this.props.isTransferring && <Loader />}

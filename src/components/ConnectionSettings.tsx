@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { ConnectionSelector } from '@containers'
+import { ConnectionForm, ConnectionSelector } from '@containers'
 
 export const ConnectionSettings: React.SFC = () => (
   <div className='vertical-spaced has-text-centered'>
@@ -10,7 +10,7 @@ export const ConnectionSettings: React.SFC = () => (
         <ConnectionSelector />
       </div>
       <div className='column'>
-        {/* <ConnectionForm /> */}
+        <ConnectionForm />
       </div>
     </div>
   </div>
