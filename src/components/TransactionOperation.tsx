@@ -37,16 +37,25 @@ export const renderOperationRecords = (operation: OperationRecord) => {
   ))
 }
 
-export const TransactionOperation: React.SFC<Props> = ({transactionWithOperation}) => (
-  <article className='message'>
+export const TransactionOperation: React.SFC<Props> = ({transactionWithOperation: t}) => (
+  <article className='message is-small is-transparent'>
     <div className='message-header'>
-      <p>{startCase(transactionWithOperation.operation.type)}</p>
+      <p>
+        {!t.isIncoming && <span className='icon has-text-success'><i className='fas fa-arrow-down' /></span>}
+        {t.isIncoming && <span className='icon has-text-danger'><i className='fas fa-arrow-up' /></span>}
+        <span>{startCase(t.operation.type)}</span>
+      </p>
     </div>
     <div className='message-body'>
-      {renderOperationRecords(transactionWithOperation.operation)}
+      {renderOperationRecords(t.operation)}
       <HorizontalLabelledField
         label='Fee'
-        value={transactionWithOperation.fee}
+        value={t.fee}
+        isCompact={true}
+      />
+      <HorizontalLabelledField
+        label='Memo'
+        value={t.memo}
         isCompact={true}
       />
     </div>

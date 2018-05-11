@@ -26,6 +26,8 @@ const mapStateToProps = ({wallets, accounts, passwords}: RootState) => {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
+  lockWallet: (wallet: Wallet) => dispatch(lockWallet(wallet)),
+  setPasswordInput: (password: string) => dispatch(changeUnlockPasswordInput(password)),
   unlockWallet: ({encryptedPrivateKey, publicKey}: Wallet, password: string) => {
     try {
       const decryptedPrivateKey = decryptPrivateKey(encryptedPrivateKey, password)
@@ -36,8 +38,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
       }
     }
   },
-  setPasswordInput: (password: string) => dispatch(changeUnlockPasswordInput(password)),
-  lockWallet: (wallet: Wallet) => dispatch(lockWallet(wallet)),
 })
 
 export const Password = connect(mapStateToProps, mapDispatchToProps)(PasswordPresentation)

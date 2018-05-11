@@ -10,13 +10,13 @@ const mapStateToProps = ({view}: RootState) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  loadWallets: async () => {
-    const wallets = await retrieveWallets()
-    dispatch(loadWallets(wallets))
-  },
   loadConnections: async () => {
     const connections = await retrieveConnections()
     dispatch(loadConnections(connections))
+  },
+  loadWallets: async () => {
+    const wallets = await retrieveWallets()
+    dispatch(loadWallets(wallets))
   },
 })
 

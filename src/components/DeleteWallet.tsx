@@ -10,11 +10,11 @@ export interface Props {
 export class DeleteWallet extends React.Component<Props> {
   deleteWallet = async () => {
     const isSureToDelete = await sweetAlert({
-      title: 'Are you sure?',
-      text: 'Once deleted, you will not be able to recover this wallet.',
-      icon: 'warning',
-      dangerMode: true,
       buttons: ['Go back', 'Delete Wallet'],
+      dangerMode: true,
+      icon: 'warning',
+      text: 'Once deleted, you will not be able to recover this wallet.',
+      title: 'Are you sure?',
     })
     if (!isSureToDelete) {
       return

@@ -10,6 +10,13 @@ export interface WalletsState {
 }
 
 export const wallets = combineReducers<WalletsState, RootAction>({
+  currentlySelected: (state = 0, action) => {
+    switch (action.type) {
+      case getType(selectWallet): return action.payload
+      case getType(deleteWallet): return state > 0 ? state - 1 : 0
+      default: return state
+    }
+  },
   walletList: (state = [], action) => {
     switch (action.type) {
       case getType(loadWallets): return [...action.payload]
@@ -29,13 +36,6 @@ export const wallets = combineReducers<WalletsState, RootAction>({
             ? {...wallet, decryptedPrivateKey: undefined}
             : wallet,
         )
-      default: return state
-    }
-  },
-  currentlySelected: (state = 0, action) => {
-    switch (action.type) {
-      case getType(selectWallet): return action.payload
-      case getType(deleteWallet): return state > 0 ? state - 1 : 0
       default: return state
     }
   },

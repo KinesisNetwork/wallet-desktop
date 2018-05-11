@@ -25,11 +25,11 @@ if (isDevMode) {
 const createWindow = async () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
+    height: 768,
+    icon: path.join(__dirname, 'icons/png/64x64.png'),
     minHeight: 768,
     minWidth: 1024,
-    height: 768,
     width: 1024,
-    icon: path.join(__dirname, 'icons/png/64x64.png'),
   })
 
   // and load the index.html of the app.

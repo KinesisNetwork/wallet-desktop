@@ -43,8 +43,8 @@ async function newPaymentTransferTransaction(
   const paymentTransaction = new TransactionBuilder(source, {fee})
     .addOperation(Operation.payment({
       amount,
-      asset: Asset.native(),
       destination,
+      asset: Asset.native(),
     }))
     .addMemo(Memo.text(memo || ''))
     .build()

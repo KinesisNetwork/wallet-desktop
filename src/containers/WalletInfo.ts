@@ -8,8 +8,8 @@ const mapStateToProps = ({accounts, wallets}: RootState) => {
   return {
     accountName,
     publicKey,
-    isAccountLoading: accounts.isAccountLoading,
     accountBalance: activeAccount.balance,
+    isAccountLoading: accounts.isAccountLoading,
   }
 }
 

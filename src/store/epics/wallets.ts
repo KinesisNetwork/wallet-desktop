@@ -1,4 +1,10 @@
-import { accountLoadRequest, changeView, deleteWallet as deleteWalletAction, selectWallet, walletsSaved } from '@actions'
+import {
+  accountLoadRequest,
+  changeView,
+  deleteWallet as deleteWalletAction,
+  selectWallet,
+  walletsSaved,
+} from '@actions'
 import { deleteWallet } from '@services/wallets'
 import { Epic } from '@store'
 import { View } from '@types'

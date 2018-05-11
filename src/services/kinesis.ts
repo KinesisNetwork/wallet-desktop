@@ -40,7 +40,7 @@ export async function getTransactions(
   const server = getServer(connection)
   try {
     const transactionPage = await server.transactions().forAccount(accountKey).order('desc').call()
-    const nestedArray = await Promise.all(transactionPage.records.map(transactionWithOperations))
+    const nestedArray = await Promise.all(transactionPage.records.map((t) => transactionWithOperations(t, accountKey)))
     return flatten(nestedArray)
   } catch (e) {
     return []
@@ -49,12 +49,14 @@ export async function getTransactions(
 
 async function transactionWithOperations(
   transaction: TransactionRecord,
+  accountKey: string,
 ): Promise<TransactionOperationView[]> {
   const operationsPage = await transaction.operations()
   return operationsPage.records.map((operation): TransactionOperationView => ({
     operation,
     date: new Date(transaction.created_at),
     fee: (Number(transaction.fee_paid) / STROOPS_IN_ONE_KINESIS).toFixed(5) ,
+    isIncoming: transaction.source_account === accountKey,
     memo: transaction.memo,
     source: transaction.source_account,
   }))

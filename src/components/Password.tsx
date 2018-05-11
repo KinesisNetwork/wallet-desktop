@@ -15,9 +15,12 @@ const LockedWallet: React.SFC<Props> = ({password, unlockWallet, activeWallet, s
   <div>
     <div className='field has-addons has-addons-centered'>
       <div className='control'>
-        <input id='wallet-unlock-password'
-          className='input' value={password}
-          type='password' placeholder='Password'
+        <input
+          id='wallet-unlock-password'
+          className='input'
+          value={password}
+          type='password'
+          placeholder='Password'
           onChange={(e) => setPasswordInput(e.currentTarget.value)}
         />
       </div>
@@ -45,9 +48,7 @@ const UnlockedWallet: React.SFC<Props> = ({copyDecryptedPrivateKey, activeWallet
         </button>
       </div>
       <div className='control'>
-        <button type='submit' className='button'
-          onClick={() => lockWallet(activeWallet)}
-        >
+        <button type='submit' className='button' onClick={() => lockWallet(activeWallet)}>
           <span className='icon'>
             <i className='fas fa-lock' />
           </span>
@@ -60,6 +61,6 @@ const UnlockedWallet: React.SFC<Props> = ({copyDecryptedPrivateKey, activeWallet
 
 export const Password: React.SFC<Props> = (props) => (
   <React.Fragment>
-    { props.isAccountUnlocked ? <UnlockedWallet {...props} /> : <LockedWallet {...props} /> }
+    {props.isAccountUnlocked ? <UnlockedWallet {...props} /> : <LockedWallet {...props} />}
   </React.Fragment>
 )

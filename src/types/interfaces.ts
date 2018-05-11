@@ -56,6 +56,7 @@ export interface FormUpdate<T> {
 
 export interface TransactionOperationView {
   readonly source: string
+  readonly isIncoming: boolean
   readonly fee: string
   readonly memo: string
   readonly operation: OperationRecord

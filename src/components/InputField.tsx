@@ -10,14 +10,15 @@ export interface Props {
 
 export const InputField: React.SFC<Props> = ({value, label, onChangeHandler, isPassword, id}) => (
   <div className='field'>
-    <label className='label'>{label}</label>
+    <label className='label is-small'>{label}</label>
     <div className='control'>
-      <input className='input'
+      <input
+        className='input'
         id={`input-${id}`}
         onChange={(ev) => onChangeHandler(ev.target.value)}
         type={isPassword ? 'password' : 'text'}
         value={value}
-       />
+      />
     </div>
   </div>
 )
