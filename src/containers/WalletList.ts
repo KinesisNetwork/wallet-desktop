@@ -4,8 +4,8 @@ import { Dispatch, RootState } from '@store'
 import { View } from '@types'
 import { connect } from 'react-redux'
 
-const mapStateToProps = ({wallets}: RootState) => ({
-  currentWallet: wallets.currentlySelected,
+const mapStateToProps = ({wallets, view}: RootState) => ({
+  currentWallet: view.currentView === View.dashboard ? wallets.currentlySelected : -1,
   wallets: wallets.walletList,
 })
 
