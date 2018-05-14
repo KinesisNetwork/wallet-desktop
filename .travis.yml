@@ -7,9 +7,6 @@ addons:
       - rpm
 before_install:
   - if [ $TRAVIS_OS_NAME = "osx" ]; then brew update && ln -s /usr/local/opt/openssl/include/openssl /usr/local/include; fi
-  - npm install -g electron-forge
-before_script:
-  - npm run sass-compile
 stages:
   - name: test
     if: type = pull_request
@@ -18,12 +15,10 @@ stages:
 jobs:
   include:
     - stage: test
-      script: electron-forge package
       os: linux
-    - script: electron-forge package
-      os: osx
+    - os: osx
     - stage: deploy
-      script: electron-forge publish
+      script: npm run deploy
       os: linux
-    - script: electron-forge publish
+    - script: npm run deploy
       os: osx

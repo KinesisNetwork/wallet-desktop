@@ -6,15 +6,17 @@
   "description": "Stellar compliant hard wallet",
   "main": "src/index.ts",
   "scripts": {
+    "pretest": "npm run sass-compile",
+    "test": "npm run lint && npm run compile:tsc && npm run package",
+    "deploy": "electron-forge publish",
     "sass-compile": "node sass-compile.js",
     "prestart": "npm run sass-compile",
-    "prepublish": "npm run sass-compile",
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "compile:tsc": "tsc",
     "watch:tsc": "npm run compile:tsc -- -w",
-    "lint": "tslint --project tsconfig.json --force"
+    "lint": "tslint --project tsconfig.json"
   },
   "keywords": [],
   "author": "ABX",
