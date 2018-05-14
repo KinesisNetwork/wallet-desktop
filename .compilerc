@@ -21,12 +21,7 @@
         "module": "commonjs",
         "jsx": "react",
         "rootDir": "src",
-        "baseUrl": "src",
-        "paths": {
-          "@services/*": [
-            "services/*"
-          ]
-        }
+        "baseUrl": "src"
       }
     },
     "production": {

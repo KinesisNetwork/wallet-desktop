@@ -8,8 +8,9 @@
   "scripts": {
     "pretest": "npm run sass-compile",
     "test": "npm run lint && npm run compile:tsc && npm run package",
+    "predeploy": "npm run sass-compile",
     "deploy": "electron-forge publish",
-    "sass-compile": "node sass-compile.js",
+    "sass-compile": "node-sass --include-path=node_modules/bulma src/style.scss src/style.css",
     "prestart": "npm run sass-compile",
     "start": "electron-forge start",
     "package": "electron-forge package",
@@ -48,7 +49,9 @@
         ]
       },
       "electronPackagerConfig": {
-        "packageManager": "npm"
+        "packageManager": "npm",
+        "icon": "./src/icons/png/128x128.png",
+        "ignore": "src\\style\\.scss"
       },
       "electronWinstallerConfig": {
         "name": "KinesisWallet"
