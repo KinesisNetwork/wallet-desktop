@@ -53,12 +53,13 @@
         "ignore": "src\\style\\.scss"
       },
       "electronWinstallerConfig": {
-        "name": "KinesisWallet"
+        "name": "KinesisWallet",
+        "certificateFile": "./code-sign.pfx"
       },
       "electronInstallerDebian": {},
       "electronInstallerRedhat": {},
       "github_repository": {
-        "owner": "bullioncapital",
+        "owner": "kinesisnetwork",
         "name": "kinesis-wallet"
       },
       "s3": {
@@ -68,7 +69,6 @@
     }
   },
   "dependencies": {
-    "@types/electron-devtools-installer": "^2.0.2",
     "bulma": "^0.7.1",
     "crypto-js": "^3.1.9-1",
     "electron-compile": "^6.4.2",
@@ -92,6 +92,7 @@
   "devDependencies": {
     "@types/crypto-js": "^3.1.39",
     "@types/electron": "^1.6.10",
+    "@types/electron-devtools-installer": "^2.0.3",
     "@types/electron-json-storage": "^4.0.0",
     "@types/lodash": "^4.14.108",
     "@types/react": "^16.3.13",

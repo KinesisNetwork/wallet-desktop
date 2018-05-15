@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from 'electron'
 import { enableLiveReload } from 'electron-compile'
-import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer'
+import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer'
 import * as path from 'path'
 import { register } from 'tsconfig-paths'
 
@@ -38,6 +38,7 @@ const createWindow = async () => {
   // Open the DevTools.
   if (isDevMode) {
     await installExtension(REACT_DEVELOPER_TOOLS)
+    await installExtension(REDUX_DEVTOOLS)
     mainWindow.webContents.openDevTools()
   }
 
