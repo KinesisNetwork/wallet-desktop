@@ -9,6 +9,7 @@ cache:
   - '%APPDATA%\npm-cache'
 install:
   - ps: Install-Product node $env:nodejs_version
+  - npm install -g npm --quiet
   - npm ci --quiet
 build_script:
   - ps: ./appveyor.ps1
