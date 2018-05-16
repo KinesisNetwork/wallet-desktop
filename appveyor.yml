@@ -2,6 +2,7 @@ image: Visual Studio 2017
 platform: x64
 environment:
   nodejs_version: 8
+  signtool: C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Bin\signtool.exe
 branches:
   only:
     - master

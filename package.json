@@ -14,6 +14,7 @@
     "prestart": "npm run sass-compile",
     "start": "electron-forge start",
     "package": "electron-forge package",
+    "publish": "electron-forge publish",
     "make": "electron-forge make",
     "compile:tsc": "tsc",
     "watch:tsc": "npm run compile:tsc -- -w",
