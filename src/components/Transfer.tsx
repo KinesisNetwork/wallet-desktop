@@ -1,9 +1,8 @@
+import * as React from 'react'
+
 import { InputField } from '@components'
 import { TransferProps } from '@containers'
 import { InputError, WalletLockError } from '@helpers/errors'
-import { TransferRequest } from '@types'
-import { kebabCase, startCase } from 'lodash'
-import * as React from 'react'
 import { Loader } from './Loader'
 
 export class Transfer extends React.Component<TransferProps> {
@@ -38,27 +37,39 @@ export class Transfer extends React.Component<TransferProps> {
   }
 
   validateProps = () => {
-    this.checkValidEntry('targetAddress')
-    this.checkValidEntry('amount')
-    this.checkValidMemo()
     this.checkWalletIsUnlocked()
+    this.checkValidTarget()
+    this.checkValidAmount()
+    this.checkValidMemo()
   }
 
-  checkValidEntry = (name: keyof TransferRequest) => {
-    if (!this.props[name]) {
-      throw new InputError(`${startCase(name)} is required`, `transfer-${kebabCase(name)}`)
+  checkWalletIsUnlocked = () => {
+    if (!this.props.isWalletUnlocked) {
+      throw new WalletLockError()
+    }
+  }
+
+  checkValidTarget = () => {
+    if (!this.props.targetAddress) {
+      throw new InputError(`Target Address is required`, `transfer-target-address`)
+    } else if (this.props.targetAddress === this.props.activeWallet.publicKey) {
+      throw new InputError('Target Address cannot be your own key', 'transfer-target-address')
+    }
+  }
+
+  checkValidAmount = () => {
+    if (Number(this.props.amount) > Number(this.props.accountBalance)) {
+      throw new InputError('Transfer amount is higher than account balance', 'transfer-amount')
+    } else if (Number(this.props.amount) <= 0) {
+      throw new InputError('Transfer amount must be greater than 0', 'transfer-amount')
+    } else if (!this.props.amount) {
+      throw new InputError('Amount is required', 'transfer-amount')
     }
   }
 
   checkValidMemo = () => {
     if (this.props.memo.length > 24) {
       throw new InputError('Memo must be fewer than 25 characters', 'transfer-memo')
-    }
-  }
-
-  checkWalletIsUnlocked = () => {
-    if (!this.props.isWalletUnlocked) {
-      throw new WalletLockError()
     }
   }
 

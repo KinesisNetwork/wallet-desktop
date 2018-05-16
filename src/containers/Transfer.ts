@@ -4,12 +4,17 @@ import { getFeeInKinesis } from '@services/kinesis'
 import { RootState } from '@store'
 import { connect } from 'react-redux'
 
-const mapStateToProps = ({ wallets, connections, transfer }: RootState) => ({
-  ...transfer.form,
-  getFee: (amount: number) => getFeeInKinesis(connections.currentConnection, amount),
-  isTransferring: transfer.isTransferring,
-  isWalletUnlocked: !!wallets.walletList[wallets.currentlySelected].decryptedPrivateKey,
-})
+const mapStateToProps = ({ wallets, connections, transfer, accounts }: RootState) => {
+  const activeWallet = wallets.walletList[wallets.currentlySelected]
+  return {
+    ...transfer.form,
+    getFee: (amount: number) => getFeeInKinesis(connections.currentConnection, amount),
+    isTransferring: transfer.isTransferring,
+    isWalletUnlocked: !!activeWallet.decryptedPrivateKey,
+    accountBalance: accounts.accountsMap[activeWallet.publicKey].balance,
+    activeWallet,
+  }
+}
 
 const mapDispatchToProps = {
   transferRequest,
