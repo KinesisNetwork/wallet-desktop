@@ -1,6 +1,6 @@
 import { changeUnlockPasswordInput, lockWallet, unlockWallet } from '@actions'
 import { Password as PasswordPresentation } from '@components'
-import { copyToClipboard } from '@helpers/copy'
+import { copyToClipboard } from '@helpers/copy/'
 import { InputError } from '@helpers/errors'
 import { decryptPrivateKey } from '@services/encryption'
 import { Dispatch, RootState } from '@store'
