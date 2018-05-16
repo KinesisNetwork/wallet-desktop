@@ -3,7 +3,9 @@ import { decryptPrivateKey } from '@services/encryption'
 import { Wallet } from '@types'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import swal from 'sweetalert'
+import * as SwalImport from 'sweetalert'
+
+const swal = SwalImport as any
 
 class PasswordInput extends React.Component<{activeWallet: Wallet}, {password: string}> {
   constructor(props) {
@@ -16,7 +18,8 @@ class PasswordInput extends React.Component<{activeWallet: Wallet}, {password: s
   changeText = (e) => {
     const text = e.target.value
     this.setState({password: text})
-    const isDecryptionSuccessful = this.decryptKey(this.props.activeWallet.encryptedPrivateKey, text)
+    const isDecryptionSuccessful = this.decryptKey(text)
+    // @ts-ignore
     if (isDecryptionSuccessful) {
       if (swal.setActionValue && swal.close) {
         swal.setActionValue({ cancel: { value: '' } })
@@ -25,9 +28,9 @@ class PasswordInput extends React.Component<{activeWallet: Wallet}, {password: s
     }
   }
 
-  decryptKey = (encryptedKey: string, passwordInput: string) => {
+  decryptKey = (passwordInput: string) => {
     try {
-      return !!decryptPrivateKey(encryptedKey, passwordInput)
+      return !!decryptPrivateKey(this.props.activeWallet.encryptedPrivateKey, passwordInput)
     } catch (e) {
       return false
     }
