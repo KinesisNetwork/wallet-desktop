@@ -5,8 +5,10 @@ environment:
 branches:
   only:
     - master
+cache:
+  - '%APPDATA%\npm-cache'
 install:
   - ps: Install-Product node $env:nodejs_version
-  - npm install
+  - npm ci --quiet
 build_script:
-  - ps: powershell ./appveyor.ps1
+  - ps: ./appveyor.ps1
