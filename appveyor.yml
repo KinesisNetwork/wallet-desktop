@@ -2,15 +2,15 @@ image: Visual Studio 2017
 platform: x64
 environment:
   nodejs_version: 8
-  signtool: C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Bin\signtool.exe
+  signtool: C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe
 branches:
   only:
     - master
 cache:
   - '%APPDATA%\npm-cache'
+  - node_modules
 install:
   - ps: Install-Product node $env:nodejs_version
-  - npm install -g npm --quiet
-  - npm ci --quiet
+  - npm install
 build_script:
   - ps: ./appveyor.ps1

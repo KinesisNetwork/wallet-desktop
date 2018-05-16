@@ -1,3 +1,4 @@
+Get-ChildItem "C:\Program Files(x86)\Windows Kits\10\bin\"
 if ("${env:APPVEYOR_PULL_REQUEST_NUMBER}" -eq "") {
   npm run publish -- --dry-run --tag="0.1.${env:APPVEYOR_BUILD_NUMBER}";
   cmd.exe /c "`"${env:SIGNTOOL}`" sign /f ./code-sign.pfx /p %CERTIFICATE_PASSWORD% /fd sha1 /tr http://sha1timestamp.ws.symantec.com/sha1/timestamp /td sha1 /v .\out\make\squirrel.windows\x64\kinesis-wallet-setup.exe";

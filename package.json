@@ -3,7 +3,7 @@
   "productName": "Kinesis Wallet",
   "repository": "https://github.com/KinesisNetwork/wallet-desktop",
   "version": "0.1.0",
-  "description": "Stellar compliant hard wallet",
+  "description": "Kinesis compliant hard wallet",
   "main": "src/index.ts",
   "scripts": {
     "pretest": "npm run sass-compile",
@@ -14,7 +14,7 @@
     "prestart": "npm run sass-compile",
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "publish": "electron-forge publish",
+    "publish": "npm run sass-compile && electron-forge publish",
     "make": "electron-forge make",
     "compile:tsc": "tsc",
     "watch:tsc": "npm run compile:tsc -- -w",
@@ -54,7 +54,8 @@
         "ignore": "src\\style\\.scss"
       },
       "electronWinstallerConfig": {
-        "name": "KinesisWallet"
+        "name": "KinesisWallet",
+        "setupExe": "kinesis-wallet-setup.exe"
       },
       "electronInstallerDebian": {},
       "electronInstallerRedhat": {},
