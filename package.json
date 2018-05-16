@@ -7,7 +7,7 @@
   "main": "src/index.ts",
   "scripts": {
     "pretest": "npm run sass-compile",
-    "test": "npm run lint && npm run compile:tsc && npm run package",
+    "test": "npm run lint && npm run compile:tsc",
     "predeploy": "npm run sass-compile",
     "deploy": "electron-forge publish",
     "sass-compile": "node-sass --include-path=node_modules/bulma src/style.scss src/style.css",
