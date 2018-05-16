@@ -1,13 +1,14 @@
-let CryptoJS = require('crypto-js');
+import { InputError } from '@helpers/errors'
+import { AES, enc } from 'crypto-js'
 
 export function encryptPrivateKey(privateKey: string, password: string) {
-  let encryptedPrivateKey = CryptoJS.AES.encrypt(privateKey, password).toString()
-  return encryptedPrivateKey
+  return AES.encrypt(privateKey, password).toString()
 }
 
-export function decryptPrivateKey(privateKey: string, password: string) {
-  let decryptedPrivateKeyByte = CryptoJS.AES.decrypt(privateKey, password)
-  let decryptedPrivateKey = decryptedPrivateKeyByte.toString(CryptoJS.enc.Utf8);
-
-  return decryptedPrivateKey
+export function decryptPrivateKey(privateKey: string, password: string): string | never {
+  const decryptedKey = AES.decrypt(privateKey, password).toString(enc.Utf8)
+  if (decryptedKey === '') {
+    throw new InputError('Wallet password is incorrect', 'wallet-unlock-password')
+  }
+  return decryptedKey
 }

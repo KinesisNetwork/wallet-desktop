@@ -1,5 +1,5 @@
 @import "src/_variables.scss";
-@import "node_modules/bulma/bulma.sass";
+@import "bulma.sass";
 @font-face {
   font-family: 'Fira Mono';
   src: url("./fonts/FiraMono-Regular.ttf") format('truetype');
@@ -20,8 +20,6 @@
 body {
   height: 100%;
   width: 100%;
-  min-width: 1200px;
-  min-height: 700px;
   padding: 0;
 }
 
@@ -55,12 +53,11 @@ body {
 }
 
 .label {
-  margin-top: 15px;
   color: #74889c;
-  font-size: 15px;
-  margin-bottom: 8px;
-  display: block;
-  font-weight: 400;
+}
+
+.is-constant-height {
+  flex-shrink: 0;
 }
 
 .sub-heading {
@@ -138,20 +135,15 @@ body {
 .scrollable::-webkit-scrollbar-thumb {
   background: #4E5D6C;
 }
-// @media (min-width: 769px) {
-//   .settings-btn {
-//     position: absolute;
-//     bottom: 5%;
-//   }
-// }
 
 .sk-folding-cube {
-  margin: 20px auto;
   width: 40px;
   height: 40px;
-  position: relative;
-  -webkit-transform: rotateZ(45deg);
-  transform: rotateZ(45deg);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: rotateZ(45deg) translate(-50%);
+  z-index: 100;
 }
 
 .sk-folding-cube .sk-cube {
@@ -159,8 +151,6 @@ body {
   width: 50%;
   height: 50%;
   position: relative;
-  -webkit-transform: scale(1.1);
-  -ms-transform: scale(1.1);
   transform: scale(1.1);
 }
 

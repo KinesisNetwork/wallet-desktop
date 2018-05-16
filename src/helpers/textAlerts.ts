@@ -1,6 +1,3 @@
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
-import * as swal from 'sweetalert'
 import { clipboard } from 'electron'
 
 export async function showCopyAlert(text: string, content: string): Promise<any> {
@@ -9,7 +6,7 @@ export async function showCopyAlert(text: string, content: string): Promise<any>
     buttons: {
       copy: {
         value: content,
-      }
+      },
     },
     icon: 'info',
     title: 'Notice!',
