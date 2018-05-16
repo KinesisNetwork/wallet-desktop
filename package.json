@@ -53,8 +53,7 @@
         "ignore": "src\\style\\.scss"
       },
       "electronWinstallerConfig": {
-        "name": "KinesisWallet",
-        "certificateFile": "./code-sign.pfx"
+        "name": "KinesisWallet"
       },
       "electronInstallerDebian": {},
       "electronInstallerRedhat": {},

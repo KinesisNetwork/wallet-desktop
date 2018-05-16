@@ -9,4 +9,4 @@ install:
   - ps: Install-Product node $env:nodejs_version
   - npm install
 build_script:
-  - if "%APPVEYOR_PULL_REQUEST_NUMBER%"=="" (npm run deploy) else (npm test)
+  - ps: powershell ./appveyor.ps1
