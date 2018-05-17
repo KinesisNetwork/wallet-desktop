@@ -38,9 +38,14 @@ const LockedWallet: React.SFC<Props> = ({password, unlockWallet, activeWallet, s
 
 class UnlockedWallet extends React.Component<Props, Readonly<{}>> {
   public copyBtn
+  public clipboard
 
   public componentDidMount() {
-    new ClipboardJS(this.copyBtn)
+    this.clipboard = new ClipboardJS(this.copyBtn)
+  }
+
+  public componentDidUnmount() {
+    this.clipboard.destroy()
   }
 
   public render() {
