@@ -105,6 +105,7 @@ export class Transfer extends React.Component<TransferProps> {
             </div>
           </div>
         </div>
+        <div className='is-divider is-hidden-tablet' style={{marginBottom: 0, borderTopWidth: '0.01rem'}} />
       </div>
     )
   }
