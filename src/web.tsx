@@ -1,6 +1,5 @@
 import { App } from './app'
 import './fonts/fontawesome-all.js'
-import './logo.svg'
 import './style.css'
 
 import * as React from 'react'

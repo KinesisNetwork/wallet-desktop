@@ -6,7 +6,7 @@ if (!process.env.IS_WEB) {
   setElectronStorage = require('./electron').setElectronStorage
 }
 
-import { getWebStorage, setWebStorage } from './web'
+import { getWebStorage, setWebStorage } from './webstorage'
 
 export function setStorage<T>(key: string, items: T[], callback: (err: any) => void) {
   return process.env.IS_WEB
