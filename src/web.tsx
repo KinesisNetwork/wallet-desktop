@@ -1,11 +1,7 @@
-require('./style.css')
-require('./fonts/fontawesome-all.js')
-const { App } = require('./app')
-
-if (!process.env.IS_WEB) {
-  const w: any = window
-  w.exports = module.exports
-}
+import { App } from './app'
+import './fonts/fontawesome-all.js'
+import './logo.svg'
+import './style.css'
 
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
@@ -18,13 +14,8 @@ register({
   paths: config.compilerOptions.paths,
 })
 
-let render = () => {
+const render = () => {
   ReactDOM.render(<AppContainer><App /></AppContainer>, document.getElementById('App'))
 }
 
 render()
-
-if (!process.env.IS_WEB) {
-  const m: any = module
-  if (m.hot) { m.hot.accept(render) }
-}

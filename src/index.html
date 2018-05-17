@@ -2,10 +2,32 @@
 <html lang="en">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script defer src="fonts/fontawesome-all.js"></script>
 </head>
 <body>
   <div id="App"></div>
-  <script src="./entry.tsx"></script>
 </body>
 
+<script>window.exports = module.exports</script>
+<script type="text/tsx">
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import {AppContainer} from 'react-hot-loader';
+import { register } from 'tsconfig-paths';
+const config = require('../tsconfig.json')
+
+register({
+  baseUrl: config.compilerOptions.baseUrl,
+  paths: config.compilerOptions.paths,
+})
+
+let render = () => {
+  const { App } = require('./app');
+  ReactDOM.render(<AppContainer><App /></AppContainer>, document.getElementById('App'));
+}
+
+render();
+if (module.hot) { module.hot.accept(render); }
+</script>
 </html>
