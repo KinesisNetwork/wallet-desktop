@@ -11,7 +11,6 @@ export async function addNewItem<T extends object>(typeKey: string, item: T): Pr
 }
 
 export function retrieveItems<T>(typeKey: string, errorMessage?: string): Promise<T[]> {
-  console.log(typeKey)
   return new Promise<T[]>((res, rej) => {
     getStorage(typeKey, (err, data) => {
       if (err) {

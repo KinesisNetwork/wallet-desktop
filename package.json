@@ -13,7 +13,7 @@
     "sass-compile": "node-sass --include-path=node_modules/bulma src/style.scss src/style.css",
     "prestart": "rm -rf .cache && npm run sass-compile",
     "start": "electron-forge start",
-    "start:web": "rm -rf .cache && IS_WEB=true parcel src/index-web.html",
+    "web": "rm -rf .cache && IS_WEB=true parcel src/index-web.html",
     "package": "electron-forge package",
     "publish": "electron-forge publish",
     "make": "electron-forge make",
@@ -71,6 +71,7 @@
   },
   "dependencies": {
     "bulma": "^0.7.1",
+    "clipboard": "^2.0.1",
     "crypto-js": "^3.1.9-1",
     "electron-compile": "^6.4.2",
     "electron-devtools-installer": "^2.1.0",

@@ -1,4 +1,4 @@
-import { copyToWebClipboard } from './web'
+import { copyToWebClipboard } from './webcopy'
 
 let copyToElectronClipboard
 

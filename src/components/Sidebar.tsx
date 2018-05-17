@@ -1,10 +1,14 @@
 import { SidebarSettings, WalletList } from '@containers'
 import * as React from 'react'
-const logo = require('../logo.svg')
+
+let logo
+if (process.env.IS_WEB) {
+  logo = require('../logo.svg')
+}
 
 export const Sidebar: React.SFC = () => (
   <div className='vertical-spaced' style={{ backgroundColor: '#2b3e50' }}>
-    <img src={logo} className='logo-sidebar' />
+    <img src={logo ? logo : './logo.svg'} className='logo-sidebar' />
     <WalletList />
     <SidebarSettings />
   </div>

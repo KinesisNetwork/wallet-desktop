@@ -1,4 +1,5 @@
 import { Wallet } from '@types'
+import * as ClipboardJS from 'clipboard'
 import * as React from 'react'
 
 export interface Props {
@@ -7,7 +8,6 @@ export interface Props {
   password: string
   unlockWallet: (wallet: Wallet, password: string) => any
   setPasswordInput: (input: string) => any
-  copyDecryptedPrivateKey: () => any
   lockWallet: (wallet: Wallet) => any
 }
 
@@ -36,28 +36,43 @@ const LockedWallet: React.SFC<Props> = ({password, unlockWallet, activeWallet, s
   </div>
 )
 
-const UnlockedWallet: React.SFC<Props> = ({copyDecryptedPrivateKey, activeWallet, lockWallet}) => (
-  <div>
-    <div className='field is-grouped is-grouped-centered'>
-      <div className='control'>
-        <button type='button' className='button' onClick={() => copyDecryptedPrivateKey()} >
-          <span className='icon'>
-            <i className='fas fa-copy' />
-          </span>
-          <span>Copy Private Key</span>
-        </button>
+class UnlockedWallet extends React.Component<Props, Readonly<{}>> {
+  public copyBtn
+
+  public componentDidMount() {
+    new ClipboardJS(this.copyBtn)
+  }
+
+  public render() {
+    return (
+      <div>
+        <div className='field is-grouped is-grouped-centered'>
+          <div className='control'>
+            <button
+              ref={(ref) => this.copyBtn = ref}
+              type='button'
+              className='button'
+              data-clipboard-text={this.props.activeWallet.decryptedPrivateKey}
+            >
+              <span className='icon'>
+                <i className='fas fa-copy' />
+              </span>
+              <span>Copy Private Key</span>
+            </button>
+          </div>
+          <div className='control'>
+            <button type='submit' className='button' onClick={() => this.props.lockWallet(this.props.activeWallet)}>
+              <span className='icon'>
+                <i className='fas fa-lock' />
+              </span>
+              <span>Lock Wallet</span>
+            </button>
+          </div>
+        </div>
       </div>
-      <div className='control'>
-        <button type='submit' className='button' onClick={() => lockWallet(activeWallet)}>
-          <span className='icon'>
-            <i className='fas fa-lock' />
-          </span>
-          <span>Lock Wallet</span>
-        </button>
-      </div>
-    </div>
-  </div>
-)
+    )
+  }
+}
 
 export const Password: React.SFC<Props> = (props) => (
   <React.Fragment>

@@ -1,6 +1,5 @@
 import { changeUnlockPasswordInput, lockWallet, unlockWallet } from '@actions'
 import { Password as PasswordPresentation } from '@components'
-import { copyToClipboard } from '@helpers/copy/'
 import { InputError } from '@helpers/errors'
 import { decryptPrivateKey } from '@services/encryption'
 import { Dispatch, RootState } from '@store'
@@ -17,11 +16,6 @@ const mapStateToProps = ({wallets, accounts, passwords}: RootState) => {
     activeWallet,
     isAccountUnlocked,
     password,
-    copyDecryptedPrivateKey: () => {
-      // Password has already been validated
-      const decryptedPrivateKey = decryptPrivateKey(activeWallet.encryptedPrivateKey, password)
-      copyToClipboard(decryptedPrivateKey)
-    },
   }
 }
 
