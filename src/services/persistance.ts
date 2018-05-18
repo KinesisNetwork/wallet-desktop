@@ -1,4 +1,4 @@
-import * as storage from 'electron-json-storage'
+import { getStorage, setStorage } from './storage'
 
 // We are saving everything to the JSON storage as an Array for convenience
 
@@ -12,7 +12,7 @@ export async function addNewItem<T extends object>(typeKey: string, item: T): Pr
 
 export function retrieveItems<T>(typeKey: string, errorMessage?: string): Promise<T[]> {
   return new Promise<T[]>((res, rej) => {
-    storage.get(typeKey, (err, data) => {
+    getStorage(typeKey, (err, data) => {
       if (err) {
         return rej(errorMessage)
       }
@@ -24,7 +24,7 @@ export function retrieveItems<T>(typeKey: string, errorMessage?: string): Promis
 
 export function saveItems<T>(typeKey: string, items: T[], errorMessage?: string): Promise<T[]> {
   return new Promise((res, rej) => {
-    storage.set(typeKey, items, (err) => {
+    setStorage(typeKey, items, (err) => {
       if (err) {
         return rej(errorMessage)
       }

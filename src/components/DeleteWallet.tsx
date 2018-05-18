@@ -27,7 +27,7 @@ export class DeleteWallet extends React.Component<Props> {
 
   render() {
     return (
-      <div className='buttons'>
+      <div className='buttons is-hidden-mobile'>
         <button type='submit' className='button is-danger' onClick={() => this.deleteWallet()}>
           <span className='icon'>
             <i className='fa fa-trash-alt fa-lg' />
