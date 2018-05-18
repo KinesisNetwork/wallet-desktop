@@ -19,7 +19,8 @@
     "make": "electron-forge make",
     "compile:tsc": "tsc",
     "watch:tsc": "npm run compile:tsc -- -w",
-    "lint": "tslint --project tsconfig.json"
+    "lint": "tslint --project tsconfig.json",
+    "lint-fix": "tslint --project tsconfig.json --fix"
   },
   "keywords": [],
   "author": "ABX",

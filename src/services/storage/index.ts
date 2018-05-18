@@ -1,4 +1,5 @@
-let getElectronStorage, setElectronStorage
+let getElectronStorage
+let setElectronStorage
 
 // If we are in webmode, we can't require electron, as it has reference to the fs module
 if (!process.env.IS_WEB) {
