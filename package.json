@@ -2,7 +2,7 @@
   "name": "kinesis-wallet",
   "productName": "Kinesis Wallet",
   "repository": "https://github.com/KinesisNetwork/wallet-desktop",
-  "version": "0.2.5-0",
+  "version": "0.2.5",
   "description": "Kinesis compliant hard wallet",
   "main": "src/index.ts",
   "scripts": {
