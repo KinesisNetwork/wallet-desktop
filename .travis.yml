@@ -7,7 +7,7 @@ addons:
       - rpm
 before_install:
   - if [ $TRAVIS_OS_NAME = "osx" ]; then brew update && ln -s /usr/local/opt/openssl/include/openssl /usr/local/include; fi
-  - if [ $TRAVIS_OS_NAME != "osx" ]; pip install --user awscli && export PATH=$PATH:$HOME/.local/bin; fi
+  - if [ $TRAVIS_OS_NAME != "osx" ]; then pip install --user awscli && export PATH=$PATH:$HOME/.local/bin; fi
 stages:
   - name: test
     if: type = pull_request
