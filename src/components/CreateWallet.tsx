@@ -95,12 +95,14 @@ export class WalletForm extends React.Component<Props> {
           label='Public Key'
           value={this.props.publicKey}
           id='public-key'
+          placeholder='Add your public key'
           onChangeHandler={(newValue) => this.props.handleChange('publicKey', newValue)}
         />
         <InputField
           label='Private Key'
           value={this.props.privateKey}
           id='private-key'
+          placeholder='Add your private key'
           onChangeHandler={(newValue) => this.props.handleChange('privateKey', newValue)}
         />
       </React.Fragment>
@@ -133,6 +135,7 @@ export class WalletForm extends React.Component<Props> {
               label='Wallet Name'
               value={accountName}
               id='account-name'
+              placeholder='Add an alias for your account'
               onChangeHandler={(newValue) => handleChange('accountName', newValue)}
             />
             {currentView === FormView.import && this.renderImportFields()}
@@ -141,6 +144,7 @@ export class WalletForm extends React.Component<Props> {
               value={password}
               isPassword={true}
               id='password'
+              placeholder='Add a password for locking this account'
               onChangeHandler={(newValue) => handleChange('password', newValue)}
             />
             <InputField

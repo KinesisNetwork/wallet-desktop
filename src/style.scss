@@ -42,7 +42,9 @@ body {
 }
 
 .input::-webkit-input-placeholder {
-  color: #8694a4;
+  color: lighten($text, 10);
+  opacity: 0.3;
+  // color: #8694a4;
 }
 
 .code-font {
