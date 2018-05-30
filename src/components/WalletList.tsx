@@ -31,14 +31,14 @@ export class WalletList extends React.Component<Props> {
     const { addWallet } = this.props
     return (
       <nav className='panel'>
-        <p className='panel-heading wallet-heading'> Wallets </p>
+        <p className='panel-heading wallet-heading'>Accounts</p>
         {this.renderWallets()}
         <div className='panel-block'>
           <button
             className='button is-primary is-outlined is-fullwidth'
             onClick={() => addWallet()}
           >
-            Add Wallet
+            Add Account
           </button>
         </div>
       </nav>
@@ -53,7 +53,7 @@ interface WalletListItemProps {
   isActive: boolean
 }
 
-const WalletListItem: React.SFC<WalletListItemProps> = ({name, index, selectWallet, isActive}) => (
+const WalletListItem: React.SFC<WalletListItemProps> = ({ name, index, selectWallet, isActive }) => (
   <a className={`panel-block ${isActive ? 'is-active' : ''}`} onClick={() => selectWallet(index)}>
     <span className='panel-icon'>
       <i className='fas fa-book' />

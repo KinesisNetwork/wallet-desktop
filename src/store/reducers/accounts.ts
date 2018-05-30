@@ -15,7 +15,7 @@ import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 
 export interface AccountsState {
-  readonly accountsMap: {[key: string]: Account}
+  readonly accountsMap: { [key: string]: Account }
   readonly isAccountLoading: boolean
 }
 
@@ -24,7 +24,7 @@ export const accounts = combineReducers<AccountsState, RootAction>({
     switch (action.type) {
       case getType(loadWallets):
         return action.payload
-          .reduce((acc, wallet) => ({...acc, [wallet.publicKey]: {balance: '', isUnlocked: false }}), {})
+          .reduce((acc, wallet) => ({ ...acc, [wallet.publicKey]: { balance: '0', isUnlocked: false } }), {})
       case getType(addWallet):
         return {
           ...state,
