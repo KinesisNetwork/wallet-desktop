@@ -137,7 +137,7 @@ export class WalletForm extends React.Component<Props> {
             />
             {currentView === FormView.import && this.renderImportFields()}
             <InputField
-              label='Wallet Password'
+              label='Account Password'
               value={password}
               isPassword={true}
               id='password'
