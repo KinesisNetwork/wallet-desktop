@@ -32,7 +32,7 @@ export class DeleteWallet extends React.Component<Props> {
           <span className='icon'>
             <i className='fa fa-trash-alt fa-lg' />
           </span>
-          <span>Delete Wallet</span>
+          <span>Delete Account from Wallet</span>
         </button>
       </div>
     )
