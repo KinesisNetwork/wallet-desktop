@@ -19,7 +19,7 @@ jobs:
       os: osx
     - stage: build and deploy
       env: BUCKET=integration.kinesiswebwallet.com TRAVIS_TAG=true
-      if: branch = master and type = push or tag is present
+      if: branch = master and type = push
       script: npm run build:web
       deploy: &deploy
         provider: s3
