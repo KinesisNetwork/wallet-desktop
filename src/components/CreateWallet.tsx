@@ -60,7 +60,6 @@ export class WalletForm extends React.Component<Props> {
   validateProps = (): void | never => {
     this.checkValidEntry('accountName')
     if (this.props.currentView === FormView.import) {
-      this.checkValidEntry('publicKey')
       this.checkValidEntry('privateKey')
     }
     this.checkValidEntry('password')
@@ -68,12 +67,10 @@ export class WalletForm extends React.Component<Props> {
   }
 
   generateKeyOrExtractFromProps = () => {
-    if (this.props.currentView === FormView.import) {
-      return { publicKey: this.props.publicKey, privateKey: this.props.privateKey }
-    } else {
-      const keypair = Keypair.random()
-      return { publicKey: keypair.publicKey(), privateKey: keypair.secret() }
-    }
+    const keypair = this.props.currentView === FormView.import
+      ? Keypair.fromSecret(this.props.privateKey)
+      : Keypair.random()
+    return { publicKey: keypair.publicKey(), privateKey: keypair.secret() }
   }
 
   checkValidEntry = (key: keyof CreateWalletForm) => {
@@ -88,24 +85,14 @@ export class WalletForm extends React.Component<Props> {
     }
   }
 
-  renderImportFields = () => {
-    return (
-      <React.Fragment>
-        <InputField
-          label='Public Key'
-          value={this.props.publicKey}
-          id='public-key'
-          onChangeHandler={(newValue) => this.props.handleChange('publicKey', newValue)}
-        />
-        <InputField
-          label='Private Key'
-          value={this.props.privateKey}
-          id='private-key'
-          onChangeHandler={(newValue) => this.props.handleChange('privateKey', newValue)}
-        />
-      </React.Fragment>
-    )
-  }
+  renderImportFields = () => (
+    <InputField
+      label='Private Key'
+      value={this.props.privateKey}
+      id='private-key'
+      onChangeHandler={(newValue) => this.props.handleChange('privateKey', newValue)}
+    />
+  )
 
   render() {
     const {

@@ -20,7 +20,6 @@ const handleChange = (name: keyof CreateWalletForm) => (state = '', action: Root
 
 const form = combineReducers<CreateWalletForm, RootAction>({
   accountName: handleChange('accountName'),
-  publicKey: handleChange('publicKey'),
   privateKey: handleChange('privateKey'),
   password: handleChange('password'),
   passwordVerify: handleChange('passwordVerify'),

@@ -26,7 +26,6 @@ export interface ViewParams {
 
 export interface CreateWalletForm {
   readonly accountName: string
-  readonly publicKey: string
   readonly privateKey: string
   readonly password: string
   readonly passwordVerify: string
