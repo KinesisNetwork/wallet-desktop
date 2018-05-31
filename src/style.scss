@@ -44,6 +44,7 @@ body {
 .input::-webkit-input-placeholder {
   color: lighten($text, 10);
   opacity: 0.3;
+  font-size: 80%;
   // color: #8694a4;
 }
 

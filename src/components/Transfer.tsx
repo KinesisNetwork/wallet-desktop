@@ -83,18 +83,21 @@ export class Transfer extends React.Component<TransferProps> {
               label='Target Address'
               value={this.props.targetAddress}
               id='transfer-target-address'
+              placeholder='Public key to pay'
               onChangeHandler={(newValue) => this.props.updateTransferForm({ field: 'targetAddress', newValue })}
             />
             <InputField
               label='Transfer Amount'
               value={this.props.amount}
               id='transfer-amount'
+              placeholder='Amount to transfer'
               onChangeHandler={(newValue) => this.props.updateTransferForm({ field: 'amount', newValue })}
             />
             <InputField
               label='Message'
               value={this.props.memo}
               id='transfer-memo'
+              placeholder='Optional message to attach'
               onChangeHandler={(newValue) => this.props.updateTransferForm({ field: 'memo', newValue })}
             />
             <div className='field'>
