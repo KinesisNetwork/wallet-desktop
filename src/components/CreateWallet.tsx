@@ -16,7 +16,7 @@ export interface Props extends CreateWalletForm {
 
 export const CreateWallet: React.SFC<Props> = (props) => (
   <div className='vertical-spaced has-text-centered'>
-    <h1 className='title-heading'>Add a new wallet</h1>
+    <h1 className='title-heading'>ADD A NEW ACCOUNT</h1>
     <section className='section'>
       {props.currentView === FormView.select && <FormSelection changeFormView={props.changeFormView} />}
       {props.currentView !== FormView.select && <WalletForm {...props} />}
@@ -131,7 +131,7 @@ export class WalletForm extends React.Component<Props> {
         <div className='columns is-centered'>
           <form onSubmit={this.createNewWallet} className='column is-half'>
             <InputField
-              label='Wallet Name'
+              label='Account Name'
               value={accountName}
               id='account-name'
               placeholder='Add an alias for your account'
@@ -139,7 +139,7 @@ export class WalletForm extends React.Component<Props> {
             />
             {currentView === FormView.import && this.renderImportFields()}
             <InputField
-              label='Wallet Password'
+              label='Account Password'
               value={password}
               isPassword={true}
               id='password'
