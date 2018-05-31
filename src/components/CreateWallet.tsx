@@ -1,4 +1,5 @@
 import { InputField } from '@components'
+import { formAlert } from '@helpers/alert'
 import { InputError } from '@helpers/errors'
 import { encryptPrivateKey } from '@services/encryption'
 import { CreateWalletForm, CreateWalletFormView as FormView, Wallet } from '@types'
@@ -51,9 +52,7 @@ export class WalletForm extends React.Component<Props> {
         accountName: this.props.accountName,
       })
     } catch (e) {
-      if (e instanceof InputError) {
-        e.alert()
-      }
+      formAlert(e.message, e.key)
     }
   }
 
@@ -95,12 +94,14 @@ export class WalletForm extends React.Component<Props> {
           label='Public Key'
           value={this.props.publicKey}
           id='public-key'
+          helpText='Add your public key'
           onChangeHandler={(newValue) => this.props.handleChange('publicKey', newValue)}
         />
         <InputField
           label='Private Key'
           value={this.props.privateKey}
           id='private-key'
+          helpText='Add your private key'
           onChangeHandler={(newValue) => this.props.handleChange('privateKey', newValue)}
         />
       </React.Fragment>
@@ -133,6 +134,7 @@ export class WalletForm extends React.Component<Props> {
               label='Account Name'
               value={accountName}
               id='account-name'
+              helpText='Add an alias for your account'
               onChangeHandler={(newValue) => handleChange('accountName', newValue)}
             />
             {currentView === FormView.import && this.renderImportFields()}
@@ -141,6 +143,7 @@ export class WalletForm extends React.Component<Props> {
               value={password}
               isPassword={true}
               id='password'
+              helpText='Add a password for locking this account'
               onChangeHandler={(newValue) => handleChange('password', newValue)}
             />
             <InputField

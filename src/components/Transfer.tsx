@@ -2,6 +2,7 @@ import * as React from 'react'
 
 import { InputField } from '@components'
 import { TransferProps } from '@containers'
+import { formAlert } from '@helpers/alert'
 import { InputError, WalletLockError } from '@helpers/errors'
 import { Loader } from './Loader'
 
@@ -30,9 +31,7 @@ export class Transfer extends React.Component<TransferProps> {
       }
       this.props.transferRequest(this.props)
     } catch (e) {
-      if (e instanceof InputError) {
-        e.alert()
-      }
+      formAlert(e.message, e.key)
     }
   }
 
@@ -84,18 +83,21 @@ export class Transfer extends React.Component<TransferProps> {
               label='Target Address'
               value={this.props.targetAddress}
               id='transfer-target-address'
+              placeholder='Public key to pay'
               onChangeHandler={(newValue) => this.props.updateTransferForm({ field: 'targetAddress', newValue })}
             />
             <InputField
               label='Transfer Amount'
               value={this.props.amount}
               id='transfer-amount'
+              placeholder='Amount to transfer'
               onChangeHandler={(newValue) => this.props.updateTransferForm({ field: 'amount', newValue })}
             />
             <InputField
               label='Message'
               value={this.props.memo}
               id='transfer-memo'
+              placeholder='Optional message to attach'
               onChangeHandler={(newValue) => this.props.updateTransferForm({ field: 'memo', newValue })}
             />
             <div className='field'>
@@ -105,7 +107,7 @@ export class Transfer extends React.Component<TransferProps> {
             </div>
           </div>
         </div>
-        <div className='is-divider is-hidden-tablet' style={{marginBottom: 0, borderTopWidth: '0.01rem'}} />
+        <div className='is-divider is-hidden-tablet' style={{ marginBottom: 0, borderTopWidth: '0.01rem' }} />
       </div>
     )
   }
