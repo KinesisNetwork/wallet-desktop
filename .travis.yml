@@ -7,21 +7,39 @@ addons:
       - rpm
 before_install:
   - if [ $TRAVIS_OS_NAME = "osx" ]; then brew update && ln -s /usr/local/opt/openssl/include/openssl /usr/local/include; fi
-  - if [ $TRAVIS_OS_NAME != "osx" ]; then pip install --user awscli && export PATH=$PATH:$HOME/.local/bin; fi
 stages:
   - name: test
     if: type = pull_request
-  - name: deploy
+  - name: deploy electron
     if: tag is present
 jobs:
   include:
     - stage: test
-      os: linux
-    - os: osx
-    - stage: deploy
+    - stage: deploy electron
       script: npm run deploy:electron
       os: linux
     - script: npm run deploy:electron
       os: osx
-    - script: npm run deploy:web
-      os: linux
+    - stage: build and deploy
+      env: BUCKET=integration.kinesiswebwallet.com TRAVIS_TAG=true
+      if: branch = master and type = push or tag is present
+      script: npm run build
+      deploy: &deploy
+        provider: s3
+        region: ap-southeast-2
+        skip_cleanup: true
+        bucket: $BUCKET
+        local_dir: dist
+        on:
+          tags: true
+    - env: BUCKET=uat.kinesiswebwallet.com
+      if: tag is present
+      script: npm run build
+      deploy:
+        <<: *deploy
+    - env: BUCKET=www.kinesiswebwallet.com
+      if: tag is present and tag =~ ^((?!beta).)*$
+      script: npm run build
+      deploy:
+        <<: *deploy
+
