@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import { InputField } from '@components'
+import { formAlert } from '@helpers/alert'
 import { InputError } from '@helpers/errors'
 import { Connection, FormUpdate } from '@types'
 import { kebabCase, startCase } from 'lodash'
@@ -21,9 +22,7 @@ export class ConnectionForm extends React.Component<Props> {
       this.validateProps()
       this.props.addConnection(this.props)
     } catch (e) {
-      if (e instanceof InputError) {
-        e.alert()
-      }
+      formAlert(e.message, e.key)
     }
   }
 
@@ -61,19 +60,19 @@ export class ConnectionForm extends React.Component<Props> {
             label='Connection Name'
             value={name}
             id='connection-name'
-            onChangeHandler={(newValue) => handleChange({field: 'name', newValue})}
+            onChangeHandler={(newValue) => handleChange({ field: 'name', newValue })}
           />
           <InputField
             label='Horizon URL'
             value={horizonURL}
             id='connection-horizon-url'
-            onChangeHandler={(newValue) => handleChange({field: 'horizonURL', newValue})}
+            onChangeHandler={(newValue) => handleChange({ field: 'horizonURL', newValue })}
           />
           <InputField
             label='Network Passphrase'
             value={networkPassphrase}
             id='connection-network-passphrase'
-            onChangeHandler={(newValue) => handleChange({field: 'networkPassphrase', newValue})}
+            onChangeHandler={(newValue) => handleChange({ field: 'networkPassphrase', newValue })}
           />
           <div className='field'>
             <div className='control is-expanded'>

@@ -1,4 +1,5 @@
 import { InputField } from '@components'
+import { formAlert } from '@helpers/alert'
 import { InputError } from '@helpers/errors'
 import { encryptPrivateKey } from '@services/encryption'
 import { CreateWalletForm, CreateWalletFormView as FormView, Wallet } from '@types'
@@ -51,9 +52,7 @@ export class WalletForm extends React.Component<Props> {
         accountName: this.props.accountName,
       })
     } catch (e) {
-      if (e instanceof InputError) {
-        e.alert()
-      }
+      formAlert(e.message, e.key)
     }
   }
 
