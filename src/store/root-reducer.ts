@@ -4,8 +4,11 @@ import { combineReducers } from 'redux'
 import { combineEpics } from 'redux-observable'
 import * as epics from './epics'
 import * as reducers from './reducers'
-import { RootAction } from './root-action'
+import { GetAction, RootAction } from './root-action'
 
+export type CreateReducerMap = {
+  readonly [T in RootAction['type']]: (state, action: GetAction<T>) => typeof state
+}
 export type RootState = {
   [P in keyof typeof reducers]: ReturnType<typeof reducers[P]>
 }
