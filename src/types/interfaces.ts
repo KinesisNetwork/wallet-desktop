@@ -61,3 +61,8 @@ export interface TransactionOperationView {
   readonly operation: OperationRecord
   readonly date: Date
 }
+
+export interface Payee {
+  readonly name: string
+  readonly publicKey: string
+}
