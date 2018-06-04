@@ -18,6 +18,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     const wallets = await retrieveWallets()
     dispatch(loadWallets(wallets))
   },
+  loadPayees: async () => {
+    const payees = await retrievePayees()
+    dispatch(loadPayees(payees))
+  },
 })
 
 export const Main = connect(mapStateToProps, mapDispatchToProps)(MainPresentation)

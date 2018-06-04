@@ -7,6 +7,7 @@ export interface Props {
   currentView: View
   loadWallets: () => any
   loadConnections: () => any
+  loadPayees: () => any
 }
 
 export class Main extends React.PureComponent<Props> {
@@ -17,6 +18,7 @@ export class Main extends React.PureComponent<Props> {
   componentDidMount() {
     this.props.loadConnections()
     this.props.loadWallets()
+    this.props.loadPayees()
   }
 
   viewMap = (view: View) => {
