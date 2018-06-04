@@ -6,7 +6,7 @@ export interface Props {
 }
 
 export const SidebarPayee: React.SFC<Props> = ({ changeView }) => (
-  <div className='has-text-centered vertical-spaced' style={{ justifyContent: 'flex-end' }}>
+  <div className='has-text-centered'>
     <button className='button is-outlined is-fullwidth' onClick={() => changeView(View.payees)}>
       Manage Payees
     </button>

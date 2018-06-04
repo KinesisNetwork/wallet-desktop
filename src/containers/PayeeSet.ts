@@ -5,7 +5,7 @@ import { Payee } from '@types'
 import { connect } from 'react-redux'
 
 const mapStateToProps = ({payees}: RootState) => ({
-  ...payees.form,
+  payee: payees.form,
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -17,4 +17,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
 })
 
-export const CreateWallet = connect(mapStateToProps, mapDispatchToProps)(PayeeSetPresentation)
+export const PayeeSet = connect(mapStateToProps, mapDispatchToProps)(PayeeSetPresentation)
