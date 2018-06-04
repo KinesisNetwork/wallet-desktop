@@ -3,6 +3,7 @@ import * as React from 'react'
 
 export interface Props {
   payees: Payee[]
+  removePayee: (payeeName: string) => void
 }
 
 export const PayeeList: React.SFC<Props> = (props) => {
@@ -11,7 +12,7 @@ export const PayeeList: React.SFC<Props> = (props) => {
       <tr key={index}>
         <td>{payee.name}</td>
         <td>{payee.publicKey}</td>
-        <td><a className='delete' /></td>
+        <td><a className='delete' onClick={() => props.removePayee(payee.name)}/></td>
       </tr>
     )
   })

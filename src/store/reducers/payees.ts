@@ -1,4 +1,4 @@
-import { setPayee, updatePayeeForm } from '@actions'
+import { removePayee, setPayee, updatePayeeForm } from '@actions'
 import { RootAction } from '@store'
 import { Payee } from '@types'
 import { combineReducers } from 'redux'
@@ -18,6 +18,8 @@ export const payees = combineReducers<PayeeState, RootAction>({
     switch (action.type) {
       case getType(setPayee):
         return state.concat(action.payload)
+      case getType(removePayee):
+        return state.filter((payee) => payee.name !== action.payload)
       default: return state
     }
   },
