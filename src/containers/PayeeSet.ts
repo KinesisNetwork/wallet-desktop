@@ -1,24 +1,20 @@
-import { setPayee } from '@actions'
-import { CreateWallet as CreateWalletPresentation } from '@components'
-import { addNewWallet } from '@services/wallets'
+import { setPayee, updatePayeeForm } from '@actions'
+import { PayeeSet as PayeeSetPresentation } from '@components'
 import { Dispatch, RootState } from '@store'
-import { CreateWalletForm, CreateWalletFormView, Wallet } from '@types'
+import { Payee } from '@types'
 import { connect } from 'react-redux'
 
-const mapStateToProps = ({createWallet}: RootState) => ({
-  ...createWallet.form,
-  currentView: createWallet.formView,
+const mapStateToProps = ({payees}: RootState) => ({
+  ...payees.form,
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  addWallet: async (wallet: Wallet) => {
-    dispatch(addWallet(wallet))
-    await addNewWallet(wallet)
+  setPayee: (payee: Payee): void => {
+    dispatch(setPayee(payee))
   },
-  changeFormView: (newView: CreateWalletFormView) => dispatch(changeCreateWalletView(newView)),
-  handleChange: (field: keyof CreateWalletForm, newValue: string) => {
-    dispatch(updateCreateWalletForm({field, newValue}))
+  handleChange: (field: keyof Payee, newValue: string) => {
+    dispatch(updatePayeeForm({field, newValue}))
   },
 })
 
-export const CreateWallet = connect(mapStateToProps, mapDispatchToProps)(CreateWalletPresentation)
+export const CreateWallet = connect(mapStateToProps, mapDispatchToProps)(PayeeSetPresentation)
