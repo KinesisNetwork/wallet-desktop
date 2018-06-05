@@ -1,4 +1,4 @@
-import { loadPayees, removePayee, setPayee, updatePayeeForm } from '@actions'
+import { clearPayeeForm, loadPayees, removePayee, setPayee, updatePayeeForm } from '@actions'
 import { RootAction } from '@store'
 import { Payee } from '@types'
 import { combineReducers } from 'redux'
@@ -32,6 +32,8 @@ function handleChange(name: keyof Payee) {
     switch (action.type) {
       case getType(updatePayeeForm):
         return action.payload.field === name ? action.payload.newValue : state
+      case getType(clearPayeeForm):
+        return ''
       default: return state
     }
   }
