@@ -1,6 +1,7 @@
-import { loadConnections, loadWallets } from '@actions'
+import { loadConnections, loadPayees, loadWallets } from '@actions'
 import { Main as MainPresentation } from '@components'
 import { retrieveConnections } from '@services/connections'
+import { retrievePayees } from '@services/payees'
 import { retrieveWallets } from '@services/wallets'
 import { Dispatch, RootState } from '@store'
 import { connect } from 'react-redux'

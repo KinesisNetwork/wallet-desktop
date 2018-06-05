@@ -7,7 +7,7 @@ import { isActionOf } from 'typesafe-actions'
 
 export const savePayees$: Epic = (action$, state$) =>
   action$.pipe(
-    filter(isActionOf(removePayee) || isActionOf(setPayee)),
+    filter(isActionOf([removePayee, setPayee])),
     withLatestFrom(state$),
     mergeMap(([, state]) => fromPromise(savePayees(state.payees.payees))),
     ignoreElements(),
