@@ -51,7 +51,10 @@ export class Transfer extends React.Component<TransferProps> {
   checkValidTarget = () => {
     if (!this.props.targetAddress && !this.props.targetPayee) {
       throw new InputError(`Target Address or Payee is required`, `transfer-target-address`)
-    } else if (this.props.targetAddress === this.props.activeWallet.publicKey || this.props.targetPayee === this.props.activeWallet.publicKey) {
+    } else if (
+      this.props.targetAddress === this.props.activeWallet.publicKey ||
+      this.props.targetPayee === this.props.activeWallet.publicKey
+    ) {
       throw new InputError('Target Address or Payee cannot be your own key', 'transfer-target-address')
     } else if (this.props.targetAddress && this.props.targetPayee) {
       throw new InputError('Target Address and Payee cannot both be set', 'transfer-target-address')
@@ -75,7 +78,7 @@ export class Transfer extends React.Component<TransferProps> {
   }
 
   payees = () => {
-    return this.props.payees.map((payee) => <option value={payee.publicKey}>{payee.name}</option>)
+    return this.props.payees.map((payee, i) => <option value={payee.publicKey} key={i}>{payee.name}</option>)
   }
 
   render() {
@@ -102,7 +105,7 @@ export class Transfer extends React.Component<TransferProps> {
                     onChange={(ev) => this.props.updateTransferForm({ field: 'targetPayee', newValue: ev.target.value})}
                     value={this.props.targetPayee}
                   >
-                    <option value='' hidden>My Payees</option>
+                    <option value='' hidden={true}>My Payees</option>
                     <option value=''>None</option>
                     {this.payees()}
                   </select>

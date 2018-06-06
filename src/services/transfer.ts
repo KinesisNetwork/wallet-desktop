@@ -1,4 +1,4 @@
-import { WalletLockError, TransferSubmitError } from '@helpers/errors'
+import { TransferSubmitError, WalletLockError } from '@helpers/errors'
 import { getAccountIfExists } from '@services/accounts'
 import { getFeeInStroops, getServer } from '@services/kinesis'
 import { Connection, TransferRequest, Wallet } from '@types'
