@@ -7,7 +7,7 @@ import {
 
 export const Payee: React.SFC = () => (
   <div className='columns'>
-    <div className='column'>
+    <div className='column is-half'>
       <PayeeList />
     </div>
     <div className='column'>

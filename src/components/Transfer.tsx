@@ -49,10 +49,12 @@ export class Transfer extends React.Component<TransferProps> {
   }
 
   checkValidTarget = () => {
-    if (!this.props.targetAddress) {
-      throw new InputError(`Target Address is required`, `transfer-target-address`)
-    } else if (this.props.targetAddress === this.props.activeWallet.publicKey) {
-      throw new InputError('Target Address cannot be your own key', 'transfer-target-address')
+    if (!this.props.targetAddress && !this.props.targetPayee) {
+      throw new InputError(`Target Address or Payee is required`, `transfer-target-address`)
+    } else if (this.props.targetAddress === this.props.activeWallet.publicKey || this.props.targetPayee === this.props.activeWallet.publicKey) {
+      throw new InputError('Target Address or Payee cannot be your own key', 'transfer-target-address')
+    } else if (this.props.targetAddress && this.props.targetPayee) {
+      throw new InputError('Target Address and Payee cannot both be set', 'transfer-target-address')
     }
   }
 
@@ -72,6 +74,10 @@ export class Transfer extends React.Component<TransferProps> {
     }
   }
 
+  payees = () => {
+    return this.props.payees.map((payee) => <option value={payee.publicKey}>{payee.name}</option>)
+  }
+
   render() {
     return (
       <div>
@@ -86,6 +92,19 @@ export class Transfer extends React.Component<TransferProps> {
               placeholder='Public key to pay'
               onChangeHandler={(newValue) => this.props.updateTransferForm({ field: 'targetAddress', newValue })}
             />
+            <p className='label has-text-centered'>OR</p>
+            <div className='field'>
+              <label className='label is-small'>Select a Payee</label>
+              <div className='control'>
+                <div className='select is-fullwidth'>
+                  <select className='has-background-dark has-text-grey is-grey' onChange={(ev) => this.props.updateTransferForm({ field: 'targetPayee', newValue: ev.target.value})}>
+                    <option value='' hidden>My Payees</option>
+                    <option value=''>None</option>
+                    {this.payees()}
+                  </select>
+                </div>
+              </div>
+            </div>
             <InputField
               label='Transfer Amount'
               value={this.props.amount}

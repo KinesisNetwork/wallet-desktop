@@ -13,6 +13,7 @@ export const transfer = combineReducers<TransferState, RootAction>({
   form: combineReducers<TransferRequest, RootAction>({
     amount: handleChange('amount'),
     targetAddress: handleChange('targetAddress'),
+    targetPayee: handleChange('targetPayee'),
     memo: handleChange('memo'),
   }),
   isTransferring: (state = false, action) => {

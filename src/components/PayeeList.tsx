@@ -11,14 +11,14 @@ export const PayeeList: React.SFC<Props> = (props) => {
     return (
       <tr key={index}>
         <td>{payee.name}</td>
-        <td>{payee.publicKey}</td>
+        <td style={{overflow: 'hidden', whiteSpace: 'nowrap'}}>{payee.publicKey}</td>
         <td><a className='delete' onClick={() => props.removePayee(payee.name)}/></td>
       </tr>
     )
   })
 
   return (
-    <table className='table'>
+    <table className='table' style={{width: '100%', tableLayout: 'fixed'}}>
       <thead>
         <tr>
           <th>Payee</th>
