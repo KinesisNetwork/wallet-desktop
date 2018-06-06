@@ -34,6 +34,8 @@ function handleChange(name: keyof TransferRequest) {
     switch (action.type) {
       case getType(updateTransferForm):
         return action.payload.field === name ? action.payload.newValue : state
+      case getType(transferSuccess):
+        return ''
       default: return state
     }
   }

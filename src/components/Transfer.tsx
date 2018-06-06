@@ -97,7 +97,11 @@ export class Transfer extends React.Component<TransferProps> {
               <label className='label is-small'>Select a Payee</label>
               <div className='control'>
                 <div className='select is-fullwidth'>
-                  <select className='has-background-dark has-text-grey is-grey' onChange={(ev) => this.props.updateTransferForm({ field: 'targetPayee', newValue: ev.target.value})}>
+                  <select
+                    className='has-background-dark has-text-grey is-grey'
+                    onChange={(ev) => this.props.updateTransferForm({ field: 'targetPayee', newValue: ev.target.value})}
+                    value={this.props.targetPayee}
+                  >
                     <option value='' hidden>My Payees</option>
                     <option value=''>None</option>
                     {this.payees()}
