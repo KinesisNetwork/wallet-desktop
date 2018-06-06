@@ -96,9 +96,9 @@ export class Transfer extends React.Component<TransferProps> {
               onChangeHandler={(newValue) => this.props.updateTransferForm({ field: 'targetAddress', newValue })}
             />
             <p className='label has-text-centered'>OR</p>
-            <div className='field'>
-              <label className='label is-small'>Select a Payee</label>
-              <div className='control'>
+            <label className='label is-small'>Select a Payee</label>
+            <div className='field is-grouped'>
+              <div className='control is-expanded'>
                 <div className='select is-fullwidth'>
                   <select
                     className='has-background-dark has-text-grey is-grey'
@@ -110,6 +110,14 @@ export class Transfer extends React.Component<TransferProps> {
                     {this.payees()}
                   </select>
                 </div>
+              </div>
+              <div className='control'>
+                <a className='button'>
+                  <span className='icon'>
+                    <i className='fa fa-plus'></i>
+                  </span>
+                  <span>Add Payee</span>
+                </a>
               </div>
             </div>
             <InputField
