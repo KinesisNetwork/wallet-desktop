@@ -18,21 +18,20 @@ class PasswordInput extends React.Component<{ activeWallet: Wallet }, { password
   changeText = (e) => {
     const text = e.target.value
     this.setState({ password: text })
-    const isDecryptionSuccessful = this.decryptKey(text)
+    const decryptedPrivateKeyOrEmpty = this.decryptKey(text)
     // @ts-ignore
-    if (isDecryptionSuccessful) {
-      if (swal.setActionValue && swal.close) {
-        swal.setActionValue({ cancel: { value: true } })
-        swal.close('cancel')
-      }
+    if (decryptedPrivateKeyOrEmpty !== '') {
+      // Returns the decrypted private key
+      swal.setActionValue({ cancel: { value: decryptedPrivateKeyOrEmpty } })
+      swal.close('cancel')
     }
   }
 
   decryptKey = (passwordInput: string) => {
     try {
-      return !!decryptPrivateKey(this.props.activeWallet.encryptedPrivateKey, passwordInput)
+      return decryptPrivateKey(this.props.activeWallet.encryptedPrivateKey, passwordInput)
     } catch (e) {
-      return false
+      return ''
     }
   }
 
@@ -50,7 +49,7 @@ class PasswordInput extends React.Component<{ activeWallet: Wallet }, { password
   }
 }
 
-export const getPasswordConfirmation = async (activeWallet: Wallet, mode: string = 'danger'): Promise<boolean> => {
+export const getPasswordConfirmation = async (activeWallet: Wallet, mode = 'danger'): Promise<{ value: string }> => {
   const wrapper = document.createElement('div')
   ReactDOM.render(<PasswordInput activeWallet={activeWallet} />, wrapper)
   const element = (wrapper.firstChild as Node)
