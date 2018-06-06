@@ -27,7 +27,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
       const decryptedPrivateKey = decryptPrivateKey(encryptedPrivateKey, password)
       dispatch(unlockWallet({ password, publicKey, decryptedPrivateKey }))
     } catch (e) {
-      formAlert(e.message, e.key)
+      formAlert('Account password is incorrect', e.key)
     }
   },
 })

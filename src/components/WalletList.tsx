@@ -5,6 +5,7 @@ export interface Props {
   wallets: Wallet[]
   currentWallet: number
   selectWallet: (walletIndex: number) => any
+  deleteWallet: (wallet: Wallet) => any
   addWallet: () => any
 }
 
@@ -18,10 +19,11 @@ export class WalletList extends React.Component<Props> {
       return (
         <WalletListItem
           key={index}
-          name={wallet.accountName}
+          wallet={wallet}
           isActive={this.props.currentWallet === index}
           selectWallet={this.props.selectWallet}
           index={index}
+          deleteWallet={this.props.deleteWallet}
         />
       )
     })
@@ -47,17 +49,21 @@ export class WalletList extends React.Component<Props> {
 }
 
 interface WalletListItemProps {
-  name: string
+  wallet: Wallet
   index: number
   selectWallet: (walletIndex: number) => any
+  deleteWallet: (wallet: Wallet) => any
   isActive: boolean
 }
 
-const WalletListItem: React.SFC<WalletListItemProps> = ({ name, index, selectWallet, isActive }) => (
+const WalletListItem: React.SFC<WalletListItemProps> = ({ wallet, index, selectWallet, isActive, deleteWallet }) => (
   <a className={`panel-block ${isActive ? 'is-active' : ''}`} onClick={() => selectWallet(index)}>
     <span className='panel-icon'>
       <i className='fas fa-book' />
     </span>
-    <span className='info'>{name}</span>
+    <span className='info' style={{ flexGrow: 2 }}>{wallet.accountName}</span>
+    <button className='button is-small is-danger' onClick={() => deleteWallet(wallet)}>
+      <span className='icon is-small'><i className='fas fa-trash-alt' /></span>
+    </button>
   </a>
 )
