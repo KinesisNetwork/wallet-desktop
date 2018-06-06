@@ -64,8 +64,8 @@ class ConnectionButton extends React.Component<ConnectionButtonProps> {
       <a className='level' onClick={this.handleClick}>
         <div className='level-left has-text-left'>
           <div className='content'>
-            <strong className='is-link'>{connection.name}</strong>
-            <p className='is-link-invert'>
+            <strong>{connection.name}</strong>
+            <p>
               {connection.horizonURL}<br />
               {connection.networkPassphrase}
             </p>

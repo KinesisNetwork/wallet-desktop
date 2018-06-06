@@ -42,7 +42,6 @@ export class WalletInfo extends React.Component<Props> {
           value={this.props.accountBalance}
           isLoading={this.props.isAccountLoading}
         />
-        {/* <DeleteWallet /> */}
         <div className='is-divider is-hidden-tablet' style={{ margin: 0, borderTopWidth: '0.01rem' }} />
       </div>
     )
