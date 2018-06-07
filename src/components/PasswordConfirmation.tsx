@@ -7,7 +7,7 @@ import * as SwalImport from 'sweetalert'
 
 const swal = SwalImport as any
 
-class PasswordInput extends React.Component<{activeWallet: Wallet}, {password: string}> {
+class PasswordInput extends React.Component<{ activeWallet: Wallet }, { password: string }> {
   constructor(props) {
     super(props)
     this.state = {
@@ -17,12 +17,12 @@ class PasswordInput extends React.Component<{activeWallet: Wallet}, {password: s
 
   changeText = (e) => {
     const text = e.target.value
-    this.setState({password: text})
+    this.setState({ password: text })
     const isDecryptionSuccessful = this.decryptKey(text)
     // @ts-ignore
     if (isDecryptionSuccessful) {
       if (swal.setActionValue && swal.close) {
-        swal.setActionValue({ cancel: { value: '' } })
+        swal.setActionValue({ cancel: { value: true } })
         swal.close('cancel')
       }
     }

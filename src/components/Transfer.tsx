@@ -75,7 +75,10 @@ export class Transfer extends React.Component<TransferProps> {
   render() {
     return (
       <div>
-        <h1 className='sub-heading primary-font'>Transfer</h1>
+        <h1 className='sub-heading primary-font'>
+          <span style={{ paddingRight: '5px' }}>Transfer</span>
+          <span className='has-text-primary'>KAU</span>
+        </h1>
         <div style={{ position: 'relative' }}>
           {this.props.isTransferring && <Loader />}
           <div style={this.props.isTransferring ? { filter: 'blur(2px)' } : {}}>
