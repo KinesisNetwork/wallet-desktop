@@ -1,4 +1,4 @@
-import { WalletLockError } from '@helpers/errors'
+import { TransferSubmitError, WalletLockError } from '@helpers/errors'
 import { getAccountIfExists } from '@services/accounts'
 import { getFeeInStroops, getServer } from '@services/kinesis'
 import { Connection, TransferRequest, Wallet } from '@types'
@@ -12,13 +12,28 @@ export async function transferKinesis(
   if (!sourceWallet.decryptedPrivateKey) {
     throw new WalletLockError()
   }
+
+  if (request.targetAddress && request.targetPayee) {
+    throw new TransferSubmitError()
+  }
+
+  const handledRequest = handleTransferWithPayee(request)
+
   const server = getServer(connection)
   const sourceAccount = await getAccountIfExists(server, sourceWallet.publicKey)
 
-  const transaction = await newTransferTransaction(server, sourceAccount, request)
+  const transaction = await newTransferTransaction(server, sourceAccount, handledRequest)
 
   transaction.sign(Keypair.fromSecret(sourceWallet.decryptedPrivateKey))
   await server.submitTransaction(transaction)
+}
+
+function handleTransferWithPayee(transfer: TransferRequest): TransferRequest {
+  if (!transfer.targetPayee) {
+    return transfer
+  }
+
+  return { amount: transfer.amount, targetAddress: transfer.targetPayee, memo: transfer.memo }
 }
 
 async function newTransferTransaction(

@@ -4,6 +4,7 @@ import { InputField } from '@components'
 import { TransferProps } from '@containers'
 import { formAlert } from '@helpers/alert'
 import { InputError, WalletLockError } from '@helpers/errors'
+import { View } from '@types'
 import { Loader } from './Loader'
 
 export class Transfer extends React.Component<TransferProps> {
@@ -49,10 +50,15 @@ export class Transfer extends React.Component<TransferProps> {
   }
 
   checkValidTarget = () => {
-    if (!this.props.targetAddress) {
-      throw new InputError(`Target Address is required`, `transfer-target-address`)
-    } else if (this.props.targetAddress === this.props.activeWallet.publicKey) {
-      throw new InputError('Target Address cannot be your own key', 'transfer-target-address')
+    if (!this.props.targetAddress && !this.props.targetPayee) {
+      throw new InputError(`Target Address or Payee is required`, `transfer-target-address`)
+    } else if (
+      this.props.targetAddress === this.props.activeWallet.publicKey ||
+      this.props.targetPayee === this.props.activeWallet.publicKey
+    ) {
+      throw new InputError('Target Address or Payee cannot be your own key', 'transfer-target-address')
+    } else if (this.props.targetAddress && this.props.targetPayee) {
+      throw new InputError('Target Address and Payee cannot both be set', 'transfer-target-address')
     }
   }
 
@@ -72,6 +78,10 @@ export class Transfer extends React.Component<TransferProps> {
     }
   }
 
+  payees = () => {
+    return this.props.payees.map((payee, i) => <option value={payee.publicKey} key={i}>{payee.name}</option>)
+  }
+
   render() {
     return (
       <div>
@@ -89,6 +99,31 @@ export class Transfer extends React.Component<TransferProps> {
               placeholder='Public key to pay'
               onChangeHandler={(newValue) => this.props.updateTransferForm({ field: 'targetAddress', newValue })}
             />
+            <p className='label has-text-centered'>OR</p>
+            <label className='label is-small'>Select a Payee</label>
+            <div className='field is-grouped'>
+              <div className='control is-expanded'>
+                <div className='select is-fullwidth'>
+                  <select
+                    className='has-background-dark has-text-grey is-grey'
+                    onChange={(ev) => this.props.updateTransferForm({ field: 'targetPayee', newValue: ev.target.value})}
+                    value={this.props.targetPayee}
+                  >
+                    <option value='' hidden={true}>My Payees</option>
+                    <option value=''>None</option>
+                    {this.payees()}
+                  </select>
+                </div>
+              </div>
+              <div className='control'>
+                <a className='button' onClick={() => this.props.changeView(View.payees)}>
+                  <span className='icon'>
+                    <i className='fa fa-plus' />
+                  </span>
+                  <span>Add Payee</span>
+                </a>
+              </div>
+            </div>
             <InputField
               label='Transfer Amount'
               value={this.props.amount}

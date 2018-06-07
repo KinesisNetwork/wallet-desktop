@@ -44,6 +44,7 @@ export interface UnlockWallet {
 
 export interface TransferRequest {
   readonly targetAddress: string
+  readonly targetPayee?: string
   readonly amount: string
   readonly memo: string
 }
@@ -60,4 +61,9 @@ export interface TransactionOperationView {
   readonly memo: string
   readonly operation: OperationRecord
   readonly date: Date
+}
+
+export interface Payee {
+  readonly name: string
+  readonly publicKey: string
 }

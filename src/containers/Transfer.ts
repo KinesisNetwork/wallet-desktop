@@ -1,10 +1,10 @@
-import { transferRequest, updateTransferForm } from '@actions'
+import { changeView, transferRequest, updateTransferForm } from '@actions'
 import { Transfer  as TransferPresentation } from '@components'
 import { getFeeInKinesis } from '@services/kinesis'
 import { RootState } from '@store'
 import { connect } from 'react-redux'
 
-const mapStateToProps = ({ wallets, connections, transfer, accounts }: RootState) => {
+const mapStateToProps = ({ wallets, connections, transfer, accounts, payees }: RootState) => {
   const activeWallet = wallets.walletList[wallets.currentlySelected]
   return {
     ...transfer.form,
@@ -12,11 +12,13 @@ const mapStateToProps = ({ wallets, connections, transfer, accounts }: RootState
     isTransferring: transfer.isTransferring,
     isWalletUnlocked: !!activeWallet.decryptedPrivateKey,
     accountBalance: accounts.accountsMap[activeWallet.publicKey].balance,
+    payees: payees.payees,
     activeWallet,
   }
 }
 
 const mapDispatchToProps = {
+  changeView,
   transferRequest,
   updateTransferForm,
 }
