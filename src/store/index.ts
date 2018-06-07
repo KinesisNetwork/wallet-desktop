@@ -4,14 +4,6 @@ import { RootAction } from './root-action'
 import { rootEpic, rootReducer, RootState } from './root-reducer'
 
 const epicMiddleware = createEpicMiddleware(rootEpic)
-const m = module as any
-if (m.hot) {
-  m.hot.accept('./where-ever-they-are', () => {
-    import('./root-reducer').then(({ rootEpic: hotEpic }) => {
-      epicMiddleware.replaceEpic(hotEpic)
-    })
-  })
-}
 
 export type Dispatch = Dispatch<RootAction>
 export type Epic = Epic<RootAction, RootState>
