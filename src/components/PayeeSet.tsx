@@ -42,7 +42,7 @@ export class PayeeForm extends React.Component<Props> {
 
   checkValidEntry = (key: keyof Payee) => {
     if (!this.props.payee[key]) {
-      throw new InputError(`${startCase(key)} is required`, `input-${kebabCase(key)}`)
+      throw new InputError(`${startCase(key)} is required`, `payee-${kebabCase(key)}`)
     }
   }
 

@@ -25,7 +25,7 @@ export const HorizontalLabelledField: React.SFC<Props> = (props) => (
     </div>
     <div className='field-body'>
       <div className={`field ${props.addon ? 'has-addons' : ''}`}>
-        <div className={`control is-expanded ${props.isLoading ? 'is-loading' : ''}`}>
+        <div className={`control is-expanded ${props.isLoading && 'is-loading'}`}>
           <input className='input is-static is-small' type='text' value={props.value} readOnly={true} />
         </div>
         {props.addon && <div className='control'>{props.addon}</div>}

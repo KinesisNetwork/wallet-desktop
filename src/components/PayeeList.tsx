@@ -8,7 +8,7 @@ export interface Props {
   removePayee: RemovePayee
 }
 
-export const deletePayeeLink: React.SFC<{name: string, removePayee: RemovePayee}> = ({name, removePayee}) => {
+export const DeletePayeeLink: React.SFC<{name: string, removePayee: RemovePayee}> = ({name, removePayee}) => {
   return (
     <a
       className='delete'
@@ -25,7 +25,7 @@ export const PayeeList: React.SFC<Props> = (props) => {
         label={payee.name}
         key={payee.name}
         value={payee.publicKey}
-        addon={deletePayeeLink({name: payee.name, removePayee: props.removePayee})}
+        addon={<DeletePayeeLink name={payee.name} removePayee={props.removePayee}/>}
       />
     )
   })
