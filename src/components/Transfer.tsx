@@ -78,8 +78,14 @@ export class Transfer extends React.Component<TransferProps> {
     }
   }
 
-  payees = () => {
-    return this.props.payees.map((payee, i) => <option value={payee.publicKey} key={i}>{payee.name}</option>)
+  payees = () => this.props.payees.map((payee, i) => <option value={payee.publicKey} key={i}>{payee.name}</option>)
+
+  payeeSelected = () => {
+    return (
+      <div className='icon is-small is-left has-text-success'>
+        <i className='fas fa-check' />
+      </div>
+    )
   }
 
   render() {
@@ -100,20 +106,20 @@ export class Transfer extends React.Component<TransferProps> {
               onChangeHandler={(newValue) => this.props.updateTransferForm({ field: 'targetAddress', newValue })}
             />
             <p className='label has-text-centered'>OR</p>
-            <label className='label is-small'>Select a Payee</label>
             <div className='field is-grouped'>
-              <div className='control is-expanded'>
+              <div className={`control is-expanded ${this.props.targetPayee && 'has-icons-left'}`}>
                 <div className='select is-fullwidth'>
                   <select
-                    className='has-background-dark has-text-grey is-grey'
+                    className='has-text-grey'
                     onChange={(ev) => this.props.updateTransferForm({ field: 'targetPayee', newValue: ev.target.value})}
                     value={this.props.targetPayee}
                   >
-                    <option value='' hidden={true}>My Payees</option>
+                    <option value='' hidden={true}>Select a Payee</option>
                     <option value=''>None</option>
                     {this.payees()}
                   </select>
                 </div>
+                {this.props.targetPayee && this.payeeSelected()}
               </div>
               <div className='control'>
                 <a className='button' onClick={() => this.props.changeView(View.payees)}>

@@ -24,6 +24,10 @@ body {
   padding: 0;
 }
 
+.input::-webkit-input-placeholder {
+  font-size: 80%;
+}
+
 .vertical-spaced {
   display: flex;
   flex-direction: column;
@@ -33,19 +37,6 @@ body {
 .button.is-primary.is-outlined:focus,
 .button.is-primary.is-outlined:hover {
   color: #2b3e50;
-}
-
-.input {
-  background-color: #212c38;
-  border-color: #4e5d6c;
-  color: #8694a4;
-}
-
-.input::-webkit-input-placeholder {
-  color: lighten($text, 10);
-  opacity: 0.3;
-  font-size: 80%;
-  // color: #8694a4;
 }
 
 .code-font {
