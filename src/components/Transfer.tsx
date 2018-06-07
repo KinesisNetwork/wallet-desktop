@@ -4,6 +4,7 @@ import { InputField } from '@components'
 import { TransferProps } from '@containers'
 import { formAlert } from '@helpers/alert'
 import { InputError, WalletLockError } from '@helpers/errors'
+import { View } from '@types'
 import { Loader } from './Loader'
 
 export class Transfer extends React.Component<TransferProps> {
@@ -112,9 +113,9 @@ export class Transfer extends React.Component<TransferProps> {
                 </div>
               </div>
               <div className='control'>
-                <a className='button'>
+                <a className='button' onClick={() => this.props.changeView(View.payees)}>
                   <span className='icon'>
-                    <i className='fa fa-plus'></i>
+                    <i className='fa fa-plus' />
                   </span>
                   <span>Add Payee</span>
                 </a>

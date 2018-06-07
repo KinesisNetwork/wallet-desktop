@@ -1,34 +1,41 @@
+import { HorizontalLabelledField } from '@components'
 import { Payee } from '@types'
 import * as React from 'react'
 
+type RemovePayee = (payeeName: string) => void
 export interface Props {
   payees: Payee[]
-  removePayee: (payeeName: string) => void
+  removePayee: RemovePayee
+}
+
+export const deletePayeeLink: React.SFC<{name: string, removePayee: RemovePayee}> = ({name, removePayee}) => {
+  return (
+    <a
+      className='delete'
+      style={{marginTop: '3.5px'}}
+      onClick={() => removePayee(name)}
+    />
+  )
 }
 
 export const PayeeList: React.SFC<Props> = (props) => {
-  const payees = props.payees.map((payee, index) => {
+  const payees = props.payees.map((payee) => {
     return (
-      <tr key={index}>
-        <td>{payee.name}</td>
-        <td style={{overflow: 'hidden', whiteSpace: 'nowrap'}}>{payee.publicKey}</td>
-        <td><a className='delete' onClick={() => props.removePayee(payee.name)}/></td>
-      </tr>
+      <HorizontalLabelledField
+        label={payee.name}
+        key={payee.name}
+        value={payee.publicKey}
+        addon={deletePayeeLink({name: payee.name, removePayee: props.removePayee})}
+      />
     )
   })
 
   return (
-    <table className='table' style={{width: '100%', tableLayout: 'fixed'}}>
-      <thead>
-        <tr>
-          <th>Payee</th>
-          <th>Public Key</th>
-          <th />
-        </tr>
-      </thead>
-      <tbody>
+    <div className='vertical-spaced has-text-centered'>
+      <h1 className='title-heading'>MY PAYEES</h1>
+      <section className='section'>
         {payees}
-      </tbody>
-    </table>
+      </section>
+    </div>
   )
 }

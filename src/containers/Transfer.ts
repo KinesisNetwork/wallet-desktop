@@ -1,4 +1,4 @@
-import { transferRequest, updateTransferForm } from '@actions'
+import { changeView, transferRequest, updateTransferForm } from '@actions'
 import { Transfer  as TransferPresentation } from '@components'
 import { getFeeInKinesis } from '@services/kinesis'
 import { RootState } from '@store'
@@ -18,6 +18,7 @@ const mapStateToProps = ({ wallets, connections, transfer, accounts, payees }: R
 }
 
 const mapDispatchToProps = {
+  changeView,
   transferRequest,
   updateTransferForm,
 }
