@@ -10,9 +10,13 @@ import {
 
 export const Dashboard: React.SFC = () => (
   <div className='vertical-spaced'>
-    <div className='has-text-centered title-heading is-constant-height'>
-      <Password />
-      <AccountPage />
+    <div className='columns'>
+      <div className='has-text-centered is-constant-height column is-four-fifths'>
+        <Password />
+      </div>
+      <div className='column'>
+        <AccountPage />
+      </div>
     </div>
     <div className='columns is-constant-height'>
       <div className='column'>

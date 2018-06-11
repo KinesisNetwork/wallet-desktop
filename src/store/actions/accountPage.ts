@@ -1,3 +1,3 @@
 import { buildAction } from 'typesafe-actions'
 
-export const setAccountPage = buildAction('LOAD_ACCOUNT_REQUEST').payload<string>()
+export const setAccountPage = buildAction('SET_ACCOUNT_PAGE').payload<string>()
