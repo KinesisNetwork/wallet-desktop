@@ -10,6 +10,11 @@ export enum AccountPage {
   sign = 'Sign & Verify',
 }
 
+export enum SignBehaviour {
+  sign = 'Sign',
+  verify = 'Verify',
+}
+
 export enum CreateWalletFormView {
   select,
   generate,

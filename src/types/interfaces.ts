@@ -68,8 +68,11 @@ export interface Payee {
   readonly publicKey: string
 }
 
-export interface SignedMessage {
+export interface SignedMessage extends RawMessage {
   readonly publicKey: string
-  readonly message: string
   readonly signature: string
+}
+
+export interface RawMessage {
+  readonly message: string
 }
