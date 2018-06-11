@@ -67,3 +67,9 @@ export interface Payee {
   readonly name: string
   readonly publicKey: string
 }
+
+export interface SignedMessage {
+  readonly publicKey: string
+  readonly message: string
+  readonly signature: string
+}

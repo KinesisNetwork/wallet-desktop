@@ -5,6 +5,11 @@ export enum View {
   payees,
 }
 
+export enum AccountPage {
+  transfer = 'Transfer',
+  sign = 'Sign & Verify',
+}
+
 export enum CreateWalletFormView {
   select,
   generate,
