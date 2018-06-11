@@ -2,7 +2,7 @@ import { AccountPage } from '@types'
 import * as React from 'react'
 
 export interface Props {
-  accountAction: AccountPage
+  accountPage: AccountPage
   setAccountPage: (act: AccountPage) => any
 }
 
@@ -14,7 +14,7 @@ export const AccountPageSelector: React.SFC<Props> = (props) => {
       <a
         key={accountAction}
         href='#'
-        className={`dropdown-item ${props.accountAction === accountAction && 'is-active'}`}
+        className={`dropdown-item ${props.accountPage === accountAction && 'is-active'}`}
         onClick={() => props.setAccountPage(accountAction)}
       >
         {accountAction}
@@ -23,7 +23,7 @@ export const AccountPageSelector: React.SFC<Props> = (props) => {
   })
 
   return (
-    <div className='dropdown is-active'>
+    <div className='dropdown is-active pull-right'>
       <div className='dropdown-trigger'>
         <button className='button' aria-haspopup='true' aria-controls='dropdown-menu'>
           <span>More</span>
