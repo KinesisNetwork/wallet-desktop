@@ -3,6 +3,7 @@ import * as React from 'react'
 import {
   AccountPage,
   Password,
+  Sign,
   Transactions,
   Transfer,
   WalletInfo,
@@ -35,7 +36,7 @@ export class Dashboard extends React.PureComponent<Props> {
   accountPageView = () => {
     switch (this.props.accountPage) {
       case AccountPageEnum.transfer: return <TransferPage />
-      case AccountPageEnum.sign: return <div />
+      case AccountPageEnum.sign: return <Sign />
       default: return <div />
     }
   }

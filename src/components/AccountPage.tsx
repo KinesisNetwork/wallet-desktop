@@ -1,3 +1,4 @@
+import { enumStringValues } from '@helpers/enumStringValues'
 import { AccountPage } from '@types'
 import * as React from 'react'
 
@@ -22,8 +23,7 @@ export class AccountPageSelector extends React.Component<Props, State> {
   }
 
   dropdownItems = () => {
-    const accountActionMembers = Object.keys(AccountPage).map((key) => AccountPage[key])
-    const accountActionVals = accountActionMembers.filter((val) => typeof val !== 'number')
+    const accountActionVals = enumStringValues(AccountPage)
     return accountActionVals.map((accountAction) => {
       return (
         <a
