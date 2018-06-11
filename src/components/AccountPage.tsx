@@ -28,7 +28,6 @@ export class AccountPageSelector extends React.Component<Props, State> {
       return (
         <a
           key={accountAction}
-          href='#'
           className={`dropdown-item ${this.props.accountPage === accountAction && 'is-active'}`}
           onClick={() => this.handleSet(accountAction)}
         >
