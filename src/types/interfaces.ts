@@ -43,8 +43,7 @@ export interface UnlockWallet {
 }
 
 export interface TransferRequest {
-  readonly targetAddress: string
-  readonly targetPayee?: string
+  readonly targetPayee: string
   readonly amount: string
   readonly memo: string
 }

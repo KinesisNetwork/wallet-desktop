@@ -44,7 +44,7 @@ class UnlockedWallet extends React.Component<Props, Readonly<{}>> {
     this.clipboard = new ClipboardJS(this.copyBtn)
   }
 
-  public componentDidUnmount() {
+  public componentWillUnmount() {
     this.clipboard.destroy()
   }
 

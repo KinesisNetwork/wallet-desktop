@@ -1,7 +1,7 @@
 import { InputField } from '@components'
 import { formAlert } from '@helpers/alert'
 import { InputError } from '@helpers/errors'
-import { Payee } from '@types'
+import { Payee, WalletView } from '@types'
 import { kebabCase, startCase } from 'lodash'
 import * as React from 'react'
 
@@ -9,16 +9,9 @@ export interface Props {
   payee: Payee
   setPayee: (payee: Payee) => void
   handleChange: (field: keyof Payee, newValue: string) => any
+  currentWalletView: WalletView
+  changeTransferView: () => any
 }
-
-export const PayeeSet: React.SFC<Props> = (props) => (
-  <div className='vertical-spaced has-text-centered'>
-    <h1 className='title-heading'>ADD A NEW PAYEE</h1>
-    <section className='section'>
-      <PayeeForm {...props} />
-    </section>
-  </div>
-)
 
 export class PayeeForm extends React.Component<Props> {
   constructor(props: Props) {
@@ -46,6 +39,14 @@ export class PayeeForm extends React.Component<Props> {
     }
   }
 
+  renderCancelButton = () => {
+    return (
+      <div className='control'>
+        <button className='button is-danger' type='button' onClick={this.props.changeTransferView}>Back</button>
+      </div >
+    )
+  }
+
   render() {
     const { payee, handleChange } = this.props
     return (
@@ -69,6 +70,7 @@ export class PayeeForm extends React.Component<Props> {
             <div className='control is-expanded'>
               <button className='button is-fullwidth' type='submit'>Set Payee</button>
             </div>
+            {this.props.currentWalletView !== WalletView.payees && this.renderCancelButton()}
           </div>
         </form>
       </div>

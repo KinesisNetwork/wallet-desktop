@@ -1,4 +1,4 @@
-export enum View {
+export enum WalletView {
   create,
   settings,
   dashboard,
@@ -9,4 +9,9 @@ export enum CreateWalletFormView {
   select,
   generate,
   import,
+}
+
+export enum TransferView {
+  transfer,
+  addPayee,
 }

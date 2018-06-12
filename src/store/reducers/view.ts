@@ -1,18 +1,29 @@
-import { addWallet, changeView } from '@actions'
+import { addWallet, changeTransferView, changeWalletView, setPayee } from '@actions'
 import { RootAction } from '@store'
-import { View } from '@types'
+import { TransferView, WalletView } from '@types'
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 
 export interface ViewState {
-  readonly currentView: View
+  readonly walletView: WalletView
+  readonly transferView: TransferView
 }
 
 export const view = combineReducers<ViewState, RootAction>({
-  currentView: (state = View.create, action) => {
+  walletView: (state = WalletView.create, action) => {
     switch (action.type) {
-      case getType(changeView): return action.payload
-      case getType(addWallet): return View.dashboard
+      case getType(changeWalletView): return action.payload
+      case getType(addWallet): return WalletView.dashboard
+      default: return state
+    }
+  },
+  transferView: (state = TransferView.transfer, action) => {
+    switch (action.type) {
+      case getType(changeTransferView): return action.payload
+
+      case getType(setPayee):
+      case getType(changeWalletView):
+        return TransferView.transfer
       default: return state
     }
   },

@@ -1,10 +1,10 @@
 import { ConnectionSettings, Dashboard, Payee, Sidebar } from '@components'
 import { CreateWallet } from '@containers'
-import { View } from '@types'
+import { WalletView } from '@types'
 import * as React from 'react'
 
 export interface Props {
-  currentView: View
+  currentView: WalletView
 }
 
 export class Main extends React.PureComponent<Props> {
@@ -12,12 +12,12 @@ export class Main extends React.PureComponent<Props> {
     super(props)
   }
 
-  viewMap = (view: View) => {
+  viewMap = (view: WalletView) => {
     switch (view) {
-      case View.create: return <CreateWallet />
-      case View.dashboard: return <Dashboard />
-      case View.settings: return <ConnectionSettings />
-      case View.payees: return <Payee />
+      case WalletView.create: return <CreateWallet />
+      case WalletView.dashboard: return <Dashboard />
+      case WalletView.settings: return <ConnectionSettings />
+      case WalletView.payees: return <Payee />
       default: return <div />
     }
   }

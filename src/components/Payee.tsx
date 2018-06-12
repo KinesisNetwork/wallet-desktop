@@ -1,8 +1,8 @@
 import * as React from 'react'
 
 import {
+  PayeeForm,
   PayeeList,
-  PayeeSet,
 } from '@containers'
 
 export const Payee: React.SFC = () => (
@@ -11,7 +11,12 @@ export const Payee: React.SFC = () => (
       <PayeeList />
     </div>
     <div className='column'>
-      <PayeeSet />
+      <div className='vertical-spaced has-text-centered'>
+        <h1 className='title-heading'>ADD A NEW PAYEE</h1>
+        <section className='section'>
+          <PayeeForm />
+        </section>
+      </div>
     </div>
   </div>
 )

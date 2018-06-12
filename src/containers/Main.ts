@@ -3,7 +3,7 @@ import { RootState } from '@store'
 import { connect } from 'react-redux'
 
 const mapStateToProps = ({ view }: RootState) => ({
-  currentView: view.currentView,
+  currentView: view.walletView,
 })
 
 export const Main = connect(mapStateToProps)(MainPresentation)

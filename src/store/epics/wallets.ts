@@ -1,11 +1,11 @@
 import {
   accountLoadRequest,
-  changeView,
+  changeWalletView,
   deleteWallet as deleteWalletAction,
   selectWallet,
 } from '@actions'
 import { Epic } from '@store'
-import { View } from '@types'
+import { WalletView } from '@types'
 import { saveAs } from 'file-saver'
 import { merge } from 'rxjs'
 import { filter, ignoreElements, map, tap, withLatestFrom } from 'rxjs/operators'
@@ -17,7 +17,7 @@ export const deleteWallet$: Epic = (action$) => {
   )
 
   const switchView$ = deleteWalletAction$.pipe(
-    map(() => changeView(View.create)),
+    map(() => changeWalletView(WalletView.create)),
   )
 
   const downloadPaperWallet$ = deleteWalletAction$.pipe(

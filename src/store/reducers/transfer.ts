@@ -1,4 +1,11 @@
-import { transferFailed, transferRequest, transferSuccess, updateTransferForm } from '@actions'
+import {
+  changeWalletView,
+  setPayee,
+  transferFailed,
+  transferRequest,
+  transferSuccess,
+  updateTransferForm,
+} from '@actions'
 import { RootAction } from '@store'
 import { TransferRequest } from '@types'
 import { combineReducers } from 'redux'
@@ -12,7 +19,6 @@ export interface TransferState {
 export const transfer = combineReducers<TransferState, RootAction>({
   form: combineReducers<TransferRequest, RootAction>({
     amount: handleChange('amount'),
-    targetAddress: handleChange('targetAddress'),
     targetPayee: handleChange('targetPayee'),
     memo: handleChange('memo'),
   }),
@@ -34,6 +40,10 @@ function handleChange(name: keyof TransferRequest) {
     switch (action.type) {
       case getType(updateTransferForm):
         return action.payload.field === name ? action.payload.newValue : state
+      case getType(setPayee):
+        return name === 'targetPayee' ? action.payload.publicKey : state
+
+      case getType(changeWalletView):
       case getType(transferSuccess):
         return ''
       default: return state

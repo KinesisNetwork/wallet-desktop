@@ -1,14 +1,16 @@
 import * as React from 'react'
 
-import { FormChangeHandler, Payee, TransferRequest } from '@types'
+import { changeTransferView as action } from '@actions'
+import { FormChangeHandler, Payee, TransferRequest, TransferView } from '@types'
 
 export interface Props {
   targetPayee: TransferRequest['targetPayee']
   payees: Payee[]
   handleChange: FormChangeHandler<TransferRequest>
+  changeTransferView: typeof action
 }
 
-export const PayeeSelector: React.SFC<Props> = ({ targetPayee, payees, handleChange }) => {
+export const PayeeSelector: React.SFC<Props> = ({ targetPayee, payees, handleChange, changeTransferView }) => {
   return (
     <div className='field'>
       <label className='label is-small'>Target Address</label>
@@ -29,7 +31,7 @@ export const PayeeSelector: React.SFC<Props> = ({ targetPayee, payees, handleCha
           </div>
         </div>
         <div className='control'>
-          <a className='button'>
+          <a className='button' onClick={() => changeTransferView(TransferView.addPayee)}>
             <span className='icon'>
               <i className='fa fa-plus' />
             </span>
