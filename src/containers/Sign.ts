@@ -1,14 +1,22 @@
 import { changeSignFocus, signMessage, updateSignForm, updateVerifyForm, verifyMessage } from '@actions'
 import { Sign as SignPresentation } from '@components'
 import { Dispatch, RootState } from '@store'
-import { RawMessage, SignBehaviour } from '@types'
+import { RawMessage, SignBehaviour, SignedMessage } from '@types'
 import { connect } from 'react-redux'
 
-const mapStateToProps = ({sign}: RootState) => ({
-  focus: sign.focus,
-  signature: sign.signature,
-  isValidSignature: sign.isValidSignature,
-})
+const mapStateToProps = ({sign, wallets}: RootState) => {
+  const activeWallet = wallets.walletList[wallets.currentlySelected]
+
+  return {
+    isWalletUnlocked: !!activeWallet.decryptedPrivateKey,
+    focus: sign.focus,
+    signature: sign.signature,
+    isValidSignature: sign.isValidSignature,
+    signData: sign.signData,
+    verifyData: sign.verifyData,
+    activeWallet
+  }
+}
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   changeSignFocus: (focus: SignBehaviour): void => {
@@ -17,7 +25,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   handleSignFormChange: (field: keyof RawMessage, newValue: string) => {
     dispatch(updateSignForm({field, newValue}))
   },
-  handleVerifyFromChange: (field: keyof RawMessage, newValue: string) => {
+  handleVerifyFormChange: (field: keyof SignedMessage, newValue: string) => {
     dispatch(updateVerifyForm({field, newValue}))
   },
   signMessage: (signature: string) => dispatch(signMessage(signature)),
