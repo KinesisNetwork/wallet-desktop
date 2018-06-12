@@ -99,8 +99,18 @@ export class SignForm extends React.Component<SignProps> {
             </div>
           </div>
         </form>
-        <h4 className='title is-4'>Signature:</h4>
-        <p style={{overflowWrap: 'break-word', width: '70%'}}>{this.props.signature}</p>
+        <div className='field' style={{marginTop: '20px'}}>
+          <div className='label is-small'>Signature</div>
+          <div className='control'>
+            <textarea
+              className='textarea'
+              rows={5}
+              style={{width: '100%'}}
+              value={this.props.signature}
+              disabled={true}
+            />
+          </div>
+        </div>
       </div>
     )
   }
@@ -172,8 +182,6 @@ export class VerifyForm extends React.Component<SignProps> {
             </div>
           </div>
         </form>
-        <h4 className='title is-4'>Is Verified</h4>
-        <p style={{overflowWrap: 'break-word', width: '70%'}}>{JSON.stringify(this.props.isValidSignature)}</p>
       </div>
     )
   }

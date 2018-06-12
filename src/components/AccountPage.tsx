@@ -47,9 +47,9 @@ export class AccountPageSelector extends React.Component<Props, State> {
             aria-controls='dropdown-menu'
             onClick={() => this.setState({isDropped: !this.state.isDropped})}
           >
-            <span>More</span>
+            <span>Advanced</span>
             <span className='icon'>
-              <i className='fa fa-key' aria-hidden='true' />
+              <i className='fa fa-cogs' aria-hidden='true' />
             </span>
           </button>
         </div>
