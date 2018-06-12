@@ -44,12 +44,14 @@ export class Dashboard extends React.PureComponent<Props> {
   render() {
     return (
       <div className='vertical-spaced'>
-        <div className='columns'>
-          <div className='has-text-centered is-constant-height column is-four-fifths'>
-            <Password />
-          </div>
-          <div className='column'>
-            <AccountPage />
+        <div style={{display: 'block'}}>
+          <div className='columns'>
+            <div className='has-text-centered is-constant-height column is-four-fifths'>
+              <Password />
+            </div>
+            <div className='column'>
+              <AccountPage />
+            </div>
           </div>
         </div>
         {this.accountPageView()}
