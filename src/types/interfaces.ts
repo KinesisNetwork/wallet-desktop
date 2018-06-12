@@ -67,3 +67,5 @@ export interface Payee {
   readonly name: string
   readonly publicKey: string
 }
+
+export type FormChangeHandler<T> = (change: FormUpdate<T>) => any

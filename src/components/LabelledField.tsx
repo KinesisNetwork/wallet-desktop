@@ -6,15 +6,21 @@ export interface Props {
   icon?: string
   isLoading?: boolean
   isCompact?: boolean
+  isClipped?: boolean
   addon?: React.ReactNode
 }
+
+const clippedStyle = (isClipped: boolean | undefined) => isClipped ? { maxWidth: '35ch' } : {}
 
 export const LabelledField: React.SFC<Props> = (props) => (
   <div className='field'>
     <label className='label is-small'>{props.label}</label>
-    <p className={`control is-expanded ${props.isLoading && 'is-loading'}`}>
-      <input className='input is-static' type='text' value={props.value} readOnly={true} />
-    </p>
+    <div className='field is-grouped'>
+      <div className={`control is-expanded ${props.isLoading && 'is-loading'}`} style={clippedStyle(props.isClipped)}>
+        <p className='input is-static is-block is-clipped' style={{ textOverflow: 'ellipsis' }}>{props.value}</p>
+      </div>
+      {props.addon && <div className='control'>{props.addon}</div>}
+    </div>
   </div>
 )
 
@@ -24,9 +30,11 @@ export const HorizontalLabelledField: React.SFC<Props> = (props) => (
       <label className='label'>{props.label}</label>
     </div>
     <div className='field-body'>
-      <div className={`field ${props.addon ? 'has-addons' : ''}`}>
-        <div className={`control is-expanded ${props.isLoading && 'is-loading'}`}>
-          <input className='input is-static is-small' type='text' value={props.value} readOnly={true} />
+      <div className='field is-grouped'>
+        <div className={`control is-expanded ${props.isLoading && 'is-loading'}`} style={clippedStyle(props.isClipped)}>
+          <p className='input is-static is-small is-block is-clipped' style={{ textOverflow: 'ellipsis' }} >
+            {props.value}
+          </p>
         </div>
         {props.addon && <div className='control'>{props.addon}</div>}
       </div>

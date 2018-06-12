@@ -1,4 +1,4 @@
-import { HorizontalLabelledField } from '@components'
+import { LabelledField } from '@components'
 import { Payee } from '@types'
 import * as React from 'react'
 
@@ -8,31 +8,30 @@ export interface Props {
   removePayee: RemovePayee
 }
 
-export const DeletePayeeLink: React.SFC<{name: string, removePayee: RemovePayee}> = ({name, removePayee}) => {
+export const DeletePayeeLink: React.SFC<{ name: string, removePayee: RemovePayee }> = ({ name, removePayee }) => {
   return (
-    <a
-      className='delete'
-      style={{marginTop: '3.5px'}}
-      onClick={() => removePayee(name)}
-    />
+    <button className='button is-danger' onClick={() => removePayee(name)}>
+      <span className='icon is-small'><i className='fas fa-trash-alt' /></span>
+    </button>
   )
 }
 
 export const PayeeList: React.SFC<Props> = (props) => {
   const payees = props.payees.map((payee) => {
     return (
-      <HorizontalLabelledField
+      <LabelledField
         label={payee.name}
         key={payee.name}
         value={payee.publicKey}
-        addon={<DeletePayeeLink name={payee.name} removePayee={props.removePayee}/>}
+        isClipped={true}
+        addon={<DeletePayeeLink name={payee.name} removePayee={props.removePayee} />}
       />
     )
   })
 
   return (
-    <div className='vertical-spaced has-text-centered'>
-      <h1 className='title-heading'>MY PAYEES</h1>
+    <div className='vertical-spaced'>
+      <h1 className='title-heading has-text-centered'>MY PAYEES</h1>
       <section className='section'>
         {payees}
       </section>

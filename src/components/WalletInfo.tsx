@@ -15,7 +15,7 @@ export class WalletInfo extends React.Component<Props> {
 
   render() {
     return (
-      <div>
+      <React.Fragment>
         <h1 className='sub-heading primary-font'>Account Information</h1>
         <div className='tabs is-small'>
           <ul>
@@ -36,14 +36,14 @@ export class WalletInfo extends React.Component<Props> {
           </ul>
         </div>
         <LabelledField label='Account Name' value={this.props.accountName} />
-        <LabelledField label='Public Key' value={this.props.publicKey} />
+        <LabelledField label='Public Key' value={this.props.publicKey} isClipped={true} />
         <LabelledField
           label='Kinesis Balance'
           value={this.props.accountBalance}
           isLoading={this.props.isAccountLoading}
         />
         <div className='is-divider is-hidden-tablet' style={{ margin: 0, borderTopWidth: '0.01rem' }} />
-      </div>
+      </React.Fragment>
     )
   }
 }

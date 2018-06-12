@@ -6,6 +6,7 @@ import { formAlert } from '@helpers/alert'
 import { InputError, WalletLockError } from '@helpers/errors'
 import { View } from '@types'
 import { Loader } from './Loader'
+import { PayeeSelector } from './PayeeSelector'
 
 export class Transfer extends React.Component<TransferProps> {
   constructor(props) {
@@ -89,8 +90,9 @@ export class Transfer extends React.Component<TransferProps> {
   }
 
   render() {
+    const { updateTransferForm: handleChange } = this.props
     return (
-      <div>
+      <React.Fragment>
         <h1 className='sub-heading primary-font'>
           <span style={{ paddingRight: '5px' }}>Transfer</span>
           <span className='has-text-primary'>KAU</span>
@@ -98,51 +100,24 @@ export class Transfer extends React.Component<TransferProps> {
         <div style={{ position: 'relative' }}>
           {this.props.isTransferring && <Loader />}
           <div style={this.props.isTransferring ? { filter: 'blur(2px)' } : {}}>
-            <InputField
-              label='Target Address'
-              value={this.props.targetAddress}
-              id='transfer-target-address'
-              placeholder='Public key to pay'
-              onChangeHandler={(newValue) => this.props.updateTransferForm({ field: 'targetAddress', newValue })}
+            <PayeeSelector
+              handleChange={handleChange}
+              payees={this.props.payees}
+              targetPayee={this.props.targetPayee}
             />
-            <p className='label has-text-centered'>OR</p>
-            <div className='field is-grouped'>
-              <div className={`control is-expanded ${this.props.targetPayee && 'has-icons-left'}`}>
-                <div className='select is-fullwidth'>
-                  <select
-                    className='has-text-grey'
-                    onChange={(ev) => this.props.updateTransferForm({ field: 'targetPayee', newValue: ev.target.value})}
-                    value={this.props.targetPayee}
-                  >
-                    <option value='' hidden={true}>Select a Payee</option>
-                    <option value=''>None</option>
-                    {this.payees()}
-                  </select>
-                </div>
-                {this.props.targetPayee && this.payeeSelected()}
-              </div>
-              <div className='control'>
-                <a className='button' onClick={() => this.props.changeView(View.payees)}>
-                  <span className='icon'>
-                    <i className='fa fa-plus' />
-                  </span>
-                  <span>Add Payee</span>
-                </a>
-              </div>
-            </div>
             <InputField
               label='Transfer Amount'
               value={this.props.amount}
               id='transfer-amount'
               placeholder='Amount to transfer'
-              onChangeHandler={(newValue) => this.props.updateTransferForm({ field: 'amount', newValue })}
+              onChangeHandler={(newValue) => handleChange({ field: 'amount', newValue })}
             />
             <InputField
               label='Message'
               value={this.props.memo}
               id='transfer-memo'
               placeholder='Optional message to attach'
-              onChangeHandler={(newValue) => this.props.updateTransferForm({ field: 'memo', newValue })}
+              onChangeHandler={(newValue) => handleChange({ field: 'memo', newValue })}
             />
             <div className='field'>
               <div className='control is-expanded'>
@@ -152,7 +127,7 @@ export class Transfer extends React.Component<TransferProps> {
           </div>
         </div>
         <div className='is-divider is-hidden-tablet' style={{ marginBottom: 0, borderTopWidth: '0.01rem' }} />
-      </div>
+      </React.Fragment>
     )
   }
 }
