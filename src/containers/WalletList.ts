@@ -17,10 +17,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
   deleteWallet: async (wallet: Wallet) => {
     const isSureToDelete = await sweetAlert({
-      buttons: ['Go back', 'Delete Wallet'],
+      buttons: ['Go back', 'Delete Account'],
       dangerMode: true,
       icon: 'warning',
-      text: 'Once deleted, you will not be able to recover this wallet.',
+      text: 'Once deleted, you will not be able to recover this account.',
       title: 'Are you sure?',
     })
     if (!isSureToDelete) {
