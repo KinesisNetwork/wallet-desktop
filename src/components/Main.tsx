@@ -1,5 +1,5 @@
-import { ConnectionSettings, Dashboard, Payee, Sidebar } from '@components'
-import { CreateWallet } from '@containers'
+import { ConnectionSettings, Payee, Sidebar } from '@components'
+import { AccountPage, CreateWallet } from '@containers'
 import { View } from '@types'
 import * as React from 'react'
 
@@ -15,7 +15,7 @@ export class Main extends React.PureComponent<Props> {
   viewMap = (view: View) => {
     switch (view) {
       case View.create: return <CreateWallet />
-      case View.dashboard: return <Dashboard />
+      case View.dashboard: return <AccountPage />
       case View.settings: return <ConnectionSettings />
       case View.payees: return <Payee />
       default: return <div />
