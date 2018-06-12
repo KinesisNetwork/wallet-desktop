@@ -1,7 +1,7 @@
-import { createWebStorage } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 
 export function createStorage(): Storage {
   return process.env.IS_WEB
-    ? createWebStorage('local')
+    ? storage
     : require('redux-persist-electron-storage').default()
 }
