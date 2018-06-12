@@ -1,4 +1,5 @@
-export function enumStringValues(enumerable: any) {
-  const members = Object.keys(enumerable).map((key) => enumerable[key])
-  return members.filter((val) => typeof val !== 'number')
+export function enumStringValues(enumerable: any): string[] {
+  return Object.entries(enumerable)
+    .map(([, val]) => val)
+    .filter((val) => typeof val === 'string') as string[]
 }

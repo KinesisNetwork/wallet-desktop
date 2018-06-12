@@ -1,63 +1,66 @@
-import { enumStringValues } from '@helpers/enumStringValues'
-import { AccountPage } from '@types'
 import * as React from 'react'
 
+import {
+  AccountPageSelector,
+  Password,
+  Sign,
+  Transactions,
+  Transfer,
+  WalletInfo,
+} from '@containers'
+import { AccountPage as AccountPageEnum } from '@types'
+
 export interface Props {
-  accountPage: AccountPage
-  setAccountPage: (act: string) => any
+  accountPage: AccountPageEnum
 }
 
-export interface State {
-  isDropped: boolean
-}
+export const TransferPage: React.SFC = () => (
+  <React.Fragment>
+    <div className='columns is-constant-height'>
+      <div className='column'>
+        <WalletInfo />
+      </div>
+      <div className='column'>
+        <Transfer />
+      </div>
+    </div>
+    <Transactions />
+  </React.Fragment>
+)
 
-export class AccountPageSelector extends React.Component<Props, State> {
+export class AccountPage extends React.PureComponent<Props> {
   constructor(props) {
     super(props)
-    this.state = { isDropped: false }
   }
 
-  handleSet = (accountAction: string) => {
-    this.props.setAccountPage(accountAction)
-    this.setState({ isDropped: !this.state.isDropped })
-  }
-
-  dropdownItems = () => {
-    const accountActionVals = enumStringValues(AccountPage)
-    return accountActionVals.map((accountAction) => {
-      return (
-        <a
-          key={accountAction}
-          className={`dropdown-item ${this.props.accountPage === accountAction && 'is-active'}`}
-          onClick={() => this.handleSet(accountAction)}
-        >
-          {accountAction}
-        </a>
-      )
-    })
+  accountPageView = () => {
+    switch (this.props.accountPage) {
+      case AccountPageEnum.transfer: return <TransferPage />
+      case AccountPageEnum.sign: return <Sign />
+      default: return <div />
+    }
   }
 
   render() {
     return (
-      <div className={`dropdown ${this.state.isDropped && 'is-active'}`} style={{width: '100%'}}>
-        <div className='dropdown-trigger' style={{width: '100%'}}>
-          <button
-            className='button is-fullwidth'
-            aria-haspopup='true'
-            aria-controls='dropdown-menu'
-            onClick={() => this.setState({isDropped: !this.state.isDropped})}
-          >
-            <span>Advanced</span>
-            <span className='icon'>
-              <i className='fa fa-cogs' aria-hidden='true' />
-            </span>
-          </button>
-        </div>
-        <div className='dropdown-menu' id='dropdown-menu' role='menu' style={{width: '100%'}}>
-          <div className='dropdown-content'>
-            {this.dropdownItems()}
+      <div className='vertical-spaced'>
+        <div style={{display: 'block'}}>
+          <div className='level'>
+            <div className='level-left'>
+              <div className='level-item'>
+                <div className='has-text-centered is-constant-height'>
+                  <Password />
+                </div>
+              </div>
+            </div>
+            <div className='level-right'>
+              <div className='level-item'>
+                <AccountPageSelector />
+              </div>
+            </div>
           </div>
         </div>
+        {this.accountPageView()}
       </div>
     )
   }

@@ -45,7 +45,6 @@ function handleChange(name: keyof SignedMessage) {
   return (state = '', action: RootAction) => {
     switch (action.type) {
       case getType(updateSignForm):
-        return action.payload.field === name ? action.payload.newValue : state
       case getType(updateVerifyForm):
         return action.payload.field === name ? action.payload.newValue : state
       default: return state

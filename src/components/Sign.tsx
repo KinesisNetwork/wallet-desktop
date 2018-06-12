@@ -19,11 +19,12 @@ export class Sign extends React.Component<SignProps> {
   tabs = () => {
     const behaviourOpts = enumStringValues(SignBehaviour)
     return behaviourOpts.map((b) => {
+      const behaviour = b as SignBehaviour
       return (
         <li
-          key={b}
-          className={`${this.props.focus === b && 'is-active'}`}
-          onClick={() => this.props.changeSignFocus(b)}
+          key={behaviour}
+          className={`${this.props.focus === behaviour && 'is-active'}`}
+          onClick={() => this.props.changeSignFocus(behaviour)}
         >
           <a>
             <span>{b}</span>
@@ -77,7 +78,7 @@ export class SignForm extends React.Component<SignProps> {
 
   checkValidEntry = (key: keyof SignedMessage) => {
     if (!this.props.signData[key]) {
-      throw new InputError(`${startCase(key)} is required`, `payee-${kebabCase(key)}`)
+      throw new InputError(`${startCase(key)} is required`, `signdata-${kebabCase(key)}`)
     }
   }
 
@@ -98,19 +99,19 @@ export class SignForm extends React.Component<SignProps> {
               <button className='button is-fullwidth' type='submit'>Sign</button>
             </div>
           </div>
-        </form>
-        <div className='field' style={{marginTop: '20px'}}>
-          <div className='label is-small'>Signature</div>
-          <div className='control'>
-            <textarea
-              className='textarea'
-              rows={5}
-              style={{width: '100%'}}
-              value={this.props.signature}
-              disabled={true}
-            />
+          <div className='field'>
+            <div className='label is-small'>Signature</div>
+            <div className='control'>
+              <textarea
+                className='textarea'
+                rows={5}
+                style={{width: '100%'}}
+                value={this.props.signature}
+                disabled={true}
+              />
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     )
   }
@@ -146,7 +147,7 @@ export class VerifyForm extends React.Component<SignProps> {
 
   checkValidEntry = (key: keyof SignedMessage) => {
     if (!this.props.verifyData[key]) {
-      throw new InputError(`${startCase(key)} is required`, `payee-${kebabCase(key)}`)
+      throw new InputError(`${startCase(key)} is required`, `verify-${kebabCase(key)}`)
     }
   }
 
@@ -172,7 +173,7 @@ export class VerifyForm extends React.Component<SignProps> {
           <InputField
             label='Public Key'
             value={verifyData.publicKey}
-            id='verify-public'
+            id='verify-public-key'
             helpText='Enter the public key of the claimed signer'
             onChangeHandler={(newValue) => handleVerifyFormChange('publicKey', newValue)}
           />
