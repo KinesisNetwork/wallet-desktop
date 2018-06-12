@@ -1,12 +1,12 @@
+import { InputField } from '@components'
 import { SignProps } from '@containers'
+import { formAlert } from '@helpers/alert'
 import { enumStringValues } from '@helpers/enumStringValues'
+import { InputError, WalletLockError } from '@helpers/errors'
 import { SignBehaviour, SignedMessage } from '@types'
-import * as React from 'react'
-import { formAlert } from '@helpers/alert';
-import { WalletLockError, InputError } from '@helpers/errors';
-import { startCase, kebabCase } from 'lodash';
-import { InputField } from '@components';
 import { Keypair } from 'js-kinesis-sdk'
+import { kebabCase, startCase } from 'lodash'
+import * as React from 'react'
 
 const verify = require('js-kinesis-sdk').verify
 const StrKey = require('js-kinesis-sdk').StrKey

@@ -14,7 +14,7 @@ const mapStateToProps = ({sign, wallets}: RootState) => {
     isValidSignature: sign.isValidSignature,
     signData: sign.signData,
     verifyData: sign.verifyData,
-    activeWallet
+    activeWallet,
   }
 }
 
