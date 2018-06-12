@@ -3,29 +3,17 @@ import {
   changeView,
   deleteWallet as deleteWalletAction,
   selectWallet,
-  walletsSaved,
 } from '@actions'
-import { deleteWallet } from '@services/wallets'
 import { Epic } from '@store'
 import { View } from '@types'
 import { saveAs } from 'file-saver'
 import { merge } from 'rxjs'
-import { fromPromise } from 'rxjs/observable/fromPromise'
-import { filter, ignoreElements, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators'
+import { filter, ignoreElements, map, tap, withLatestFrom } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 
 export const deleteWallet$: Epic = (action$) => {
   const deleteWalletAction$ = action$.pipe(
     filter(isActionOf(deleteWalletAction)),
-  )
-
-  const persistWalletDeletion$ = deleteWalletAction$.pipe(
-    mergeMap(
-      (action) => fromPromise(deleteWallet(action.payload.publicKey))
-        .pipe(
-          map((wallets) => walletsSaved(wallets)),
-      ),
-    ),
   )
 
   const switchView$ = deleteWalletAction$.pipe(
@@ -41,7 +29,7 @@ export const deleteWallet$: Epic = (action$) => {
     ignoreElements(),
   )
 
-  return merge(switchView$, persistWalletDeletion$, downloadPaperWallet$)
+  return merge(switchView$, downloadPaperWallet$)
 }
 
 export const switchWallet$: Epic = (action$, state$) =>

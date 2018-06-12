@@ -1,11 +1,15 @@
 import { Main } from '@containers'
-import { store } from '@store'
+import { configureStore } from '@store'
 import * as React from 'react'
 import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
 
-// Currently @types/react-redux is not compatible with nice TS types in redux@4
+const { store, persistor } = configureStore()
+
 export const App = () => (
-  <Provider store={store as any}>
-    <Main />
+  <Provider store={store}>
+    <PersistGate persistor={persistor}>
+      <Main />
+    </PersistGate>
   </Provider>
 )

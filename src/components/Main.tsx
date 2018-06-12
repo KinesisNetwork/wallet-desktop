@@ -5,20 +5,11 @@ import * as React from 'react'
 
 export interface Props {
   currentView: View
-  loadWallets: () => any
-  loadConnections: () => any
-  loadPayees: () => any
 }
 
 export class Main extends React.PureComponent<Props> {
   constructor(props) {
     super(props)
-  }
-
-  componentDidMount() {
-    this.props.loadConnections()
-    this.props.loadWallets()
-    this.props.loadPayees()
   }
 
   viewMap = (view: View) => {
@@ -33,7 +24,7 @@ export class Main extends React.PureComponent<Props> {
 
   render() {
     return (
-      <div className='columns is-marginless' style={{height: '100vh'}}>
+      <div className='columns is-marginless' style={{ height: '100vh' }}>
         <div className='column is-one-quarter' style={{ backgroundColor: '#2b3e50' }} >
           <Sidebar />
         </div>
