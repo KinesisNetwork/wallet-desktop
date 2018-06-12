@@ -29,7 +29,6 @@ const LockedWallet: React.SFC<Props> = ({ password, unlockWallet, activeWallet, 
           <span className='icon'>
             <i className='fas fa-lock-open' />
           </span>
-          <span>Unlock Account</span>
         </button>
       </div>
     </div>
@@ -53,6 +52,13 @@ class UnlockedWallet extends React.Component<Props, Readonly<{}>> {
       <div>
         <div className='field is-grouped is-grouped-centered'>
           <div className='control'>
+            <button type='submit' className='button' onClick={() => this.props.lockWallet(this.props.activeWallet)}>
+              <span className='icon'>
+                <i className='fas fa-lock' />
+              </span>
+            </button>
+          </div>
+          <div className='control'>
             <button
               ref={(ref) => this.copyBtn = ref}
               type='button'
@@ -62,15 +68,7 @@ class UnlockedWallet extends React.Component<Props, Readonly<{}>> {
               <span className='icon'>
                 <i className='fas fa-copy' />
               </span>
-              <span>Copy Private Key</span>
-            </button>
-          </div>
-          <div className='control'>
-            <button type='submit' className='button' onClick={() => this.props.lockWallet(this.props.activeWallet)}>
-              <span className='icon'>
-                <i className='fas fa-lock' />
-              </span>
-              <span>Lock Account</span>
+              <span>Private Key</span>
             </button>
           </div>
         </div>
