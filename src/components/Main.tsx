@@ -1,5 +1,5 @@
 import { ConnectionSettings, Payee, Sidebar } from '@components'
-import { CreateWallet, AccountPage } from '@containers'
+import { AccountPage, CreateWallet } from '@containers'
 import { View } from '@types'
 import * as React from 'react'
 

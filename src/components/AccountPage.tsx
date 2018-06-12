@@ -1,32 +1,15 @@
-import * as React from 'react'
-
+import { AccountDashboard } from '@components'
 import {
   AccountPageSelector,
   Password,
   Sign,
-  Transactions,
-  Transfer,
-  WalletInfo,
 } from '@containers'
 import { AccountPage as AccountPageEnum } from '@types'
+import * as React from 'react'
 
 export interface Props {
   accountPage: AccountPageEnum
 }
-
-export const TransferPage: React.SFC = () => (
-  <React.Fragment>
-    <div className='columns is-constant-height'>
-      <div className='column'>
-        <WalletInfo />
-      </div>
-      <div className='column'>
-        <Transfer />
-      </div>
-    </div>
-    <Transactions />
-  </React.Fragment>
-)
 
 export class AccountPage extends React.PureComponent<Props> {
   constructor(props) {
@@ -35,7 +18,7 @@ export class AccountPage extends React.PureComponent<Props> {
 
   accountPageView = () => {
     switch (this.props.accountPage) {
-      case AccountPageEnum.transfer: return <TransferPage />
+      case AccountPageEnum.transfer: return <AccountDashboard />
       case AccountPageEnum.sign: return <Sign />
       default: return <div />
     }

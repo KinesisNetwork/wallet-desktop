@@ -1,5 +1,6 @@
 export { CreateWallet } from './CreateWallet'
 export { AccountPage } from './AccountPage'
+export { AccountDashboard } from './AccountDashboard'
 export { WalletList } from './WalletList'
 export { Main } from './Main'
 export { SidebarSettings } from './SidebarSettings'
