@@ -52,13 +52,6 @@ class UnlockedWallet extends React.Component<Props, Readonly<{}>> {
       <div>
         <div className='field is-grouped is-grouped-centered'>
           <div className='control'>
-            <button type='submit' className='button' onClick={() => this.props.lockWallet(this.props.activeWallet)}>
-              <span className='icon'>
-                <i className='fas fa-lock' />
-              </span>
-            </button>
-          </div>
-          <div className='control'>
             <button
               ref={(ref) => this.copyBtn = ref}
               type='button'
@@ -69,6 +62,13 @@ class UnlockedWallet extends React.Component<Props, Readonly<{}>> {
                 <i className='fas fa-copy' />
               </span>
               <span>Private Key</span>
+            </button>
+          </div>
+          <div className='control'>
+            <button type='submit' className='button' onClick={() => this.props.lockWallet(this.props.activeWallet)}>
+              <span className='icon'>
+                <i className='fas fa-lock' />
+              </span>
             </button>
           </div>
         </div>

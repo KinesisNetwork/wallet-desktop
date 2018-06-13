@@ -1,9 +1,10 @@
 import { WalletInfo as WalletInfoPresentation } from '@components'
 import { RootState } from '@store'
+import { Wallet } from '@types'
 import { connect } from 'react-redux'
 
-const mapStateToProps = ({accounts, wallets}: RootState) => {
-  const {accountName, publicKey} = wallets.walletList[wallets.currentlySelected]
+const mapStateToProps = ({ accounts, wallets }: RootState) => {
+  const { accountName, publicKey } = wallets.selectedWallet as Wallet
   const activeAccount = accounts.accountsMap[publicKey]
   return {
     accountName,

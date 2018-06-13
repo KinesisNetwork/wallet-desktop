@@ -2,6 +2,7 @@ import { accountLoadRequest, transferFailed, transferRequest, transferSuccess } 
 import { generalFailureAlert, generalSuccessAlert } from '@helpers/alert'
 import { transferKinesis } from '@services/transfer'
 import { Epic } from '@store'
+import { Wallet } from '@types'
 import { of } from 'rxjs'
 import { fromPromise } from 'rxjs/observable/fromPromise'
 import { catchError, filter, ignoreElements, map, mergeMap, withLatestFrom } from 'rxjs/operators'
@@ -10,17 +11,17 @@ import { isActionOf } from 'typesafe-actions'
 export const transferRequest$: Epic = (action$, state$) =>
   action$.pipe(
     filter(isActionOf(transferRequest)),
-    map(({payload}) => payload),
+    map(({ payload }) => payload),
     withLatestFrom(state$),
     mergeMap(
       ([request, state]) => {
-        const sourceWallet = state.wallets.walletList[state.wallets.currentlySelected]
+        const sourceWallet = state.wallets.selectedWallet as Wallet
         const connection = state.connections.currentConnection
         return fromPromise(transferKinesis(sourceWallet, connection, request))
           .pipe(
             map(() => transferSuccess(sourceWallet.publicKey)),
             catchError((err) => of(transferFailed(err))),
-          )
+        )
       },
     ),
   )
@@ -28,11 +29,11 @@ export const transferRequest$: Epic = (action$, state$) =>
 export const transferSuccess$: Epic = (action$) =>
   action$.pipe(
     filter(isActionOf(transferSuccess)),
-    mergeMap(({payload}) => {
+    mergeMap(({ payload }) => {
       return fromPromise(generalSuccessAlert('The transfer was successful.'))
         .pipe(
           map(() => accountLoadRequest(payload)),
-        )
+      )
     }),
   )
 

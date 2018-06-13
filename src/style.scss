@@ -24,31 +24,10 @@ body {
   padding: 0;
 }
 
-// .input::-webkit-input-placeholder {
-//   font-size: 80%;
-// }
-
 .vertical-spaced {
   display: flex;
   flex-direction: column;
   height: 100%;
-}
-
-.button.is-primary.is-outlined:focus,
-.button.is-primary.is-outlined:hover {
-  color: #2b3e50;
-}
-
-.code-font {
-  font-family: 'Fira Mono';
-}
-
-.primary-font {
-  font-family: 'Open Sans';
-}
-
-.label {
-  color: #74889c;
 }
 
 .is-constant-height {
@@ -77,10 +56,6 @@ body {
   padding: 30px 0;
 }
 
-.button {
-  font-family: 'Open Sans';
-}
-
 .logo-sidebar {
   height: 86px;
   width: 100%;
@@ -94,23 +69,6 @@ body {
   letter-spacing: 0.2em;
   text-align: center;
   color: white;
-}
-
-.transaction-list tr td:first-child {
-  color: #74889c;
-  font-size: 14px;
-  font-weight: 400;
-  text-align: right;
-}
-
-.transaction-list tr td:last-child {
-  font-family: 'Fira Mono';
-  font-size: 13px;
-  padding-left: 20px;
-}
-
-.message {
-  background-color: transparent;
 }
 
 .scrollable {

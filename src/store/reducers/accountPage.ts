@@ -5,11 +5,11 @@ import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 
 export interface AccountPageState {
-  readonly accountPage: string
+  readonly accountPage: AccountPage
 }
 
 export const accountPage = combineReducers<AccountPageState, RootAction>({
-  accountPage: (state = AccountPage.transfer, action) => {
+  accountPage: (state = AccountPage.dashboard, action) => {
     switch (action.type) {
       case getType(setAccountPage): return action.payload
       default: return state

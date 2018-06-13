@@ -6,7 +6,7 @@ export enum WalletView {
 }
 
 export enum AccountPage {
-  transfer = 'Transfer',
+  dashboard = 'Transfer',
   sign = 'Sign & Verify',
 }
 

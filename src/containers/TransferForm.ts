@@ -2,13 +2,13 @@ import { changeTransferView, changeWalletView, transferRequest, updateTransferFo
 import { TransferForm as TransferPresentation } from '@components'
 import { getFeeInKinesis } from '@services/kinesis'
 import { RootState } from '@store'
-import { Payee } from '@types'
+import { Payee, Wallet } from '@types'
 import { connect } from 'react-redux'
 
 const mapStateToProps = ({ wallets, connections, transfer, accounts, payees }: RootState) => {
-  const activeWallet = wallets.walletList[wallets.currentlySelected]
+  const activeWallet = wallets.selectedWallet as Wallet
   const otherWalletsAsPayees: Payee[] = wallets.walletList
-    .filter((_, index) => index !== wallets.currentlySelected)
+    .filter((wallet) => wallet.publicKey !== activeWallet.publicKey)
     .map((wallet): Payee => ({ name: wallet.accountName, publicKey: wallet.publicKey }))
   return {
     ...transfer.form,

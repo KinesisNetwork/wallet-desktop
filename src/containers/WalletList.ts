@@ -5,16 +5,13 @@ import { Wallet, WalletView } from '@types'
 import { connect } from 'react-redux'
 
 const mapStateToProps = ({ wallets, view }: RootState) => ({
-  currentWallet: view.walletView === WalletView.dashboard ? wallets.currentlySelected : -1,
+  currentWallet: view.walletView === WalletView.dashboard ? wallets.selectedWallet : null,
   wallets: wallets.walletList,
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   addWallet: () => dispatch(changeWalletView(WalletView.create)),
-  selectWallet: (walletIndex: number) => {
-    dispatch(selectWallet(walletIndex))
-    dispatch(changeWalletView(WalletView.dashboard))
-  },
+  selectWallet: (walletIndex: Wallet) => dispatch(selectWallet(walletIndex)),
   deleteWallet: async (wallet: Wallet) => {
     const isSureToDelete = await sweetAlert({
       buttons: ['Go back', 'Delete Account'],

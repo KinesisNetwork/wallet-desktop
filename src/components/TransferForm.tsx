@@ -94,6 +94,7 @@ export class TransferForm extends React.Component<TransferProps> {
             label='Transfer Amount'
             value={this.props.amount}
             id='transfer-amount'
+            icon='fa-coins'
             placeholder='Amount to transfer'
             onChangeHandler={(newValue) => handleChange({ field: 'amount', newValue })}
           />
@@ -101,6 +102,7 @@ export class TransferForm extends React.Component<TransferProps> {
             label='Message'
             value={this.props.memo}
             id='transfer-memo'
+            icon='fa-comment'
             placeholder='Optional message to attach'
             onChangeHandler={(newValue) => handleChange({ field: 'memo', newValue })}
           />

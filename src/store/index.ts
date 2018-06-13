@@ -13,7 +13,8 @@ export { RootAction, RootState }
 export function configureStore() {
   const epicMiddleware = createEpicMiddleware(rootEpic)
 
-  const persistedReducer = persistReducer({ key: 'root', storage: createStorage() }, rootReducer)
+  const storage = createStorage()
+  const persistedReducer = persistReducer({ key: 'root', storage }, rootReducer)
 
   const w = window as any
   const composeEnhancers = w.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

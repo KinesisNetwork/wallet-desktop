@@ -7,7 +7,7 @@ import { Wallet } from '@types'
 import { connect } from 'react-redux'
 
 const mapStateToProps = ({ wallets, accounts, passwords }: RootState) => {
-  const activeWallet = wallets.walletList[wallets.currentlySelected]
+  const activeWallet = wallets.selectedWallet as Wallet
   const isAccountUnlocked = accounts.accountsMap[activeWallet.publicKey].isUnlocked
   const password = isAccountUnlocked
     ? passwords.map[activeWallet.publicKey].password
