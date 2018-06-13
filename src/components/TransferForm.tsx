@@ -50,15 +50,8 @@ export class TransferForm extends React.Component<TransferProps> {
   }
 
   checkValidTarget = () => {
-    if (!this.props.targetPayee && !this.props.targetPayee) {
-      throw new InputError(`Target Address or Payee is required`, `transfer-target-address`)
-    } else if (
-      this.props.targetPayee === this.props.activeWallet.publicKey ||
-      this.props.targetPayee === this.props.activeWallet.publicKey
-    ) {
-      throw new InputError('Target Address or Payee cannot be your own key', 'transfer-target-address')
-    } else if (this.props.targetPayee && this.props.targetPayee) {
-      throw new InputError('Target Address and Payee cannot both be set', 'transfer-target-address')
+    if (!this.props.targetPayee) {
+      throw new InputError(`Payee is required`, `transfer-target-address`)
     }
   }
 

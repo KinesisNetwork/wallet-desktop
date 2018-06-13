@@ -1,5 +1,6 @@
 import {
   changeWalletView,
+  selectWallet,
   setPayee,
   transferFailed,
   transferRequest,
@@ -44,6 +45,7 @@ function handleChange(name: keyof TransferRequest) {
         return name === 'targetPayee' ? action.payload.publicKey : state
 
       case getType(changeWalletView):
+      case getType(selectWallet):
       case getType(transferSuccess):
         return ''
       default: return state
