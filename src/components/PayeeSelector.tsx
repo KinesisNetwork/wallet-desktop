@@ -11,10 +11,18 @@ export interface Props {
 }
 
 export const PayeeSelector: React.SFC<Props> = ({ targetPayee, payees, handleChange, changeTransferView }) => {
-  return (
-    <div className='field'>
-      <label className='label is-small'>Target Address</label>
-      <div className='field is-grouped'>
+  const selector = payees.length === 0
+    ? (
+      <div className='control is-expanded'>
+        <a className='button is-fullwidth' onClick={() => changeTransferView(TransferView.addPayee)}>
+          <span className='icon'>
+            <i className='fa fa-plus' />
+          </span>
+          <span>Add Payee</span>
+        </a>
+      </div>
+    ) : (
+      <React.Fragment>
         <div className='control is-expanded has-icons-left'>
           <div className='select is-fullwidth'>
             <select
@@ -37,6 +45,13 @@ export const PayeeSelector: React.SFC<Props> = ({ targetPayee, payees, handleCha
             </span>
           </a>
         </div>
+      </React.Fragment>
+    )
+  return (
+    <div className='field'>
+      <label className='label is-small'>Target Address</label>
+      <div className='field is-grouped'>
+        {selector}
       </div>
     </div>
   )

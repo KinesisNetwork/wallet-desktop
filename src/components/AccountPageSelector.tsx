@@ -20,7 +20,7 @@ export const AccountPageSelector: React.SFC<Props> = ({ accountPage, setAccountP
         className={`button ${isActive(AccountPage.sign)}`}
         onClick={() => setAccountPage(AccountPage.sign)}
       >
-        <span className='icon'><i className='fas fa-edit' /></span>
+        <span className='icon'><i className='fas fa-pencil-alt' /></span>
       </button>
     </div>
   )
