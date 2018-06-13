@@ -6,3 +6,5 @@ export const accountLoadSuccess = buildAction('LOAD_ACCOUNT_SUCCESS').payload<Ac
 export const accountLoadFailure = buildAction('LOAD_ACCOUNT_FAILURE').payload<Error>()
 
 export const accountIsLoading = buildAction('ACCOUNT_IS_LOADING').empty()
+
+export const lockAllAccounts = buildAction('LOCK_ALL_ACCOUNTS').empty()

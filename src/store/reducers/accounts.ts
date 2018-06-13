@@ -3,15 +3,15 @@ import {
   accountLoadFailure,
   accountLoadSuccess,
   addWallet,
+  lockAllAccounts,
   lockWallet,
   unlockWallet,
 } from '@actions'
 import { AccountMissingError } from '@helpers/errors'
 import { getBalance } from '@services/accounts'
-import { RehydrateAction, RootAction } from '@store'
+import { RootAction } from '@store'
 import { Account } from '@types'
 import { combineReducers } from 'redux'
-import { REHYDRATE } from 'redux-persist'
 import { getType } from 'typesafe-actions'
 
 export interface AccountsState {
@@ -19,11 +19,11 @@ export interface AccountsState {
   readonly isAccountLoading: boolean
 }
 
-export const accounts = combineReducers<AccountsState, RootAction | RehydrateAction>({
+export const accounts = combineReducers<AccountsState, RootAction>({
   accountsMap: (state = {}, action) => {
     switch (action.type) {
-      case REHYDRATE:
-        return Object.entries(action.payload.accounts.accountsMap)
+      case getType(lockAllAccounts):
+        return Object.entries(state)
           .reduce((map, [key, account]) => ({ ...map, [key]: { ...account, isUnlocked: false } }), {})
       case getType(addWallet):
         return {

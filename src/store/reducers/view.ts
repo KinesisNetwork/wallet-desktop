@@ -1,4 +1,4 @@
-import { addWallet, changeTransferView, changeWalletView, deleteWallet, selectWallet, setPayee } from '@actions'
+import { addWallet, changeTransferView, changeWalletView, deleteWallet, selectWallet, addPayee } from '@actions'
 import { RootAction } from '@store'
 import { TransferView, WalletView } from '@types'
 import { combineReducers } from 'redux'
@@ -26,7 +26,7 @@ export const view = combineReducers<ViewState, RootAction>({
     switch (action.type) {
       case getType(changeTransferView): return action.payload
 
-      case getType(setPayee):
+      case getType(addPayee):
       case getType(changeWalletView):
         return TransferView.transfer
       default: return state

@@ -12,10 +12,12 @@ const mapStateToProps = ({ wallets, accounts, passwords }: RootState) => {
   const password = isAccountUnlocked
     ? passwords.livePasswords[activeWallet.publicKey].password
     : passwords.currentInput
+  const decryptedPrivateKey = decryptPrivateKey(activeWallet.encryptedPrivateKey, password)
   return {
     activeWallet,
     isAccountUnlocked,
     password,
+    decryptedPrivateKey,
   }
 }
 
@@ -23,11 +25,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   lockWallet: (wallet: Wallet) => dispatch(lockWallet(wallet)),
   setPasswordInput: (password: string) => dispatch(changeUnlockPasswordInput(password)),
   unlockWallet: ({ encryptedPrivateKey, publicKey }: Wallet, password: string) => {
-    try {
-      const decryptedPrivateKey = decryptPrivateKey(encryptedPrivateKey, password)
-      dispatch(unlockWallet({ password, publicKey, decryptedPrivateKey }))
-    } catch (e) {
-      formAlert('Account password is incorrect', e.key)
+    const decryptedPrivateKey = decryptPrivateKey(encryptedPrivateKey, password)
+    if (decryptedPrivateKey !== '') {
+      return dispatch(unlockWallet({ password, publicKey, decryptedPrivateKey }))
+    } else {
+      return formAlert('Account password is incorrect', 'wallet-unlock-password')
     }
   },
 })

@@ -10,13 +10,10 @@ const mapStateToProps = ({ createWallet }: RootState) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  addWallet: async (wallet: Wallet) => {
-    dispatch(addWallet(wallet))
-  },
+  addWallet: (wallet: Wallet) => dispatch(addWallet(wallet)),
   changeFormView: (newView: CreateWalletFormView) => dispatch(changeCreateWalletView(newView)),
-  handleChange: (field: keyof CreateWalletForm, newValue: string) => {
-    dispatch(updateCreateWalletForm({ field, newValue }))
-  },
+  handleChange: (field: keyof CreateWalletForm, newValue: string) =>
+    dispatch(updateCreateWalletForm({ field, newValue })),
 })
 
 export const CreateWallet = connect(mapStateToProps, mapDispatchToProps)(CreateWalletPresentation)

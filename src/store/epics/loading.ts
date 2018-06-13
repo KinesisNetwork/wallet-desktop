@@ -1,4 +1,4 @@
-import { accountLoadRequest, changeWalletView } from '@actions'
+import { accountLoadRequest, changeWalletView, lockAllAccounts } from '@actions'
 import { Epic } from '@store'
 import { WalletView } from '@types'
 import { ofType } from 'redux-observable'
@@ -22,5 +22,9 @@ export const initalLoad$: Epic = (action$, state$) => {
     }),
   )
 
-  return merge(loadAccount$)
+  const lockAllAccounts$ = rehydrate$.pipe(
+    map(() => lockAllAccounts()),
+  )
+
+  return merge(loadAccount$, lockAllAccounts$)
 }

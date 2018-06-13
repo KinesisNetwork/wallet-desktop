@@ -1,4 +1,4 @@
-import { changeTransferView, setPayee, updatePayeeForm } from '@actions'
+import { addPayee, changeTransferView, updatePayeeForm } from '@actions'
 import { PayeeForm as PayeeFormPresentation } from '@components'
 import { Dispatch, RootState } from '@store'
 import { Payee, TransferView } from '@types'
@@ -10,13 +10,9 @@ const mapStateToProps = ({ payees, view }: RootState) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setPayee: (payee: Payee): void => {
-    dispatch(setPayee(payee))
-  },
-  handleChange: (field: keyof Payee, newValue: string) => {
-    dispatch(updatePayeeForm({ field, newValue }))
-  },
-  changeTransferView: () => dispatch(changeTransferView(TransferView.transfer)),
+  addPayee: (payee: Payee) => dispatch(addPayee(payee)),
+  handleChange: (field: keyof Payee, newValue: string) => dispatch(updatePayeeForm({ field, newValue })),
+  cancelForm: () => dispatch(changeTransferView(TransferView.transfer)),
 })
 
 export const PayeeForm = connect(mapStateToProps, mapDispatchToProps)(PayeeFormPresentation)

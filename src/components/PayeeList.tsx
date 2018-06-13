@@ -2,7 +2,7 @@ import { LabelledField } from '@components'
 import { Payee } from '@types'
 import * as React from 'react'
 
-type RemovePayee = (payeeName: string) => void
+type RemovePayee = (payeeName: string) => any
 export interface Props {
   payees: Payee[]
   removePayee: RemovePayee
