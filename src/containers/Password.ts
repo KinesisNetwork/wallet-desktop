@@ -10,7 +10,7 @@ const mapStateToProps = ({ wallets, accounts, passwords }: RootState) => {
   const activeWallet = wallets.selectedWallet as Wallet
   const isAccountUnlocked = accounts.accountsMap[activeWallet.publicKey].isUnlocked
   const password = isAccountUnlocked
-    ? passwords.map[activeWallet.publicKey].password
+    ? passwords.livePasswords[activeWallet.publicKey].password
     : passwords.currentInput
   return {
     activeWallet,

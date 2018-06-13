@@ -6,6 +6,7 @@ export interface Props {
   isAccountUnlocked: boolean
   activeWallet: Wallet
   password: string
+  decryptedPrivateKey: string
   unlockWallet: (wallet: Wallet, password: string) => any
   setPasswordInput: (input: string) => any
   lockWallet: (wallet: Wallet) => any
@@ -56,7 +57,7 @@ class UnlockedWallet extends React.Component<Props, Readonly<{}>> {
               ref={(ref) => this.copyBtn = ref}
               type='button'
               className='button'
-              data-clipboard-text={this.props.activeWallet.decryptedPrivateKey}
+              data-clipboard-text={this.props.decryptedPrivateKey}
             >
               <span className='icon'>
                 <i className='fas fa-copy' />

@@ -6,7 +6,7 @@ import { getType } from 'typesafe-actions'
 
 export interface PasswordsState {
   currentInput: string
-  map: PasswordMap
+  livePasswords: PasswordMap
 }
 
 export const passwords = combineReducers<PasswordsState, RootAction>({
@@ -17,7 +17,7 @@ export const passwords = combineReducers<PasswordsState, RootAction>({
       default: return state
     }
   },
-  map: (state = {}, action) => {
+  livePasswords: (state = {}, action) => {
     switch (action.type) {
       case getType(unlockWallet):
         return {
@@ -30,7 +30,7 @@ export const passwords = combineReducers<PasswordsState, RootAction>({
       case getType(lockWallet):
         return Object.keys(state)
           .filter((key) => key !== action.payload.publicKey)
-          .reduce((newState, key) => ({...newState, [key]: state[key]}), {})
+          .reduce((newState, key) => ({ ...newState, [key]: state[key] }), {})
       default: return state
     }
   },
