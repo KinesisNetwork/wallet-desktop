@@ -1,6 +1,5 @@
 import { accountLoadRequest, transferFailed, transferRequest, transferSuccess } from '@actions'
 import { generalFailureAlert, generalSuccessAlert } from '@helpers/alert'
-import { decryptPrivateKey } from '@services/encryption'
 import { transferKinesis } from '@services/transfer'
 import { Epic } from '@store'
 import { Wallet } from '@types'
@@ -17,10 +16,7 @@ export const transferRequest$: Epic = (action$, state$) =>
     mergeMap(
       ([request, state]) => {
         const sourceWallet = state.wallets.selectedWallet as Wallet
-        const privateKey = decryptPrivateKey(
-          sourceWallet.encryptedPrivateKey,
-          state.passwords.livePasswords[sourceWallet.publicKey].password,
-        )
+        const privateKey = state.passwords.livePasswords[sourceWallet.publicKey].privateKey
         const connection = state.connections.currentConnection
         return fromPromise(transferKinesis(privateKey, connection, request))
           .pipe(

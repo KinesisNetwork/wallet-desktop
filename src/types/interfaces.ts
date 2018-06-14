@@ -13,13 +13,6 @@ export interface Connection {
   networkPassphrase: string
 }
 
-export interface PasswordMap {
-  [publicKey: string]: {
-    timestamp: Date
-    password: string,
-  }
-}
-
 export interface ViewParams {
   walletIndex: number
 }

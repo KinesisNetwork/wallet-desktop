@@ -9,10 +9,8 @@ import { connect } from 'react-redux'
 const mapStateToProps = ({ wallets, accounts, passwords }: RootState) => {
   const activeWallet = wallets.selectedWallet as Wallet
   const isAccountUnlocked = accounts.accountsMap[activeWallet.publicKey].isUnlocked
-  const password = isAccountUnlocked
-    ? passwords.livePasswords[activeWallet.publicKey].password
-    : passwords.currentInput
-  const decryptedPrivateKey = decryptPrivateKey(activeWallet.encryptedPrivateKey, password)
+  const password = passwords.currentInput
+  const decryptedPrivateKey = isAccountUnlocked ? passwords.livePasswords[activeWallet.publicKey].privateKey : ''
   return {
     activeWallet,
     isAccountUnlocked,

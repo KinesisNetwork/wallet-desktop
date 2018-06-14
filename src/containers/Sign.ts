@@ -1,6 +1,5 @@
 import { changeSignFocus, signMessage, updateSignForm, updateVerifyForm, verifyMessage } from '@actions'
 import { Sign as SignPresentation } from '@components'
-import { decryptPrivateKey } from '@services/encryption'
 import { Dispatch, RootState } from '@store'
 import { RawMessage, SignBehaviour, SignedMessage, Wallet } from '@types'
 import { connect } from 'react-redux'
@@ -8,13 +7,10 @@ import { connect } from 'react-redux'
 const mapStateToProps = ({ sign, wallets, passwords, accounts }: RootState) => {
   const activeWallet = wallets.selectedWallet as Wallet
   const isWalletUnlocked = accounts.accountsMap[activeWallet.publicKey].isUnlocked
-  const decryptedPrivateKey = isWalletUnlocked
-    ? decryptPrivateKey(activeWallet.encryptedPrivateKey, passwords.livePasswords[activeWallet.publicKey].password)
-    : ''
+  const decryptedPrivateKey = isWalletUnlocked ? passwords.livePasswords[activeWallet.publicKey].privateKey : ''
   return {
     decryptedPrivateKey,
     isWalletUnlocked,
-    activeWallet,
     focus: sign.focus,
     signature: sign.signature,
     isValidSignature: sign.isValidSignature,

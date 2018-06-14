@@ -1,8 +1,15 @@
 import { changeUnlockPasswordInput, lockWallet, unlockWallet } from '@actions'
 import { RootAction } from '@store'
-import { PasswordMap } from '@types'
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
+
+interface PasswordMap {
+  [publicKey: string]: {
+    timestamp: Date
+    privateKey: string,
+    password: string,
+  }
+}
 
 export interface PasswordsState {
   currentInput: string
@@ -23,6 +30,7 @@ export const passwords = combineReducers<PasswordsState, RootAction>({
         return {
           ...state,
           [action.payload.publicKey]: {
+            privateKey: action.payload.decryptedPrivateKey,
             password: action.payload.password,
             timestamp: new Date(),
           },
