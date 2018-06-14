@@ -5,7 +5,7 @@ import { RawMessage, SignBehaviour, SignedMessage, Wallet } from '@types'
 import { connect } from 'react-redux'
 
 const mapStateToProps = ({ sign, wallets, passwords, accounts }: RootState) => {
-  const activeWallet = wallets.selectedWallet as Wallet
+  const activeWallet = wallets.activeWallet as Wallet
   const isWalletUnlocked = accounts.accountsMap[activeWallet.publicKey].isUnlocked
   const decryptedPrivateKey = isWalletUnlocked ? passwords.livePasswords[activeWallet.publicKey].privateKey : ''
   return {

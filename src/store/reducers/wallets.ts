@@ -7,12 +7,12 @@ import { getType } from 'typesafe-actions'
 export interface WalletsState {
   readonly walletList: Wallet[]
   readonly currentlySelected: number
-  readonly selectedWallet: Wallet | null
+  readonly activeWallet: Wallet | null
 }
 
 export const wallets = combineReducers<WalletsState, RootAction>({
   currentlySelected: (state = -1) => state,
-  selectedWallet: (state = null, action) => {
+  activeWallet: (state = null, action) => {
     switch (action.type) {
       case getType(lockWallet):
         return { ...action.payload, decryptedPrivateKey: undefined }

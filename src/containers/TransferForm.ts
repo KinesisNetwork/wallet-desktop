@@ -6,7 +6,7 @@ import { Payee, Wallet } from '@types'
 import { connect } from 'react-redux'
 
 const mapStateToProps = ({ wallets, connections, transfer, accounts, payees, passwords }: RootState) => {
-  const activeWallet = wallets.selectedWallet as Wallet
+  const activeWallet = wallets.activeWallet as Wallet
   const livePassword = passwords.livePasswords[activeWallet.publicKey]
   const otherWalletsAsPayees: Payee[] = wallets.walletList
     .filter((wallet) => wallet.publicKey !== activeWallet.publicKey)

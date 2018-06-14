@@ -15,9 +15,9 @@ export const initalLoad$: Epic = (action$, state$) => {
 
   const loadAccount$ = rehydrate$.pipe(
     filter(({ view }) => view.walletView === WalletView.dashboard),
-    map(({ wallets: { selectedWallet } }) => {
-      return selectedWallet
-        ? accountLoadRequest(selectedWallet.publicKey)
+    map(({ wallets: { activeWallet } }) => {
+      return activeWallet
+        ? accountLoadRequest(activeWallet.publicKey)
         : changeWalletView(WalletView.create)
     }),
   )

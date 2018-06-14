@@ -4,7 +4,6 @@ export interface Wallet {
   publicKey: string
   encryptedPrivateKey: string
   accountName: string
-  // decryptedPrivateKey?: string
 }
 
 export interface Connection {
