@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 
 const mapStateToProps = ({ payees, view }: RootState) => ({
   payee: payees.form,
-  currentWalletView: view.walletView,
+  activeWalletView: view.walletView,
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

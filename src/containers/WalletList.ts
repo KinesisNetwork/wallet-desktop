@@ -5,7 +5,7 @@ import { Wallet, WalletView } from '@types'
 import { connect } from 'react-redux'
 
 const mapStateToProps = ({ wallets, view }: RootState) => ({
-  currentWallet: view.walletView === WalletView.dashboard ? wallets.activeWallet : null,
+  activeWallet: view.walletView === WalletView.dashboard ? wallets.activeWallet : null,
   wallets: wallets.walletList,
 })
 

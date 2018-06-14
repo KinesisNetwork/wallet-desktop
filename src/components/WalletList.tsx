@@ -3,7 +3,7 @@ import * as React from 'react'
 
 export interface Props {
   wallets: Wallet[]
-  currentWallet: Wallet | null
+  activeWallet: Wallet | null
   selectWallet: (wallet: Wallet) => any
   deleteWallet: (wallet: Wallet) => any
   addWallet: () => any
@@ -20,7 +20,7 @@ export class WalletList extends React.Component<Props> {
         <WalletListItem
           key={wallet.publicKey}
           wallet={wallet}
-          isActive={!!this.props.currentWallet && this.props.currentWallet.publicKey === wallet.publicKey}
+          isActive={!!this.props.activeWallet && this.props.activeWallet.publicKey === wallet.publicKey}
           selectWallet={this.props.selectWallet}
           deleteWallet={this.props.deleteWallet}
         />

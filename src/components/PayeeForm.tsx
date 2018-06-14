@@ -9,7 +9,7 @@ export interface Props {
   payee: Payee
   addPayee: (payee: Payee) => any
   handleChange: (field: keyof Payee, newValue: string) => any
-  currentWalletView: WalletView
+  activeWalletView: WalletView
   cancelForm: () => any
 }
 
@@ -70,7 +70,7 @@ export class PayeeForm extends React.Component<Props> {
             <div className='control is-expanded'>
               <button className='button is-fullwidth' type='submit'>Set Payee</button>
             </div>
-            {this.props.currentWalletView !== WalletView.payees && this.renderCancelButton()}
+            {this.props.activeWalletView !== WalletView.payees && this.renderCancelButton()}
           </div>
         </form>
       </div>
