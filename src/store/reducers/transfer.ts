@@ -1,7 +1,7 @@
 import {
+  addPayee,
   changeWalletView,
   selectWallet,
-  addPayee,
   transferFailed,
   transferRequest,
   transferSuccess,

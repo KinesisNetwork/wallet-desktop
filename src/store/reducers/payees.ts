@@ -1,4 +1,4 @@
-import { loadPayees, removePayee, addPayee, updatePayeeForm } from '@actions'
+import { addPayee, loadPayees, removePayee, updatePayeeForm } from '@actions'
 import { RootAction } from '@store'
 import { Payee } from '@types'
 import { combineReducers } from 'redux'
