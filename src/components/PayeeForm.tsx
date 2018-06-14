@@ -7,10 +7,10 @@ import * as React from 'react'
 
 export interface Props {
   payee: Payee
-  setPayee: (payee: Payee) => void
+  addPayee: (payee: Payee) => any
   handleChange: (field: keyof Payee, newValue: string) => any
-  currentWalletView: WalletView
-  changeTransferView: () => any
+  activeWalletView: WalletView
+  cancelForm: () => any
 }
 
 export class PayeeForm extends React.Component<Props> {
@@ -22,7 +22,7 @@ export class PayeeForm extends React.Component<Props> {
     ev.preventDefault()
     try {
       this.validateProps()
-      this.props.setPayee(this.props.payee)
+      this.props.addPayee(this.props.payee)
     } catch (e) {
       formAlert(e.message, e.key)
     }
@@ -42,7 +42,7 @@ export class PayeeForm extends React.Component<Props> {
   renderCancelButton = () => {
     return (
       <div className='control'>
-        <button className='button is-danger' type='button' onClick={this.props.changeTransferView}>Back</button>
+        <button className='button is-danger' type='button' onClick={this.props.cancelForm}>Back</button>
       </div >
     )
   }
@@ -70,7 +70,7 @@ export class PayeeForm extends React.Component<Props> {
             <div className='control is-expanded'>
               <button className='button is-fullwidth' type='submit'>Set Payee</button>
             </div>
-            {this.props.currentWalletView !== WalletView.payees && this.renderCancelButton()}
+            {this.props.activeWalletView !== WalletView.payees && this.renderCancelButton()}
           </div>
         </form>
       </div>

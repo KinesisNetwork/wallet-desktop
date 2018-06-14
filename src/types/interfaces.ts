@@ -4,20 +4,12 @@ export interface Wallet {
   publicKey: string
   encryptedPrivateKey: string
   accountName: string
-  decryptedPrivateKey?: string
 }
 
 export interface Connection {
   horizonURL: string
   name: string
   networkPassphrase: string
-}
-
-export interface PasswordMap {
-  [publicKey: string]: {
-    timestamp: Date
-    password: string,
-  }
 }
 
 export interface ViewParams {

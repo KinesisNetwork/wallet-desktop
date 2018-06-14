@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 import { InputField } from '@components'
 import { SignProps } from '@containers'
 import { formAlert } from '@helpers/alert'
@@ -6,7 +8,6 @@ import { InputError, WalletLockError } from '@helpers/errors'
 import { SignBehaviour, SignedMessage } from '@types'
 import { Keypair } from 'js-kinesis-sdk'
 import { kebabCase, startCase } from 'lodash'
-import * as React from 'react'
 
 const verify = require('js-kinesis-sdk').verify
 const StrKey = require('js-kinesis-sdk').StrKey
@@ -56,7 +57,7 @@ export class SignForm extends React.Component<SignProps> {
     ev.preventDefault()
     try {
       this.validateProps()
-      const secret = this.props.activeWallet.decryptedPrivateKey as string
+      const secret = this.props.decryptedPrivateKey
       const kp = Keypair.fromSecret(secret)
       const signature = kp.sign(Buffer.from(this.props.signData.message, 'utf8'))
       this.props.signMessage(signature.toString('hex'))
@@ -105,7 +106,7 @@ export class SignForm extends React.Component<SignProps> {
               <textarea
                 className='textarea'
                 rows={5}
-                style={{width: '100%'}}
+                style={{ width: '100%' }}
                 value={this.props.signature}
                 disabled={true}
               />

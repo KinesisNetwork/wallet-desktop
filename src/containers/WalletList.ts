@@ -5,7 +5,7 @@ import { Wallet, WalletView } from '@types'
 import { connect } from 'react-redux'
 
 const mapStateToProps = ({ wallets, view }: RootState) => ({
-  currentWallet: view.walletView === WalletView.dashboard ? wallets.selectedWallet : null,
+  activeWallet: view.walletView === WalletView.dashboard ? wallets.activeWallet : null,
   wallets: wallets.walletList,
 })
 
@@ -23,6 +23,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     if (!isSureToDelete) {
       return
     }
+
     const { value: decryptedPrivateKeyOrEmpty } = await getPasswordConfirmation(wallet)
     if (decryptedPrivateKeyOrEmpty !== '') {
       dispatch(deleteWallet({ ...wallet, decryptedPrivateKey: decryptedPrivateKeyOrEmpty }))

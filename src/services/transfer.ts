@@ -1,24 +1,25 @@
 import { WalletLockError } from '@helpers/errors'
 import { getAccountIfExists } from '@services/accounts'
 import { getFeeInStroops, getServer } from '@services/kinesis'
-import { Connection, TransferRequest, Wallet } from '@types'
+import { Connection, TransferRequest } from '@types'
 import { Account, Asset, Keypair, Memo, Operation, Server, Transaction, TransactionBuilder } from 'js-kinesis-sdk'
 
 export async function transferKinesis(
-  sourceWallet: Wallet,
+  decryptedPrivateKey: string,
   connection: Connection,
   request: TransferRequest,
 ): Promise<void> {
-  if (!sourceWallet.decryptedPrivateKey) {
+  if (!decryptedPrivateKey) {
     throw new WalletLockError()
   }
+  const sourceKey = Keypair.fromSecret(decryptedPrivateKey)
 
   const server = getServer(connection)
-  const sourceAccount = await getAccountIfExists(server, sourceWallet.publicKey)
+  const sourceAccount = await getAccountIfExists(server, sourceKey.publicKey())
 
   const transaction = await newTransferTransaction(server, sourceAccount, request)
 
-  transaction.sign(Keypair.fromSecret(sourceWallet.decryptedPrivateKey))
+  transaction.sign(sourceKey)
   await server.submitTransaction(transaction)
 }
 

@@ -7,15 +7,15 @@ import { Wallet } from '@types'
 import { connect } from 'react-redux'
 
 const mapStateToProps = ({ wallets, accounts, passwords }: RootState) => {
-  const activeWallet = wallets.selectedWallet as Wallet
+  const activeWallet = wallets.activeWallet as Wallet
   const isAccountUnlocked = accounts.accountsMap[activeWallet.publicKey].isUnlocked
-  const password = isAccountUnlocked
-    ? passwords.map[activeWallet.publicKey].password
-    : passwords.currentInput
+  const password = passwords.currentInput
+  const decryptedPrivateKey = isAccountUnlocked ? passwords.livePasswords[activeWallet.publicKey].privateKey : ''
   return {
     activeWallet,
     isAccountUnlocked,
     password,
+    decryptedPrivateKey,
   }
 }
 
@@ -23,11 +23,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   lockWallet: (wallet: Wallet) => dispatch(lockWallet(wallet)),
   setPasswordInput: (password: string) => dispatch(changeUnlockPasswordInput(password)),
   unlockWallet: ({ encryptedPrivateKey, publicKey }: Wallet, password: string) => {
-    try {
-      const decryptedPrivateKey = decryptPrivateKey(encryptedPrivateKey, password)
-      dispatch(unlockWallet({ password, publicKey, decryptedPrivateKey }))
-    } catch (e) {
-      formAlert('Account password is incorrect', e.key)
+    const decryptedPrivateKey = decryptPrivateKey(encryptedPrivateKey, password)
+    if (decryptedPrivateKey !== '') {
+      return dispatch(unlockWallet({ password, publicKey, decryptedPrivateKey }))
+    } else {
+      return formAlert('Account password is incorrect', 'wallet-unlock-password')
     }
   },
 })

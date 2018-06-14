@@ -5,8 +5,9 @@ import { RootState } from '@store'
 import { Payee, Wallet } from '@types'
 import { connect } from 'react-redux'
 
-const mapStateToProps = ({ wallets, connections, transfer, accounts, payees }: RootState) => {
-  const activeWallet = wallets.selectedWallet as Wallet
+const mapStateToProps = ({ wallets, connections, transfer, accounts, payees, passwords }: RootState) => {
+  const activeWallet = wallets.activeWallet as Wallet
+  const livePassword = passwords.livePasswords[activeWallet.publicKey]
   const otherWalletsAsPayees: Payee[] = wallets.walletList
     .filter((wallet) => wallet.publicKey !== activeWallet.publicKey)
     .map((wallet): Payee => ({ name: wallet.accountName, publicKey: wallet.publicKey }))
@@ -14,7 +15,7 @@ const mapStateToProps = ({ wallets, connections, transfer, accounts, payees }: R
     ...transfer.form,
     getFee: (amount: number) => getFeeInKinesis(connections.currentConnection, amount),
     isTransferring: transfer.isTransferring,
-    isWalletUnlocked: !!activeWallet.decryptedPrivateKey,
+    isWalletUnlocked: !!livePassword,
     accountBalance: accounts.accountsMap[activeWallet.publicKey].balance,
     payees: payees.payees.concat(otherWalletsAsPayees),
     activeWallet,

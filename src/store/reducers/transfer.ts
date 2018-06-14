@@ -1,7 +1,7 @@
 import {
+  addPayee,
   changeWalletView,
   selectWallet,
-  setPayee,
   transferFailed,
   transferRequest,
   transferSuccess,
@@ -41,7 +41,7 @@ function handleChange(name: keyof TransferRequest) {
     switch (action.type) {
       case getType(updateTransferForm):
         return action.payload.field === name ? action.payload.newValue : state
-      case getType(setPayee):
+      case getType(addPayee):
         return name === 'targetPayee' ? action.payload.publicKey : state
 
       case getType(changeWalletView):

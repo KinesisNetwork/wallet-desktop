@@ -3,9 +3,9 @@ import { ConnectionSelector as ConnectionSelectorPresentation } from '@component
 import { RootState } from '@store'
 import { connect } from 'react-redux'
 
-const mapStateToProps = ({connections}: RootState) => ({
+const mapStateToProps = ({ connections }: RootState) => ({
   connections: connections.connectionList,
-  currentlySelected: connections.connectionList.findIndex(
+  activeConnection: connections.connectionList.findIndex(
     (conn) => conn.horizonURL === connections.currentConnection.horizonURL,
   ),
 })

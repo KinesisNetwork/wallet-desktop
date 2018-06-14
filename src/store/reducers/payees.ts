@@ -1,4 +1,4 @@
-import { loadPayees, removePayee, setPayee, updatePayeeForm } from '@actions'
+import { addPayee, loadPayees, removePayee, updatePayeeForm } from '@actions'
 import { RootAction } from '@store'
 import { Payee } from '@types'
 import { combineReducers } from 'redux'
@@ -16,7 +16,7 @@ export const payees = combineReducers<PayeeState, RootAction>({
   }),
   payees: (state = [], action) => {
     switch (action.type) {
-      case getType(setPayee):
+      case getType(addPayee):
         return [...state, action.payload]
       case getType(loadPayees):
         return action.payload
@@ -32,7 +32,7 @@ function handleChange(name: keyof Payee) {
     switch (action.type) {
       case getType(updatePayeeForm):
         return action.payload.field === name ? action.payload.newValue : state
-      case getType(setPayee):
+      case getType(addPayee):
         return ''
       default: return state
     }

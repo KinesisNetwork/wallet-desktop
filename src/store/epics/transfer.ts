@@ -15,9 +15,10 @@ export const transferRequest$: Epic = (action$, state$) =>
     withLatestFrom(state$),
     mergeMap(
       ([request, state]) => {
-        const sourceWallet = state.wallets.selectedWallet as Wallet
+        const sourceWallet = state.wallets.activeWallet as Wallet
+        const privateKey = state.passwords.livePasswords[sourceWallet.publicKey].privateKey
         const connection = state.connections.currentConnection
-        return fromPromise(transferKinesis(sourceWallet, connection, request))
+        return fromPromise(transferKinesis(privateKey, connection, request))
           .pipe(
             map(() => transferSuccess(sourceWallet.publicKey)),
             catchError((err) => of(transferFailed(err))),

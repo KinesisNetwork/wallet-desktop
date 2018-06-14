@@ -1,4 +1,4 @@
-import { accountLoadRequest, changeWalletView } from '@actions'
+import { accountLoadRequest, changeWalletView, lockAllAccounts } from '@actions'
 import { Epic } from '@store'
 import { WalletView } from '@types'
 import { ofType } from 'redux-observable'
@@ -15,12 +15,16 @@ export const initalLoad$: Epic = (action$, state$) => {
 
   const loadAccount$ = rehydrate$.pipe(
     filter(({ view }) => view.walletView === WalletView.dashboard),
-    map(({ wallets: { selectedWallet } }) => {
-      return selectedWallet
-        ? accountLoadRequest(selectedWallet.publicKey)
+    map(({ wallets: { activeWallet } }) => {
+      return activeWallet
+        ? accountLoadRequest(activeWallet.publicKey)
         : changeWalletView(WalletView.create)
     }),
   )
 
-  return merge(loadAccount$)
+  const lockAllAccounts$ = rehydrate$.pipe(
+    map(() => lockAllAccounts()),
+  )
+
+  return merge(loadAccount$, lockAllAccounts$)
 }

@@ -4,7 +4,7 @@ import { WalletView } from '@types'
 import * as React from 'react'
 
 export interface Props {
-  currentView: WalletView
+  activeView: WalletView
 }
 
 export class Main extends React.PureComponent<Props> {
@@ -29,7 +29,7 @@ export class Main extends React.PureComponent<Props> {
           <Sidebar />
         </div>
         <div className='column'>
-          {this.viewMap(this.props.currentView)}
+          {this.viewMap(this.props.activeView)}
         </div>
       </div>
     )
