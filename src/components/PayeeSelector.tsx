@@ -51,7 +51,6 @@ export const PayeeSelector: React.SFC<Props> = ({ targetPayee, payees, handleCha
     )
   return (
     <div className='field'>
-      {/* <label className='label is-small'>Target Address</label> */}
       <div className='field is-grouped'>
         {selector}
       </div>

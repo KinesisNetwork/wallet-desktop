@@ -96,7 +96,6 @@ export class TransferForm extends React.Component<TransferProps> {
             onChangeHandler={(newValue) => handleChange({ field: 'targetPayee', newValue })}
           />
           <InputField
-            // label='Transfer Amount'
             value={this.props.amount}
             id='transfer-amount'
             icon='fa-coins'
@@ -105,7 +104,6 @@ export class TransferForm extends React.Component<TransferProps> {
             onChangeHandler={(newValue) => handleChange({ field: 'amount', newValue })}
           />
           <InputField
-            // label='Message'
             value={this.props.memo}
             id='transfer-memo'
             icon='fa-comment'
