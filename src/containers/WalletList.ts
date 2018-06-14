@@ -1,20 +1,17 @@
-import { changeView, deleteWallet, selectWallet } from '@actions'
+import { changeWalletView, deleteWallet, selectWallet } from '@actions'
 import { getPasswordConfirmation, WalletList as WalletsPresentation } from '@components'
 import { Dispatch, RootState } from '@store'
-import { View, Wallet } from '@types'
+import { Wallet, WalletView } from '@types'
 import { connect } from 'react-redux'
 
 const mapStateToProps = ({ wallets, view }: RootState) => ({
-  currentWallet: view.currentView === View.dashboard ? wallets.currentlySelected : -1,
+  activeWallet: view.walletView === WalletView.dashboard ? wallets.activeWallet : null,
   wallets: wallets.walletList,
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  addWallet: () => dispatch(changeView(View.create)),
-  selectWallet: (walletIndex: number) => {
-    dispatch(selectWallet(walletIndex))
-    dispatch(changeView(View.dashboard))
-  },
+  addWallet: () => dispatch(changeWalletView(WalletView.create)),
+  selectWallet: (walletIndex: Wallet) => dispatch(selectWallet(walletIndex)),
   deleteWallet: async (wallet: Wallet) => {
     const isSureToDelete = await sweetAlert({
       buttons: ['Go back', 'Delete Account'],
@@ -26,6 +23,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     if (!isSureToDelete) {
       return
     }
+
     const { value: decryptedPrivateKeyOrEmpty } = await getPasswordConfirmation(wallet)
     if (decryptedPrivateKeyOrEmpty !== '') {
       dispatch(deleteWallet({ ...wallet, decryptedPrivateKey: decryptedPrivateKeyOrEmpty }))

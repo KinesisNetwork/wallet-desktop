@@ -1,4 +1,5 @@
-import { View } from '@types'
+import { TransferView, WalletView } from '@types'
 import { buildAction } from 'typesafe-actions'
 
-export const changeView = buildAction('CHANGE_VIEW').payload<View>()
+export const changeWalletView = buildAction('CHANGE_WALLET_VIEW').payload<WalletView>()
+export const changeTransferView = buildAction('CHANGE_TRANFER_VIEW').payload<TransferView>()

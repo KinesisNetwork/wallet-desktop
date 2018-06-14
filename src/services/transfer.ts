@@ -1,39 +1,26 @@
-import { TransferSubmitError, WalletLockError } from '@helpers/errors'
+import { WalletLockError } from '@helpers/errors'
 import { getAccountIfExists } from '@services/accounts'
 import { getFeeInStroops, getServer } from '@services/kinesis'
-import { Connection, TransferRequest, Wallet } from '@types'
+import { Connection, TransferRequest } from '@types'
 import { Account, Asset, Keypair, Memo, Operation, Server, Transaction, TransactionBuilder } from 'js-kinesis-sdk'
 
 export async function transferKinesis(
-  sourceWallet: Wallet,
+  decryptedPrivateKey: string,
   connection: Connection,
   request: TransferRequest,
 ): Promise<void> {
-  if (!sourceWallet.decryptedPrivateKey) {
+  if (!decryptedPrivateKey) {
     throw new WalletLockError()
   }
-
-  if (request.targetAddress && request.targetPayee) {
-    throw new TransferSubmitError()
-  }
-
-  const handledRequest = handleTransferWithPayee(request)
+  const sourceKey = Keypair.fromSecret(decryptedPrivateKey)
 
   const server = getServer(connection)
-  const sourceAccount = await getAccountIfExists(server, sourceWallet.publicKey)
+  const sourceAccount = await getAccountIfExists(server, sourceKey.publicKey())
 
-  const transaction = await newTransferTransaction(server, sourceAccount, handledRequest)
+  const transaction = await newTransferTransaction(server, sourceAccount, request)
 
-  transaction.sign(Keypair.fromSecret(sourceWallet.decryptedPrivateKey))
+  transaction.sign(sourceKey)
   await server.submitTransaction(transaction)
-}
-
-function handleTransferWithPayee(transfer: TransferRequest): TransferRequest {
-  if (!transfer.targetPayee) {
-    return transfer
-  }
-
-  return { amount: transfer.amount, targetAddress: transfer.targetPayee, memo: transfer.memo }
 }
 
 async function newTransferTransaction(
@@ -42,7 +29,7 @@ async function newTransferTransaction(
   request: TransferRequest,
 ): Promise<Transaction> {
   try {
-    await getAccountIfExists(server, request.targetAddress)
+    await getAccountIfExists(server, request.targetPayee)
     return newPaymentTransferTransaction(server, source, request)
   } catch (e) {
     return newCreateAccountTransaction(server, source, request)
@@ -52,10 +39,10 @@ async function newTransferTransaction(
 async function newPaymentTransferTransaction(
   server: Server,
   source: Account,
-  {amount, targetAddress: destination, memo}: TransferRequest,
+  { amount, targetPayee: destination, memo }: TransferRequest,
 ): Promise<Transaction> {
   const fee = await getFeeInStroops(server, Number(amount))
-  const paymentTransaction = new TransactionBuilder(source, {fee})
+  const paymentTransaction = new TransactionBuilder(source, { fee })
     .addOperation(Operation.payment({
       amount,
       destination,
@@ -70,10 +57,10 @@ async function newPaymentTransferTransaction(
 async function newCreateAccountTransaction(
   server: Server,
   source: Account,
-  {amount: startingBalance, targetAddress: destination, memo}: TransferRequest,
+  { amount: startingBalance, targetPayee: destination, memo }: TransferRequest,
 ): Promise<Transaction> {
   const fee = await getFeeInStroops(server, Number(startingBalance))
-  const createAccountTransaction = new TransactionBuilder(source, {fee})
+  const createAccountTransaction = new TransactionBuilder(source, { fee })
     .addOperation(Operation.createAccount({
       destination,
       startingBalance,

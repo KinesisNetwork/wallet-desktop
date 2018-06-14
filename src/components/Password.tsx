@@ -6,6 +6,7 @@ export interface Props {
   isAccountUnlocked: boolean
   activeWallet: Wallet
   password: string
+  decryptedPrivateKey: string
   unlockWallet: (wallet: Wallet, password: string) => any
   setPasswordInput: (input: string) => any
   lockWallet: (wallet: Wallet) => any
@@ -14,22 +15,22 @@ export interface Props {
 const LockedWallet: React.SFC<Props> = ({ password, unlockWallet, activeWallet, setPasswordInput }) => (
   <div>
     <div className='field has-addons has-addons-centered'>
-      <div className='control'>
+      <div className='control has-icons-left'>
         <input
           id='wallet-unlock-password'
           className='input'
           value={password}
           type='password'
-          placeholder='Password'
+          placeholder='Unlock Account'
           onChange={(e) => setPasswordInput(e.currentTarget.value)}
         />
+        <span className='icon is-left has-text-grey-lighter'><i className='fas fa-key' /></span>
       </div>
       <div className='control'>
         <button type='button' className='button' onClick={() => unlockWallet(activeWallet, password)}>
           <span className='icon'>
             <i className='fas fa-lock-open' />
           </span>
-          <span>Unlock Account</span>
         </button>
       </div>
     </div>
@@ -44,7 +45,7 @@ class UnlockedWallet extends React.Component<Props, Readonly<{}>> {
     this.clipboard = new ClipboardJS(this.copyBtn)
   }
 
-  public componentDidUnmount() {
+  public componentWillUnmount() {
     this.clipboard.destroy()
   }
 
@@ -57,12 +58,12 @@ class UnlockedWallet extends React.Component<Props, Readonly<{}>> {
               ref={(ref) => this.copyBtn = ref}
               type='button'
               className='button'
-              data-clipboard-text={this.props.activeWallet.decryptedPrivateKey}
+              data-clipboard-text={this.props.decryptedPrivateKey}
             >
               <span className='icon'>
                 <i className='fas fa-copy' />
               </span>
-              <span>Copy Private Key</span>
+              <span>Private Key</span>
             </button>
           </div>
           <div className='control'>
@@ -70,7 +71,6 @@ class UnlockedWallet extends React.Component<Props, Readonly<{}>> {
               <span className='icon'>
                 <i className='fas fa-lock' />
               </span>
-              <span>Lock Account</span>
             </button>
           </div>
         </div>

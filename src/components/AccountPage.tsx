@@ -18,7 +18,7 @@ export class AccountPage extends React.PureComponent<Props> {
 
   accountPageView = () => {
     switch (this.props.accountPage) {
-      case AccountPageEnum.transfer: return <AccountDashboard />
+      case AccountPageEnum.dashboard: return <AccountDashboard />
       case AccountPageEnum.sign: return <Sign />
       default: return <div />
     }
@@ -27,18 +27,16 @@ export class AccountPage extends React.PureComponent<Props> {
   render() {
     return (
       <div className='vertical-spaced'>
-        <div style={{display: 'block'}}>
+        <div>
           <div className='level'>
             <div className='level-left'>
               <div className='level-item'>
-                <div className='has-text-centered is-constant-height'>
-                  <Password />
-                </div>
+                <AccountPageSelector />
               </div>
             </div>
             <div className='level-right'>
               <div className='level-item'>
-                <AccountPageSelector />
+                <Password />
               </div>
             </div>
           </div>

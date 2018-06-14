@@ -1,15 +1,15 @@
-import { View } from '@types'
+import { WalletView } from '@types'
 import * as React from 'react'
 
 export interface Props {
   connectionName: string
-  changeView: (view: View) => any
+  changeWalletView: (view: WalletView) => any
 }
 
-export const SidebarSettings: React.SFC<Props> = ({ connectionName, changeView }) => (
+export const SidebarSettings: React.SFC<Props> = ({ connectionName, changeWalletView }) => (
   <div className='has-text-centered vertical-spaced' style={{ justifyContent: 'flex-end' }}>
     <label className='label is-small'>Connection: {connectionName}</label>
-    <button className='button is-outlined is-fullwidth' onClick={() => changeView(View.settings)}>
+    <button className='button is-outlined is-fullwidth' onClick={() => changeWalletView(WalletView.settings)}>
       Settings
     </button>
   </div>

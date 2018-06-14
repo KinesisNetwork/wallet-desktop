@@ -3,7 +3,7 @@ import {
   accountLoadFailure,
   accountLoadSuccess,
   addWallet,
-  loadWallets,
+  lockAllAccounts,
   lockWallet,
   unlockWallet,
 } from '@actions'
@@ -22,9 +22,9 @@ export interface AccountsState {
 export const accounts = combineReducers<AccountsState, RootAction>({
   accountsMap: (state = {}, action) => {
     switch (action.type) {
-      case getType(loadWallets):
-        return action.payload
-          .reduce((acc, wallet) => ({ ...acc, [wallet.publicKey]: { balance: '0', isUnlocked: false } }), {})
+      case getType(lockAllAccounts):
+        return Object.entries(state)
+          .reduce((map, [key, account]) => ({ ...map, [key]: { ...account, isUnlocked: false } }), {})
       case getType(addWallet):
         return {
           ...state,

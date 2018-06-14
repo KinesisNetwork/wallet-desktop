@@ -8,7 +8,7 @@ import { kebabCase, startCase } from 'lodash'
 import * as React from 'react'
 
 export interface Props extends CreateWalletForm {
-  currentView: FormView
+  activeView: FormView
   addWallet: (wallet: Wallet) => any
   handleChange: (field: keyof CreateWalletForm, newValue: string) => any
   changeFormView: (newView: FormView) => any
@@ -18,8 +18,8 @@ export const CreateWallet: React.SFC<Props> = (props) => (
   <div className='vertical-spaced has-text-centered'>
     <h1 className='title-heading'>ADD A NEW ACCOUNT</h1>
     <section className='section'>
-      {props.currentView === FormView.select && <FormSelection changeFormView={props.changeFormView} />}
-      {props.currentView !== FormView.select && <WalletForm {...props} />}
+      {props.activeView === FormView.select && <FormSelection changeFormView={props.changeFormView} />}
+      {props.activeView !== FormView.select && <WalletForm {...props} />}
     </section>
   </div>
 )
@@ -58,7 +58,7 @@ export class WalletForm extends React.Component<Props> {
 
   validateProps = (): void | never => {
     this.checkValidEntry('accountName')
-    if (this.props.currentView === FormView.import) {
+    if (this.props.activeView === FormView.import) {
       this.checkValidEntry('privateKey')
     }
     this.checkValidEntry('password')
@@ -66,7 +66,7 @@ export class WalletForm extends React.Component<Props> {
   }
 
   generateKeyOrExtractFromProps = () => {
-    const keypair = this.props.currentView === FormView.import
+    const keypair = this.props.activeView === FormView.import
       ? Keypair.fromSecret(this.props.privateKey)
       : Keypair.random()
     return { publicKey: keypair.publicKey(), privateKey: keypair.secret() }
@@ -96,14 +96,14 @@ export class WalletForm extends React.Component<Props> {
 
   render() {
     const {
-      currentView,
+      activeView,
       accountName,
       password,
       passwordVerify,
       changeFormView,
       handleChange,
     } = this.props
-    const action = currentView === FormView.import ? 'Import' : 'Generate'
+    const action = activeView === FormView.import ? 'Import' : 'Generate'
     return (
       <div>
         <div>
@@ -123,11 +123,11 @@ export class WalletForm extends React.Component<Props> {
               helpText='Add an alias for your account'
               onChangeHandler={(newValue) => handleChange('accountName', newValue)}
             />
-            {currentView === FormView.import && this.renderImportFields()}
+            {activeView === FormView.import && this.renderImportFields()}
             <InputField
               label='Account Password'
               value={password}
-              isPassword={true}
+              type={'password'}
               id='password'
               helpText='Add a password for locking this account'
               onChangeHandler={(newValue) => handleChange('password', newValue)}
@@ -135,7 +135,7 @@ export class WalletForm extends React.Component<Props> {
             <InputField
               label='Repeat Password'
               value={passwordVerify}
-              isPassword={true}
+              type={'password'}
               id='password-verify'
               onChangeHandler={(newValue) => handleChange('passwordVerify', newValue)}
             />

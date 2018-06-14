@@ -3,8 +3,8 @@ import * as React from 'react'
 
 export interface Props {
   wallets: Wallet[]
-  currentWallet: number
-  selectWallet: (walletIndex: number) => any
+  activeWallet: Wallet | null
+  selectWallet: (wallet: Wallet) => any
   deleteWallet: (wallet: Wallet) => any
   addWallet: () => any
 }
@@ -15,14 +15,13 @@ export class WalletList extends React.Component<Props> {
   }
 
   renderWallets = () => {
-    return this.props.wallets.map((wallet, index) => {
+    return this.props.wallets.map((wallet) => {
       return (
         <WalletListItem
-          key={index}
+          key={wallet.publicKey}
           wallet={wallet}
-          isActive={this.props.currentWallet === index}
+          isActive={!!this.props.activeWallet && this.props.activeWallet.publicKey === wallet.publicKey}
           selectWallet={this.props.selectWallet}
-          index={index}
           deleteWallet={this.props.deleteWallet}
         />
       )
@@ -50,14 +49,13 @@ export class WalletList extends React.Component<Props> {
 
 interface WalletListItemProps {
   wallet: Wallet
-  index: number
-  selectWallet: (walletIndex: number) => any
+  selectWallet: (wallet: Wallet) => any
   deleteWallet: (wallet: Wallet) => any
   isActive: boolean
 }
 
-const WalletListItem: React.SFC<WalletListItemProps> = ({ wallet, index, selectWallet, isActive, deleteWallet }) => (
-  <a className={`panel-block ${isActive ? 'is-active' : ''}`} onClick={() => selectWallet(index)}>
+const WalletListItem: React.SFC<WalletListItemProps> = ({ wallet, selectWallet, isActive, deleteWallet }) => (
+  <a className={`panel-block ${isActive ? 'is-active' : ''}`} onClick={() => selectWallet(wallet)}>
     <span className='panel-icon'>
       <i className='fas fa-book' />
     </span>

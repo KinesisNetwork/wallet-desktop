@@ -13,8 +13,13 @@ $blue:         #5bc0de;
 $red:          #d9534f;
 
 $primary: #ffc800 !default;
+// $primary-invert: findColorInvert($primary);
 
 $dark: darken($grey-darker, 3);
+
+$text: $grey-lighter;
+$text-strong: darken($grey-lighter, 10);
+$text-light: $grey-light;
 
 $title-color: $grey-lighter;
 $title-weight: 400;
@@ -29,13 +34,11 @@ $border: $grey;
 
 $family-sans-serif: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-$input-color: $grey-light;
+$input-color: $grey-lighter;
 $input-background-color: $dark;
 $input-border-color: $grey;
 
-$text: $grey-lighter;
-$text-strong: darken($grey-lighter, 10);
-$text-light: $grey-light;
+$label-color: $grey-light;
 
 $link: $grey-light;
 $link-hover: $grey-lighter;

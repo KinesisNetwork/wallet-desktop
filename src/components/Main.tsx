@@ -1,10 +1,10 @@
 import { ConnectionSettings, Payee, Sidebar } from '@components'
 import { AccountPage, CreateWallet } from '@containers'
-import { View } from '@types'
+import { WalletView } from '@types'
 import * as React from 'react'
 
 export interface Props {
-  currentView: View
+  activeView: WalletView
 }
 
 export class Main extends React.PureComponent<Props> {
@@ -12,12 +12,12 @@ export class Main extends React.PureComponent<Props> {
     super(props)
   }
 
-  viewMap = (view: View) => {
+  viewMap = (view: WalletView) => {
     switch (view) {
-      case View.create: return <CreateWallet />
-      case View.dashboard: return <AccountPage />
-      case View.settings: return <ConnectionSettings />
-      case View.payees: return <Payee />
+      case WalletView.create: return <CreateWallet />
+      case WalletView.dashboard: return <AccountPage />
+      case WalletView.settings: return <ConnectionSettings />
+      case WalletView.payees: return <Payee />
       default: return <div />
     }
   }
@@ -29,7 +29,7 @@ export class Main extends React.PureComponent<Props> {
           <Sidebar />
         </div>
         <div className='column'>
-          {this.viewMap(this.props.currentView)}
+          {this.viewMap(this.props.activeView)}
         </div>
       </div>
     )

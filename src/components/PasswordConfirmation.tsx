@@ -28,11 +28,7 @@ class PasswordInput extends React.Component<{ activeWallet: Wallet }, { password
   }
 
   decryptKey = (passwordInput: string) => {
-    try {
-      return decryptPrivateKey(this.props.activeWallet.encryptedPrivateKey, passwordInput)
-    } catch (e) {
-      return ''
-    }
+    return decryptPrivateKey(this.props.activeWallet.encryptedPrivateKey, passwordInput)
   }
 
   render() {

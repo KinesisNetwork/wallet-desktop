@@ -1,24 +1,19 @@
 import {
   accountLoadRequest,
-  changeView,
+  addWallet,
   deleteWallet as deleteWalletAction,
   selectWallet,
 } from '@actions'
 import { Epic } from '@store'
-import { View } from '@types'
 import { saveAs } from 'file-saver'
 import { startCase } from 'lodash'
 import { merge } from 'rxjs'
-import { filter, ignoreElements, map, tap, withLatestFrom } from 'rxjs/operators'
+import { filter, ignoreElements, map, tap } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 
 export const deleteWallet$: Epic = (action$) => {
   const deleteWalletAction$ = action$.pipe(
     filter(isActionOf(deleteWalletAction)),
-  )
-
-  const switchView$ = deleteWalletAction$.pipe(
-    map(() => changeView(View.create)),
   )
 
   const downloadPaperWallet$ = deleteWalletAction$.pipe(
@@ -34,12 +29,11 @@ export const deleteWallet$: Epic = (action$) => {
     ignoreElements(),
   )
 
-  return merge(switchView$, downloadPaperWallet$)
+  return merge(downloadPaperWallet$)
 }
 
-export const switchWallet$: Epic = (action$, state$) =>
+export const switchWallet$: Epic = (action$) =>
   action$.pipe(
-    filter(isActionOf(selectWallet)),
-    withLatestFrom(state$),
-    map(([{ payload }, state]) => accountLoadRequest(state.wallets.walletList[payload].publicKey)),
+    filter(isActionOf([selectWallet, addWallet])),
+    map(({ payload }) => accountLoadRequest(payload.publicKey)),
   )

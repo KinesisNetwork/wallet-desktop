@@ -1,4 +1,4 @@
-export enum View {
+export enum WalletView {
   create,
   settings,
   dashboard,
@@ -6,7 +6,7 @@ export enum View {
 }
 
 export enum AccountPage {
-  transfer = 'Transfer',
+  dashboard = 'Transfer',
   sign = 'Sign & Verify',
 }
 
@@ -19,4 +19,9 @@ export enum CreateWalletFormView {
   select,
   generate,
   import,
+}
+
+export enum TransferView {
+  transfer,
+  addPayee,
 }

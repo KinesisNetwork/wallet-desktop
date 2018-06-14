@@ -4,20 +4,12 @@ export interface Wallet {
   publicKey: string
   encryptedPrivateKey: string
   accountName: string
-  decryptedPrivateKey?: string
 }
 
 export interface Connection {
   horizonURL: string
   name: string
   networkPassphrase: string
-}
-
-export interface PasswordMap {
-  [publicKey: string]: {
-    timestamp: Date
-    password: string,
-  }
 }
 
 export interface ViewParams {
@@ -43,8 +35,7 @@ export interface UnlockWallet {
 }
 
 export interface TransferRequest {
-  readonly targetAddress: string
-  readonly targetPayee?: string
+  readonly targetPayee: string
   readonly amount: string
   readonly memo: string
 }
@@ -68,6 +59,7 @@ export interface Payee {
   readonly publicKey: string
 }
 
+export type FormChangeHandler<T> = (change: FormUpdate<T>) => any
 export interface SignedMessage extends RawMessage {
   readonly publicKey: string
   readonly signature: string

@@ -4,7 +4,7 @@ import { Connection } from '@types'
 
 export interface Props {
   connections: Connection[]
-  currentlySelected: number
+  activeConnection: number
   selectConnection: (conn: Connection) => any
 }
 
@@ -15,7 +15,7 @@ export class ConnectionSelector extends React.Component<Props> {
 
   renderConnections = () => {
     return this.props.connections.map((conn, i) => {
-      const isActive = this.props.currentlySelected === i
+      const isActive = this.props.activeConnection === i
       return (
         <ConnectionButton
           key={i}
