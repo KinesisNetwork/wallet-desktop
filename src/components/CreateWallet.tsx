@@ -127,7 +127,7 @@ export class WalletForm extends React.Component<Props> {
             <InputField
               label='Account Password'
               value={password}
-              isPassword={true}
+              type={'password'}
               id='password'
               helpText='Add a password for locking this account'
               onChangeHandler={(newValue) => handleChange('password', newValue)}
@@ -135,7 +135,7 @@ export class WalletForm extends React.Component<Props> {
             <InputField
               label='Repeat Password'
               value={passwordVerify}
-              isPassword={true}
+              type={'password'}
               id='password-verify'
               onChangeHandler={(newValue) => handleChange('passwordVerify', newValue)}
             />

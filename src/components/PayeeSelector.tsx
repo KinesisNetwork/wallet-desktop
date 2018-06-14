@@ -11,6 +11,7 @@ export interface Props {
 }
 
 export const PayeeSelector: React.SFC<Props> = ({ targetPayee, payees, handleChange, changeTransferView }) => {
+  const isSelected = payees.findIndex(({ publicKey }) => targetPayee === publicKey) !== -1
   const selector = payees.length === 0
     ? (
       <div className='control is-expanded'>
@@ -26,15 +27,16 @@ export const PayeeSelector: React.SFC<Props> = ({ targetPayee, payees, handleCha
         <div className='control is-expanded has-icons-left'>
           <div className='select is-fullwidth'>
             <select
-              className={!targetPayee ? 'has-text-grey' : ''}
+              className={!isSelected ? 'has-text-grey' : ''}
               onChange={({ target: { value: newValue } }) => handleChange({ field: 'targetPayee', newValue })}
               value={targetPayee}
             >
-              <option value='' hidden={true}>Select a Payee</option>
+              <option value='' hidden={true}>Select a payee</option>
+              <option value=''>None</option>
               {payees.map(({ name, publicKey }) => <option key={publicKey} value={publicKey}>{name}</option>)}
             </select>
           </div>
-          <div className={`icon is-small is-left ${targetPayee ? 'has-text-primary' : ''}`}>
+          <div className={`icon is-small is-left ${isSelected ? 'has-text-primary' : ''}`}>
             <i className='fas fa-user' />
           </div>
         </div>
@@ -49,7 +51,7 @@ export const PayeeSelector: React.SFC<Props> = ({ targetPayee, payees, handleCha
     )
   return (
     <div className='field'>
-      <label className='label is-small'>Target Address</label>
+      {/* <label className='label is-small'>Target Address</label> */}
       <div className='field is-grouped'>
         {selector}
       </div>

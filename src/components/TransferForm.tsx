@@ -71,6 +71,10 @@ export class TransferForm extends React.Component<TransferProps> {
     }
   }
 
+  isPayeeSelected = () => {
+    return this.props.payees.findIndex(({ publicKey }) => publicKey === this.props.targetPayee) !== -1
+  }
+
   render() {
     const { updateTransferForm: handleChange } = this.props
     return (
@@ -84,19 +88,28 @@ export class TransferForm extends React.Component<TransferProps> {
             changeTransferView={this.props.changeTransferView}
           />
           <InputField
-            label='Transfer Amount'
+            value={this.props.targetPayee}
+            id='transfer-target-address'
+            icon='fa-address-card'
+            placeholder='Or input target address'
+            isDisabled={this.isPayeeSelected()}
+            onChangeHandler={(newValue) => handleChange({ field: 'targetPayee', newValue })}
+          />
+          <InputField
+            // label='Transfer Amount'
             value={this.props.amount}
             id='transfer-amount'
             icon='fa-coins'
-            placeholder='Amount to transfer'
+            type='number'
+            placeholder='Amount'
             onChangeHandler={(newValue) => handleChange({ field: 'amount', newValue })}
           />
           <InputField
-            label='Message'
+            // label='Message'
             value={this.props.memo}
             id='transfer-memo'
             icon='fa-comment'
-            placeholder='Optional message to attach'
+            placeholder='Optional message'
             onChangeHandler={(newValue) => handleChange({ field: 'memo', newValue })}
           />
           <div className='field'>

@@ -14,15 +14,16 @@ export interface Props {
 const LockedWallet: React.SFC<Props> = ({ password, unlockWallet, activeWallet, setPasswordInput }) => (
   <div>
     <div className='field has-addons has-addons-centered'>
-      <div className='control'>
+      <div className='control has-icons-left'>
         <input
           id='wallet-unlock-password'
           className='input'
           value={password}
           type='password'
-          placeholder='Password'
+          placeholder='Unlock Account'
           onChange={(e) => setPasswordInput(e.currentTarget.value)}
         />
+        <span className='icon is-left has-text-grey-lighter'><i className='fas fa-key' /></span>
       </div>
       <div className='control'>
         <button type='button' className='button' onClick={() => unlockWallet(activeWallet, password)}>
