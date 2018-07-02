@@ -18,7 +18,7 @@ jobs:
       if: tag is present and tag =~ ^((?!beta).)*$
       os: osx
     - stage: build and deploy
-      env: BUCKET=integration.kinesiswebwallet.com TRAVIS_TAG=true
+      env: BUCKET=integration-wallet.kinesisgroup.io TRAVIS_TAG=true
       if: branch = master and type = push
       script: npm run build:web
       deploy: &deploy
@@ -29,12 +29,12 @@ jobs:
         local_dir: dist
         on:
           tags: true
-    - env: BUCKET=uat.kinesiswebwallet.com
+    - env: BUCKET=uat-wallet.kinesisgroup.io
       if: tag is present
       script: npm run build:web
       deploy:
         <<: *deploy
-    - env: BUCKET=www.kinesiswebwallet.com
+    - env: BUCKET=wallet.kinesisgroup.io
       if: tag is present and tag =~ ^((?!beta).)*$
       script: npm run build:web
       deploy:
