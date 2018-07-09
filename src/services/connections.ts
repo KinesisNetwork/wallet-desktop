@@ -3,7 +3,7 @@ import { Connection } from '@types'
 export const DEFAULT_CONNECTIONS: Connection[] = [
   {
     name: 'Local Development Network',
-    horizonURL: 'https://stellar-local.abx.com',
+    horizonURL: 'https://local.kinesisgroup.io',
     networkPassphrase: 'Test SDF Network ; September 2015',
   },
   {
