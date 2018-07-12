@@ -93,7 +93,7 @@
     "sweetalert": "^2.1.0",
     "tsconfig-paths": "^3.3.1",
     "tslib": "^1.9.0",
-    "typesafe-actions": "^2.0.0-1"
+    "typesafe-actions": "2.0.0-1"
   },
   "devDependencies": {
     "@types/crypto-js": "^3.1.39",

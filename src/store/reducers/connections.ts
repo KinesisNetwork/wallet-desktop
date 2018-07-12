@@ -1,5 +1,9 @@
-import { addConnection, handleConnectionFormChange, loadConnections, selectConnection } from '@actions'
-import { DEFAULT_CONNECTIONS } from '@services/connections'
+import {
+  addConnection,
+  handleConnectionFormChange,
+  loadConnectionsSuccess,
+  selectConnection,
+} from '@actions'
 import { RootAction } from '@store'
 import { Connection } from '@types'
 import { combineReducers } from 'redux'
@@ -10,6 +14,9 @@ export interface ConnectionsState {
   currentConnection: Connection
   form: Connection
 }
+
+const initialConnectionList = []
+const initialConnection = {} as Connection
 
 const handleChange = (name: keyof Connection) => (state = '', action: RootAction) => {
   switch (action.type) {
@@ -28,16 +35,17 @@ const form = combineReducers<Connection, RootAction>({
 
 export const connections = combineReducers<ConnectionsState, RootAction>({
   form,
-  connectionList: (state = DEFAULT_CONNECTIONS, action) => {
+  connectionList: (state = initialConnectionList, action) => {
     switch (action.type) {
-      case getType(loadConnections): return action.payload
+      case getType(loadConnectionsSuccess): return action.payload
       case getType(addConnection): return [...state, action.payload]
       default: return state
     }
   },
-  currentConnection: (state = DEFAULT_CONNECTIONS[0], action) => {
+  currentConnection: (state = initialConnection, action) => {
     switch (action.type) {
       case getType(selectConnection): return action.payload
+      case getType(loadConnectionsSuccess): return action.payload[0]
       default: return state
     }
   },
