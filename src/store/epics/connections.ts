@@ -1,4 +1,11 @@
-import { isActionOf } from 'typesafe-actions'
+import {
+  loadConnections,
+  loadConnectionsFailure,
+  loadConnectionsSuccess,
+} from '@actions'
+import { generalFailureAlert } from '@helpers/alert'
+import { fetchConnections } from '@services/connections'
+import { Epic } from '@store'
 import { of } from 'rxjs/observable/of'
 import {
   catchError,
@@ -7,20 +14,13 @@ import {
   map,
   switchMap,
 } from 'rxjs/operators'
-import {
-  loadConnections,
-  loadConnectionsFailure,
-  loadConnectionsSuccess,
-} from '@actions'
-import { fetchConnections } from '@services/connections'
-import { generalFailureAlert } from '@helpers/alert'
-import { Epic } from '@store'
+import { isActionOf } from 'typesafe-actions'
 
 export const loadConnections$: Epic = (action$) => {
   const loadConnectionsRequest$ = action$.pipe(
     filter(
       isActionOf(loadConnections),
-    )
+    ),
   )
 
   return loadConnectionsRequest$.pipe(
