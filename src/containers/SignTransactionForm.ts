@@ -1,8 +1,9 @@
+import { connect } from 'react-redux'
+
 import { transactionRequest, updateSignTransactionForm } from '@actions'
-import { SignTransactionForm as SignTransactionFormPresentation } from '@components'
+import { SignTransactionForm as SignTransactionFormPresentation } from '@components/SignTransactionForm'
 import { RootState } from '@store'
 import { Wallet } from '@types'
-import { connect } from 'react-redux'
 
 const mapStateToProps = ({ sign, passwords, wallets, transfer, connections }: RootState) => ({
   message: sign.signTransactionData.message,

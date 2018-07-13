@@ -1,12 +1,13 @@
+import { connect } from 'react-redux'
+
 import { changeUnlockPasswordInput, lockWallet, unlockWallet } from '@actions'
-import { Password as PasswordPresentation } from '@components'
+import { Password as PasswordPresentation } from '@components/Password'
 import { formAlert } from '@helpers/alert'
 import { decryptPrivateKey } from '@services/encryption'
 import { Dispatch, RootState } from '@store'
 import { Wallet } from '@types'
-import { connect } from 'react-redux'
 
-const mapStateToProps = ({ wallets, accounts, passwords }: RootState) => {
+export const mapStateToProps = ({ wallets, accounts, passwords }: RootState) => {
   const activeWallet = wallets.activeWallet as Wallet
   const isAccountUnlocked = accounts.accountsMap[activeWallet.publicKey].isUnlocked
   const password = passwords.currentInput

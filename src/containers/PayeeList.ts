@@ -1,7 +1,8 @@
-import { removePayee } from '@actions'
-import { PayeeList as PayeeListPresentation } from '@components'
-import { Dispatch, RootState } from '@store'
 import { connect } from 'react-redux'
+
+import { removePayee } from '@actions'
+import { PayeeList as PayeeListPresentation } from '@components/PayeeList'
+import { Dispatch, RootState } from '@store'
 
 const mapStateToProps = ({ payees }: RootState) => {
   return {

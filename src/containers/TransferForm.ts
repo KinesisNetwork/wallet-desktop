@@ -1,16 +1,17 @@
+import { connect } from 'react-redux'
+
 import {
   changeTransferView,
   changeWalletView,
   transferRequest,
   updateTransferForm,
 } from '@actions'
-import { TransferForm as TransferPresentation } from '@components'
+import { TransferForm as TransferPresentation } from '@components/TransferForm'
 import { getFeeInKinesis } from '@services/kinesis'
 import { RootState } from '@store'
 import { Payee, Wallet } from '@types'
-import { connect } from 'react-redux'
 
-const mapStateToProps = ({ wallets, connections, transfer, accounts, payees, passwords }: RootState) => {
+export const mapStateToProps = ({ wallets, connections, transfer, accounts, payees, passwords }: RootState) => {
   const activeWallet = wallets.activeWallet as Wallet
   const livePassword = passwords.livePasswords[activeWallet.publicKey]
   const otherWalletsAsPayees: Payee[] = wallets.walletList

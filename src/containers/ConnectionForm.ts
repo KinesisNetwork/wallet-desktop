@@ -1,12 +1,10 @@
 import { connect } from 'react-redux'
 
 import { addConnection, handleConnectionFormChange } from '@actions'
-import { ConnectionForm as ConnectionFormPresentation } from '@components'
+import { ConnectionForm as ConnectionFormPresentation } from '@components/ConnectionForm'
 import { RootState } from '@store'
 
-const mapStateToProps = ({connections}: RootState) => ({
-  ...connections.form,
-})
+export const mapStateToProps = ({connections}: RootState) => connections.form
 
 const mapDispatchToProps = {
   addConnection,

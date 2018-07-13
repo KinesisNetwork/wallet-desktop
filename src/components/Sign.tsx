@@ -1,14 +1,15 @@
+import * as copy from 'copy-to-clipboard'
+import { Keypair } from 'js-kinesis-sdk'
+import { kebabCase, startCase } from 'lodash'
 import * as React from 'react'
 
-import { InputField } from '@components'
-import { SignProps, SignTransactionForm } from '@containers'
+import { InputField } from '@components/InputField'
+import { SignProps } from '@containers/Sign'
+import { SignTransactionForm } from '@containers/SignTransactionForm'
 import { formAlert } from '@helpers/alert'
 import { enumStringValues } from '@helpers/enumStringValues'
 import { InputError, WalletLockError } from '@helpers/errors'
 import { SignBehaviour, SignedMessage } from '@types'
-import * as copy from 'copy-to-clipboard'
-import { Keypair } from 'js-kinesis-sdk'
-import { kebabCase, startCase } from 'lodash'
 
 export class Sign extends React.Component<SignProps> {
   tabs = () => {

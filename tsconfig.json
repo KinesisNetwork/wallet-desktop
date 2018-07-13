@@ -31,14 +31,23 @@
       "@helpers/*": [
         "helpers/*"
       ],
+      "@components/*": [
+        "components/*"
+      ],
       "@components": [
         "components"
       ],
       "@store": [
         "store"
       ],
+      "@actions/*": [
+        "store/actions/*"
+      ],
       "@actions": [
         "store/actions"
+      ],
+      "@containers/*": [
+        "containers/*"
       ],
       "@containers": [
         "containers"

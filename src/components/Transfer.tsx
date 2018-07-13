@@ -1,6 +1,7 @@
 import * as React from 'react'
 
-import { PayeeForm, TransferForm } from '@containers'
+import { PayeeForm } from '@containers/PayeeForm'
+import { TransferForm } from '@containers/TransferForm'
 import { TransferView } from '@types'
 
 export interface Props {

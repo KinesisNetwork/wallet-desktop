@@ -16,13 +16,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {AppContainer} from 'react-hot-loader';
-import { register } from 'tsconfig-paths';
-const config = require('../tsconfig.json')
-
-register({
-  baseUrl: config.compilerOptions.baseUrl,
-  paths: config.compilerOptions.paths,
-})
 
 let render = () => {
   const { App } = require('./app');

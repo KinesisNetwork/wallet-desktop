@@ -1,3 +1,8 @@
+import { saveAs } from 'file-saver'
+import { startCase } from 'lodash'
+import { merge } from 'rxjs'
+import { filter, ignoreElements, map, tap, withLatestFrom } from 'rxjs/operators'
+import { isActionOf } from 'typesafe-actions'
 import {
   accountLoadRequest,
   addWallet,
@@ -5,15 +10,10 @@ import {
   deleteWallet as deleteWalletAction,
   selectWallet,
 } from '@actions'
-import { Epic } from '@store'
-import { saveAs } from 'file-saver'
-import { startCase } from 'lodash'
-import { merge } from 'rxjs'
-import { filter, ignoreElements, map, tap, withLatestFrom } from 'rxjs/operators'
-import { isActionOf } from 'typesafe-actions'
+import { OurEpic } from '@store'
 import { getActivePublicKey } from '../selectors'
 
-export const deleteWallet$: Epic = action$ => {
+export const deleteWallet$: OurEpic = action$ => {
   const deleteWalletAction$ = action$.pipe(filter(isActionOf(deleteWalletAction)))
 
   const downloadPaperWallet$ = deleteWalletAction$.pipe(
@@ -32,7 +32,7 @@ export const deleteWallet$: Epic = action$ => {
   return merge(downloadPaperWallet$)
 }
 
-export const changeWallet: Epic = (action$, state$) => {
+export const changeWallet: OurEpic = (action$, state$) => {
   const switchWallet$ = action$.pipe(filter(isActionOf([selectWallet, addWallet])))
 
   const loadAccount$ = switchWallet$.pipe(

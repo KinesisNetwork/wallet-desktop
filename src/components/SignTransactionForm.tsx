@@ -1,13 +1,13 @@
-import * as React from 'react'
-
-import { InputField } from '@components'
-import { SignTransactionFormProps } from '@containers'
-import { getTransactionSigners } from '@services/accounts'
-import { getServer } from '@services/kinesis'
-import { Connection } from '@types'
 import * as copy from 'copy-to-clipboard'
 import { Keypair, Transaction, TransactionOperation } from 'js-kinesis-sdk'
 import { startCase } from 'lodash'
+import * as React from 'react'
+
+import { SignTransactionFormProps } from '@containers/SignTransactionForm'
+import { getTransactionSigners } from '@services/accounts'
+import { getServer } from '@services/kinesis'
+import { Connection } from '@types'
+import { InputField } from './InputField'
 import { HorizontalLabelledField } from './LabelledField'
 
 interface State {

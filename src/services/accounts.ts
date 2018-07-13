@@ -1,7 +1,8 @@
-import { AccountMissingError } from '@helpers/errors'
-import { getServer } from '@services/kinesis'
-import { Connection } from '@types'
 import { Account, AccountResponse, Asset, Keypair, Server, Transaction } from 'js-kinesis-sdk'
+
+import { AccountMissingError } from '@helpers/errors'
+import { Connection } from '@types'
+import { getServer } from './kinesis'
 
 export async function loadAccount(
   publicKey: string,

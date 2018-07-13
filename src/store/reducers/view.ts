@@ -1,3 +1,6 @@
+import { combineReducers } from 'redux'
+import { getType } from 'typesafe-actions'
+
 import {
   addPayee,
   addWallet,
@@ -8,8 +11,6 @@ import {
 } from '@actions'
 import { RootAction } from '@store'
 import { TransferView, WalletView } from '@types'
-import { combineReducers } from 'redux'
-import { getType } from 'typesafe-actions'
 
 export interface ViewState {
   readonly walletView: WalletView

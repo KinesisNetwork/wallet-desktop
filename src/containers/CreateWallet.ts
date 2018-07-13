@@ -1,10 +1,11 @@
-import { addWallet, changeCreateWalletView, updateCreateWalletForm } from '@actions'
-import { CreateWallet as CreateWalletPresentation } from '@components'
-import { Dispatch, RootState } from '@store'
-import { CreateWalletForm, CreateWalletFormView, Wallet } from '@types'
 import { connect } from 'react-redux'
 
-const mapStateToProps = ({ createWallet }: RootState) => ({
+import { addWallet, changeCreateWalletView, updateCreateWalletForm } from '@actions'
+import { CreateWallet as CreateWalletPresentation } from '@components/CreateWallet'
+import { Dispatch, RootState } from '@store'
+import { CreateWalletForm, CreateWalletFormView, Wallet } from '@types'
+
+export const mapStateToProps = ({ createWallet }: RootState) => ({
   ...createWallet.form,
   activeView: createWallet.formView,
 })

@@ -1,3 +1,5 @@
+import { connect } from 'react-redux'
+
 import {
   changeSignFocus,
   messageVerificationResult,
@@ -5,10 +7,9 @@ import {
   updateSignForm,
   updateVerifyForm,
 } from '@actions'
-import { Sign as SignPresentation } from '@components'
+import { Sign as SignPresentation } from '@components/Sign'
 import { Dispatch, RootState } from '@store'
 import { RawMessage, SignBehaviour, SignedMessage, Wallet } from '@types'
-import { connect } from 'react-redux'
 
 const mapStateToProps = ({ sign, wallets, passwords, accounts }: RootState) => {
   const activeWallet = wallets.activeWallet as Wallet

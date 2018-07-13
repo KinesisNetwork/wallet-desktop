@@ -1,11 +1,12 @@
-import { InputField } from '@components'
+import { Keypair } from 'js-kinesis-sdk'
+import { kebabCase, startCase } from 'lodash'
+import * as React from 'react'
+
+import { InputField } from '@components/InputField'
 import { formAlert } from '@helpers/alert'
 import { InputError } from '@helpers/errors'
 import { encryptPrivateKey } from '@services/encryption'
 import { CreateWalletForm, CreateWalletFormView as FormView, Wallet } from '@types'
-import { Keypair } from 'js-kinesis-sdk'
-import { kebabCase, startCase } from 'lodash'
-import * as React from 'react'
 
 export interface Props extends CreateWalletForm {
   activeView: FormView

@@ -1,7 +1,8 @@
-import { loadNextTransactionPage } from '@actions'
-import { Transactions as TransactionsPresentation } from '@components'
-import { RootState } from '@store'
 import { connect } from 'react-redux'
+
+import { loadNextTransactionPage } from '@actions'
+import { Transactions as TransactionsPresentation } from '@components/Transactions'
+import { RootState } from '@store'
 
 const mapStateToProps = ({transactions}: RootState) => ({
   isLastPage: transactions.isLastPage,

@@ -1,7 +1,11 @@
-import { ConnectionSettings, Payee, Sidebar } from '@components'
-import { AccountPage, CreateWallet } from '@containers'
-import { WalletView } from '@types'
 import * as React from 'react'
+
+import { ConnectionSettings } from '@components/ConnectionSettings'
+import { Payee } from '@components/Payee'
+import { Sidebar } from '@components/Sidebar'
+import { AccountPage } from '@containers/AccountPage'
+import { CreateWallet } from '@containers/CreateWallet'
+import { WalletView } from '@types'
 
 export interface Props {
   activeView: WalletView

@@ -1,12 +1,10 @@
 import { connect } from 'react-redux'
 
 import { setAccountPage } from '@actions'
-import { AccountPageSelector as AccountPagePresentation } from '@components'
+import { AccountPageSelector as AccountPagePresentation } from '@components/AccountPageSelector'
 import { RootState } from '@store'
 
-const mapStateToProps = ({accountPage}: RootState) => ({
-  accountPage: accountPage.accountPage,
-})
+export const mapStateToProps = ({accountPage}: RootState) => accountPage
 
 const mapDispatchToProps = {
   setAccountPage,

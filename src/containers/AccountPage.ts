@@ -1,8 +1,9 @@
-import { AccountPage as AccountPagePresentation } from '@components'
-import { RootState } from '@store'
 import { connect } from 'react-redux'
 
-const mapStateToProps = ({accountPage}: RootState) => ({
+import { AccountPage as AccountPagePresentation } from '@components/AccountPage'
+import { RootState } from '@store'
+
+export const mapStateToProps = ({accountPage}: RootState) => ({
   accountPage: accountPage.accountPage,
 })
 

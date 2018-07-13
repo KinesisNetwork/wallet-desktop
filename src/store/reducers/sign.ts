@@ -1,3 +1,6 @@
+import { combineReducers } from 'redux'
+import { getType } from 'typesafe-actions'
+
 import {
   changeSignFocus,
   clearSignForms,
@@ -9,8 +12,6 @@ import {
 } from '@actions'
 import { RootAction } from '@store'
 import { RawMessage, SignBehaviour, SignedMessage } from '@types'
-import { combineReducers } from 'redux'
-import { getType } from 'typesafe-actions'
 
 export interface SignState {
   focus: SignBehaviour

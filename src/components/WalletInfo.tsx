@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { LabelledField } from '@components'
+import { LabelledField } from '@components/LabelledField'
 import { renderAmount } from '@services/util'
 
 export interface Props {

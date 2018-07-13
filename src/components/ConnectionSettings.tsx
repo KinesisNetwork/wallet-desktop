@@ -1,6 +1,7 @@
 import * as React from 'react'
 
-import { ConnectionForm, ConnectionSelector } from '@containers'
+import { ConnectionForm } from '@containers/ConnectionForm'
+import { ConnectionSelector } from '@containers/ConnectionSelector'
 
 export const ConnectionSettings: React.SFC = () => (
   <div className='vertical-spaced has-text-centered'>

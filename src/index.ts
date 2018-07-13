@@ -5,6 +5,7 @@ import installExtension, {
   REDUX_DEVTOOLS,
 } from 'electron-devtools-installer'
 import * as path from 'path'
+
 import { register } from 'tsconfig-paths/lib'
 
 // tslint:disable-next-line:no-var-requires no-require-imports
@@ -12,9 +13,8 @@ const config = require('../tsconfig.json')
 
 register({
   baseUrl: config.compilerOptions.baseUrl,
-  paths: config.compilerOptions.paths,
+  paths: config.compilerOptions.paths
 })
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow: Electron.BrowserWindow | null = null

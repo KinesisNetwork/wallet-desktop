@@ -1,6 +1,7 @@
-import { FormUpdate, TransactionOperationView, TransferRequest } from '@types'
 import { Transaction } from 'js-kinesis-sdk'
 import { buildAction } from 'typesafe-actions'
+
+import { FormUpdate, TransactionOperationView, TransferRequest } from '@types'
 
 export const transferRequest = buildAction('TRANSFER_REQUEST').payload<TransferRequest>()
 

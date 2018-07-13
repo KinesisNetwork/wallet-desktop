@@ -1,16 +1,4 @@
-import { getActiveKeys, getCurrentConnection } from '../selectors'
 
-import {
-  accountLoadRequest,
-  transactionFailed,
-  transactionRequest,
-  transactionSuccess,
-  transferRequest,
-} from '@actions'
-import { generalFailureAlert, generalSuccessAlert } from '@helpers/alert'
-import { getTransactionErrorMessage } from '@services/kinesis'
-import { createKinesisTransfer, submitSignedTransaction } from '@services/transfer'
-import { Epic } from '@store'
 import { of } from 'rxjs'
 import { fromPromise } from 'rxjs/observable/fromPromise'
 import {
@@ -24,7 +12,16 @@ import {
 } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 
-export const transferRequest$: Epic = (action$, state$) =>
+import { OurEpic } from '@store'
+import {
+  accountLoadRequest,
+  transactionFailed,
+  transactionRequest,
+  transactionSuccess,
+  transferRequest,
+} from '@actions'
+
+export const transferRequest$: OurEpic = (action$, state$, { createKinesisTransfer, getActiveKeys, getCurrentConnection }) =>
   action$.pipe(
     filter(isActionOf(transferRequest)),
     map(({ payload }) => payload),
@@ -43,7 +40,7 @@ export const transferRequest$: Epic = (action$, state$) =>
     ),
   )
 
-export const transactionSubmission$: Epic = (action$, state$) =>
+export const transactionSubmission$: OurEpic = (action$, state$, { getCurrentConnection, submitSignedTransaction }) =>
   action$.pipe(
     filter(isActionOf(transactionRequest)),
     mergeMap(({ payload }) =>
@@ -54,14 +51,14 @@ export const transactionSubmission$: Epic = (action$, state$) =>
     ),
   )
 
-export const transactionSuccess$: Epic = (action$, state$) =>
+export const transactionSuccess$: OurEpic = (action$, state$, { generalSuccessAlert, getActiveKeys }) =>
   action$.pipe(
     filter(isActionOf(transactionSuccess)),
     flatMap(() => generalSuccessAlert('The transfer was successful.')),
     map(() => accountLoadRequest(getActiveKeys(state$.value).publicKey)),
   )
 
-export const transactionFailed$: Epic = action$ =>
+export const transactionFailed$: OurEpic = (action$, _, { generalFailureAlert, getTransactionErrorMessage }) =>
   action$.pipe(
     filter(isActionOf(transactionFailed)),
     map(({ payload }) => generalFailureAlert(getTransactionErrorMessage(payload))),

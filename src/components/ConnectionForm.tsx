@@ -1,10 +1,10 @@
+import { kebabCase, startCase } from 'lodash'
 import * as React from 'react'
 
-import { InputField } from '@components'
+import { InputField } from '@components/InputField'
 import { formAlert } from '@helpers/alert'
 import { InputError } from '@helpers/errors'
 import { Connection, FormUpdate } from '@types'
-import { kebabCase, startCase } from 'lodash'
 
 export interface Props extends Connection {
   addConnection: (conn: Connection) => any

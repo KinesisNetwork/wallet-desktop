@@ -1,10 +1,8 @@
 import * as React from 'react'
 
-import {
-  Transactions,
-  Transfer,
-  WalletInfo,
-} from '@containers'
+import { Transactions } from '@containers/Transactions'
+import { Transfer } from '@containers/Transfer'
+import { WalletInfo } from '@containers/WalletInfo'
 
 export const AccountDashboard: React.SFC = () => (
   <React.Fragment>

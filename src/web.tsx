@@ -5,6 +5,16 @@ import './style.scss'
 
 import { App } from './app'
 
+import { register } from 'tsconfig-paths/lib'
+
+// tslint:disable-next-line:no-var-requires no-require-imports
+const config = require('../tsconfig.json')
+
+register({
+  baseUrl: config.compilerOptions.baseUrl,
+  paths: config.compilerOptions.paths
+})
+
 const renderApp = () => {
   ReactDOM.render(<App />, document.getElementById('App'))
 }

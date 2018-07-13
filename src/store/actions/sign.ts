@@ -1,5 +1,6 @@
-import { FormUpdate, RawMessage, SignBehaviour, SignedMessage } from '@types'
 import { buildAction } from 'typesafe-actions'
+
+import { FormUpdate, RawMessage, SignBehaviour, SignedMessage } from '@types'
 
 export const changeSignFocus = buildAction('CHANGE_SIGN_FOCUS').payload<SignBehaviour>()
 export const clearSignForms = buildAction('CLEAR_SIGN_FORMS').empty()

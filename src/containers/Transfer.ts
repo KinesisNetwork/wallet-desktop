@@ -1,7 +1,8 @@
-import { changeTransferView } from '@actions'
-import { Transfer as TransferPresentation } from '@components'
-import { RootState } from '@store'
 import { connect } from 'react-redux'
+
+import { changeTransferView } from '@actions'
+import { Transfer as TransferPresentation } from '@components/Transfer'
+import { RootState } from '@store'
 
 const mapStateToProps = ({ view: { transferView } }: RootState) => ({
   transferView,
