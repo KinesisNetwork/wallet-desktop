@@ -4,6 +4,27 @@ import { flatten } from 'lodash'
 import { Connection, TransactionOperationView } from '@types'
 const STROOPS_IN_ONE_KINESIS = 10000000
 
+export const operationErrorCodeToMessage = {
+  op_low_reserve: 'Transfer amount is lower than the base reserve',
+  op_already_exist: 'The account already exists.',
+  op_no_destination: 'The target payment account does not exist.',
+  unknown_error: 'An error occured with the transaction.',
+}
+
+export function transactionErrorCodeToMessage(txError: string, opError: string) {
+  const errorToMessage = {
+    tx_insufficient_fee: 'The fee on the transaction was too low',
+    tx_insufficient_balance: 'Insufficient account balance',
+    tx_bad_auth: 'Invalid transaction signature',
+    tx_bad_auth_extra: 'Too many signatures provided',
+    tx_bad_seq: 'Invalid account sequence',
+    tx_failed: operationErrorCodeToMessage[opError],
+    unknown_error: 'An error occured with the transaction.',
+  }
+
+  return errorToMessage[txError]
+}
+
 export function getServer(connection: Connection): Server {
   Network.use(new Network(connection.networkPassphrase))
   return new Server(connection.horizonURL)
