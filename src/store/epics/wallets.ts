@@ -1,6 +1,7 @@
 import {
   accountLoadRequest,
   addWallet,
+  clearSignForms,
   deleteWallet as deleteWalletAction,
   selectWallet,
 } from '@actions'
@@ -32,8 +33,18 @@ export const deleteWallet$: Epic = (action$) => {
   return merge(downloadPaperWallet$)
 }
 
-export const switchWallet$: Epic = (action$) =>
-  action$.pipe(
+export const changeWallet: Epic = (action$) => {
+  const switchWallet$ = action$.pipe(
     filter(isActionOf([selectWallet, addWallet])),
-    map(({ payload }) => accountLoadRequest(payload.publicKey)),
   )
+
+  const loadAccount$ = switchWallet$.pipe(
+    map(({ payload }) => accountLoadRequest(payload.publicKey))
+  )
+
+  const clearSignFields$ = switchWallet$.pipe(
+    map(clearSignForms)
+  )
+
+  return merge(loadAccount$, clearSignFields$)
+}
