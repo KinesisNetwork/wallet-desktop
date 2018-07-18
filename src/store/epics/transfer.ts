@@ -1,5 +1,6 @@
 import { accountLoadRequest, transferFailed, transferRequest, transferSuccess } from '@actions'
 import { generalFailureAlert, generalSuccessAlert } from '@helpers/alert'
+import { getTransactionErrorMessage } from '@services/kinesis'
 import { transferKinesis } from '@services/transfer'
 import { Epic } from '@store'
 import { Wallet } from '@types'
@@ -41,6 +42,9 @@ export const transferSuccess$: Epic = (action$) =>
 export const transferFailed$: Epic = (action$) =>
   action$.pipe(
     filter(isActionOf(transferFailed)),
-    map(() => fromPromise(generalFailureAlert('Something went wrong with the transfer.'))),
+    map(({payload}) => {
+      const errMessage = getTransactionErrorMessage(payload)
+      return fromPromise(generalFailureAlert(errMessage))
+    }),
     ignoreElements(),
   )
