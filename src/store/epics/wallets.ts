@@ -39,11 +39,11 @@ export const changeWallet: Epic = (action$) => {
   )
 
   const loadAccount$ = switchWallet$.pipe(
-    map(({ payload }) => accountLoadRequest(payload.publicKey))
+    map(({ payload }) => accountLoadRequest(payload.publicKey)),
   )
 
   const clearSignFields$ = switchWallet$.pipe(
-    map(clearSignForms)
+    map(clearSignForms),
   )
 
   return merge(loadAccount$, clearSignFields$)
