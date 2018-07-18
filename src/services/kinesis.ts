@@ -1,5 +1,5 @@
 import { Network, Server, TransactionRecord } from 'js-kinesis-sdk'
-import { flatten } from 'lodash'
+import { flatten, get } from 'lodash'
 
 import { Connection, TransactionOperationView } from '@types'
 const STROOPS_IN_ONE_KINESIS = 10000000
@@ -23,6 +23,12 @@ export function transactionErrorCodeToMessage(txError: string, opError: string) 
   }
 
   return errorToMessage[txError]
+}
+
+export function getTransactionErrorMessage(failedTxPayload: any) {
+  const txErrorCode = get(failedTxPayload, 'data.extras.result_codes.transaction', 'unknown_error')
+  const opErrorCode = get(failedTxPayload, 'data.extras.result_codes.operations[0]', 'unknown_error')
+  return transactionErrorCodeToMessage(txErrorCode, opErrorCode)
 }
 
 export function getServer(connection: Connection): Server {
