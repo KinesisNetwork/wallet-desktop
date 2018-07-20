@@ -8,8 +8,8 @@
   "scripts": {
     "pretest": "npm run sass-compile",
     "test": "npm run lint && npm run compile:tsc",
-    "predeploy": "npm run sass-compile",
-    "deploy:electron": "npm run sass-compile && npm version $(git describe --tags) --no-git-tag-version && electron-forge publish",
+    "predeploy": "npm run sass-compile && npm version $GIT_TAG --no-git-tag-version",
+    "deploy:electron": "electron-forge publish",
     "sass-compile": "node-sass src/style.scss src/style.css",
     "build:web": "IS_WEB=true parcel build src/index-web.html",
     "prestart": "rm -rf .cache && npm run sass-compile",
