@@ -8,8 +8,8 @@
   "scripts": {
     "pretest": "npm run sass-compile",
     "test": "npm run lint && npm run compile:tsc",
-    "predeploy:appveyor": "npm run sass-compile && npm version $env:APPVEYOR_REPO_TAG_NAME --no-git-tag-version",
-    "predeploy:travis": "npm run sass-compile && npm version $TRAVIS_TAG",
+    "predeploy:appveyor": "npm run sass-compile",
+    "predeploy:travis": "npm run sass-compile && npm version $TRAVIS_TAG --no-git-tag-version",
     "deploy:electron": "electron-forge publish",
     "sass-compile": "node-sass src/style.scss src/style.css",
     "build:web": "IS_WEB=true parcel build src/index-web.html",
