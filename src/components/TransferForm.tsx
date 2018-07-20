@@ -4,6 +4,8 @@ import { InputField } from '@components'
 import { TransferProps } from '@containers'
 import { formAlert } from '@helpers/alert'
 import { InputError, WalletLockError } from '@helpers/errors'
+import { generateTransferTransaction } from '@services/transfer'
+import * as copy from 'copy-to-clipboard'
 import { Loader } from './Loader'
 import { PayeeSelector } from './PayeeSelector'
 
@@ -75,6 +77,15 @@ export class TransferForm extends React.Component<TransferProps> {
     return this.props.payees.findIndex(({ publicKey }) => publicKey === this.props.targetPayee) !== -1
   }
 
+  copyTransferTransaction = async () => {
+    const transaction = await generateTransferTransaction(
+      this.props.activeWallet.publicKey,
+      this.props.connection,
+      this.props,
+    )
+    copy(transaction.toEnvelope().toXDR().toString('base64'))
+  }
+
   render() {
     const { updateTransferForm: handleChange } = this.props
     return (
@@ -110,9 +121,14 @@ export class TransferForm extends React.Component<TransferProps> {
             placeholder='Optional message'
             onChangeHandler={(newValue) => handleChange({ field: 'memo', newValue })}
           />
-          <div className='field'>
+          <div className='field is-grouped'>
             <div className='control is-expanded'>
               <button className='button is-fullwidth' onClick={this.initTransfer}>Transfer</button>
+            </div>
+            <div className='control'>
+              <button className='button is-text' onClick={this.copyTransferTransaction}>
+                <span className='icon'><i className='fas fa-copy' /></span>
+              </button>
             </div>
           </div>
         </div>

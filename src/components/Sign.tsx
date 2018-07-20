@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import { InputField } from '@components'
-import { SignProps } from '@containers'
+import { SignProps, SignTransactionForm } from '@containers'
 import { formAlert } from '@helpers/alert'
 import { enumStringValues } from '@helpers/enumStringValues'
 import { InputError, WalletLockError } from '@helpers/errors'
@@ -43,6 +43,7 @@ export class Sign extends React.Component<SignProps> {
         </div>
         {this.props.focus === SignBehaviour.sign && <SignForm {...this.props} />}
         {this.props.focus === SignBehaviour.verify && <VerifyForm {...this.props} />}
+        {this.props.focus === SignBehaviour.signTransaction && <SignTransactionForm />}
       </div>
     )
   }

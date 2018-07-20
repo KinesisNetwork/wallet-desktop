@@ -23,6 +23,16 @@ export async function transferKinesis(
   await server.submitTransaction(transaction)
 }
 
+export async function generateTransferTransaction(
+  sourcePublicKey: string,
+  connection: Connection,
+  request: TransferRequest,
+): Promise<Transaction> {
+  const server = getServer(connection)
+  const sourceAccount = await getAccountIfExists(server, sourcePublicKey)
+  return await newTransferTransaction(server, sourceAccount, request)
+}
+
 async function newTransferTransaction(
   server: Server,
   source: Account,
