@@ -61,10 +61,10 @@
       "electronInstallerRedhat": {},
       "github_repository": {
         "owner": "kinesisnetwork",
-        "name": "kinesis-wallet"
+        "name": "wallet-desktop"
       },
       "s3": {
-        "bucket": "kinesis-wallet",
+        "bucket": "kinesis-desktop-wallet",
         "public": true
       }
     }
