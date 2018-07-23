@@ -1,5 +1,5 @@
-import { AccountResponse, Transaction } from 'js-kinesis-sdk'
 import { showCopyAlert } from '@helpers/textAlerts'
+import { AccountResponse, Transaction } from 'js-kinesis-sdk'
 
 export function isPaymentMultiSig(account: AccountResponse): boolean {
   const paymentWeight = account.thresholds.med_threshold
