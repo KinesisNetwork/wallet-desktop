@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { HorizontalLabelledField } from '@components'
 import { TransactionOperationView } from '@types'
-import { OperationRecord } from 'js-kinesis-sdk'
+import { OperationRecord, TransactionOperation } from 'js-kinesis-sdk'
 import { startCase } from 'lodash'
 
 export interface Props {
@@ -23,11 +23,11 @@ const baseOperationRecordKeys = [
   'type_i',
 ]
 
-export const renderOperationRecords = (operation: OperationRecord) => {
+export const renderOperationRecords = (operation: OperationRecord | TransactionOperation) => {
   const keys = Object.keys(operation)
-    .filter((key) => typeof operation[key] === 'string')
-    .filter((key) => baseOperationRecordKeys.indexOf(key) === -1)
-  return keys.map((key) => (
+    .filter(key => typeof operation[key] === 'string')
+    .filter(key => baseOperationRecordKeys.indexOf(key) === -1)
+  return keys.map(key => (
     <HorizontalLabelledField
       key={key}
       label={startCase(key)}
@@ -37,27 +37,27 @@ export const renderOperationRecords = (operation: OperationRecord) => {
   ))
 }
 
-export const TransactionOperation: React.SFC<Props> = ({transactionWithOperation: t}) => (
-  <article className='message is-small is-transparent'>
-    <div className='message-header'>
+export const TransactionCard: React.SFC<Props> = ({ transactionWithOperation: t }) => (
+  <article className="message is-small is-transparent">
+    <div className="message-header">
       <p>
-        {!t.isIncoming && <span className='icon has-text-success'><i className='fas fa-arrow-down' /></span>}
-        {t.isIncoming && <span className='icon has-text-danger'><i className='fas fa-arrow-up' /></span>}
+        {!t.isIncoming && (
+          <span className="icon has-text-success">
+            <i className="fas fa-arrow-down" />
+          </span>
+        )}
+        {t.isIncoming && (
+          <span className="icon has-text-danger">
+            <i className="fas fa-arrow-up" />
+          </span>
+        )}
         <span>{startCase(t.operation.type)}</span>
       </p>
     </div>
-    <div className='message-body'>
+    <div className="message-body">
       {renderOperationRecords(t.operation)}
-      <HorizontalLabelledField
-        label='Fee'
-        value={t.fee}
-        isCompact={true}
-      />
-      <HorizontalLabelledField
-        label='Memo'
-        value={t.memo}
-        isCompact={true}
-      />
+      <HorizontalLabelledField label="Fee" value={t.fee} isCompact={true} />
+      <HorizontalLabelledField label="Memo" value={t.memo} isCompact={true} />
     </div>
   </article>
 )

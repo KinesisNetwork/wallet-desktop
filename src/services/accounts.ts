@@ -1,7 +1,7 @@
 import { AccountMissingError } from '@helpers/errors'
 import { getServer } from '@services/kinesis'
 import { Connection } from '@types'
-import { Account, AccountResponse, Asset, Server } from 'js-kinesis-sdk'
+import { Account, AccountResponse, Asset, Keypair, Server, Transaction } from 'js-kinesis-sdk'
 
 export async function loadAccount(
   publicKey: string,
@@ -15,10 +15,7 @@ export async function loadAccount(
   }
 }
 
-export async function getAccountIfExists(
-  server: Server,
-  publicKey: string,
-): Promise<Account> {
+export async function getAccountIfExists(server: Server, publicKey: string): Promise<Account> {
   try {
     const account = await server.loadAccount(publicKey)
     return new Account(publicKey, account.sequence)
@@ -27,12 +24,23 @@ export async function getAccountIfExists(
   }
 }
 
-export function getBalance(
-  account: AccountResponse,
-): string {
-  const nativeBalance = account.balances.find((balance) => balance.asset_type === Asset.native().getAssetType())
+export function getBalance(account: AccountResponse): string {
+  const nativeBalance = account.balances.find(
+    balance => balance.asset_type === Asset.native().getAssetType(),
+  )
   if (!nativeBalance) {
     throw new Error('Native balance not found')
   }
   return nativeBalance.balance
+}
+
+export async function getTransactionSigners(server: Server, transaction: Transaction) {
+  const account = await server.loadAccount(transaction.source)
+  const signers = account.signers
+    .filter(({ weight }) => weight > 0)
+    .map(({ public_key }) => Keypair.fromPublicKey(public_key))
+
+  const transactionSignatures = transaction.signatures.map((sig: any) => sig.signature())
+
+  return signers.filter(kp => transactionSignatures.some(sig => kp.verify(transaction.hash(), sig)))
 }

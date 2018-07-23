@@ -2,8 +2,13 @@ import * as React from 'react'
 
 import { InputField } from '@components'
 import { SignTransactionFormProps } from '@containers'
+import { getTransactionSigners } from '@services/accounts'
+import { getServer } from '@services/kinesis'
+import { Connection } from '@types'
 import * as copy from 'copy-to-clipboard'
-import { Keypair, Transaction } from 'js-kinesis-sdk'
+import { Keypair, Transaction, TransactionOperation } from 'js-kinesis-sdk'
+import { startCase } from 'lodash'
+import { HorizontalLabelledField } from './LabelledField'
 
 interface State {
   transaction?: Transaction
@@ -46,8 +51,8 @@ export class SignTransactionForm extends React.Component<SignTransactionFormProp
 
   render() {
     return (
-      <div className="columns is-centered">
-        <div className="column">
+      <div>
+        <div>
           <InputField
             label="Transaction"
             value={this.props.message}
@@ -97,8 +102,86 @@ export class SignTransactionForm extends React.Component<SignTransactionFormProp
             </div>
           </div>
         </div>
-        {/* <div className='column'>{this.renderTransaction()}</div> */}
+        {this.state.transaction && (
+          <TransactionView
+            transaction={this.state.transaction}
+            connection={this.props.connection}
+            didSign={this.state.signed}
+          />
+        )}
       </div>
+    )
+  }
+}
+
+interface Props {
+  transaction: Transaction
+  connection: Connection
+  didSign: boolean
+}
+interface TransactionState {
+  signers: string[]
+}
+class TransactionView extends React.Component<Props, TransactionState> {
+  state: TransactionState = { signers: [] }
+
+  getSigners = async () => {
+    const signers = await getTransactionSigners(
+      getServer(this.props.connection),
+      this.props.transaction,
+    )
+    this.setState({ signers: signers.map(sig => sig.publicKey()) })
+  }
+
+  componentDidMount() {
+    this.getSigners()
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.didSign !== this.props.didSign) {
+      this.getSigners()
+    }
+  }
+
+  renderOperations = () =>
+    this.props.transaction.operations.map(op => <OperationOverview operation={op} key={op.type} />)
+
+  renderSigners = () =>
+    this.state.signers.map(sig => <HorizontalLabelledField key={sig} value={sig} label="" />)
+
+  render() {
+    const { transaction } = this.props
+    return (
+      <div className="section">
+        <h3 className="subtitle">Transaction</h3>
+        <HorizontalLabelledField label="Source" value={transaction.source} />
+        <HorizontalLabelledField label="Fee" value={transaction.fee.toString()} />
+        {this.renderOperations()}
+        <hr />
+        <h3 className="subtitle">Signers</h3>
+        {this.renderSigners()}
+      </div>
+    )
+  }
+}
+
+class OperationOverview extends React.Component<{ operation: TransactionOperation }> {
+  renderOperationRecords = () =>
+    Object.entries(this.props.operation)
+      .filter(([_, value]) => typeof value === 'string' || typeof value === 'number')
+      .filter(([key]) => !['type'].includes(key))
+      .map(([key, value]) => (
+        <HorizontalLabelledField label={startCase(key)} value={value} key={key} />
+      ))
+
+  render() {
+    const { operation } = this.props
+    return (
+      <React.Fragment>
+        <hr />
+        <h3 className="subtitle">{startCase(operation.type)}</h3>
+        {this.renderOperationRecords()}
+      </React.Fragment>
     )
   }
 }

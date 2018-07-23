@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { TransactionOperation } from '@components'
+import { TransactionCard } from '@components'
 import { TransactionOperationView } from '@types'
 
 export interface Props {
@@ -25,18 +25,16 @@ export class Transactions extends React.Component<Props> {
   }
 
   render() {
-    const {
-      isLoading,
-      operations,
-    } = this.props
+    const { isLoading, operations } = this.props
     return (
       <React.Fragment>
-        <h1 className='sub-heading primary-font'>
+        <h1 className="sub-heading primary-font">
           Transactions
-          {isLoading && <span className='loader' style={{display: 'inline-block'}} />}
+          {isLoading && <span className="loader" style={{ display: 'inline-block' }} />}
         </h1>
-        <div className='scrollable' onScroll={this.handleScroll}>
-          {!isLoading && operations.map((t, i) => <TransactionOperation key={i} transactionWithOperation={t} />)}
+        <div className="scrollable" onScroll={this.handleScroll}>
+          {!isLoading &&
+            operations.map((t, i) => <TransactionCard key={i} transactionWithOperation={t} />)}
         </div>
       </React.Fragment>
     )
