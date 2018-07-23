@@ -2,9 +2,9 @@ import {
   addPayee,
   changeWalletView,
   selectWallet,
-  transferFailed,
+  transactionFailed,
+  transactionSuccess,
   transferRequest,
-  transferSuccess,
   updateTransferForm,
 } from '@actions'
 import { RootAction } from '@store'
@@ -25,13 +25,15 @@ export const transfer = combineReducers<TransferState, RootAction>({
   }),
   isTransferring: (state = false, action) => {
     switch (action.type) {
-      case getType(transferRequest): return true
+      case getType(transferRequest):
+        return true
 
-      case getType(transferSuccess):
-      case getType(transferFailed):
+      case getType(transactionSuccess):
+      case getType(transactionFailed):
         return false
 
-      default: return state
+      default:
+        return state
     }
   },
 })
@@ -46,9 +48,10 @@ function handleChange(name: keyof TransferRequest) {
 
       case getType(changeWalletView):
       case getType(selectWallet):
-      case getType(transferSuccess):
+      case getType(transactionSuccess):
         return ''
-      default: return state
+      default:
+        return state
     }
   }
 }

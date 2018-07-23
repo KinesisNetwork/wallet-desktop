@@ -1,55 +1,79 @@
 import {
   accountLoadRequest,
-  transferFailed,
+  transactionFailed,
+  transactionRequest,
+  transactionSuccess,
   transferRequest,
-  transferSuccess,
 } from '@actions'
 import { generalFailureAlert, generalSuccessAlert } from '@helpers/alert'
 import { getTransactionErrorMessage } from '@services/kinesis'
-import { transferKinesis } from '@services/transfer'
-import { Epic } from '@store'
-import { Wallet } from '@types'
+import { createKinesisTransfer, submitSignedTransaction } from '@services/transfer'
+import { Epic, RootState } from '@store'
+import { Connection, Wallet } from '@types'
 import { of } from 'rxjs'
 import { fromPromise } from 'rxjs/observable/fromPromise'
-import { catchError, filter, ignoreElements, map, mergeMap, withLatestFrom } from 'rxjs/operators'
+import {
+  catchError,
+  filter,
+  flatMap,
+  ignoreElements,
+  map,
+  mergeMap,
+  withLatestFrom,
+} from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
+
+// TODO: these should be selectors like from reselect
+function getActiveKeys(state: RootState): { publicKey: string; privateKey: string } {
+  const sourceWallet = state.wallets.activeWallet as Wallet
+  const privateKey = state.passwords.livePasswords[sourceWallet.publicKey].privateKey
+  return { publicKey: sourceWallet.publicKey, privateKey }
+}
+
+function getCurrentConnection(state: RootState): Connection {
+  return state.connections.currentConnection
+}
 
 export const transferRequest$: Epic = (action$, state$) =>
   action$.pipe(
     filter(isActionOf(transferRequest)),
     map(({ payload }) => payload),
     withLatestFrom(state$),
-    mergeMap(
-      ([request, state]) => {
-        const sourceWallet = state.wallets.activeWallet as Wallet
-        const privateKey = state.passwords.livePasswords[sourceWallet.publicKey].privateKey
-        const connection = state.connections.currentConnection
-        return fromPromise(transferKinesis(privateKey, connection, request))
-          .pipe(
-            map(() => transferSuccess(sourceWallet.publicKey)),
-            catchError((err) => of(transferFailed(err))),
-        )
-      },
+    mergeMap(([request, state]) =>
+      fromPromise(
+        createKinesisTransfer(
+          getActiveKeys(state).privateKey,
+          getCurrentConnection(state),
+          request,
+        ),
+      ).pipe(
+        map(transactionRequest),
+        catchError(err => of(transactionFailed(err))),
+      ),
     ),
   )
 
-export const transferSuccess$: Epic = (action$) =>
+export const transactionSubmission$: Epic = (action$, state$) =>
   action$.pipe(
-    filter(isActionOf(transferSuccess)),
-    mergeMap(({ payload }) => {
-      return fromPromise(generalSuccessAlert('The transfer was successful.'))
-        .pipe(
-          map(() => accountLoadRequest(payload)),
-      )
-    }),
+    filter(isActionOf(transactionRequest)),
+    mergeMap(({ payload }) =>
+      fromPromise(submitSignedTransaction(getCurrentConnection(state$.value), payload)).pipe(
+        map(transactionSuccess),
+        catchError(err => of(transactionFailed(err))),
+      ),
+    ),
   )
 
-export const transferFailed$: Epic = (action$) =>
+export const transactionSuccess$: Epic = (action$, state$) =>
   action$.pipe(
-    filter(isActionOf(transferFailed)),
-    map(({ payload }) => {
-      const errMessage = getTransactionErrorMessage(payload)
-      return fromPromise(generalFailureAlert(errMessage))
-    }),
+    filter(isActionOf(transactionSuccess)),
+    flatMap(() => generalSuccessAlert('The transfer was successful.')),
+    map(() => accountLoadRequest(getActiveKeys(state$.value).publicKey)),
+  )
+
+export const transactionFailed$: Epic = action$ =>
+  action$.pipe(
+    filter(isActionOf(transactionFailed)),
+    map(({ payload }) => generalFailureAlert(getTransactionErrorMessage(payload))),
     ignoreElements(),
   )

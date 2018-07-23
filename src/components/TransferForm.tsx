@@ -123,10 +123,12 @@ export class TransferForm extends React.Component<TransferProps> {
           />
           <div className='field is-grouped'>
             <div className='control is-expanded'>
-              <button className='button is-fullwidth' onClick={this.initTransfer}>Transfer</button>
+              <button className='button is-fullwidth' onClick={this.initTransfer}>
+                <span>Transfer</span>
+              </button>
             </div>
             <div className='control'>
-              <button className='button is-text' onClick={this.copyTransferTransaction}>
+              <button className='button is-text' onClick={this.copyTransferTransaction} title='Copy Transaction'>
                 <span className='icon'><i className='fas fa-copy' /></span>
               </button>
             </div>

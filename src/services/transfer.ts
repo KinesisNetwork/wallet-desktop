@@ -2,13 +2,22 @@ import { WalletLockError } from '@helpers/errors'
 import { getAccountIfExists } from '@services/accounts'
 import { getFeeInStroops, getServer } from '@services/kinesis'
 import { Connection, TransferRequest } from '@types'
-import { Account, Asset, Keypair, Memo, Operation, Server, Transaction, TransactionBuilder } from 'js-kinesis-sdk'
+import {
+  Account,
+  Asset,
+  Keypair,
+  Memo,
+  Operation,
+  Server,
+  Transaction,
+  TransactionBuilder,
+} from 'js-kinesis-sdk'
 
-export async function transferKinesis(
+export async function createKinesisTransfer(
   decryptedPrivateKey: string,
   connection: Connection,
   request: TransferRequest,
-): Promise<void> {
+): Promise<Transaction> {
   if (!decryptedPrivateKey) {
     throw new WalletLockError()
   }
@@ -20,6 +29,11 @@ export async function transferKinesis(
   const transaction = await newTransferTransaction(server, sourceAccount, request)
 
   transaction.sign(sourceKey)
+  return transaction
+}
+
+export async function submitSignedTransaction(connection: Connection, transaction: Transaction) {
+  const server = getServer(connection)
   await server.submitTransaction(transaction)
 }
 
@@ -53,11 +67,13 @@ async function newPaymentTransferTransaction(
 ): Promise<Transaction> {
   const fee = await getFeeInStroops(server, Number(amount))
   const paymentTransaction = new TransactionBuilder(source, { fee })
-    .addOperation(Operation.payment({
-      amount,
-      destination,
-      asset: Asset.native(),
-    }))
+    .addOperation(
+      Operation.payment({
+        amount,
+        destination,
+        asset: Asset.native(),
+      }),
+    )
     .addMemo(Memo.text(memo || ''))
     .build()
 
@@ -71,10 +87,12 @@ async function newCreateAccountTransaction(
 ): Promise<Transaction> {
   const fee = await getFeeInStroops(server, Number(startingBalance))
   const createAccountTransaction = new TransactionBuilder(source, { fee })
-    .addOperation(Operation.createAccount({
-      destination,
-      startingBalance,
-    }))
+    .addOperation(
+      Operation.createAccount({
+        destination,
+        startingBalance,
+      }),
+    )
     .addMemo(Memo.text(memo || ''))
     .build()
 

@@ -2,78 +2,87 @@ import * as React from 'react'
 
 import { InputField } from '@components'
 import { SignTransactionFormProps } from '@containers'
-import { getServer } from '@services/kinesis'
 import * as copy from 'copy-to-clipboard'
 import { Keypair, Transaction } from 'js-kinesis-sdk'
 
 interface State {
-  transaction: Transaction | null,
+  transaction?: Transaction
+  signed: boolean
 }
 export class SignTransactionForm extends React.Component<SignTransactionFormProps, State> {
-  constructor(props) {
-    super(props)
-    this.state = {
-      transaction: null,
+  state: State = {
+    signed: false,
+  }
+
+  componentDidUpdate(prevProps: SignTransactionFormProps) {
+    if (prevProps.message !== this.props.message) {
+      this.setState({ signed: false, transaction: undefined })
     }
   }
 
-  submitTransaction = () => {
-    if (this.state.transaction) {
-      const server = getServer(this.props.connection)
-      return server.submitTransaction(this.state.transaction)
-    }
-  }
+  submitTransaction = () =>
+    this.state.transaction && this.props.transactionRequest(this.state.transaction)
 
-  signTransaction: React.FormEventHandler<HTMLElement> = (ev) => {
-    ev.preventDefault()
-    const transaction = new Transaction(this.props.message)
-    const keypair = Keypair.fromSecret(this.props.decryptedPrivateKey())
-    transaction.sign(keypair)
-    this.setState({ transaction })
-    copy(transaction.toEnvelope().toXDR().toString('base64'))
-    // tslint:disable-next-line:no-console
-    console.log(transaction)
-  }
+  generateTransaction = () => this.setState({ transaction: new Transaction(this.props.message) })
 
-  renderTransaction = () => {
+  signTransaction = () => {
     if (this.state.transaction) {
-      const stringValue = this.state.transaction.toEnvelope().toXDR().toString('base64')
-      return (
-        <React.Fragment>
-          <div className='field'>
-            <div className='control'>
-              <textarea className='textarea' value={stringValue} readOnly={true} />
-            </div>
-          </div>
-          <div className='field'>
-            <div className='control'>
-              <button className='button is-fullwidth' onClick={this.submitTransaction}>
-                Submit
-            </button>
-            </div>
-          </div>
-        </React.Fragment>
+      const keypair = Keypair.fromSecret(this.props.decryptedPrivateKey())
+      this.state.transaction.sign(keypair)
+      this.setState({ signed: true })
+      copy(
+        this.state.transaction
+          .toEnvelope()
+          .toXDR()
+          .toString('base64'),
       )
     }
   }
 
   render() {
     return (
-      <form onSubmit={this.signTransaction}>
-        <InputField
-          label='Transaction'
-          value={this.props.message}
-          id='signdata-message'
-          helpText='Enter the text to sign'
-          onChangeHandler={(newValue) => this.props.updateSignTransactionForm({ field: 'message', newValue })}
-        />
-        <div className='field is-grouped'>
-          <div className='control is-expanded'>
-            <button className='button is-fullwidth' type='submit'>Sign</button>
+      <div className="columns is-centered">
+        <div className="column">
+          <InputField
+            label="Transaction"
+            value={this.props.message}
+            id="signdata-message"
+            helpText="Paste the serialized transaction here"
+            onChangeHandler={newValue =>
+              this.props.updateSignTransactionForm({
+                field: 'message',
+                newValue,
+              })
+            }
+          />
+          <div className="field is-grouped">
+            <div className="control is-expanded">
+              <button className="button is-fullwidth" onClick={this.generateTransaction}>
+                Load
+              </button>
+            </div>
+            <div className="control is-expanded">
+              <button
+                className="button is-fullwidth"
+                onClick={this.signTransaction}
+                disabled={!this.state.transaction}
+              >
+                Sign
+              </button>
+            </div>
+            <div className="control is-expanded">
+              <button
+                className="button is-fullwidth"
+                onClick={this.submitTransaction}
+                disabled={!this.state.signed}
+              >
+                Submit to Network
+              </button>
+            </div>
           </div>
         </div>
-        {this.renderTransaction()}
-      </form>
+        {/* <div className='column'>{this.renderTransaction()}</div> */}
+      </div>
     )
   }
 }
