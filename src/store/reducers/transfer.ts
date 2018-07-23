@@ -3,6 +3,7 @@ import {
   changeWalletView,
   selectWallet,
   transactionFailed,
+  transactionRequest,
   transactionSuccess,
   transferRequest,
   updateTransferForm,
@@ -26,6 +27,7 @@ export const transfer = combineReducers<TransferState, RootAction>({
   isTransferring: (state = false, action) => {
     switch (action.type) {
       case getType(transferRequest):
+      case getType(transactionRequest):
         return true
 
       case getType(transactionSuccess):

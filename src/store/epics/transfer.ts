@@ -1,3 +1,5 @@
+import { getActiveKeys, getCurrentConnection } from '../selectors'
+
 import {
   accountLoadRequest,
   transactionFailed,
@@ -8,8 +10,7 @@ import {
 import { generalFailureAlert, generalSuccessAlert } from '@helpers/alert'
 import { getTransactionErrorMessage } from '@services/kinesis'
 import { createKinesisTransfer, submitSignedTransaction } from '@services/transfer'
-import { Epic, RootState } from '@store'
-import { Connection, Wallet } from '@types'
+import { Epic } from '@store'
 import { of } from 'rxjs'
 import { fromPromise } from 'rxjs/observable/fromPromise'
 import {
@@ -22,17 +23,6 @@ import {
   withLatestFrom,
 } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
-
-// TODO: these should be selectors like from reselect
-function getActiveKeys(state: RootState): { publicKey: string; privateKey: string } {
-  const sourceWallet = state.wallets.activeWallet as Wallet
-  const privateKey = state.passwords.livePasswords[sourceWallet.publicKey].privateKey
-  return { publicKey: sourceWallet.publicKey, privateKey }
-}
-
-function getCurrentConnection(state: RootState): Connection {
-  return state.connections.currentConnection
-}
 
 export const transferRequest$: Epic = (action$, state$) =>
   action$.pipe(

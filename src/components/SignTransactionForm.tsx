@@ -23,13 +23,18 @@ export class SignTransactionForm extends React.Component<SignTransactionFormProp
   submitTransaction = () =>
     this.state.transaction && this.props.transactionRequest(this.state.transaction)
 
-  generateTransaction = () => this.setState({ transaction: new Transaction(this.props.message) })
+  loadTransaction = () => this.setState({ transaction: new Transaction(this.props.message) })
 
   signTransaction = () => {
     if (this.state.transaction) {
       const keypair = Keypair.fromSecret(this.props.decryptedPrivateKey())
       this.state.transaction.sign(keypair)
       this.setState({ signed: true })
+    }
+  }
+
+  copyTransaction = () => {
+    if (this.state.transaction) {
       copy(
         this.state.transaction
           .toEnvelope()
@@ -57,7 +62,7 @@ export class SignTransactionForm extends React.Component<SignTransactionFormProp
           />
           <div className="field is-grouped">
             <div className="control is-expanded">
-              <button className="button is-fullwidth" onClick={this.generateTransaction}>
+              <button className="button is-fullwidth" onClick={this.loadTransaction}>
                 Load
               </button>
             </div>
@@ -65,7 +70,7 @@ export class SignTransactionForm extends React.Component<SignTransactionFormProp
               <button
                 className="button is-fullwidth"
                 onClick={this.signTransaction}
-                disabled={!this.state.transaction}
+                disabled={!this.state.transaction || this.state.signed}
               >
                 Sign
               </button>
@@ -73,10 +78,21 @@ export class SignTransactionForm extends React.Component<SignTransactionFormProp
             <div className="control is-expanded">
               <button
                 className="button is-fullwidth"
-                onClick={this.submitTransaction}
-                disabled={!this.state.signed}
+                onClick={this.copyTransaction}
+                disabled={!this.state.transaction || !this.state.signed}
               >
-                Submit to Network
+                Copy
+              </button>
+            </div>
+            <div className="control is-expanded">
+              <button
+                className={`button is-fullwidth ${
+                  this.props.submissionPending ? 'is-loading' : ''
+                }`}
+                onClick={this.submitTransaction}
+                disabled={!this.state.signed || this.props.submissionPending}
+              >
+                Submit
               </button>
             </div>
           </div>

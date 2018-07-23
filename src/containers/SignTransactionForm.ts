@@ -4,10 +4,11 @@ import { RootState } from '@store'
 import { Wallet } from '@types'
 import { connect } from 'react-redux'
 
-const mapStateToProps = ({ sign, passwords, wallets }: RootState) => ({
+const mapStateToProps = ({ sign, passwords, wallets, transfer }: RootState) => ({
   message: sign.signTransactionData.message,
   decryptedPrivateKey: () =>
     passwords.livePasswords[(wallets.activeWallet as Wallet).publicKey].privateKey,
+  submissionPending: transfer.isTransferring,
 })
 
 const mapDispatchToProps = {

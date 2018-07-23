@@ -9,19 +9,18 @@ import { Epic } from '@store'
 import { saveAs } from 'file-saver'
 import { startCase } from 'lodash'
 import { merge } from 'rxjs'
-import { filter, ignoreElements, map, tap } from 'rxjs/operators'
+import { filter, ignoreElements, map, tap, withLatestFrom } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
+import { getActivePublicKey } from '../selectors'
 
-export const deleteWallet$: Epic = (action$) => {
-  const deleteWalletAction$ = action$.pipe(
-    filter(isActionOf(deleteWalletAction)),
-  )
+export const deleteWallet$: Epic = action$ => {
+  const deleteWalletAction$ = action$.pipe(filter(isActionOf(deleteWalletAction)))
 
   const downloadPaperWallet$ = deleteWalletAction$.pipe(
     tap(({ payload }) => {
       const text = Object.entries(payload)
         .filter(([key]) => key !== 'encryptedPrivateKey')
-        .sort((a, b) => a[0] < b[0] ? -1 : 1)
+        .sort((a, b) => (a[0] < b[0] ? -1 : 1))
         .map(([key, value]) => `${startCase(key)},${value}`)
         .join('\n')
       const blob = new Blob([text], { type: 'text/csv;charset=utf-8' })
@@ -33,18 +32,15 @@ export const deleteWallet$: Epic = (action$) => {
   return merge(downloadPaperWallet$)
 }
 
-export const changeWallet: Epic = (action$) => {
-  const switchWallet$ = action$.pipe(
-    filter(isActionOf([selectWallet, addWallet])),
-  )
+export const changeWallet: Epic = (action$, state$) => {
+  const switchWallet$ = action$.pipe(filter(isActionOf([selectWallet, addWallet])))
 
   const loadAccount$ = switchWallet$.pipe(
-    map(({ payload }) => accountLoadRequest(payload.publicKey)),
+    withLatestFrom(state$),
+    map(([_, state]) => accountLoadRequest(getActivePublicKey(state))),
   )
 
-  const clearSignFields$ = switchWallet$.pipe(
-    map(clearSignForms),
-  )
+  const clearSignFields$ = switchWallet$.pipe(map(clearSignForms))
 
   return merge(loadAccount$, clearSignFields$)
 }
