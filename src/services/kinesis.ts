@@ -49,7 +49,7 @@ export async function getFeeInStroops(
 
   const percentageFee = Number(amountInKinesis) * basePercentageFee / basisPointsToPercent * STROOPS_IN_ONE_KINESIS
 
-  return String(percentageFee + baseFeeInStroops)
+  return String(Math.ceil(percentageFee + baseFeeInStroops))
 }
 
 export async function getFeeInKinesis(
