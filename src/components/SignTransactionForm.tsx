@@ -13,10 +13,12 @@ import { HorizontalLabelledField } from './LabelledField'
 interface State {
   transaction?: Transaction
   signed: boolean
+  copied: boolean
 }
 export class SignTransactionForm extends React.Component<SignTransactionFormProps, State> {
   state: State = {
     signed: false,
+    copied: false,
   }
 
   componentDidUpdate(prevProps: SignTransactionFormProps) {
@@ -39,13 +41,15 @@ export class SignTransactionForm extends React.Component<SignTransactionFormProp
   }
 
   copyTransaction = () => {
-    if (this.state.transaction) {
+    if (this.state.transaction && !this.state.copied) {
       copy(
         this.state.transaction
           .toEnvelope()
           .toXDR()
           .toString('base64'),
       )
+      this.setState({ copied: true })
+      setTimeout(() => this.setState({ copied: false }), 2000)
     }
   }
 
@@ -86,7 +90,7 @@ export class SignTransactionForm extends React.Component<SignTransactionFormProp
                 onClick={this.copyTransaction}
                 disabled={!this.state.transaction || !this.state.signed}
               >
-                Copy
+                {this.state.copied ? 'Copied' : 'Copy'}
               </button>
             </div>
             <div className="control is-expanded">
@@ -168,8 +172,7 @@ class TransactionView extends React.Component<Props, TransactionState> {
 class OperationOverview extends React.Component<{ operation: TransactionOperation }> {
   renderOperationRecords = () =>
     Object.entries(this.props.operation)
-      .filter(([_, value]) => typeof value === 'string' || typeof value === 'number')
-      .filter(([key]) => !['type'].includes(key))
+      .filter(([key, value]) => key !== 'type' && ['string', 'number'].includes(typeof value))
       .map(([key, value]) => (
         <HorizontalLabelledField label={startCase(key)} value={value} key={key} />
       ))

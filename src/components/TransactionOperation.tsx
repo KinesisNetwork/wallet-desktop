@@ -24,16 +24,11 @@ const baseOperationRecordKeys = [
 ]
 
 export const renderOperationRecords = (operation: OperationRecord | TransactionOperation) => {
-  const keys = Object.keys(operation)
-    .filter(key => typeof operation[key] === 'string')
-    .filter(key => baseOperationRecordKeys.indexOf(key) === -1)
-  return keys.map(key => (
-    <HorizontalLabelledField
-      key={key}
-      label={startCase(key)}
-      value={operation[key]}
-      isCompact={true}
-    />
+  const entries = Object.entries(operation).filter(
+    ([key, value]) => baseOperationRecordKeys.includes(key) && ['string'].includes(typeof value),
+  )
+  return entries.map(([key, value]) => (
+    <HorizontalLabelledField key={key} label={startCase(key)} value={value} isCompact={true} />
   ))
 }
 
