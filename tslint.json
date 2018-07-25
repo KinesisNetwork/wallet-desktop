@@ -1,19 +1,14 @@
 {
-    "defaultSeverity": "error",
-    "extends": [
-        "tslint:recommended",
-        "tslint-react"
-    ],
-    "jsRules": {},
-    "rules": {
-      "interface-name": false,
-      "no-var-requires": false,
-      "jsx-no-lambda": false,
-      "max-classes-per-file": false,
-      "member-access": false,
-      "object-literal-sort-keys": [false, "shorthand-first"],
-      "quotemark": [true, "single"],
-      "semicolon": [true, "never"]
-    },
-    "rulesDirectory": []
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "jsRules": {},
+  "rules": {
+    "interface-name": false,
+    "no-var-requires": false,
+    "jsx-no-lambda": false,
+    "max-classes-per-file": false,
+    "member-access": false,
+    "object-literal-sort-keys": [false, "shorthand-first"]
+  },
+  "rulesDirectory": []
 }

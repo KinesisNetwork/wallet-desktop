@@ -1,4 +1,4 @@
-import { focus } from './focus'
+import { focus } from '@helpers/focus'
 
 export async function formAlert(message: string, key: string) {
   await sweetAlert('Oops!', message, 'error')

@@ -1,4 +1,9 @@
-import { changeTransferView, changeWalletView, transferRequest, updateTransferForm } from '@actions'
+import {
+  changeTransferView,
+  changeWalletView,
+  transferRequest,
+  updateTransferForm,
+} from '@actions'
 import { TransferForm as TransferPresentation } from '@components'
 import { getFeeInKinesis } from '@services/kinesis'
 import { RootState } from '@store'
@@ -19,6 +24,7 @@ const mapStateToProps = ({ wallets, connections, transfer, accounts, payees, pas
     accountBalance: accounts.accountsMap[activeWallet.publicKey].balance,
     payees: payees.payees.concat(otherWalletsAsPayees),
     activeWallet,
+    connection: connections.currentConnection,
   }
 }
 

@@ -1,8 +1,11 @@
 import { app, BrowserWindow } from 'electron'
 import { enableLiveReload } from 'electron-compile'
-import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer'
+import installExtension, {
+  REACT_DEVELOPER_TOOLS,
+  REDUX_DEVTOOLS,
+} from 'electron-devtools-installer'
 import * as path from 'path'
-import { register } from 'tsconfig-paths'
+import { register } from 'tsconfig-paths/lib'
 
 // tslint:disable-next-line:no-var-requires no-require-imports
 const config = require('../tsconfig.json')
@@ -19,7 +22,7 @@ let mainWindow: Electron.BrowserWindow | null = null
 const isDevMode = process.execPath.match(/[\\/]electron/)
 
 if (isDevMode) {
-  enableLiveReload({strategy: 'react-hmr'})
+  enableLiveReload({ strategy: 'react-hmr' })
 }
 
 const createWindow = async () => {

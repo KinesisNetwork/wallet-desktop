@@ -13,6 +13,7 @@ export enum AccountPage {
 export enum SignBehaviour {
   sign = 'Sign',
   verify = 'Verify',
+  signTransaction = 'Sign Transaction',
 }
 
 export enum CreateWalletFormView {

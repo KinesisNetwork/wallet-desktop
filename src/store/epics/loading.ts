@@ -22,13 +22,9 @@ export const initalLoad$: Epic = (action$, state$) => {
     }),
   )
 
-  const lockAllAccounts$ = rehydrate$.pipe(
-    map(() => lockAllAccounts()),
-  )
+  const lockAllAccounts$ = rehydrate$.pipe(map(() => lockAllAccounts()))
 
-  const loadConnections$ = rehydrate$.pipe(
-    map(loadConnections),
-  )
+  const loadConnections$ = rehydrate$.pipe(map(loadConnections))
 
   return merge(loadAccount$, lockAllAccounts$, loadConnections$)
 }

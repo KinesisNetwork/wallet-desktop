@@ -1,4 +1,12 @@
-import { changeSignFocus, clearSignForms, signMessage, updateSignForm, updateVerifyForm, verifyMessage } from '@actions'
+import {
+  changeSignFocus,
+  clearSignForms,
+  signMessage,
+  updateSignForm,
+  updateSignTransactionForm,
+  updateVerifyForm,
+  verifyMessage,
+} from '@actions'
 import { RootAction } from '@store'
 import { RawMessage, SignBehaviour, SignedMessage } from '@types'
 import { combineReducers } from 'redux'
@@ -8,6 +16,7 @@ export interface SignState {
   focus: SignBehaviour
   signData: RawMessage
   verifyData: SignedMessage
+  signTransactionData: RawMessage
   signature: string
   isValidSignature: boolean
 }
@@ -22,6 +31,7 @@ export const sign = combineReducers<SignState, RootAction>({
   signData: combineReducers<RawMessage, RootAction>({
     message: handleChange('message'),
   }),
+  signTransactionData: combineReducers<RawMessage, RootAction>({ message: handleChange('message') }),
   verifyData: combineReducers<SignedMessage, RootAction>({
     message: handleChange('message'),
     signature: handleChange('signature'),
@@ -47,6 +57,7 @@ function handleChange(name: keyof SignedMessage) {
     switch (action.type) {
       case getType(updateSignForm):
       case getType(updateVerifyForm):
+      case getType(updateSignTransactionForm):
         return action.payload.field === name ? action.payload.newValue : state
       case getType(clearSignForms): return ''
       default: return state

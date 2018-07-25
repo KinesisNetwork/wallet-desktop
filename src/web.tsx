@@ -14,7 +14,12 @@ register({
 })
 
 const render = () => {
-  ReactDOM.render(<AppContainer><App /></AppContainer>, document.getElementById('App'))
+  ReactDOM.render(
+    <AppContainer>
+      <App />
+    </AppContainer>,
+    document.getElementById('App'),
+  )
 }
 
 render()
