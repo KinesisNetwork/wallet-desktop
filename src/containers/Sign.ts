@@ -1,4 +1,10 @@
-import { changeSignFocus, signMessage, updateSignForm, updateVerifyForm, verifyMessage } from '@actions'
+import {
+  changeSignFocus,
+  messageVerificationResult,
+  signMessage,
+  updateSignForm,
+  updateVerifyForm,
+} from '@actions'
 import { Sign as SignPresentation } from '@components'
 import { Dispatch, RootState } from '@store'
 import { RawMessage, SignBehaviour, SignedMessage, Wallet } from '@types'
@@ -7,7 +13,9 @@ import { connect } from 'react-redux'
 const mapStateToProps = ({ sign, wallets, passwords, accounts }: RootState) => {
   const activeWallet = wallets.activeWallet as Wallet
   const isWalletUnlocked = accounts.accountsMap[activeWallet.publicKey].isUnlocked
-  const decryptedPrivateKey = isWalletUnlocked ? passwords.livePasswords[activeWallet.publicKey].privateKey : ''
+  const decryptedPrivateKey = isWalletUnlocked
+    ? passwords.livePasswords[activeWallet.publicKey].privateKey
+    : ''
   return {
     decryptedPrivateKey,
     isWalletUnlocked,
@@ -30,8 +38,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch(updateVerifyForm({ field, newValue }))
   },
   signMessage: (signature: string) => dispatch(signMessage(signature)),
-  verifyMessage: (isValid: boolean) => dispatch(verifyMessage(isValid)),
+  messageVerificationResult: (isValid: boolean) => dispatch(messageVerificationResult(isValid)),
 })
 
 export type SignProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>
-export const Sign = connect(mapStateToProps, mapDispatchToProps)(SignPresentation)
+export const Sign = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SignPresentation)

@@ -6,7 +6,10 @@ import { RootAction } from './root-action'
 import { rootEpic, rootReducer, RootState } from './root-reducer'
 
 export type Dispatch = Dispatch<RootAction>
-export interface RehydrateAction { type: typeof REHYDRATE, payload: RootState }
+export interface RehydrateAction {
+  type: typeof REHYDRATE
+  payload: RootState
+}
 export type Epic = Epic<RootAction | RehydrateAction, RootState>
 export { RootAction, RootState }
 
@@ -14,7 +17,10 @@ export function configureStore() {
   const epicMiddleware = createEpicMiddleware(rootEpic)
 
   const storage = createStorage()
-  const persistedReducer = persistReducer({ key: 'root', storage, blacklist: ['passwords'] }, rootReducer)
+  const persistedReducer = persistReducer(
+    { key: 'root', storage, blacklist: ['passwords'] },
+    rootReducer,
+  )
 
   const w = window as any
   const composeEnhancers = w.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
