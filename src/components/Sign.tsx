@@ -9,17 +9,10 @@ import { SignBehaviour, SignedMessage } from '@types'
 import { Keypair } from 'js-kinesis-sdk'
 import { kebabCase, startCase } from 'lodash'
 
-const verify = require('js-kinesis-sdk').verify
-const StrKey = require('js-kinesis-sdk').StrKey
-
 export class Sign extends React.Component<SignProps> {
-  constructor(props: SignProps) {
-    super(props)
-  }
-
   tabs = () => {
     const behaviourOpts = enumStringValues(SignBehaviour)
-    return behaviourOpts.map((b) => {
+    return behaviourOpts.map(b => {
       const behaviour = b as SignBehaviour
       return (
         <li
@@ -38,7 +31,7 @@ export class Sign extends React.Component<SignProps> {
   render() {
     return (
       <div>
-        <div className='tabs'>
+        <div className="tabs">
           <ul>{this.tabs()}</ul>
         </div>
         {this.props.focus === SignBehaviour.sign && <SignForm {...this.props} />}
@@ -50,10 +43,6 @@ export class Sign extends React.Component<SignProps> {
 }
 
 export class SignForm extends React.Component<SignProps> {
-  constructor(props: SignProps) {
-    super(props)
-  }
-
   signData = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault()
     try {
@@ -87,25 +76,27 @@ export class SignForm extends React.Component<SignProps> {
   render() {
     const { signData, handleSignFormChange } = this.props
     return (
-      <div className='is-centered'>
+      <div className="is-centered">
         <form onSubmit={this.signData}>
           <InputField
-            label='Message'
+            label="Message"
             value={signData.message}
-            id='signdata-message'
-            helpText='Enter the text to sign'
-            onChangeHandler={(newValue) => handleSignFormChange('message', newValue)}
+            id="signdata-message"
+            helpText="Enter the text to sign"
+            onChangeHandler={newValue => handleSignFormChange('message', newValue)}
           />
-          <div className='field is-grouped'>
-            <div className='control is-expanded'>
-              <button className='button is-fullwidth' type='submit'>Sign</button>
+          <div className="field is-grouped">
+            <div className="control is-expanded">
+              <button className="button is-fullwidth" type="submit">
+                Sign
+              </button>
             </div>
           </div>
-          <div className='field'>
-            <div className='label is-small'>Signature</div>
-            <div className='control'>
+          <div className="field">
+            <div className="label is-small">Signature</div>
+            <div className="control">
               <textarea
-                className='textarea'
+                className="textarea"
                 rows={5}
                 style={{ width: '100%' }}
                 value={this.props.signature}
@@ -126,25 +117,34 @@ export class VerifyForm extends React.Component<SignProps> {
 
   verifyData = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault()
+    if (!this.isValidForm()) {
+      return
+    }
+    this.props.messageVerificationResult(this.verifyMessageSignature())
+  }
+
+  verifyMessageSignature = () => {
     try {
-      this.validateProps()
-      const decodedPubKey = StrKey.decodeEd25519PublicKey(this.props.verifyData.publicKey)
-      const isVerified = verify(
+      const keypair = Keypair.fromPublicKey(this.props.verifyData.publicKey)
+      return keypair.verify(
         Buffer.from(this.props.verifyData.message, 'utf8'),
         Buffer.from(this.props.verifyData.signature, 'hex'),
-        decodedPubKey,
       )
-
-      this.props.verifyMessage(isVerified)
     } catch (e) {
-      formAlert(e.message, e.key)
+      return false
     }
   }
 
-  validateProps = (): void | never => {
-    this.checkValidEntry('message')
-    this.checkValidEntry('signature')
-    this.checkValidEntry('publicKey')
+  isValidForm = (): boolean => {
+    try {
+      this.checkValidEntry('message')
+      this.checkValidEntry('signature')
+      this.checkValidEntry('publicKey')
+      return true
+    } catch (e) {
+      formAlert(e.message, e.key)
+      return false
+    }
   }
 
   checkValidEntry = (key: keyof SignedMessage) => {
@@ -156,32 +156,34 @@ export class VerifyForm extends React.Component<SignProps> {
   render() {
     const { verifyData, handleVerifyFormChange } = this.props
     return (
-      <div className='is-centered'>
+      <div className="is-centered">
         <form onSubmit={this.verifyData}>
           <InputField
-            label='Message'
+            label="Message"
             value={verifyData.message}
-            id='verify-message'
-            helpText='Enter the raw message'
-            onChangeHandler={(newValue) => handleVerifyFormChange('message', newValue)}
+            id="verify-message"
+            helpText="Enter the raw message"
+            onChangeHandler={newValue => handleVerifyFormChange('message', newValue)}
           />
           <InputField
-            label='Signature'
+            label="Signature"
             value={verifyData.signature}
-            id='verify-signature'
-            helpText='Enter the signed dataset'
-            onChangeHandler={(newValue) => handleVerifyFormChange('signature', newValue)}
+            id="verify-signature"
+            helpText="Enter the signed dataset"
+            onChangeHandler={newValue => handleVerifyFormChange('signature', newValue)}
           />
           <InputField
-            label='Public Key'
+            label="Public Key"
             value={verifyData.publicKey}
-            id='verify-public-key'
-            helpText='Enter the public key of the claimed signer'
-            onChangeHandler={(newValue) => handleVerifyFormChange('publicKey', newValue)}
+            id="verify-public-key"
+            helpText="Enter the public key of the claimed signer"
+            onChangeHandler={newValue => handleVerifyFormChange('publicKey', newValue)}
           />
-          <div className='field is-grouped'>
-            <div className='control is-expanded'>
-              <button className='button is-fullwidth' type='submit'>Verify</button>
+          <div className="field is-grouped">
+            <div className="control is-expanded">
+              <button className="button is-fullwidth" type="submit">
+                Verify
+              </button>
             </div>
           </div>
         </form>

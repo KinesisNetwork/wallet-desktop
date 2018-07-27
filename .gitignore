@@ -4,4 +4,5 @@ out
 src/style.css
 build
 .cache
+.web-cache
 dist
