@@ -87,7 +87,8 @@ export class SignForm extends React.Component<SignProps, State> {
   }
 
   render() {
-    const { signData, handleSignFormChange } = this.props
+    const { signData, handleSignFormChange, signature } = this.props
+    const { copied } = this.state
     return (
       <div className="is-centered">
         <form onSubmit={this.signData}>
@@ -109,22 +110,17 @@ export class SignForm extends React.Component<SignProps, State> {
             <label className="label is-small">Signature</label>
             <div className="field is-grouped">
               <div className="control is-expanded">
-                <input
-                  className="input"
-                  value={this.props.signature}
-                  readOnly={true}
-                  disabled={true}
-                />
+                <input className="input" value={signature} readOnly={true} disabled={true} />
               </div>
               <div className="control">
                 <button
                   type="button"
                   className="button"
                   onClick={this.copySignature}
-                  disabled={!this.props.signature}
+                  disabled={!signature}
                 >
-                  <span>{this.state.copied ? 'Copied' : 'Copy'}</span>
-                  {this.state.copied && (
+                  <span>{copied ? 'Copied' : 'Copy'}</span>
+                  {copied && (
                     <span className="icon has-text-success">
                       <i className="fas fa-check" />
                     </span>
