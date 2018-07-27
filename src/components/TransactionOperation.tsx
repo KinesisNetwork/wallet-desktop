@@ -25,7 +25,7 @@ const baseOperationRecordKeys = [
 
 export const renderOperationRecords = (operation: OperationRecord | TransactionOperation) => {
   const entries = Object.entries(operation).filter(
-    ([key, value]) => baseOperationRecordKeys.includes(key) && ['string'].includes(typeof value),
+    ([key, value]) => !baseOperationRecordKeys.includes(key) && ['string'].includes(typeof value),
   )
   return entries.map(([key, value]) => (
     <HorizontalLabelledField key={key} label={startCase(key)} value={value} isCompact={true} />

@@ -6,6 +6,7 @@ import { formAlert } from '@helpers/alert'
 import { enumStringValues } from '@helpers/enumStringValues'
 import { InputError, WalletLockError } from '@helpers/errors'
 import { SignBehaviour, SignedMessage } from '@types'
+import * as copy from 'copy-to-clipboard'
 import { Keypair } from 'js-kinesis-sdk'
 import { kebabCase, startCase } from 'lodash'
 
@@ -42,7 +43,13 @@ export class Sign extends React.Component<SignProps> {
   }
 }
 
-export class SignForm extends React.Component<SignProps> {
+interface State {
+  copied: boolean
+}
+export class SignForm extends React.Component<SignProps, State> {
+  state: State = {
+    copied: false,
+  }
   signData = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault()
     try {
@@ -73,8 +80,15 @@ export class SignForm extends React.Component<SignProps> {
     }
   }
 
+  copySignature = () => {
+    copy(this.props.signature)
+    this.setState({ copied: true })
+    setTimeout(() => this.setState({ copied: false }), 2000)
+  }
+
   render() {
-    const { signData, handleSignFormChange } = this.props
+    const { signData, handleSignFormChange, signature } = this.props
+    const { copied } = this.state
     return (
       <div className="is-centered">
         <form onSubmit={this.signData}>
@@ -93,15 +107,26 @@ export class SignForm extends React.Component<SignProps> {
             </div>
           </div>
           <div className="field">
-            <div className="label is-small">Signature</div>
-            <div className="control">
-              <textarea
-                className="textarea"
-                rows={5}
-                style={{ width: '100%' }}
-                value={this.props.signature}
-                disabled={true}
-              />
+            <label className="label is-small">Signature</label>
+            <div className="field is-grouped">
+              <div className="control is-expanded">
+                <input className="input" value={signature} readOnly={true} disabled={true} />
+              </div>
+              <div className="control">
+                <button
+                  type="button"
+                  className="button"
+                  onClick={this.copySignature}
+                  disabled={!signature}
+                >
+                  <span>{copied ? 'Copied' : 'Copy'}</span>
+                  {copied && (
+                    <span className="icon has-text-success">
+                      <i className="fas fa-check" />
+                    </span>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </form>
