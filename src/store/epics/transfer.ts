@@ -12,7 +12,6 @@ import {
 } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 
-import { OurEpic } from '@store'
 import {
   accountLoadRequest,
   transactionFailed,
@@ -20,8 +19,9 @@ import {
   transactionSuccess,
   transferRequest,
 } from '@actions'
+import { RootEpic } from '@store'
 
-export const transferRequest$: OurEpic = (action$, state$, { createKinesisTransfer, getActiveKeys, getCurrentConnection }) =>
+export const transferRequest$: RootEpic = (action$, state$, { createKinesisTransfer, getActiveKeys, getCurrentConnection }) =>
   action$.pipe(
     filter(isActionOf(transferRequest)),
     map(({ payload }) => payload),
@@ -40,7 +40,7 @@ export const transferRequest$: OurEpic = (action$, state$, { createKinesisTransf
     ),
   )
 
-export const transactionSubmission$: OurEpic = (action$, state$, { getCurrentConnection, submitSignedTransaction }) =>
+export const transactionSubmission$: RootEpic = (action$, state$, { getCurrentConnection, submitSignedTransaction }) =>
   action$.pipe(
     filter(isActionOf(transactionRequest)),
     mergeMap(({ payload }) =>
@@ -51,14 +51,14 @@ export const transactionSubmission$: OurEpic = (action$, state$, { getCurrentCon
     ),
   )
 
-export const transactionSuccess$: OurEpic = (action$, state$, { generalSuccessAlert, getActiveKeys }) =>
+export const transactionSuccess$: RootEpic = (action$, state$, { generalSuccessAlert, getActiveKeys }) =>
   action$.pipe(
     filter(isActionOf(transactionSuccess)),
     flatMap(() => generalSuccessAlert('The transfer was successful.')),
     map(() => accountLoadRequest(getActiveKeys(state$.value).publicKey)),
   )
 
-export const transactionFailed$: OurEpic = (action$, _, { generalFailureAlert, getTransactionErrorMessage }) =>
+export const transactionFailed$: RootEpic = (action$, _, { generalFailureAlert, getTransactionErrorMessage }) =>
   action$.pipe(
     filter(isActionOf(transactionFailed)),
     map(({ payload }) => generalFailureAlert(getTransactionErrorMessage(payload))),

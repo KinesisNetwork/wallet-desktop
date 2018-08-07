@@ -5,13 +5,13 @@ import {
   accountLoadSuccess,
   loadAccountTransactions,
 } from '@actions'
-import { OurEpic } from '@store'
+import { RootEpic } from '@store'
 import { merge, of } from 'rxjs'
 import { fromPromise } from 'rxjs/observable/fromPromise'
 import { catchError, delay, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 
-export const loadAccount$: OurEpic = (action$, state$, { loadAccount }) => {
+export const loadAccount$: RootEpic = (action$, state$, { loadAccount }) => {
   const accountLoadRequest$ = action$.pipe(
     filter(isActionOf(accountLoadRequest)),
     map(({payload}) => payload),
