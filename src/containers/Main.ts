@@ -1,6 +1,7 @@
-import { Main as MainPresentation } from '@components'
-import { RootState } from '@store'
 import { connect } from 'react-redux'
+
+import { Main as MainPresentation } from '@components/Main'
+import { RootState } from '@store'
 
 const mapStateToProps = ({ view }: RootState) => ({
   activeView: view.walletView,

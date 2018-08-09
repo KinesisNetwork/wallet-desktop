@@ -1,8 +1,9 @@
+import { connect } from 'react-redux'
+
 import { addPayee, changeTransferView, updatePayeeForm } from '@actions'
-import { PayeeForm as PayeeFormPresentation } from '@components'
+import { PayeeForm as PayeeFormPresentation } from '@components/PayeeForm'
 import { Dispatch, RootState } from '@store'
 import { Payee, TransferView } from '@types'
-import { connect } from 'react-redux'
 
 const mapStateToProps = ({ payees, view }: RootState) => ({
   payee: payees.form,

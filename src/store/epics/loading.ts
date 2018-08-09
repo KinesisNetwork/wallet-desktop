@@ -1,12 +1,12 @@
 import { accountLoadRequest, changeWalletView, loadConnections, lockAllAccounts } from '@actions'
-import { Epic } from '@store'
+import { RootEpic } from '@store'
 import { WalletView } from '@types'
 import { ofType } from 'redux-observable'
 import { REHYDRATE } from 'redux-persist'
 import { merge } from 'rxjs'
 import { filter, map, withLatestFrom } from 'rxjs/operators'
 
-export const initalLoad$: Epic = (action$, state$) => {
+export const initalLoad$: RootEpic = (action$, state$) => {
   const rehydrate$ = action$.pipe(
     ofType(REHYDRATE),
     withLatestFrom(state$),

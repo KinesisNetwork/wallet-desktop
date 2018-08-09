@@ -1,6 +1,7 @@
-import { getPasswordConfirmation } from '@components'
-import { Wallet } from '@types'
 import * as React from 'react'
+
+import { getPasswordConfirmation } from '@components/PasswordConfirmation'
+import { Wallet } from '@types'
 
 export interface Props {
   activeWallet: Wallet

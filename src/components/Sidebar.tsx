@@ -1,5 +1,8 @@
-import { SidebarPayee, SidebarSettings, WalletList } from '@containers'
 import * as React from 'react'
+
+import { SidebarPayee } from '@containers/SidebarPayee'
+import { SidebarSettings } from '@containers/SidebarSettings'
+import { WalletList } from '@containers/WalletList'
 
 let logo
 if (process.env.IS_WEB) {

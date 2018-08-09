@@ -1,7 +1,3 @@
-import { WalletLockError } from '@helpers/errors'
-import { getAccountIfExists } from '@services/accounts'
-import { getFeeInStroops, getServer } from '@services/kinesis'
-import { Connection, TransferRequest } from '@types'
 import {
   Account,
   Asset,
@@ -12,6 +8,11 @@ import {
   Transaction,
   TransactionBuilder,
 } from 'js-kinesis-sdk'
+
+import { WalletLockError } from '@helpers/errors'
+import { Connection, TransferRequest } from '@types'
+import { getAccountIfExists } from './accounts'
+import { getFeeInStroops, getServer } from './kinesis'
 
 export async function createKinesisTransfer(
   decryptedPrivateKey: string,

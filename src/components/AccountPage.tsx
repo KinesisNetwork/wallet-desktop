@@ -1,11 +1,10 @@
-import { AccountDashboard } from '@components'
-import {
-  AccountPageSelector,
-  Password,
-  Sign,
-} from '@containers'
-import { AccountPage as AccountPageEnum } from '@types'
 import * as React from 'react'
+
+import { AccountDashboard } from '@components/AccountDashboard'
+import { AccountPageSelector } from '@containers/AccountPageSelector'
+import { Password } from '@containers/Password'
+import { Sign } from '@containers/Sign'
+import { AccountPage as AccountPageEnum } from '@types'
 
 export interface Props {
   accountPage: AccountPageEnum

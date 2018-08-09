@@ -5,7 +5,7 @@ import {
 } from '@actions'
 import { generalFailureAlert } from '@helpers/alert'
 import { fetchConnections } from '@services/connections'
-import { Epic } from '@store'
+import { RootEpic } from '@store'
 import { of } from 'rxjs/observable/of'
 import {
   catchError,
@@ -16,7 +16,7 @@ import {
 } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 
-export const loadConnections$: Epic = (action$) => {
+export const loadConnections$: RootEpic = (action$) => {
   const loadConnectionsRequest$ = action$.pipe(
     filter(
       isActionOf(loadConnections),
@@ -30,7 +30,7 @@ export const loadConnections$: Epic = (action$) => {
   )
 }
 
-export const loadConnectionsFailure$: Epic = (action$) => {
+export const loadConnectionsFailure$: RootEpic = (action$) => {
   return action$.pipe(
     filter(isActionOf(loadConnectionsFailure)),
     map(() => generalFailureAlert('Unable to load Networks.')),

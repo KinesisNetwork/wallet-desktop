@@ -1,9 +1,10 @@
-import { InputField } from '@components'
+import { kebabCase, startCase } from 'lodash'
+import * as React from 'react'
+
+import { InputField } from '@components/InputField'
 import { formAlert } from '@helpers/alert'
 import { InputError } from '@helpers/errors'
 import { Payee, WalletView } from '@types'
-import { kebabCase, startCase } from 'lodash'
-import * as React from 'react'
 
 export interface Props {
   payee: Payee

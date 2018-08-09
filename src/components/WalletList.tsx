@@ -1,5 +1,6 @@
-import { Wallet } from '@types'
 import * as React from 'react'
+
+import { Wallet } from '@types'
 
 export interface Props {
   wallets: Wallet[]

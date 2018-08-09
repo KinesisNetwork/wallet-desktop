@@ -1,9 +1,10 @@
-import { selectConnection } from '@actions'
-import { ConnectionSelector as ConnectionSelectorPresentation } from '@components'
-import { RootState } from '@store'
 import { connect } from 'react-redux'
 
-const mapStateToProps = ({ connections }: RootState) => ({
+import { selectConnection } from '@actions'
+import { ConnectionSelector as ConnectionSelectorPresentation } from '@components/ConnectionSelector'
+import { RootState } from '@store'
+
+export const mapStateToProps = ({ connections }: RootState) => ({
   connections: connections.connectionList,
   activeConnection: connections.connectionList.findIndex(
     (conn) => conn.horizonURL === connections.currentConnection.horizonURL,

@@ -1,9 +1,7 @@
 import * as React from 'react'
 
-import {
-  PayeeForm,
-  PayeeList,
-} from '@containers'
+import { PayeeForm } from '@containers/PayeeForm'
+import { PayeeList } from '@containers/PayeeList'
 
 export const Payee: React.SFC = () => (
   <div className='columns'>

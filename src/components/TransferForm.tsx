@@ -1,11 +1,11 @@
+import * as copy from 'copy-to-clipboard'
 import * as React from 'react'
 
-import { InputField } from '@components'
-import { TransferProps } from '@containers'
+import { TransferProps } from '@containers/TransferForm'
 import { formAlert } from '@helpers/alert'
 import { InputError, WalletLockError } from '@helpers/errors'
 import { generateTransferTransaction } from '@services/transfer'
-import * as copy from 'copy-to-clipboard'
+import { InputField } from './InputField'
 import { Loader } from './Loader'
 import { PayeeSelector } from './PayeeSelector'
 

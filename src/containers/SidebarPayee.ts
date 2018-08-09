@@ -1,5 +1,8 @@
-import { changeWalletView } from '@actions'
-import { SidebarPayee as SidebarPayeePresentation } from '@components'
 import { connect } from 'react-redux'
 
-export const SidebarPayee = connect(() => ({}), { changeWalletView })(SidebarPayeePresentation)
+import { changeWalletView } from '@actions'
+import { SidebarPayee as SidebarPayeePresentation } from '@components/SidebarPayee'
+
+const EMPTY = {}
+
+export const SidebarPayee = connect(() => EMPTY, { changeWalletView })(SidebarPayeePresentation)

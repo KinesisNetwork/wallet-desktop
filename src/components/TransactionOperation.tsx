@@ -1,9 +1,9 @@
-import * as React from 'react'
-
-import { HorizontalLabelledField } from '@components'
-import { TransactionOperationView } from '@types'
 import { OperationRecord, TransactionOperation } from 'js-kinesis-sdk'
 import { startCase } from 'lodash'
+import * as React from 'react'
+
+import { HorizontalLabelledField } from '@components/LabelledField'
+import { TransactionOperationView } from '@types'
 
 export interface Props {
   transactionWithOperation: TransactionOperationView

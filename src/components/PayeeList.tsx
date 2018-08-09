@@ -1,6 +1,7 @@
-import { LabelledField } from '@components'
-import { Payee } from '@types'
 import * as React from 'react'
+
+import { LabelledField } from '@components/LabelledField'
+import { Payee } from '@types'
 
 type RemovePayee = (payeeName: string) => any
 export interface Props {

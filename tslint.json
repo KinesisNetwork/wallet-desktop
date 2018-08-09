@@ -8,6 +8,7 @@
     "jsx-no-lambda": false,
     "max-classes-per-file": false,
     "member-access": false,
+    "no-angle-bracket-type-assertion": false,      
     "object-literal-sort-keys": [false, "shorthand-first"]
   },
   "rulesDirectory": []

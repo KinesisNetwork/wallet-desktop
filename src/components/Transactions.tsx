@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { TransactionCard } from '@components'
+import { TransactionCard } from '@components/TransactionOperation'
 import { TransactionOperationView } from '@types'
 
 export interface Props {
