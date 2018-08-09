@@ -7,6 +7,7 @@
   "main": "src/index.ts",
   "scripts": {
     "lint-compile": "npm run sass-compile && npm run lint && npm run compile:tsc",
+    "pretest": "npm run lint",
     "test": "jest",
     "test:watch": "jest --watch",
     "predeploy:appveyor": "npm run sass-compile",
