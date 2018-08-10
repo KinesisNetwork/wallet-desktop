@@ -38,12 +38,12 @@ export class WalletInfo extends React.Component<Props> {
           </ul>
         </div>
         <LabelledField label='Account Name' value={this.props.accountName} />
-        <LabelledField label='Public Key' value={this.props.publicKey} isClipped={true} />
         <LabelledField
           label='Kinesis Balance'
           value={renderAmount(this.props.accountBalance)}
           isLoading={this.props.isAccountLoading}
         />
+        <LabelledField label='Public Key' value={this.props.publicKey} isCopyable={true} />
         <div className='is-divider is-hidden-tablet' style={{ margin: 0, borderTopWidth: '0.01rem' }} />
       </React.Fragment>
     )

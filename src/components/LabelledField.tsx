@@ -1,3 +1,4 @@
+import * as copy from 'copy-to-clipboard'
 import * as React from 'react'
 
 export interface Props {
@@ -8,6 +9,7 @@ export interface Props {
   isCompact?: boolean
   isClipped?: boolean
   addon?: React.ReactNode
+  isCopyable?: boolean
 }
 
 const clippedStyle = (isClipped: boolean | undefined) => isClipped ? { maxWidth: '35ch' } : {}
@@ -17,7 +19,20 @@ export const LabelledField: React.SFC<Props> = (props) => (
     <label className='label is-small'>{props.label}</label>
     <div className='field is-grouped'>
       <div className={`control is-expanded ${props.isLoading && 'is-loading'}`} style={clippedStyle(props.isClipped)}>
-        <p className='input is-static is-block is-clipped' style={{ textOverflow: 'ellipsis' }}>{props.value}</p>
+        {
+          props.isCopyable &&
+          <button
+            className='button is-text is-paddingless'
+            onClick={() => copy(props.value)}
+            title='Click to copy'
+          >
+            {props.value}
+          </button>
+        }
+        {
+          !props.isCopyable &&
+          <p className='input is-static'>{props.value}</p>
+        }
       </div>
       {props.addon && <div className='control'>{props.addon}</div>}
     </div>
