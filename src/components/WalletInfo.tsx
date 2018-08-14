@@ -28,22 +28,22 @@ export class WalletInfo extends React.Component<Props> {
               </a>
             </li>
             <li>
-              <a>
+              <a className='is-disabled' title='Coming soon!'>
                 <span className='icon is-small has-text-grey-light'><i className='fas fa-cubes' /></span>
                 <span>KAG</span>
               </a>
             </li>
-            <li><a>KWG</a></li>
-            <li><a>KWS</a></li>
+            <li><a className='is-disabled' title='Coming soon!'>KWG</a></li>
+            <li><a className='is-disabled' title='Coming soon!'>KWS</a></li>
           </ul>
         </div>
         <LabelledField label='Account Name' value={this.props.accountName} />
-        <LabelledField label='Public Key' value={this.props.publicKey} isClipped={true} />
         <LabelledField
           label='Kinesis Balance'
           value={renderAmount(this.props.accountBalance)}
           isLoading={this.props.isAccountLoading}
         />
+        <LabelledField label='Public Key' value={this.props.publicKey} isCopyable={true} />
         <div className='is-divider is-hidden-tablet' style={{ margin: 0, borderTopWidth: '0.01rem' }} />
       </React.Fragment>
     )
