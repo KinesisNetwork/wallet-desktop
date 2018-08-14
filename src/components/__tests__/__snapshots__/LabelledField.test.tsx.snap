@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LabelledField should render correctly 1`] = `
+<div
+  className="field"
+>
+  <label
+    className="label is-small"
+  >
+    Test
+  </label>
+  <div
+    className="field is-grouped"
+  >
+    <div
+      className="control is-expanded undefined"
+      style={Object {}}
+    >
+      <p
+        className="input is-static"
+      >
+        Test value
+      </p>
+    </div>
+  </div>
+</div>
+`;
