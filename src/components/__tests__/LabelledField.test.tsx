@@ -46,4 +46,16 @@ describe('LabelledField', () => {
       expect(button.text()).toEqual('Test value')
     })
   })
+
+  describe('when the button is clicked', () => {
+    it('should copy value to the clipboard', () => {
+      const wrapper = shallow(<LabelledField label='Test' value='Test value' isCopyable={true} />)
+
+      const button = wrapper.find('button')
+
+      // expect it to throw because Jest is not run in the browser
+      // error in one of the dependencies of copy-to-clipboard
+      expect(() => button.simulate('click')).toThrow()
+    })
+  })
 })
