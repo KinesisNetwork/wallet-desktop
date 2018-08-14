@@ -47,6 +47,24 @@ describe('LabelledField', () => {
     })
   })
 
+  describe('LabelledField', () => {
+    it('has an is-loading class if isLoading property is true', () => {
+      const wrapper: Enzyme.ShallowWrapper = shallow(<LabelledField label='Test' value='Test value' isLoading={true} />)
+
+      const control = wrapper.find('.control')
+
+      expect(control.hasClass('is-loading')).toEqual(true)
+    })
+
+    it('has an inline style with max-width property isClipped property is true', () => {
+      const wrapper: Enzyme.ShallowWrapper = shallow(<LabelledField label='Test' value='Test value' isClipped={true} />)
+
+      const control = wrapper.find('.control')
+
+      expect(control.prop('style')).toEqual({ maxWidth: '35ch' })
+    })
+  })
+
   describe('when the button is clicked', () => {
     it('should copy value to the clipboard', () => {
       const wrapper = shallow(<LabelledField label='Test' value='Test value' isCopyable={true} />)
