@@ -34,6 +34,16 @@ body {
   flex-shrink: 0;
 }
 
+.is-disabled {
+  cursor: not-allowed;
+  opacity: .65;
+
+  &:hover {
+    border-bottom-color: $grey !important;
+    color: $grey-lighter !important;
+  }
+}
+
 .sub-heading {
   font-size: 15px;
   text-transform: uppercase;
@@ -57,9 +67,10 @@ body {
 }
 
 .logo-sidebar {
-  height: 86px;
-  width: 100%;
   display: block;
+  height: 86px;
+  margin-bottom: 1rem;
+  width: 100%;
 }
 
 .wallet-heading {

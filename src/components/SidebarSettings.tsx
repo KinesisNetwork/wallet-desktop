@@ -12,5 +12,6 @@ export const SidebarSettings: React.SFC<Props> = ({ connectionName, changeWallet
     <button className='button is-outlined is-fullwidth' onClick={() => changeWalletView(WalletView.settings)}>
       Settings
     </button>
-  </div>
+    <p className='is-size-4 has-text-primary' style={{ marginTop: '1rem' }}>Kinesis Wallet - alpha</p>
+  </div >
 )
