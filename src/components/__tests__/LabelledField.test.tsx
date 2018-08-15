@@ -47,21 +47,37 @@ describe('LabelledField', () => {
     })
   })
 
-  describe('LabelledField', () => {
-    it('has an is-loading class if isLoading property is true', () => {
+  describe('has', () => {
+    it('an is-loading class if isLoading property is true', () => {
       const wrapper: Enzyme.ShallowWrapper = shallow(<LabelledField label='Test' value='Test value' isLoading={true} />)
 
-      const control = wrapper.find('.control')
+      const control = wrapper.find('.control.is-expanded')
 
       expect(control.hasClass('is-loading')).toEqual(true)
     })
 
-    it('has an inline style with max-width property isClipped property is true', () => {
+    it('an inline style with max-width property isClipped property is true', () => {
       const wrapper: Enzyme.ShallowWrapper = shallow(<LabelledField label='Test' value='Test value' isClipped={true} />)
+
+      const control = wrapper.find('.control.is-expanded')
+
+      expect(control.prop('style')).toEqual({ maxWidth: '35ch' })
+    })
+
+    it('an additional div with class control if addon exitst', () => {
+      const wrapper: Enzyme.ShallowWrapper = shallow(<LabelledField label='Test' value='Test value' addon={<h2>Test node</h2>} />)
 
       const control = wrapper.find('.control')
 
-      expect(control.prop('style')).toEqual({ maxWidth: '35ch' })
+      expect(control).toHaveLength(2)
+    })
+
+    it('the content of addon', () => {
+      const wrapper: Enzyme.ShallowWrapper = shallow(<LabelledField label='Test' value='Test value' addon={<h2>Test node</h2>} />)
+
+      const addedNode = wrapper.find('h2')
+
+      expect(addedNode.text()).toEqual('Test node')
     })
   })
 
