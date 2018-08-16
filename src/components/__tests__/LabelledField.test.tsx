@@ -10,25 +10,25 @@ describe('LabelledField', () => {
 
   describe('should render', () => {
     it('correctly', () => {
-      const wrapper: Enzyme.ShallowWrapper = shallow(<LabelledField label='Test' value='Test value' />)
+      const wrapper = shallow(<LabelledField label='Test' value='Test value' />)
 
       expect(wrapper).toMatchSnapshot()
     })
 
     it('a label', () => {
-      const wrapper: Enzyme.ShallowWrapper = shallow(<LabelledField label='Test' value='Test value' />)
+      const wrapper = shallow(<LabelledField label='Test' value='Test value' />)
 
-      const label: Enzyme.ShallowWrapper = wrapper.find('label')
+      const label = wrapper.find('label')
 
       expect(label).toHaveLength(1)
       expect(label.text()).toEqual('Test')
     })
 
     it('a parapgraph when the isCopyable property is set to false or does not exist', () => {
-      const wrapper: Enzyme.ShallowWrapper = shallow(<LabelledField label='Test' value='Test value' />)
+      const wrapper = shallow(<LabelledField label='Test' value='Test value' />)
 
-      const paragraph: Enzyme.ShallowWrapper = wrapper.find('p')
-      const button: Enzyme.ShallowWrapper = wrapper.find('button')
+      const paragraph = wrapper.find('p')
+      const button = wrapper.find('button')
 
       expect(paragraph).toHaveLength(1)
       expect(paragraph.text()).toEqual('Test value')
@@ -36,10 +36,10 @@ describe('LabelledField', () => {
     })
 
     it('a button element when isCopyable is true', () => {
-      const wrapper: Enzyme.ShallowWrapper = shallow(<LabelledField label='Test' value='Test value' isCopyable={true} />)
+      const wrapper = shallow(<LabelledField label='Test' value='Test value' isCopyable={true} />)
 
-      const paragraph: Enzyme.ShallowWrapper = wrapper.find('p')
-      const button: Enzyme.ShallowWrapper = wrapper.find('button')
+      const paragraph = wrapper.find('p')
+      const button = wrapper.find('button')
 
       expect(paragraph).toHaveLength(0)
       expect(button).toHaveLength(1)
@@ -49,7 +49,7 @@ describe('LabelledField', () => {
 
   describe('has', () => {
     it('an is-loading class if isLoading property is true', () => {
-      const wrapper: Enzyme.ShallowWrapper = shallow(<LabelledField label='Test' value='Test value' isLoading={true} />)
+      const wrapper = shallow(<LabelledField label='Test' value='Test value' isLoading={true} />)
 
       const control = wrapper.find('.control.is-expanded')
 
@@ -57,7 +57,7 @@ describe('LabelledField', () => {
     })
 
     it('an inline style with max-width property isClipped property is true', () => {
-      const wrapper: Enzyme.ShallowWrapper = shallow(<LabelledField label='Test' value='Test value' isClipped={true} />)
+      const wrapper = shallow(<LabelledField label='Test' value='Test value' isClipped={true} />)
 
       const control = wrapper.find('.control.is-expanded')
 
@@ -65,7 +65,7 @@ describe('LabelledField', () => {
     })
 
     it('an additional div with class control if addon exitst', () => {
-      const wrapper: Enzyme.ShallowWrapper = shallow(<LabelledField label='Test' value='Test value' addon={<h2>Test node</h2>} />)
+      const wrapper = shallow(<LabelledField label='Test' value='Test value' addon={<h2>Test node</h2>} />)
 
       const control = wrapper.find('.control')
 
@@ -73,7 +73,7 @@ describe('LabelledField', () => {
     })
 
     it('the content of addon', () => {
-      const wrapper: Enzyme.ShallowWrapper = shallow(<LabelledField label='Test' value='Test value' addon={<h2>Test node</h2>} />)
+      const wrapper = shallow(<LabelledField label='Test' value='Test value' addon={<h2>Test node</h2>} />)
 
       const addedNode = wrapper.find('h2')
 
@@ -83,7 +83,7 @@ describe('LabelledField', () => {
 
   describe('when the button is clicked', () => {
     it('should copy value to the clipboard', () => {
-      const wrapper: Enzyme.ShallowWrapper = shallow(<LabelledField label='Test' value='Test value' isCopyable={true} />)
+      const wrapper = shallow(<LabelledField label='Test' value='Test value' isCopyable={true} />)
 
       const button = wrapper.find('button')
 
@@ -96,13 +96,13 @@ describe('LabelledField', () => {
 
 describe('HorizontalLabelledField', () => {
   it('should render', () => {
-    const wrapper: Enzyme.ShallowWrapper = shallow(<HorizontalLabelledField label='Test' value='Test value' />)
+    const wrapper = shallow(<HorizontalLabelledField label='Test' value='Test value' />)
 
     expect(wrapper).toMatchSnapshot()
   })
 
   it('renders the correct label', () => {
-    const wrapper: Enzyme.ShallowWrapper = shallow(<HorizontalLabelledField label='Test' value='Test value' />)
+    const wrapper = shallow(<HorizontalLabelledField label='Test' value='Test value' />)
 
     const label = wrapper.find('label')
 
@@ -110,7 +110,7 @@ describe('HorizontalLabelledField', () => {
   })
 
   it('displays the value inside a paragraph', () => {
-    const wrapper: Enzyme.ShallowWrapper = shallow(<HorizontalLabelledField label='Test' value='Test value' />)
+    const wrapper = shallow(<HorizontalLabelledField label='Test' value='Test value' />)
 
     const paragraph = wrapper.find('p')
 
@@ -118,7 +118,7 @@ describe('HorizontalLabelledField', () => {
   })
 
   it('has an is-marginless class if isCompact property is true', () => {
-    const wrapper: Enzyme.ShallowWrapper = shallow(<HorizontalLabelledField label='Test' value='Test value' isCompact={true} />)
+    const wrapper = shallow(<HorizontalLabelledField label='Test' value='Test value' isCompact={true} />)
 
     const parentNode = wrapper.find('.field.is-horizontal')
 
@@ -126,7 +126,7 @@ describe('HorizontalLabelledField', () => {
   })
 
   it('has a class is-loading if isLoading property is true', () => {
-    const wrapper: Enzyme.ShallowWrapper = shallow(<HorizontalLabelledField label='Test' value='Test value' isLoading={true} />)
+    const wrapper = shallow(<HorizontalLabelledField label='Test' value='Test value' isLoading={true} />)
 
     const control = wrapper.find('.control.is-expanded')
 
@@ -134,7 +134,7 @@ describe('HorizontalLabelledField', () => {
   })
 
   it('has an inline style of maxWidth if isClipped is true', () => {
-    const wrapper: Enzyme.ShallowWrapper = shallow(<HorizontalLabelledField label='Test' value='Test value' isClipped={true} />)
+    const wrapper = shallow(<HorizontalLabelledField label='Test' value='Test value' isClipped={true} />)
 
     const control = wrapper.find('.control.is-expanded')
 
@@ -142,7 +142,7 @@ describe('HorizontalLabelledField', () => {
   })
 
   it('renders an additional div with class control if addon exitst', () => {
-    const wrapper: Enzyme.ShallowWrapper = shallow(<HorizontalLabelledField label='Test' value='Test value' addon={<h2>Test node</h2>} />)
+    const wrapper = shallow(<HorizontalLabelledField label='Test' value='Test value' addon={<h2>Test node</h2>} />)
 
     const control = wrapper.find('.control')
 
@@ -150,7 +150,7 @@ describe('HorizontalLabelledField', () => {
   })
 
   it('correctly renders the content of addon', () => {
-    const wrapper: Enzyme.ShallowWrapper = shallow(<HorizontalLabelledField label='Test' value='Test value' addon={<h2>Test node</h2>} />)
+    const wrapper = shallow(<HorizontalLabelledField label='Test' value='Test value' addon={<h2>Test node</h2>} />)
 
     const addedNode = wrapper.find('h2')
 
