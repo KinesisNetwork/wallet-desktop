@@ -1,12 +1,9 @@
-import * as Enzyme from 'enzyme'
 import { shallow } from 'enzyme';
-import * as Adapter from 'enzyme-adapter-react-16'
 import * as React from 'react'
 
 import { LabelledField } from '@components/LabelledField';
 import { WalletInfo } from '@components/WalletInfo'
-
-Enzyme.configure({ adapter: new Adapter() })
+import '../../setupTests'
 
 describe('WalletInfo', () => {
   it('renders correctly', () => {
@@ -41,8 +38,6 @@ describe('WalletInfo', () => {
   it('renders three LabelledField components', () => {
     const wrapper = shallow(<WalletInfo />)
 
-    const labelledField = wrapper.find(LabelledField)
-
-    expect(labelledField).toHaveLength(3)
+    expect(wrapper.find(LabelledField)).toHaveLength(3)
   })
 })

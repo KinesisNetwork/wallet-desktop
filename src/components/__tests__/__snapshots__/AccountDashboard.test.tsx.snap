@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AccountDashboard should render correctly 1`] = `
+<Fragment>
+  <div
+    className="columns is-constant-height"
+  >
+    <div
+      className="column is-half"
+    >
+      <Connect(WalletInfo) />
+    </div>
+    <div
+      className="column is-half"
+    >
+      <Connect(Component) />
+    </div>
+  </div>
+  <Connect(Transactions) />
+</Fragment>
+`;
