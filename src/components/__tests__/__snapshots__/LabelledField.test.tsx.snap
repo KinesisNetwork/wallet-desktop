@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HorizontalLabelledField should render 1`] = `
+<div
+  className="field is-horizontal "
+>
+  <div
+    className="field-label is-small"
+  >
+    <label
+      className="label"
+    >
+      Test
+    </label>
+  </div>
+  <div
+    className="field-body"
+  >
+    <div
+      className="field is-grouped"
+    >
+      <div
+        className="control is-expanded undefined"
+        style={Object {}}
+      >
+        <p
+          className="input is-static is-small is-block is-clipped"
+          style={
+            Object {
+              "textOverflow": "ellipsis",
+            }
+          }
+        >
+          Test value
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`LabelledField should render correctly 1`] = `
+<div
+  className="field"
+>
+  <label
+    className="label is-small"
+  >
+    Test
+  </label>
+  <div
+    className="field is-grouped"
+  >
+    <div
+      className="control is-expanded undefined"
+      style={Object {}}
+    >
+      <p
+        className="input is-static"
+      >
+        Test value
+      </p>
+    </div>
+  </div>
+</div>
+`;

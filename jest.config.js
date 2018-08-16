@@ -20,5 +20,8 @@ module.exports = {
     "@types(.*)": "<rootDir>/src/types$1",
     "@store(.*)": "<rootDir>/src/store$1",
     "@actions(.*)": "<rootDir>/src/store/actions$1",
-  }
+  },
+  "snapshotSerializers": [
+    "enzyme-to-json/serializer"
+  ]
 }
