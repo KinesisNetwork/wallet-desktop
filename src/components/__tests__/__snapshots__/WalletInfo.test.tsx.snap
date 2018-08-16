@@ -64,14 +64,17 @@ exports[`WalletInfo renders correctly 1`] = `
   </div>
   <Component
     label="Account Name"
+    value=""
   />
   <Component
+    isLoading={true}
     label="Kinesis Balance"
-    value="NaN"
+    value="0"
   />
   <Component
     isCopyable={true}
     label="Public Key"
+    value=""
   />
   <div
     className="is-divider is-hidden-tablet"

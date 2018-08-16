@@ -7,13 +7,13 @@ import '../../setupTests'
 
 describe('WalletInfo', () => {
   it('renders correctly', () => {
-    const wrapper = shallow(<WalletInfo />)
+    const wrapper = shallow(<WalletInfo publicKey='' accountBalance='' accountName='' isAccountLoading={true} />)
 
     expect(wrapper).toMatchSnapshot()
   })
 
   it('should have a primary heading', () => {
-    const wrapper = shallow(<WalletInfo />)
+    const wrapper = shallow(<WalletInfo publicKey='' accountBalance='' accountName='' isAccountLoading={true} />)
 
     const heading = wrapper.find('h1')
 
@@ -21,7 +21,7 @@ describe('WalletInfo', () => {
   })
 
   it('renders four list items in the tab', () => {
-    const wrapper = shallow(<WalletInfo />)
+    const wrapper = shallow(<WalletInfo publicKey='' accountBalance='' accountName='' isAccountLoading={true} />)
 
     const tabs = wrapper.find('li')
 
@@ -36,7 +36,7 @@ describe('WalletInfo', () => {
   })
 
   it('renders three LabelledField components', () => {
-    const wrapper = shallow(<WalletInfo />)
+    const wrapper = shallow(<WalletInfo publicKey='' accountBalance='' accountName='' isAccountLoading={true} />)
 
     expect(wrapper.find(LabelledField)).toHaveLength(3)
   })
