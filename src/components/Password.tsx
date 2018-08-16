@@ -84,3 +84,5 @@ export const Password: React.SFC<Props> = (props) => (
     {props.isAccountUnlocked ? <UnlockedWallet {...props} /> : <LockedWallet {...props} />}
   </React.Fragment>
 )
+
+Password.displayName = 'Password'

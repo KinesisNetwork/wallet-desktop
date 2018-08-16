@@ -12,6 +12,8 @@ import { InputError, WalletLockError } from '@helpers/errors'
 import { SignBehaviour, SignedMessage } from '@types'
 
 export class Sign extends React.Component<SignProps> {
+  displayName: string = 'Sign'
+
   tabs = () => {
     const behaviourOpts = enumStringValues(SignBehaviour)
     return behaviourOpts.map(b => {
