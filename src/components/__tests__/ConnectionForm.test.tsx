@@ -70,8 +70,8 @@ describe('ConnectionForm', () => {
       />
     )
 
-    const button = wrapper.find('form')
-    button.simulate('submit', { preventDefault: () => null })
+    const form = wrapper.find('form')
+    form.simulate('submit', { preventDefault: () => null })
     expect(mockHandleSubmit).toHaveBeenCalled()
   })
 })
