@@ -9,6 +9,8 @@ export interface Props {
 }
 
 export class ConnectionSelector extends React.Component<Props> {
+  displayName = 'ConnectionSelector'
+
   constructor(props) {
     super(props)
   }
@@ -49,6 +51,8 @@ interface ConnectionButtonProps {
 }
 
 class ConnectionButton extends React.Component<ConnectionButtonProps> {
+  displayName = 'ConnectionButton'
+
   constructor(props) {
     super(props)
   }
