@@ -128,6 +128,7 @@
     "parcel-plugin-typescript": "^1.0.0",
     "prettier": "^1.13.7",
     "react-test-renderer": "^16.4.2",
+    "sinon": "^6.1.5",
     "ts-jest": "23.0.1",
     "tsconfig-paths": "^3.3.1",
     "tslint": "5.10.0",

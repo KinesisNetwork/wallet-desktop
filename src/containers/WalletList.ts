@@ -37,7 +37,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     }
 
     const { value: decryptedPrivateKeyOrEmpty } = await getPasswordConfirmation(wallet)
-    if (decryptedPrivateKeyOrEmpty !== '') {
+    if (decryptedPrivateKeyOrEmpty) {
       dispatch(deleteWallet({ ...wallet, decryptedPrivateKey: decryptedPrivateKeyOrEmpty }))
     }
   },

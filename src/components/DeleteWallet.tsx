@@ -9,6 +9,8 @@ export interface Props {
 }
 
 export class DeleteWallet extends React.Component<Props> {
+  displayName = 'DeleteWallet'
+
   deleteWallet = async () => {
     const isSureToDelete = await sweetAlert({
       buttons: ['Go back', 'Delete Wallet'],
