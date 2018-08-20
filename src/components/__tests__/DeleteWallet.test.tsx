@@ -1,7 +1,5 @@
 import { shallow } from 'enzyme';
 import * as React from 'react'
-import * as sinon from 'sinon'
-// import * as sweetAlert from 'sweetalert'
 
 import { DeleteWallet } from '@components/DeleteWallet'
 import '../../setupTests'
