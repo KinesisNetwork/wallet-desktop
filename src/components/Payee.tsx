@@ -18,3 +18,5 @@ export const Payee: React.SFC = () => (
     </div>
   </div>
 )
+
+Payee.displayName = 'Payee'
