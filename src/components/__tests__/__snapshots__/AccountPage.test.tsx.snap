@@ -31,35 +31,3 @@ exports[`AccountPage should render properly 1`] = `
   <AccountDashboard />
 </div>
 `;
-
-exports[`AccountPage should render properly 2`] = `
-<div
-  className="vertical-spaced"
->
-  <div>
-    <div
-      className="level"
-    >
-      <div
-        className="level-left"
-      >
-        <div
-          className="level-item"
-        >
-          <Connect(AccountPageSelector) />
-        </div>
-      </div>
-      <div
-        className="level-right"
-      >
-        <div
-          className="level-item"
-        >
-          <Connect(Password) />
-        </div>
-      </div>
-    </div>
-  </div>
-  <Connect(Sign) />
-</div>
-`;

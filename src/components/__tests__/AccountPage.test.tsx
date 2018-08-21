@@ -10,10 +10,8 @@ import '../../setupTests'
 describe('AccountPage', () => {
   it('should render properly', () => {
     const wrapperWhenAccountDashboard = shallow(<AccountPage accountPage={AccountPageEnum.dashboard} />)
-    const wrapperWhenSign = shallow(<AccountPage accountPage={AccountPageEnum.sign} />)
 
     expect(wrapperWhenAccountDashboard).toMatchSnapshot()
-    expect(wrapperWhenSign).toMatchSnapshot()
   })
 
   it('renders components if accountPage property is given', () => {

@@ -6,15 +6,9 @@ import '../../setupTests'
 
 describe('Main', () => {
   it('renders correctly', () => {
-    const createWalletWrapper = shallow(<Main activeView={0} />)
-    const connectionSettingsWrapper = shallow(<Main activeView={1} />)
-    const accountPageWrapper = shallow(<Main activeView={2} />)
-    const payeeWrapper = shallow(<Main activeView={3} />)
+    const wrapper = shallow(<Main activeView={0} />)
 
-    expect(createWalletWrapper).toMatchSnapshot()
-    expect(connectionSettingsWrapper).toMatchSnapshot()
-    expect(accountPageWrapper).toMatchSnapshot()
-    expect(payeeWrapper).toMatchSnapshot()
+    expect(wrapper).toMatchSnapshot()
   })
 
   it('always renders Sidebar plus the relevant component', () => {
