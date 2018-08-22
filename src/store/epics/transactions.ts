@@ -1,25 +1,24 @@
-import { accountTransactionsLoaded, loadAccountTransactions, loadNextTransactionPage } from '@actions'
-import { getTransactions } from '@services/kinesis'
-import { RootEpic } from '@store'
-import { fromPromise } from 'rxjs/observable/fromPromise'
-import { delay, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators'
+import { filter, map, pluck, switchMap, withLatestFrom } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 
-export const loadAccountTransactions$: RootEpic = (action$, state$) =>
-  action$.pipe(
+import { accountTransactionsLoaded, loadAccountTransactions, loadNextTransactionPage } from '@actions'
+import { RootAction, RootEpic } from '@store'
+
+export const loadTransactionsForAccount: RootEpic = (action$, state$, { getCurrentConnection, getTransactions, withPolling }) => {
+  const loadAccountTransactions$ = action$.pipe(
     filter(isActionOf(loadAccountTransactions)),
-    delay(500),
-    withLatestFrom(state$),
-    mergeMap(([action, state]) => {
-      return fromPromise(getTransactions(state.connections.currentConnection, action.payload))
-        .pipe(
-          map((transactions) => accountTransactionsLoaded(transactions)),
-        )
-      },
-    ),
   )
 
-export const loadNextPage$: RootEpic = (action$) =>
+  return loadAccountTransactions$.pipe(
+    withPolling(350, 20000),
+    pluck<RootAction, string>('payload'),
+    withLatestFrom(state$),
+    switchMap(([ publicKey, state ]) => getTransactions(getCurrentConnection(state), publicKey)),
+    map(accountTransactionsLoaded),
+  )
+}
+
+export const loadNextPage: RootEpic = (action$) =>
   action$.pipe(
     filter(isActionOf(accountTransactionsLoaded)),
     map(() => loadNextTransactionPage()),

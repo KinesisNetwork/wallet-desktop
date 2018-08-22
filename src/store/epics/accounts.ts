@@ -1,3 +1,8 @@
+import { merge, of } from 'rxjs'
+import { fromPromise } from 'rxjs/observable/fromPromise'
+import { catchError, filter, map, pluck, switchMap, withLatestFrom } from 'rxjs/operators'
+import { isActionOf } from 'typesafe-actions'
+
 import {
   accountIsLoading,
   accountLoadFailure,
@@ -5,16 +10,11 @@ import {
   accountLoadSuccess,
   loadAccountTransactions,
 } from '@actions'
-import { RootEpic } from '@store'
-import { merge, of } from 'rxjs'
-import { fromPromise } from 'rxjs/observable/fromPromise'
-import { catchError, delay, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators'
-import { isActionOf } from 'typesafe-actions'
+import { RootAction, RootEpic } from '@store'
 
-export const loadAccount$: RootEpic = (action$, state$, { loadAccount }) => {
+export const loadAccount$: RootEpic = (action$, state$, { getCurrentConnection, loadAccount, withPolling }) => {
   const accountLoadRequest$ = action$.pipe(
     filter(isActionOf(accountLoadRequest)),
-    map(({payload}) => payload),
   )
 
   const accountIsLoading$ = accountLoadRequest$.pipe(
@@ -22,19 +22,20 @@ export const loadAccount$: RootEpic = (action$, state$, { loadAccount }) => {
   )
 
   const accountLoad$ = accountLoadRequest$.pipe(
-    delay(500),
+    withPolling(350, 20000),
+    pluck<RootAction, string>('payload'),
     withLatestFrom(state$),
-    mergeMap(
-      ([publicKey, state]) => fromPromise(loadAccount(publicKey, state.connections.currentConnection))
-        .pipe(
-          map(accountLoadSuccess),
-          catchError((err) => of(accountLoadFailure(err))),
+    switchMap(([ publicKey, state ]) =>
+      fromPromise(loadAccount(publicKey, getCurrentConnection(state))).pipe(
+        map(accountLoadSuccess),
+        catchError((err) => of(accountLoadFailure(err))),
       ),
-    ),
+    )
   )
 
   const loadAccountTransactions$ = accountLoadRequest$.pipe(
-    map((publicKey) => loadAccountTransactions(publicKey)),
+    pluck<RootAction, string>('payload'),
+    map(loadAccountTransactions),
   )
 
   return merge(accountIsLoading$, accountLoad$, loadAccountTransactions$)
