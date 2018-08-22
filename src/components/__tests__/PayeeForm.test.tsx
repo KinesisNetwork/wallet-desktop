@@ -16,7 +16,8 @@ describe('PayeeForm', () => {
       },
       addPayee: () => null,
       cancelForm: () => null,
-      handleChange: () => null
+      handleChange: () => null,
+      callFormAlert: () => null
     }
   })
 
@@ -74,6 +75,25 @@ describe('PayeeForm', () => {
 
     form.simulate('submit', { preventDefault: () => null })
     expect(createNewPayeeMock).toHaveBeenCalledWith(newPayee)
+  })
+
+  it('calls formAlert if validation is unsuccessful', () => {
+    const messageAndKey = {
+      message: 'Name is required',
+      key: 'input-payee-name'
+    }
+    const formAlertMock = jest.fn()
+    const wrapper = shallow(
+      <PayeeForm
+        {...props}
+        callFormAlert={formAlertMock}
+      />
+    )
+
+    const form = wrapper.find('form')
+
+    form.simulate('submit', { preventDefault: () => null })
+    expect(formAlertMock).toHaveBeenCalledWith(messageAndKey)
   })
 
   describe('renders a cancel button', () => {
