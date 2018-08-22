@@ -68,3 +68,8 @@ export interface SignedMessage extends RawMessage {
 export interface RawMessage {
   readonly message: string
 }
+
+export interface FormAlert {
+  message: string
+  key: string
+}

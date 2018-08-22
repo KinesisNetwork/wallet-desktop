@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
 
-import { addPayee, changeTransferView, updatePayeeForm } from '@actions'
+import { addPayee, changeTransferView, invalidForm, updatePayeeForm } from '@actions'
 import { PayeeForm as PayeeFormPresentation } from '@components/PayeeForm'
 import { Dispatch, RootState } from '@store'
-import { Payee, TransferView } from '@types'
+import { FormAlert, Payee, TransferView } from '@types'
 
 const mapStateToProps = ({ payees, view }: RootState) => ({
   payee: payees.form,
@@ -14,6 +14,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   addPayee: (payee: Payee) => dispatch(addPayee(payee)),
   handleChange: (field: keyof Payee, newValue: string) => dispatch(updatePayeeForm({ field, newValue })),
   cancelForm: () => dispatch(changeTransferView(TransferView.transfer)),
+  callFormAlert: (keyAndMessage: FormAlert) => dispatch(invalidForm(keyAndMessage))
 })
 
 export const PayeeForm = connect(mapStateToProps, mapDispatchToProps)(PayeeFormPresentation)
