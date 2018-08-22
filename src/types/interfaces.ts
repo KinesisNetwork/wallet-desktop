@@ -60,6 +60,7 @@ export interface Payee {
 }
 
 export type FormChangeHandler<T> = (change: FormUpdate<T>) => any
+
 export interface SignedMessage extends RawMessage {
   readonly publicKey: string
   readonly signature: string
