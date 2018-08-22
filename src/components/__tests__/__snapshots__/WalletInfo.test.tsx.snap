@@ -62,16 +62,16 @@ exports[`WalletInfo renders correctly 1`] = `
       </li>
     </ul>
   </div>
-  <Component
+  <LabelledField
     label="Account Name"
     value=""
   />
-  <Component
+  <LabelledField
     isLoading={true}
     label="Kinesis Balance"
     value="0"
   />
-  <Component
+  <LabelledField
     isCopyable={true}
     label="Public Key"
     value=""
