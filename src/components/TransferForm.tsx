@@ -16,7 +16,7 @@ export class TransferForm extends React.Component<TransferProps> {
   initTransfer = async (ev: React.MouseEvent<HTMLButtonElement>) => {
     ev.preventDefault()
     try {
-      this.validateProps()
+      await this.validateProps()
       const continueTransfer = await swal({
         buttons: ['Cancel', 'Transfer'],
         dangerMode: true,
@@ -40,10 +40,10 @@ export class TransferForm extends React.Component<TransferProps> {
     }
   }
 
-  validateProps = () => {
+  validateProps = async () => {
     this.checkWalletIsUnlocked()
     this.checkValidTarget()
-    this.checkValidAmount()
+    await this.checkValidAmount()
     this.checkValidMemo()
   }
 
@@ -59,9 +59,11 @@ export class TransferForm extends React.Component<TransferProps> {
     }
   }
 
-  checkValidAmount = () => {
-    if (Number(this.props.amount) > Number(this.props.accountBalance)) {
-      throw new InputError('Transfer amount is higher than account balance', 'transfer-amount')
+  checkValidAmount = async () => {
+    const fee = await this.props.getFee(Number(this.props.amount))
+
+    if (Number(fee) + Number(this.props.amount) > Number(this.props.accountBalance)) {
+      throw new InputError(`Transfer amount (including ${fee} fee) is higher than your account balance`, 'transfer-amount')
     } else if (Number(this.props.amount) <= 0) {
       throw new InputError('Transfer amount must be greater than 0', 'transfer-amount')
     } else if (!this.props.amount) {
