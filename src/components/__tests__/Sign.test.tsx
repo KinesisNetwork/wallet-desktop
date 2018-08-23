@@ -1,8 +1,6 @@
-import * as copy from 'copy-to-clipboard'
 import { shallow } from 'enzyme';
 import { Keypair } from 'js-kinesis-sdk'
 import * as React from 'react'
-import * as sinon from 'sinon'
 
 import { Sign, SignForm, VerifyForm } from '@components/Sign'
 import '../../setupTests'
