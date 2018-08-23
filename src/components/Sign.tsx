@@ -50,7 +50,7 @@ interface State {
   copied: boolean
 }
 export class SignForm extends React.Component<SignProps, State> {
-  displayName: string = 'Sign'
+  displayName: string = 'SignForm'
 
   state: State = {
     copied: false,
@@ -64,7 +64,11 @@ export class SignForm extends React.Component<SignProps, State> {
       const signature = kp.sign(Buffer.from(this.props.signData.message, 'utf8'))
       this.props.signMessage(signature.toString('hex'))
     } catch (e) {
-      formAlert(e.message, e.key)
+      this.props.callFormAlert({
+        message: e.message,
+        key: e.key
+      })
+      // formAlert(e.message, e.key)
     }
   }
 
@@ -141,7 +145,7 @@ export class SignForm extends React.Component<SignProps, State> {
 }
 
 export class VerifyForm extends React.Component<SignProps> {
-  displayName: string = 'Sign'
+  displayName: string = 'VerifyForm'
 
   constructor(props: SignProps) {
     super(props)

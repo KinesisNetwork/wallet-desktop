@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import * as React from 'react'
 
-import { Sign } from '@components/Sign'
+import { Sign, SignForm } from '@components/Sign'
 import '../../setupTests'
 
 describe('Sign', () => {
@@ -67,5 +67,38 @@ describe('Sign', () => {
 
       expect(wrapper.find('Connect(SignTransactionForm)')).toHaveLength(1)
     })
+  })
+})
+
+describe('SignForm', () => {
+  let props
+
+  beforeEach(() => {
+    props = {
+      changeSignFocus: () => null,
+      decryptedPrivateKey: '',
+      focus: 'Sign',
+      handleSignFormChange: () => null,
+      handleSignVerifyFormChange: () => null,
+      isValidSignature: false,
+      isWalletUnlocked: false,
+      messageVerificationResult: () => null,
+      signData: {
+        message: ''
+      },
+      signMessage: () => null,
+      signature: '',
+      verifyData: {
+        message: '',
+        publicKey: '',
+        signature: ''
+      }
+    }
+  })
+
+  it('renders correctly', () => {
+    const wrapper = shallow(<SignForm {...props} />)
+
+    expect(wrapper).toMatchSnapshot()
   })
 })

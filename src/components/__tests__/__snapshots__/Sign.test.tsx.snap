@@ -67,3 +67,72 @@ exports[`Sign should render correctly 1`] = `
   />
 </div>
 `;
+
+exports[`SignForm renders correctly 1`] = `
+<div
+  className="is-centered"
+>
+  <form
+    onSubmit={[Function]}
+  >
+    <InputField
+      helpText="Enter the text to sign"
+      id="signdata-message"
+      label="Message"
+      onChangeHandler={[Function]}
+      value=""
+    />
+    <div
+      className="field is-grouped"
+    >
+      <div
+        className="control is-expanded"
+      >
+        <button
+          className="button is-fullwidth"
+          type="submit"
+        >
+          Sign
+        </button>
+      </div>
+    </div>
+    <div
+      className="field"
+    >
+      <label
+        className="label is-small"
+      >
+        Signature
+      </label>
+      <div
+        className="field is-grouped"
+      >
+        <div
+          className="control is-expanded"
+        >
+          <input
+            className="input"
+            disabled={true}
+            readOnly={true}
+            value=""
+          />
+        </div>
+        <div
+          className="control"
+        >
+          <button
+            className="button"
+            disabled={true}
+            onClick={[Function]}
+            type="button"
+          >
+            <span>
+              Copy
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;
