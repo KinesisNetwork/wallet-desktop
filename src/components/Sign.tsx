@@ -68,7 +68,6 @@ export class SignForm extends React.Component<SignProps, State> {
         message: e.message,
         key: e.key
       })
-      // formAlert(e.message, e.key)
     }
   }
 
