@@ -6,7 +6,6 @@ import * as React from 'react'
 import { InputField } from '@components/InputField'
 import { SignProps } from '@containers/Sign'
 import { SignTransactionForm } from '@containers/SignTransactionForm'
-import { formAlert } from '@helpers/alert'
 import { enumStringValues } from '@helpers/enumStringValues'
 import { InputError, WalletLockError } from '@helpers/errors'
 import { SignBehaviour, SignedMessage } from '@types'
@@ -177,7 +176,10 @@ export class VerifyForm extends React.Component<SignProps> {
       this.checkValidEntry('publicKey')
       return true
     } catch (e) {
-      formAlert(e.message, e.key)
+      this.props.callFormAlert({
+        message: e.message,
+        key: e.key
+      })
       return false
     }
   }

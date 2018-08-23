@@ -4,7 +4,7 @@ import { Keypair } from 'js-kinesis-sdk'
 import * as React from 'react'
 import * as sinon from 'sinon'
 
-import { Sign, SignForm } from '@components/Sign'
+import { Sign, SignForm, VerifyForm } from '@components/Sign'
 import '../../setupTests'
 
 describe('Sign', () => {
@@ -206,5 +206,107 @@ describe('SignForm', () => {
       expect(signatureInput.prop('disabled')).toEqual(true)
       expect(copyButton.prop('disabled')).toEqual(false)
     })
+  })
+})
+
+describe('VerifyForm', () => {
+  let props
+
+  beforeEach(() => {
+    props = {
+      callFormAlert: () => null,
+      changeSignFocus: () => null,
+      decryptedPrivateKey: '',
+      focus: 'Verify',
+      handleSignFormChange: () => null,
+      handleSignVerifyFormChange: () => null,
+      isValidSignature: false,
+      isWalletUnlocked: false,
+      messageVerificationResult: () => null,
+      signData: {
+        message: ''
+      },
+      signMessage: () => null,
+      signature: '',
+      verifyData: {
+        message: '',
+        publicKey: '',
+        signature: ''
+      }
+    }
+  })
+
+  it('renders correctly', () => {
+    const wrapper = shallow(<VerifyForm {...props} />)
+
+    expect(wrapper).toMatchSnapshot()
+  })
+
+  it('should display a form three InputField components and a Verify button', () => {
+    const wrapper = shallow(<VerifyForm {...props} />)
+
+    const form = wrapper.find('form')
+    const inputField = form.find('InputField')
+    const button = form.find('button')
+
+    expect(inputField).toHaveLength(3)
+    expect(inputField.at(0).prop('label')).toEqual('Message')
+    expect(inputField.at(0).prop('helpText')).toEqual('Enter the raw message')
+    expect(inputField.at(1).prop('label')).toEqual('Signature')
+    expect(inputField.at(1).prop('helpText')).toEqual('Enter the signed dataset')
+    expect(inputField.at(2).prop('label')).toEqual('Public Key')
+    expect(inputField.at(2).prop('helpText')).toEqual('Enter the public key of the claimed signer')
+    expect(button).toHaveLength(1)
+    expect(button.text()).toEqual('Verify')
+  })
+
+  it('calls the messageVerificationResult method on submitting the form', () => {
+    const messageVerificationResultMock = jest.fn()
+    const modifiedProps = {
+      messageVerificationResult: messageVerificationResultMock,
+      verifyData: {
+        message: 'qwe',
+        signature: 'asd',
+        publicKey: '123'
+      }
+    }
+    const wrapper = shallow(
+      <VerifyForm
+        {...props}
+        {...modifiedProps}
+      />
+    )
+
+    const form = wrapper.find('form')
+    form.simulate('submit', { preventDefault: () => null })
+
+    expect(messageVerificationResultMock).toHaveBeenCalled()
+  })
+
+  it('calls formAlert if one of the entries are missing', () => {
+    const callFormAlertMock = jest.fn()
+    const callFormAlertMockParam = {
+      key: 'verify-signature',
+      message: 'Signature is required'
+    }
+    const modifiedProps = {
+      callFormAlert: callFormAlertMock,
+      verifyData: {
+        message: 'qwe',
+        signature: '',
+        publicKey: '123'
+      }
+    }
+    const wrapper = shallow(
+      <VerifyForm
+        {...props}
+        {...modifiedProps}
+      />
+    )
+
+    const form = wrapper.find('form')
+    form.simulate('submit', { preventDefault: () => null })
+
+    expect(callFormAlertMock).toHaveBeenCalledWith(callFormAlertMockParam)
   })
 })
