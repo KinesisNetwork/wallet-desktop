@@ -13,7 +13,7 @@ exports[`AccountDashboard should render correctly 1`] = `
     <div
       className="column is-half"
     >
-      <Connect(Component) />
+      <Connect(Transfer) />
     </div>
   </div>
   <Connect(Transactions) />
