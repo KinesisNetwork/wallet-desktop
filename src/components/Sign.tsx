@@ -50,6 +50,8 @@ interface State {
   copied: boolean
 }
 export class SignForm extends React.Component<SignProps, State> {
+  displayName: string = 'Sign'
+
   state: State = {
     copied: false,
   }
@@ -139,6 +141,8 @@ export class SignForm extends React.Component<SignProps, State> {
 }
 
 export class VerifyForm extends React.Component<SignProps> {
+  displayName: string = 'Sign'
+
   constructor(props: SignProps) {
     super(props)
   }

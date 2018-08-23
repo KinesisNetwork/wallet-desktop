@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Sign should render correctly 1`] = `
+<div>
+  <div
+    className="tabs"
+  >
+    <ul>
+      <li
+        className="is-active"
+        key="Sign"
+        onClick={[Function]}
+      >
+        <a>
+          <span>
+            Sign
+          </span>
+        </a>
+      </li>
+      <li
+        className="false"
+        key="Verify"
+        onClick={[Function]}
+      >
+        <a>
+          <span>
+            Verify
+          </span>
+        </a>
+      </li>
+      <li
+        className="false"
+        key="Sign Transaction"
+        onClick={[Function]}
+      >
+        <a>
+          <span>
+            Sign Transaction
+          </span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <SignForm
+    changeSignFocus={[Function]}
+    decryptedPrivateKey=""
+    focus="Sign"
+    handleSignFormChange={[Function]}
+    handleSignVerifyFormChange={[Function]}
+    isValidSignature={false}
+    isWalletUnlocked={false}
+    messageVerificationResult={[Function]}
+    signData={
+      Object {
+        "message": "",
+      }
+    }
+    signMessage={[Function]}
+    signature=""
+    verifyData={
+      Object {
+        "message": "",
+        "publicKey": "",
+        "signature": "",
+      }
+    }
+  />
+</div>
+`;
