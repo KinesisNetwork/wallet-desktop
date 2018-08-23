@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WalletList renders correctly 1`] = `
+<nav
+  className="panel"
+>
+  <p
+    className="panel-heading wallet-heading"
+  >
+    Accounts
+  </p>
+  <WalletListItem
+    deleteWallet={[Function]}
+    isActive={false}
+    key="123"
+    selectWallet={[Function]}
+    wallet={
+      Object {
+        "name": "Fred",
+        "publicKey": "123",
+      }
+    }
+  />
+  <WalletListItem
+    deleteWallet={[Function]}
+    isActive={false}
+    key="456"
+    selectWallet={[Function]}
+    wallet={
+      Object {
+        "name": "Bob",
+        "publicKey": "456",
+      }
+    }
+  />
+  <div
+    className="panel-block"
+  >
+    <button
+      className="button is-primary is-outlined is-fullwidth"
+      onClick={[Function]}
+    >
+      Add Account
+    </button>
+  </div>
+</nav>
+`;
