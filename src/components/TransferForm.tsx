@@ -2,6 +2,7 @@ import * as copy from 'copy-to-clipboard'
 import * as React from 'react'
 
 import { TransferProps } from '@containers/TransferForm'
+import { formAlert } from '@helpers/alert';
 import { InputError, WalletLockError } from '@helpers/errors'
 import { generateTransferTransaction } from '@services/transfer'
 import { InputField } from './InputField'
@@ -33,10 +34,7 @@ export class TransferForm extends React.Component<TransferProps> {
       }
       this.props.transferRequest(this.props)
     } catch (e) {
-      this.props.invalidForm({
-        message: e.message,
-        key: e.key
-      })
+      formAlert(e.message, e.key)
     }
   }
 

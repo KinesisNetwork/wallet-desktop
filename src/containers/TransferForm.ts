@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import {
   changeTransferView,
   changeWalletView,
-  invalidForm,
   transferRequest,
   updateTransferForm,
 } from '@actions'
@@ -33,7 +32,6 @@ export const mapStateToProps = ({ wallets, connections, transfer, accounts, paye
 const mapDispatchToProps = {
   changeWalletView,
   changeTransferView,
-  invalidForm,
   transferRequest,
   updateTransferForm,
 }

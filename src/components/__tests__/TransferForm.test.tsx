@@ -56,14 +56,4 @@ describe('TransferForm', () => {
     expect(button.at(1).find('i').hasClass('fa-copy')).toBe(true)
     expect(button.at(1).prop('title')).toEqual('Copy Transaction')
   })
-
-  it('calls formAlert on clicking the Transfer button if form validation fails', () => {
-    const formAlertMock = jest.fn()
-    const wrapper = shallow(<TransferForm {...props} invalidForm={formAlertMock} />)
-
-    const transferButton = wrapper.find('button').at(0)
-    transferButton.simulate('click', { preventDefault: () => null })
-
-    expect(formAlertMock).toHaveBeenCalled()
-  })
 })
