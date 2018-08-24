@@ -10,10 +10,6 @@ import { Loader } from './Loader'
 import { PayeeSelector } from './PayeeSelector'
 
 export class TransferForm extends React.Component<TransferProps> {
-  constructor(props) {
-    super(props)
-  }
-
   initTransfer = async (ev: React.MouseEvent<HTMLButtonElement>) => {
     ev.preventDefault()
     try {
@@ -74,16 +70,23 @@ export class TransferForm extends React.Component<TransferProps> {
   }
 
   isPayeeSelected = () => {
-    return this.props.payees.findIndex(({ publicKey }) => publicKey === this.props.targetPayee) !== -1
+    return (
+      this.props.payees.findIndex(({ publicKey }) => publicKey === this.props.targetPayee) !== -1
+    )
   }
 
   copyTransferTransaction = async () => {
     const transaction = await generateTransferTransaction(
-      this.props.activeWallet.publicKey,
+      this.props.publicKey,
       this.props.connection,
       this.props,
     )
-    copy(transaction.toEnvelope().toXDR().toString('base64'))
+    copy(
+      transaction
+        .toEnvelope()
+        .toXDR()
+        .toString('base64'),
+    )
   }
 
   render() {
@@ -100,36 +103,42 @@ export class TransferForm extends React.Component<TransferProps> {
           />
           <InputField
             value={this.props.targetPayee}
-            id='transfer-target-address'
-            icon='fa-address-card'
-            placeholder='Or input target address'
+            id="transfer-target-address"
+            icon="fa-address-card"
+            placeholder="Or input target address"
             isDisabled={this.isPayeeSelected()}
-            onChangeHandler={(newValue) => handleChange({ field: 'targetPayee', newValue })}
+            onChangeHandler={newValue => handleChange({ field: 'targetPayee', newValue })}
           />
           <InputField
             value={this.props.amount}
-            id='transfer-amount'
-            icon='fa-coins'
-            type='number'
-            placeholder='Amount'
-            onChangeHandler={(newValue) => handleChange({ field: 'amount', newValue })}
+            id="transfer-amount"
+            icon="fa-coins"
+            type="number"
+            placeholder="Amount"
+            onChangeHandler={newValue => handleChange({ field: 'amount', newValue })}
           />
           <InputField
             value={this.props.memo}
-            id='transfer-memo'
-            icon='fa-comment'
-            placeholder='Optional message'
-            onChangeHandler={(newValue) => handleChange({ field: 'memo', newValue })}
+            id="transfer-memo"
+            icon="fa-comment"
+            placeholder="Optional message"
+            onChangeHandler={newValue => handleChange({ field: 'memo', newValue })}
           />
-          <div className='field is-grouped'>
-            <div className='control is-expanded'>
-              <button className='button is-fullwidth' onClick={this.initTransfer}>
+          <div className="field is-grouped">
+            <div className="control is-expanded">
+              <button className="button is-fullwidth" onClick={this.initTransfer}>
                 <span>Transfer</span>
               </button>
             </div>
-            <div className='control'>
-              <button className='button is-text' onClick={this.copyTransferTransaction} title='Copy Transaction'>
-                <span className='icon'><i className='fas fa-copy' /></span>
+            <div className="control">
+              <button
+                className="button is-text"
+                onClick={this.copyTransferTransaction}
+                title="Copy Transaction"
+              >
+                <span className="icon">
+                  <i className="fas fa-copy" />
+                </span>
               </button>
             </div>
           </div>

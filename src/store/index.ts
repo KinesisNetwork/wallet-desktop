@@ -22,7 +22,7 @@ export function configureStore() {
   
   const storage = createStorage()
   const persistedReducer = persistReducer(
-    { key: 'root', storage, blacklist: ['passwords'] },
+    { key: 'root', storage, blacklist: ['passwords'],  },
     rootReducer,
   )
 

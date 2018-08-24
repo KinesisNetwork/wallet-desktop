@@ -6,7 +6,7 @@ import { Dispatch, RootState } from '@store'
 
 const mapStateToProps = ({ payees }: RootState) => {
   return {
-    payees: payees.payees,
+    payees: payees.payeesList,
   }
 }
 
@@ -14,4 +14,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   removePayee: (payeeName: string) => dispatch(removePayee(payeeName)),
 })
 
-export const PayeeList = connect(mapStateToProps, mapDispatchToProps)(PayeeListPresentation)
+export const PayeeList = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(PayeeListPresentation)

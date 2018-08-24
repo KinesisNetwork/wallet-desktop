@@ -5,6 +5,7 @@ import { generalFailureAlert, generalSuccessAlert } from '@helpers/alert'
 import { loadAccount } from '@services/accounts'
 import { getTransactionErrorMessage } from '@services/kinesis'
 import { createKinesisTransfer, submitSignedTransaction } from '@services/transfer'
+import { decryptPrivateKey } from '@services/encryption'
 
 import * as epics from './epics'
 import { RootAction } from './root-action'
@@ -20,6 +21,7 @@ export const epicDependencies = {
   getTransactionErrorMessage,
   loadAccount,
   submitSignedTransaction,
+  decryptPrivateKey,
 }
 
 export type EpicDependencies = typeof epicDependencies

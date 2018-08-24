@@ -15,15 +15,14 @@ export interface ConnectionsState {
   form: Connection
 }
 
-const initialConnectionList = []
-const initialConnection = {} as Connection
-
 const handleChange = (name: keyof Connection) => (state = '', action: RootAction) => {
   switch (action.type) {
     case getType(handleConnectionFormChange):
       return action.payload.field === name ? action.payload.newValue : state
-    case getType(addConnection): return ''
-    default: return state
+    case getType(addConnection):
+      return ''
+    default:
+      return state
   }
 }
 
@@ -35,18 +34,27 @@ const form = combineReducers<Connection, RootAction>({
 
 export const connections = combineReducers<ConnectionsState, RootAction>({
   form,
-  connectionList: (state = initialConnectionList, action) => {
+  connectionList: (state = [], action) => {
     switch (action.type) {
-      case getType(loadConnectionsSuccess): return action.payload
-      case getType(addConnection): return [...state, action.payload]
-      default: return state
+      case getType(loadConnectionsSuccess):
+        return [
+          ...state,
+          ...action.payload.filter(
+            conn => !state.find(existing => existing.horizonURL === conn.horizonURL),
+          ),
+        ]
+      case getType(addConnection):
+        return [...state, action.payload]
+      default:
+        return state
     }
   },
-  currentConnection: (state = initialConnection, action) => {
+  currentConnection: (state = {} as Connection, action) => {
     switch (action.type) {
-      case getType(selectConnection): return action.payload
-      case getType(loadConnectionsSuccess): return action.payload[0]
-      default: return state
+      case getType(selectConnection):
+        return action.payload
+      default:
+        return state
     }
   },
 })

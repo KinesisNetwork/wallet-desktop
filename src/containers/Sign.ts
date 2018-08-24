@@ -9,14 +9,14 @@ import {
 } from '@actions'
 import { Sign as SignPresentation } from '@components/Sign'
 import { Dispatch, RootState } from '@store'
-import { RawMessage, SignBehaviour, SignedMessage, Wallet } from '@types'
+import { RawMessage, SignBehaviour, SignedMessage } from '@types'
+import { getActiveKeys } from 'store/selectors'
 
-const mapStateToProps = ({ sign, wallets, passwords, accounts }: RootState) => {
-  const activeWallet = wallets.activeWallet as Wallet
-  const isWalletUnlocked = accounts.accountsMap[activeWallet.publicKey].isUnlocked
-  const decryptedPrivateKey = isWalletUnlocked
-    ? passwords.livePasswords[activeWallet.publicKey].privateKey
-    : ''
+const mapStateToProps = (state: RootState) => {
+  const { sign } = state
+  const activeKeys = getActiveKeys(state)
+  const isWalletUnlocked = !!activeKeys.privateKey
+  const decryptedPrivateKey = activeKeys.privateKey
   return {
     decryptedPrivateKey,
     isWalletUnlocked,
