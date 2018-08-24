@@ -2,7 +2,7 @@ import * as copy from 'copy-to-clipboard'
 import * as React from 'react'
 
 import { TransferProps } from '@containers/TransferForm'
-import { formAlert } from '@helpers/alert';
+import { formAlert } from '@helpers/alert'
 import { InputError, WalletLockError } from '@helpers/errors'
 import { generateTransferTransaction } from '@services/transfer'
 import { InputField } from './InputField'
