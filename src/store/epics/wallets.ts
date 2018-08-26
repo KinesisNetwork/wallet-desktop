@@ -68,3 +68,10 @@ export const unlockWallet$: RootEpic = (action$, state$, { decryptPrivateKey }) 
         : unlockWalletFailure()
     }),
   )
+
+export const walletLockFailure$: RootEpic = (action$, _, { generalFailureAlert }) =>
+  action$.pipe(
+    filter(isActionOf(unlockWalletFailure)),
+    map(() => generalFailureAlert('Incorrect Password')),
+    ignoreElements(),
+  )

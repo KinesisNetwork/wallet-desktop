@@ -3,9 +3,9 @@ import { combineEpics, Epic } from 'redux-observable'
 
 import { generalFailureAlert, generalSuccessAlert } from '@helpers/alert'
 import { loadAccount } from '@services/accounts'
+import { decryptPrivateKey } from '@services/encryption'
 import { getTransactionErrorMessage } from '@services/kinesis'
 import { createKinesisTransfer, submitSignedTransaction } from '@services/transfer'
-import { decryptPrivateKey } from '@services/encryption'
 
 import * as epics from './epics'
 import { RootAction } from './root-action'
