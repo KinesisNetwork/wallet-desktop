@@ -52,6 +52,9 @@
       "@containers/*": [
         "containers/*"
       ],
+      "@selectors": [
+        "store/selectors"
+      ],
       "@containers": [
         "containers"
       ]

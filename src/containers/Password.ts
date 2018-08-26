@@ -2,8 +2,8 @@ import { connect } from 'react-redux'
 
 import { changeUnlockPasswordInput, lockWallet, unlockWalletRequest } from '@actions'
 import { Password as PasswordPresentation } from '@components/Password'
+import { getActiveKeys } from '@selectors'
 import { RootState } from '@store'
-import { getActiveKeys } from 'store/selectors'
 
 export const mapStateToProps = (state: RootState) => {
   const activeKeys = getActiveKeys(state)

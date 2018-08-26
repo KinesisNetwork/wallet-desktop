@@ -8,9 +8,9 @@ import {
   updateVerifyForm,
 } from '@actions'
 import { Sign as SignPresentation } from '@components/Sign'
+import { getActiveKeys } from '@selectors'
 import { Dispatch, RootState } from '@store'
 import { RawMessage, SignBehaviour, SignedMessage } from '@types'
-import { getActiveKeys } from 'store/selectors'
 
 const mapStateToProps = (state: RootState) => {
   const { sign } = state

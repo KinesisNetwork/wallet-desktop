@@ -2,10 +2,10 @@ import { connect } from 'react-redux'
 
 import { changeTransferView, changeWalletView, transferRequest, updateTransferForm } from '@actions'
 import { TransferForm as TransferPresentation } from '@components/TransferForm'
+import { getActiveKeys } from '@selectors'
 import { getFeeInKinesis } from '@services/kinesis'
 import { RootState } from '@store'
 import { Payee } from '@types'
-import { getActiveKeys } from 'store/selectors'
 
 export const mapStateToProps = (state: RootState) => {
   const { wallets, connections, transfer, accounts, payees } = state
