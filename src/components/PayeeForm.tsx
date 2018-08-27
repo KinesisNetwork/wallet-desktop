@@ -11,7 +11,7 @@ export interface Props {
   handleChange: (field: keyof Payee, newValue: string) => any
   activeWalletView: WalletView
   cancelForm: () => any
-  callFormAlert: (formAlertArgs: FormAlert) => any
+  formIsInvalid: (formAlertArgs: FormAlert) => any
 }
 
 export class PayeeForm extends React.Component<Props> {
@@ -25,7 +25,7 @@ export class PayeeForm extends React.Component<Props> {
       this.validateProps()
       this.props.addPayee(this.props.payee)
     } catch (e) {
-      this.props.callFormAlert({
+      this.props.formIsInvalid({
         message: e.message,
         key: e.key
       })

@@ -76,7 +76,7 @@ describe('SignForm', () => {
 
   beforeEach(() => {
     props = {
-      callFormAlert: () => null,
+      formIsInvalid: () => null,
       changeSignFocus: () => null,
       decryptedPrivateKey: '',
       focus: 'Sign',
@@ -121,21 +121,21 @@ describe('SignForm', () => {
 
   describe('calls callFormAlert', () => {
     it(' if the wallet is locked and the form is submitted', () => {
-      const callFormAlertMock = jest.fn()
+      const formIsInvalidMock = jest.fn()
       const formAlertParam = {
         key: 'wallet-unlock-password',
         message: 'Wallet must be unlocked'
       }
-      const wrapper = shallow(<SignForm {...props} callFormAlert={callFormAlertMock} />)
+      const wrapper = shallow(<SignForm {...props} formIsInvalid={formIsInvalidMock} />)
 
       const form = wrapper.find('form')
       form.simulate('submit', { preventDefault: () => null })
 
-      expect(callFormAlertMock).toHaveBeenCalledWith(formAlertParam)
+      expect(formIsInvalidMock).toHaveBeenCalledWith(formAlertParam)
     })
 
     it('if the wallet is unlocked but message field is empty', () => {
-      const callFormAlertMock = jest.fn()
+      const formIsInvalidMock = jest.fn()
       const formAlertParam = {
         key: 'signdata-message',
         message: 'Message is required'
@@ -144,14 +144,14 @@ describe('SignForm', () => {
         <SignForm
           {...props}
           isWalletUnlocked={true}
-          callFormAlert={callFormAlertMock}
+          formIsInvalid={formIsInvalidMock}
         />
       )
 
       const form = wrapper.find('form')
       form.simulate('submit', { preventDefault: () => null })
 
-      expect(callFormAlertMock).toHaveBeenCalledWith(formAlertParam)
+      expect(formIsInvalidMock).toHaveBeenCalledWith(formAlertParam)
     })
   })
 
@@ -212,7 +212,7 @@ describe('VerifyForm', () => {
 
   beforeEach(() => {
     props = {
-      callFormAlert: () => null,
+      formIsInvalid: () => null,
       changeSignFocus: () => null,
       decryptedPrivateKey: '',
       focus: 'Verify',
@@ -282,13 +282,13 @@ describe('VerifyForm', () => {
   })
 
   it('calls formAlert if one of the entries are missing', () => {
-    const callFormAlertMock = jest.fn()
-    const callFormAlertMockParam = {
+    const formIsInvalidMock = jest.fn()
+    const formIsInvalidMockParam = {
       key: 'verify-signature',
       message: 'Signature is required'
     }
     const modifiedProps = {
-      callFormAlert: callFormAlertMock,
+      formIsInvalid: formIsInvalidMock,
       verifyData: {
         message: 'qwe',
         signature: '',
@@ -305,6 +305,6 @@ describe('VerifyForm', () => {
     const form = wrapper.find('form')
     form.simulate('submit', { preventDefault: () => null })
 
-    expect(callFormAlertMock).toHaveBeenCalledWith(callFormAlertMockParam)
+    expect(formIsInvalidMock).toHaveBeenCalledWith(formIsInvalidMockParam)
   })
 })

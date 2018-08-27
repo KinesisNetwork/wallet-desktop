@@ -86,7 +86,7 @@ describe('PayeeForm', () => {
     const wrapper = shallow(
       <PayeeForm
         {...props}
-        callFormAlert={formAlertMock}
+        formIsInvalid={formAlertMock}
       />
     )
 

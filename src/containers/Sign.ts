@@ -41,7 +41,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
   signMessage: (signature: string) => dispatch(signMessage(signature)),
   messageVerificationResult: (isValid: boolean) => dispatch(messageVerificationResult(isValid)),
-  callFormAlert: (keyAndMessage: FormAlert) => dispatch(invalidForm(keyAndMessage))
+  formIsInvalid: (error: FormAlert) => dispatch(invalidForm(error))
 })
 
 export type SignProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>

@@ -63,7 +63,7 @@ export class SignForm extends React.Component<SignProps, State> {
       const signature = kp.sign(Buffer.from(this.props.signData.message, 'utf8'))
       this.props.signMessage(signature.toString('hex'))
     } catch (e) {
-      this.props.callFormAlert({
+      this.props.formIsInvalid({
         message: e.message,
         key: e.key
       })
@@ -176,7 +176,7 @@ export class VerifyForm extends React.Component<SignProps> {
       this.checkValidEntry('publicKey')
       return true
     } catch (e) {
-      this.props.callFormAlert({
+      this.props.formIsInvalid({
         message: e.message,
         key: e.key
       })
