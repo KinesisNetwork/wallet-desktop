@@ -34,7 +34,7 @@ export const loadAccount$: RootEpic = (
 
   const accountLoadPoll$ = accountLoadRequest$.pipe(
     mergeMap(action =>
-      interval(5000).pipe(
+      interval(20000).pipe(
         startWith(0),
         withLatestFrom(state$),
         // Want to skip while not focused on dashboard page
