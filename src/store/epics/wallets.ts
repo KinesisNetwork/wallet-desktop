@@ -59,7 +59,7 @@ export const unlockWallet$: RootEpic = (action$, state$, { decryptPrivateKey }) 
         state.passwords.currentInput,
       )
 
-      return decryptedPrivateKey
+      return decryptedPrivateKey !== ''
         ? unlockWalletSuccess({
             password: state.passwords.currentInput,
             decryptedPrivateKey,

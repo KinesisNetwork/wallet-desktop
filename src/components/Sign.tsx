@@ -55,7 +55,7 @@ export class SignForm extends React.Component<SignProps, State> {
     ev.preventDefault()
     try {
       this.validateProps()
-      const secret = this.props.decryptedPrivateKey
+      const secret = this.props.decryptedPrivateKey!
       const kp = Keypair.fromSecret(secret)
       const signature = kp.sign(Buffer.from(this.props.signData.message, 'utf8'))
       this.props.signMessage(signature.toString('hex'))
