@@ -16,10 +16,10 @@ describe('invalidForm$', () => {
     const action$ = ActionsObservable.from([
       invalidForm(formAlertParam)
     ])
-    const state$: StateObservable<RootState> = <any>of(null)
+    const state$: StateObservable<RootState> = of(null) as any
     const formAlert = jest.fn(() => Promise.resolve())
 
-    const epic$ = invalidForm$(action$, state$, { formAlert })
+    const epic$ = invalidForm$(action$, state$, { formAlert } as any)
     const result = await epic$.pipe(toArray()).toPromise()
 
     expect(result).toEqual([])
