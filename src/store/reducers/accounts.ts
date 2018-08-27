@@ -1,6 +1,6 @@
 import {
-  accountIsLoading,
   accountLoadFailure,
+  accountLoadRequest,
   accountLoadSuccess,
   addWallet,
   lockAllAccounts,
@@ -23,8 +23,10 @@ export const accounts = combineReducers<AccountsState, RootAction>({
   accountsMap: (state = {}, action) => {
     switch (action.type) {
       case getType(lockAllAccounts):
-        return Object.entries(state)
-          .reduce((map, [key, account]) => ({ ...map, [key]: { ...account, isUnlocked: false } }), {})
+        return Object.entries(state).reduce(
+          (map, [key, account]) => ({ ...map, [key]: { ...account, isUnlocked: false } }),
+          {},
+        )
       case getType(addWallet):
         return {
           ...state,
@@ -61,24 +63,27 @@ export const accounts = combineReducers<AccountsState, RootAction>({
         const e = action.payload
         return e instanceof AccountMissingError
           ? {
-            ...state,
-            [e.publicKey]: {
-              ...state[e.publicKey],
-              balance: '0',
-            },
-          }
+              ...state,
+              [e.publicKey]: {
+                ...state[e.publicKey],
+                balance: '0',
+              },
+            }
           : state
-      default: return state
+      default:
+        return state
     }
   },
   isAccountLoading: (state = false, action) => {
     switch (action.type) {
-      case getType(accountIsLoading): return true
+      case getType(accountLoadRequest):
+        return true
 
       case getType(accountLoadSuccess):
       case getType(accountLoadFailure):
         return false
-      default: return state
+      default:
+        return state
     }
   },
 })

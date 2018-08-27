@@ -1,42 +1,59 @@
-import { merge, of } from 'rxjs'
-import { fromPromise } from 'rxjs/observable/fromPromise'
-import { catchError, filter, map, pluck, switchMap, withLatestFrom } from 'rxjs/operators'
-import { isActionOf } from 'typesafe-actions'
-
 import {
-  accountIsLoading,
   accountLoadFailure,
   accountLoadRequest,
   accountLoadSuccess,
-  loadAccountTransactions,
+  accountTransactionsLoaded,
 } from '@actions'
-import { RootAction, RootEpic } from '@store'
+import { RootEpic } from '@store'
+import { AccountPage, WalletView } from '@types'
+import { from, interval, merge, of } from 'rxjs'
+import {
+  catchError,
+  filter,
+  map,
+  mergeMap,
+  skipWhile,
+  startWith,
+  switchMap,
+  takeUntil,
+  withLatestFrom,
+} from 'rxjs/operators'
+import { isActionOf } from 'typesafe-actions'
 
-export const loadAccount$: RootEpic = (action$, state$, { getCurrentConnection, loadAccount, withPolling }) => {
-  const accountLoadRequest$ = action$.pipe(
-    filter(isActionOf(accountLoadRequest)),
+export const loadAccount$: RootEpic = (
+  action$,
+  state$,
+  { getCurrentConnection, loadAccount, getTransactions },
+) => {
+  const accountLoadRequest$ = action$.pipe(filter(isActionOf(accountLoadRequest)))
+  // If there are other things that would invalidate the polling, should add to here
+  const invalidatePoll$ = merge(
+    accountLoadRequest$,
+    state$.pipe(filter(state => state.view.walletView !== WalletView.dashboard)),
   )
 
-  const accountIsLoading$ = accountLoadRequest$.pipe(
-    map(() => accountIsLoading()),
-  )
-
-  const accountLoad$ = accountLoadRequest$.pipe(
-    withPolling(350, 20000),
-    pluck<RootAction, string>('payload'),
-    withLatestFrom(state$),
-    switchMap(([ publicKey, state ]) =>
-      fromPromise(loadAccount(publicKey, getCurrentConnection(state))).pipe(
-        map(accountLoadSuccess),
-        catchError((err) => of(accountLoadFailure(err))),
+  const accountLoadPoll$ = accountLoadRequest$.pipe(
+    mergeMap(action =>
+      interval(5000).pipe(
+        startWith(0),
+        withLatestFrom(state$),
+        // Want to skip while not focused on dashboard page
+        skipWhile(([_, state]) => state.accountPage.accountPage !== AccountPage.dashboard),
+        switchMap(([_, state]) =>
+          merge(
+            from(loadAccount(action.payload, getCurrentConnection(state))).pipe(
+              map(accountLoadSuccess),
+              catchError(err => of(accountLoadFailure(err))),
+            ),
+            from(getTransactions(getCurrentConnection(state), action.payload)).pipe(
+              map(accountTransactionsLoaded),
+            ),
+          ),
+        ),
+        takeUntil(invalidatePoll$),
       ),
-    )
+    ),
   )
 
-  const loadAccountTransactions$ = accountLoadRequest$.pipe(
-    pluck<RootAction, string>('payload'),
-    map(loadAccountTransactions),
-  )
-
-  return merge(accountIsLoading$, accountLoad$, loadAccountTransactions$)
+  return accountLoadPoll$
 }
