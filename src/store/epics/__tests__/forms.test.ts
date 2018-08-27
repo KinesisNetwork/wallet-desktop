@@ -8,7 +8,7 @@ import { RootState } from '../../root-reducer';
 import { invalidForm$ } from '../forms'
 
 describe('invalidForm$', () => {
-  it('calls formAlert', (done) => {
+  it('calls formAlert', async () => {
     const formAlertParam: FormAlert = {
       message: 'Error',
       key: 'input-field'
@@ -19,12 +19,10 @@ describe('invalidForm$', () => {
     const state$: StateObservable<RootState> = <any>of(null)
     const formAlert = jest.fn(() => Promise.resolve())
 
-    invalidForm$(action$, state$, { formAlert })
-      .pipe(toArray())
-      .subscribe((actions) => {
-        expect(actions).toEqual([])
-        expect(formAlert).toHaveBeenCalled()
-        done()
-      })
+    const epic$ = invalidForm$(action$, state$, { formAlert })
+    const result = await epic$.pipe(toArray()).toPromise()
+
+    expect(result).toEqual([])
+    expect(formAlert).toHaveBeenCalledWith('Error', 'input-field')
   })
 })
