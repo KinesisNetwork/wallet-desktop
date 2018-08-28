@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SignedTransactionForm renders correctly 1`] = `
+<div>
+  <div>
+    <InputField
+      helpText="Paste the serialized transaction here"
+      id="signdata-message"
+      label="Transaction"
+      onChangeHandler={[Function]}
+      value=""
+    />
+    <div
+      className="field is-grouped"
+    >
+      <div
+        className="control is-expanded"
+      >
+        <button
+          className="button is-fullwidth"
+          onClick={[Function]}
+        >
+          Load
+        </button>
+      </div>
+      <div
+        className="control is-expanded"
+      >
+        <button
+          className="button is-fullwidth"
+          disabled={true}
+          onClick={[Function]}
+        >
+          Sign
+        </button>
+      </div>
+      <div
+        className="control is-expanded"
+      >
+        <button
+          className="button is-fullwidth"
+          disabled={true}
+          onClick={[Function]}
+        >
+          Copy
+        </button>
+      </div>
+      <div
+        className="control is-expanded"
+      >
+        <button
+          className="button is-fullwidth "
+          disabled={true}
+          onClick={[Function]}
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

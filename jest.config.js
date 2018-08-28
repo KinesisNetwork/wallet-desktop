@@ -16,4 +16,5 @@ module.exports = {
     '@selectors(.*)': '<rootDir>/src/store/selectors$1',
   },
   snapshotSerializers: ['enzyme-to-json/serializer'],
+  setupTestFrameworkScriptFile: '<rootDir>/src/setupTests.ts',
 }

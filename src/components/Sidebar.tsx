@@ -17,3 +17,5 @@ export const Sidebar: React.SFC = () => (
     <SidebarSettings />
   </div>
 )
+
+Sidebar.displayName = 'Sidebar'

@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Payee renders correctly 1`] = `
+<div
+  className="columns"
+>
+  <div
+    className="column is-half"
+  >
+    <Connect(PayeeList) />
+  </div>
+  <div
+    className="column"
+  >
+    <div
+      className="vertical-spaced has-text-centered"
+    >
+      <h1
+        className="title-heading"
+      >
+        ADD A NEW PAYEE
+      </h1>
+      <section
+        className="section"
+      >
+        <Connect(PayeeForm) />
+      </section>
+    </div>
+  </div>
+</div>
+`;

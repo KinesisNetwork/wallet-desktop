@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AccountPageSelector renders correctly 1`] = `
+<div
+  className="buttons"
+>
+  <button
+    className="button is-active"
+    onClick={[Function]}
+  >
+    <span
+      className="icon"
+    >
+      <i
+        className="fas fa-home"
+      />
+    </span>
+  </button>
+  <button
+    className="button "
+    onClick={[Function]}
+  >
+    <span
+      className="icon"
+    >
+      <i
+        className="fas fa-pencil-alt"
+      />
+    </span>
+  </button>
+</div>
+`;
+
+exports[`AccountPageSelector renders correctly 2`] = `
+<div
+  className="buttons"
+>
+  <button
+    className="button "
+    onClick={[Function]}
+  >
+    <span
+      className="icon"
+    >
+      <i
+        className="fas fa-home"
+      />
+    </span>
+  </button>
+  <button
+    className="button is-active"
+    onClick={[Function]}
+  >
+    <span
+      className="icon"
+    >
+      <i
+        className="fas fa-pencil-alt"
+      />
+    </span>
+  </button>
+</div>
+`;

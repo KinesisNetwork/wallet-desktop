@@ -1,0 +1,184 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Sign should render correctly 1`] = `
+<div>
+  <div
+    className="tabs"
+  >
+    <ul>
+      <li
+        className="is-active"
+        key="Sign"
+        onClick={[Function]}
+      >
+        <a>
+          <span>
+            Sign
+          </span>
+        </a>
+      </li>
+      <li
+        className="false"
+        key="Verify"
+        onClick={[Function]}
+      >
+        <a>
+          <span>
+            Verify
+          </span>
+        </a>
+      </li>
+      <li
+        className="false"
+        key="Sign Transaction"
+        onClick={[Function]}
+      >
+        <a>
+          <span>
+            Sign Transaction
+          </span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <SignForm
+    changeSignFocus={[Function]}
+    decryptedPrivateKey=""
+    focus="Sign"
+    handleSignFormChange={[Function]}
+    handleSignVerifyFormChange={[Function]}
+    isValidSignature={false}
+    isWalletUnlocked={false}
+    messageVerificationResult={[Function]}
+    signData={
+      Object {
+        "message": "",
+      }
+    }
+    signMessage={[Function]}
+    signature=""
+    verifyData={
+      Object {
+        "message": "",
+        "publicKey": "",
+        "signature": "",
+      }
+    }
+  />
+</div>
+`;
+
+exports[`SignForm renders correctly 1`] = `
+<div
+  className="is-centered"
+>
+  <form
+    onSubmit={[Function]}
+  >
+    <InputField
+      helpText="Enter the text to sign"
+      id="signdata-message"
+      label="Message"
+      onChangeHandler={[Function]}
+      value=""
+    />
+    <div
+      className="field is-grouped"
+    >
+      <div
+        className="control is-expanded"
+      >
+        <button
+          className="button is-fullwidth"
+          type="submit"
+        >
+          Sign
+        </button>
+      </div>
+    </div>
+    <div
+      className="field"
+    >
+      <label
+        className="label is-small"
+      >
+        Signature
+      </label>
+      <div
+        className="field is-grouped"
+      >
+        <div
+          className="control is-expanded"
+        >
+          <input
+            className="input"
+            disabled={true}
+            readOnly={true}
+            value=""
+          />
+        </div>
+        <div
+          className="control"
+        >
+          <button
+            className="button"
+            disabled={true}
+            onClick={[Function]}
+            type="button"
+          >
+            <span>
+              Copy
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`VerifyForm renders correctly 1`] = `
+<div
+  className="is-centered"
+>
+  <form
+    onSubmit={[Function]}
+  >
+    <InputField
+      helpText="Enter the raw message"
+      id="verify-message"
+      label="Message"
+      onChangeHandler={[Function]}
+      value=""
+    />
+    <InputField
+      helpText="Enter the signed dataset"
+      id="verify-signature"
+      label="Signature"
+      onChangeHandler={[Function]}
+      value=""
+    />
+    <InputField
+      helpText="Enter the public key of the claimed signer"
+      id="verify-public-key"
+      label="Public Key"
+      onChangeHandler={[Function]}
+      value=""
+    />
+    <div
+      className="field is-grouped"
+    >
+      <div
+        className="control is-expanded"
+      >
+        <button
+          className="button is-fullwidth"
+          type="submit"
+        >
+          Verify
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+`;

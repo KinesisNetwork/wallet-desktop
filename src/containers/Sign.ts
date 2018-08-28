@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 
 import {
   changeSignFocus,
+  invalidForm,
   messageVerificationResult,
   signMessage,
   updateSignForm,
@@ -10,7 +11,7 @@ import {
 import { Sign as SignPresentation } from '@components/Sign'
 import { getActiveKeys } from '@selectors'
 import { Dispatch, RootState } from '@store'
-import { RawMessage, SignBehaviour, SignedMessage } from '@types'
+import { FormAlert, RawMessage, SignBehaviour, SignedMessage } from '@types'
 
 const mapStateToProps = (state: RootState) => {
   const { sign } = state
@@ -40,6 +41,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
   signMessage: (signature: string) => dispatch(signMessage(signature)),
   messageVerificationResult: (isValid: boolean) => dispatch(messageVerificationResult(isValid)),
+  formIsInvalid: (error: FormAlert) => dispatch(invalidForm(error)),
 })
 
 export type SignProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>

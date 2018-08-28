@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConnectionSettings renders correctly 1`] = `
+<div
+  className="vertical-spaced has-text-centered"
+>
+  <h1
+    className="title-heading"
+  >
+    Manage Connections
+  </h1>
+  <div
+    className="columns"
+  >
+    <div
+      className="column"
+    >
+      <Connect(ConnectionSelector) />
+    </div>
+    <div
+      className="column"
+    >
+      <Connect(ConnectionForm) />
+    </div>
+  </div>
+</div>
+`;

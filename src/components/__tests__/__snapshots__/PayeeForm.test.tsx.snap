@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PayeeForm renders correctly 1`] = `
+<div
+  className="is-centered"
+>
+  <form
+    onSubmit={[Function]}
+  >
+    <InputField
+      helpText="Name your payee"
+      id="payee-name"
+      label="Payee Name"
+      onChangeHandler={[Function]}
+      value=""
+    />
+    <InputField
+      helpText="Set the public key of your payee"
+      id="payee-public-key"
+      label="Payee Public Key"
+      onChangeHandler={[Function]}
+      value=""
+    />
+    <div
+      className="field is-grouped"
+    >
+      <div
+        className="control is-expanded"
+      >
+        <button
+          className="button is-fullwidth"
+          type="submit"
+        >
+          Set Payee
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+`;

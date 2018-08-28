@@ -15,3 +15,5 @@ export const SidebarSettings: React.SFC<Props> = ({ connectionName, changeWallet
     <p className='is-size-4 has-text-primary' style={{ marginTop: '1rem' }}>Kinesis Wallet - alpha</p>
   </div >
 )
+
+SidebarSettings.displayName = 'SidebarSettings'

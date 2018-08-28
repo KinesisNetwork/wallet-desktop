@@ -12,6 +12,8 @@ export interface Props {
 }
 
 export class Main extends React.PureComponent<Props> {
+  displayName = 'Main'
+
   viewMap = (view: WalletView) => {
     switch (view) {
       case WalletView.create:

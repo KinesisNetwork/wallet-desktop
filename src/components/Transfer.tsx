@@ -20,3 +20,5 @@ export const Transfer: React.SFC<Props> = ({ transferView }) => {
     </React.Fragment>
   )
 }
+
+Transfer.displayName = 'Transfer'
