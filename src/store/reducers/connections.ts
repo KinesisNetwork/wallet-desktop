@@ -53,6 +53,8 @@ export const connections = combineReducers<ConnectionsState, RootAction>({
     switch (action.type) {
       case getType(selectConnection):
         return action.payload
+      case getType(loadConnectionsSuccess):
+        return state ? state : action.payload.length ? action.payload[0] : state
       default:
         return state
     }
