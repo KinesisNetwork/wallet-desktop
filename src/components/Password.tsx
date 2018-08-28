@@ -11,7 +11,7 @@ export interface Props {
   lockWallet: (key: string) => any
 }
 
-export const LockedWallet: React.SFC<Props> = ({ password, unlockWallet, setPasswordInput }) => (
+const LockedWallet: React.SFC<Props> = ({ password, unlockWallet, setPasswordInput }) => (
   <div>
     <div className="field has-addons has-addons-centered">
       <div className="control has-icons-left">
@@ -38,7 +38,7 @@ export const LockedWallet: React.SFC<Props> = ({ password, unlockWallet, setPass
   </div>
 )
 
-export class UnlockedWallet extends React.Component<Props> {
+class UnlockedWallet extends React.Component<Props> {
   public render() {
     return (
       <div>
@@ -70,5 +70,7 @@ export class UnlockedWallet extends React.Component<Props> {
   private copyPrivateKey = () => copy(this.props.decryptedPrivateKey)
 }
 
-export const Password: React.SFC<Props> = props =>
+const Password: React.SFC<Props> = props =>
   props.isAccountUnlocked ? <UnlockedWallet {...props} /> : <LockedWallet {...props} />
+
+export { Password, LockedWallet, UnlockedWallet }
