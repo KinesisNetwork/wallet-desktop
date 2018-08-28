@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 
 import {
   changeSignFocus,
+  invalidForm,
   messageVerificationResult,
   signMessage,
   updateSignForm,
@@ -9,7 +10,7 @@ import {
 } from '@actions'
 import { Sign as SignPresentation } from '@components/Sign'
 import { Dispatch, RootState } from '@store'
-import { RawMessage, SignBehaviour, SignedMessage, Wallet } from '@types'
+import { FormAlert, RawMessage, SignBehaviour, SignedMessage, Wallet } from '@types'
 
 const mapStateToProps = ({ sign, wallets, passwords, accounts }: RootState) => {
   const activeWallet = wallets.activeWallet as Wallet
@@ -40,6 +41,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
   signMessage: (signature: string) => dispatch(signMessage(signature)),
   messageVerificationResult: (isValid: boolean) => dispatch(messageVerificationResult(isValid)),
+  formIsInvalid: (error: FormAlert) => dispatch(invalidForm(error))
 })
 
 export type SignProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>

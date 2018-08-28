@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConnectionForm renders correctly 1`] = `
+<section
+  className="section"
+>
+  <div>
+    <span
+      className="icon is-large"
+    >
+      <i
+        className="fas fa-plug"
+      />
+    </span>
+    <h1
+      className="title is-4 heading primary-font"
+    >
+      Add New Connection
+    </h1>
+  </div>
+  <form
+    onSubmit={[Function]}
+  >
+    <InputField
+      id="connection-name"
+      label="Connection Name"
+      onChangeHandler={[Function]}
+      value=""
+    />
+    <InputField
+      id="connection-horizon-url"
+      label="Horizon URL"
+      onChangeHandler={[Function]}
+      value=""
+    />
+    <InputField
+      id="connection-network-passphrase"
+      label="Network Passphrase"
+      onChangeHandler={[Function]}
+      value=""
+    />
+    <div
+      className="field"
+    >
+      <div
+        className="control is-expanded"
+      >
+        <button
+          className="button is-fullwidth"
+          type="submit"
+        >
+          Add Connection
+        </button>
+      </div>
+    </div>
+  </form>
+</section>
+`;

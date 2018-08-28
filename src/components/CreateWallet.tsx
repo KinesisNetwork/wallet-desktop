@@ -25,6 +25,8 @@ export const CreateWallet: React.SFC<Props> = (props) => (
   </div>
 )
 
+CreateWallet.displayName = 'CreateWallet'
+
 const FormSelection: React.SFC<Pick<Props, 'changeFormView'>> = ({ changeFormView }) => (
   <div className='buttons is-centered'>
     <button className='button' onClick={() => changeFormView(FormView.generate)}>
@@ -37,6 +39,8 @@ const FormSelection: React.SFC<Pick<Props, 'changeFormView'>> = ({ changeFormVie
 )
 
 export class WalletForm extends React.Component<Props> {
+  displayName = 'WalletForm'
+
   constructor(props: Props) {
     super(props)
   }

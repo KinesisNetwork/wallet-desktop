@@ -25,3 +25,5 @@ export const AccountPageSelector: React.SFC<Props> = ({ accountPage, setAccountP
     </div>
   )
 }
+
+AccountPageSelector.displayName = 'AccountPageSelector'

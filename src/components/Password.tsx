@@ -12,7 +12,7 @@ export interface Props {
   lockWallet: (wallet: Wallet) => any
 }
 
-const LockedWallet: React.SFC<Props> = ({ password, unlockWallet, activeWallet, setPasswordInput }) => (
+export const LockedWallet: React.SFC<Props> = ({ password, unlockWallet, activeWallet, setPasswordInput }) => (
   <div>
     <div className='field has-addons has-addons-centered'>
       <div className='control has-icons-left'>
@@ -37,9 +37,13 @@ const LockedWallet: React.SFC<Props> = ({ password, unlockWallet, activeWallet, 
   </div>
 )
 
-class UnlockedWallet extends React.Component<Props, Readonly<{}>> {
+LockedWallet.displayName = 'LockedWallet'
+
+export class UnlockedWallet extends React.Component<Props, Readonly<{}>> {
   public copyBtn
   public clipboard
+
+  displayName = 'UnlockedWallet'
 
   public componentDidMount() {
     this.clipboard = new ClipboardJS(this.copyBtn)
@@ -84,3 +88,5 @@ export const Password: React.SFC<Props> = (props) => (
     {props.isAccountUnlocked ? <UnlockedWallet {...props} /> : <LockedWallet {...props} />}
   </React.Fragment>
 )
+
+Password.displayName = 'Password'

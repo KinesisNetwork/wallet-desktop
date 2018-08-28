@@ -6,12 +6,13 @@ import * as React from 'react'
 import { InputField } from '@components/InputField'
 import { SignProps } from '@containers/Sign'
 import { SignTransactionForm } from '@containers/SignTransactionForm'
-import { formAlert } from '@helpers/alert'
 import { enumStringValues } from '@helpers/enumStringValues'
 import { InputError, WalletLockError } from '@helpers/errors'
 import { SignBehaviour, SignedMessage } from '@types'
 
 export class Sign extends React.Component<SignProps> {
+  displayName: string = 'Sign'
+
   tabs = () => {
     const behaviourOpts = enumStringValues(SignBehaviour)
     return behaviourOpts.map(b => {
@@ -48,6 +49,8 @@ interface State {
   copied: boolean
 }
 export class SignForm extends React.Component<SignProps, State> {
+  displayName: string = 'SignForm'
+
   state: State = {
     copied: false,
   }
@@ -60,7 +63,10 @@ export class SignForm extends React.Component<SignProps, State> {
       const signature = kp.sign(Buffer.from(this.props.signData.message, 'utf8'))
       this.props.signMessage(signature.toString('hex'))
     } catch (e) {
-      formAlert(e.message, e.key)
+      this.props.formIsInvalid({
+        message: e.message,
+        key: e.key
+      })
     }
   }
 
@@ -137,6 +143,8 @@ export class SignForm extends React.Component<SignProps, State> {
 }
 
 export class VerifyForm extends React.Component<SignProps> {
+  displayName: string = 'VerifyForm'
+
   constructor(props: SignProps) {
     super(props)
   }
@@ -168,7 +176,10 @@ export class VerifyForm extends React.Component<SignProps> {
       this.checkValidEntry('publicKey')
       return true
     } catch (e) {
-      formAlert(e.message, e.key)
+      this.props.formIsInvalid({
+        message: e.message,
+        key: e.key
+      })
       return false
     }
   }

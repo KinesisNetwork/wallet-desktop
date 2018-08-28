@@ -17,6 +17,8 @@ export const DeletePayeeLink: React.SFC<{ name: string, removePayee: RemovePayee
   )
 }
 
+DeletePayeeLink.displayName = 'DeletePayeeLink'
+
 export const PayeeList: React.SFC<Props> = (props) => {
   const payees = props.payees.map((payee) => {
     return (
@@ -39,3 +41,5 @@ export const PayeeList: React.SFC<Props> = (props) => {
     </div>
   )
 }
+
+PayeeList.displayName = 'PayeeList'

@@ -7,7 +7,9 @@ import * as SwalImport from 'sweetalert'
 
 const swal = SwalImport as any
 
-class PasswordInput extends React.Component<{ activeWallet: Wallet }, { password: string }> {
+export class PasswordInput extends React.Component<{ activeWallet: Wallet }, { password: string }> {
+  displayName = 'PasswordInput'
+
   constructor(props) {
     super(props)
     this.state = {

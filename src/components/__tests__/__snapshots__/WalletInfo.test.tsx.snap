@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WalletInfo renders correctly 1`] = `
+<Fragment>
+  <h1
+    className="sub-heading primary-font"
+  >
+    Account Information
+  </h1>
+  <div
+    className="tabs is-small"
+  >
+    <ul>
+      <li
+        className="is-active"
+      >
+        <a>
+          <span
+            className="icon is-small has-text-primary"
+          >
+            <i
+              className="fas fa-cubes"
+            />
+          </span>
+          <span>
+            KAU
+          </span>
+        </a>
+      </li>
+      <li>
+        <a
+          className="is-disabled"
+          title="Coming soon!"
+        >
+          <span
+            className="icon is-small has-text-grey-light"
+          >
+            <i
+              className="fas fa-cubes"
+            />
+          </span>
+          <span>
+            KAG
+          </span>
+        </a>
+      </li>
+      <li>
+        <a
+          className="is-disabled"
+          title="Coming soon!"
+        >
+          KWG
+        </a>
+      </li>
+      <li>
+        <a
+          className="is-disabled"
+          title="Coming soon!"
+        >
+          KWS
+        </a>
+      </li>
+    </ul>
+  </div>
+  <LabelledField
+    label="Account Name"
+    value=""
+  />
+  <LabelledField
+    isLoading={true}
+    label="Kinesis Balance"
+    value="0"
+  />
+  <LabelledField
+    isCopyable={true}
+    label="Public Key"
+    value=""
+  />
+  <div
+    className="is-divider is-hidden-tablet"
+    style={
+      Object {
+        "borderTopWidth": "0.01rem",
+        "margin": 0,
+      }
+    }
+  />
+</Fragment>
+`;

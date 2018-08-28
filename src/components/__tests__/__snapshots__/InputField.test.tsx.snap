@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputField should render correctly 1`] = `
+<div
+  className="field"
+>
+  <div
+    className="control "
+  >
+    <input
+      className="input"
+      id="input-connection-name"
+      onChange={[Function]}
+      type="text"
+      value=""
+    />
+  </div>
+  <p
+    className="help is-link"
+  />
+</div>
+`;

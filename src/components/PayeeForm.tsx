@@ -2,9 +2,8 @@ import { kebabCase, startCase } from 'lodash'
 import * as React from 'react'
 
 import { InputField } from '@components/InputField'
-import { formAlert } from '@helpers/alert'
 import { InputError } from '@helpers/errors'
-import { Payee, WalletView } from '@types'
+import { FormAlert, Payee, WalletView } from '@types'
 
 export interface Props {
   payee: Payee
@@ -12,6 +11,7 @@ export interface Props {
   handleChange: (field: keyof Payee, newValue: string) => any
   activeWalletView: WalletView
   cancelForm: () => any
+  formIsInvalid: (formAlertArgs: FormAlert) => any
 }
 
 export class PayeeForm extends React.Component<Props> {
@@ -25,7 +25,10 @@ export class PayeeForm extends React.Component<Props> {
       this.validateProps()
       this.props.addPayee(this.props.payee)
     } catch (e) {
-      formAlert(e.message, e.key)
+      this.props.formIsInvalid({
+        message: e.message,
+        key: e.key
+      })
     }
   }
 
@@ -36,7 +39,7 @@ export class PayeeForm extends React.Component<Props> {
 
   checkValidEntry = (key: keyof Payee) => {
     if (!this.props.payee[key]) {
-      throw new InputError(`${startCase(key)} is required`, `payee-${kebabCase(key)}`)
+      throw new InputError(`${startCase(key)} is required`, `input-payee-${kebabCase(key)}`)
     }
   }
 

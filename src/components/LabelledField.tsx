@@ -39,6 +39,8 @@ export const LabelledField: React.SFC<Props> = (props) => (
   </div>
 )
 
+LabelledField.displayName = 'LabelledField'
+
 export const HorizontalLabelledField: React.SFC<Props> = (props) => (
   <div className={`field is-horizontal ${props.isCompact ? 'is-marginless' : ''}`}>
     <div className='field-label is-small'>
@@ -56,3 +58,5 @@ export const HorizontalLabelledField: React.SFC<Props> = (props) => (
     </div>
   </div>
 )
+
+HorizontalLabelledField.displayName = 'HorizontalLabelledField'

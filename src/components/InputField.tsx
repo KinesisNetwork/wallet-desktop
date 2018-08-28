@@ -42,3 +42,5 @@ export const InputField: React.SFC<Props> = ({
       </p>
     </div>
   )
+
+InputField.displayName = 'InputField'
