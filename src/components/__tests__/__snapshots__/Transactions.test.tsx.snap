@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Transactions Transactions renders correctly 1`] = `
+<Fragment>
+  <h1
+    className="sub-heading primary-font"
+  >
+    Transactions
+  </h1>
+  <div
+    className="scrollable"
+    onScroll={[Function]}
+  >
+    <TransactionCard
+      key="0"
+      transactionWithOperation={
+        Object {
+          "date": "",
+          "fee": "0.00046",
+          "isIncoming": true,
+          "operation": Object {},
+          "source": "123",
+        }
+      }
+    />
+    <TransactionCard
+      key="1"
+      transactionWithOperation={
+        Object {
+          "date": "",
+          "fee": "0.02251",
+          "isIncoming": false,
+          "operation": Object {},
+          "source": "456",
+        }
+      }
+    />
+  </div>
+</Fragment>
+`;

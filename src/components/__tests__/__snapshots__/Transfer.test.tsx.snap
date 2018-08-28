@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Transfer renders correctly 1`] = `
+<Fragment>
+  <h1
+    className="sub-heading primary-font"
+  >
+    <span
+      style={
+        Object {
+          "paddingRight": "5px",
+        }
+      }
+    >
+      Transfer
+    </span>
+    <span
+      className="has-text-primary"
+    >
+      KAU
+    </span>
+  </h1>
+  <Connect(TransferForm) />
+  <div
+    className="is-divider is-hidden-tablet"
+    style={
+      Object {
+        "borderTopWidth": "0.01rem",
+        "marginBottom": 0,
+      }
+    }
+  />
+</Fragment>
+`;

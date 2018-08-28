@@ -56,3 +56,5 @@ export const TransactionCard: React.SFC<Props> = ({ transactionWithOperation: t 
     </div>
   </article>
 )
+
+TransactionCard.displayName = 'TransactionCard'

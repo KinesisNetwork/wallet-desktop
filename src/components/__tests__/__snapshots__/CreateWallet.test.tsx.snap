@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateWallet renders correctly 1`] = `
+<div
+  className="vertical-spaced has-text-centered"
+>
+  <h1
+    className="title-heading"
+  >
+    ADD A NEW ACCOUNT
+  </h1>
+  <section
+    className="section"
+  >
+    <FormSelection
+      changeFormView={[Function]}
+    />
+  </section>
+</div>
+`;
+
+exports[`CreateWallet renders correctly 2`] = `
+<div
+  className="vertical-spaced has-text-centered"
+>
+  <h1
+    className="title-heading"
+  >
+    ADD A NEW ACCOUNT
+  </h1>
+  <section
+    className="section"
+  >
+    <WalletForm
+      accountName=""
+      activeView={1}
+      addWallet={[Function]}
+      changeFormView={[Function]}
+      handleChange={[Function]}
+      password=""
+      passwordVerify=""
+      privateKey=""
+    />
+  </section>
+</div>
+`;
+
+exports[`WalletForm should render correctly 1`] = `
+<div>
+  <div>
+    <span
+      className="icon is-large"
+    >
+      <i
+        className="far fa-user"
+      />
+    </span>
+    <h1
+      className="title is-4 heading primary-font"
+    >
+      Generate Account
+    </h1>
+  </div>
+  <div
+    className="columns is-centered"
+  >
+    <form
+      className="column is-half"
+      onSubmit={[Function]}
+    >
+      <InputField
+        helpText="Add an alias for your account"
+        id="account-name"
+        label="Account Name"
+        onChangeHandler={[Function]}
+        value=""
+      />
+      <InputField
+        helpText="Add a password for locking this account"
+        id="password"
+        label="Account Password"
+        onChangeHandler={[Function]}
+        type="password"
+        value=""
+      />
+      <InputField
+        id="password-verify"
+        label="Repeat Password"
+        onChangeHandler={[Function]}
+        type="password"
+        value=""
+      />
+      <div
+        className="field is-grouped"
+      >
+        <div
+          className="control is-expanded"
+        >
+          <button
+            className="button is-fullwidth"
+            type="submit"
+          >
+            Generate Account
+          </button>
+        </div>
+        <div
+          className="control"
+        >
+          <button
+            className="button is-danger"
+            onClick={[Function]}
+            type="button"
+          >
+            Back
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+`;

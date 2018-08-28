@@ -10,6 +10,9 @@ import {
   clearSignForms,
   deleteWallet as deleteWalletAction,
   selectWallet,
+  unlockWalletFailure,
+  unlockWalletRequest,
+  unlockWalletSuccess,
 } from '@actions'
 import { RootEpic } from '@store'
 import { getActivePublicKey } from '../selectors'
@@ -45,3 +48,30 @@ export const changeWallet: RootEpic = (action$, state$) => {
 
   return merge(loadAccount$, clearSignFields$)
 }
+
+export const unlockWallet$: RootEpic = (action$, state$, { decryptPrivateKey }) =>
+  action$.pipe(
+    filter(isActionOf(unlockWalletRequest)),
+    withLatestFrom(state$),
+    map(([_, state]) => {
+      const decryptedPrivateKey = decryptPrivateKey(
+        state.wallets.activeWallet!.encryptedPrivateKey,
+        state.passwords.currentInput,
+      )
+
+      return decryptedPrivateKey !== ''
+        ? unlockWalletSuccess({
+            password: state.passwords.currentInput,
+            decryptedPrivateKey,
+            publicKey: state.wallets.activeWallet!.publicKey,
+          })
+        : unlockWalletFailure()
+    }),
+  )
+
+export const walletLockFailure$: RootEpic = (action$, _, { generalFailureAlert }) =>
+  action$.pipe(
+    filter(isActionOf(unlockWalletFailure)),
+    map(() => generalFailureAlert('Incorrect Password')),
+    ignoreElements(),
+  )

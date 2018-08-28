@@ -11,6 +11,8 @@ export interface Props {
 }
 
 export class WalletInfo extends React.Component<Props> {
+  displayName = 'WalletInfo'
+
   constructor(props: Props) {
     super(props)
   }

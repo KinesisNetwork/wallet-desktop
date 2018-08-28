@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SidebarSettings renders correctly 1`] = `
+<div
+  className="has-text-centered vertical-spaced"
+  style={
+    Object {
+      "justifyContent": "flex-end",
+    }
+  }
+>
+  <label
+    className="label is-small"
+  >
+    Connection: 
+    Kinesis KAU Testnet
+  </label>
+  <button
+    className="button is-outlined is-fullwidth"
+    onClick={[Function]}
+  >
+    Settings
+  </button>
+  <p
+    className="is-size-4 has-text-primary"
+    style={
+      Object {
+        "marginTop": "1rem",
+      }
+    }
+  >
+    Kinesis Wallet - alpha
+  </p>
+</div>
+`;

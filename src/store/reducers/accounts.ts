@@ -46,8 +46,8 @@ export const accounts = combineReducers<AccountsState, RootAction>({
       case getType(lockWallet):
         return {
           ...state,
-          [action.payload.publicKey]: {
-            ...state[action.payload.publicKey],
+          [action.payload]: {
+            ...state[action.payload],
             isUnlocked: false,
           },
         }

@@ -55,7 +55,7 @@ interface WalletListItemProps {
   isActive: boolean
 }
 
-const WalletListItem: React.SFC<WalletListItemProps> = ({ wallet, selectWallet, isActive, deleteWallet }) => (
+export const WalletListItem: React.SFC<WalletListItemProps> = ({ wallet, selectWallet, isActive, deleteWallet }) => (
   <a className={`panel-block ${isActive ? 'is-active' : ''}`} onClick={() => selectWallet(wallet)}>
     <span className='panel-icon'>
       <i className='fas fa-book' />
@@ -66,3 +66,5 @@ const WalletListItem: React.SFC<WalletListItemProps> = ({ wallet, selectWallet, 
     </button>
   </a>
 )
+
+WalletListItem.displayName = 'WalletListItem'

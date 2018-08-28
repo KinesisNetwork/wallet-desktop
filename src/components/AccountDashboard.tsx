@@ -17,3 +17,5 @@ export const AccountDashboard: React.SFC = () => (
     <Transactions />
   </React.Fragment>
 )
+
+AccountDashboard.displayName = 'AccountDashboard'

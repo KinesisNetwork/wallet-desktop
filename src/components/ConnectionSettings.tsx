@@ -16,3 +16,5 @@ export const ConnectionSettings: React.SFC = () => (
     </div>
   </div>
 )
+
+ConnectionSettings.displayName = 'ConnectionSettings'

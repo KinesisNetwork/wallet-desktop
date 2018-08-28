@@ -43,14 +43,14 @@
       "@store": [
         "store"
       ],
-      "@actions/*": [
-        "store/actions/*"
-      ],
       "@actions": [
         "store/actions"
       ],
       "@containers/*": [
         "containers/*"
+      ],
+      "@selectors": [
+        "store/selectors"
       ],
       "@containers": [
         "containers"
@@ -62,6 +62,7 @@
     "tabSize": 2
   },
   "exclude": [
-    "out"
+    "out",
+    "**/*.test.ts"
   ]
 }

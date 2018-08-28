@@ -2,7 +2,7 @@ import { ActionsObservable } from 'redux-observable'
 import { of } from 'rxjs/observable/of'
 import { toArray } from 'rxjs/operators'
 
-import { accountLoadRequest } from '@actions/accounts'
+import { accountLoadRequest } from '@actions'
 import { loadAccount$ } from '../accounts'
 
 describe('Accounts epic', () => {

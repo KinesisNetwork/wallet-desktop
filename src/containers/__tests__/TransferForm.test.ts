@@ -1,14 +1,13 @@
 jest.mock('@services/kinesis', () => ({
-  getFeeInKinesis: (connection, amount) => `${connection} ${amount}`
+  getFeeInKinesis: (connection, amount) => `${connection} ${amount}`,
 }))
 
 import { mapStateToProps } from '@containers/TransferForm'
 import { RootState } from '@store'
 
-
 describe('TransferForm', () => {
   it('mapStateToProps with active wallet', () => {
-    const state = <RootState> <any> {
+    const state = <RootState>(<any>{
       accounts: {
         accountsMap: {
           'wallet-public-key': {
@@ -28,7 +27,7 @@ describe('TransferForm', () => {
         },
       },
       payees: {
-        payees: ['aPayee'],
+        payeesList: ['aPayee'],
       },
       transfer: {
         form: { formKey1: 'formValue1' },
@@ -36,12 +35,10 @@ describe('TransferForm', () => {
       },
       wallets: {
         activeWallet: { publicKey: 'wallet-public-key' },
-        walletList: [
-          {publicKey: 'another-public-key', accountName: 'another'}
-        ],
+        walletList: [{ publicKey: 'another-public-key', accountName: 'another' }],
       },
       other: 'unused',
-    }
+    })
 
     const { getFee, ...rest } = mapStateToProps(state)
 
@@ -50,27 +47,20 @@ describe('TransferForm', () => {
       isTransferring: 'isTransferring',
       isWalletUnlocked: true,
       accountBalance: 'accountBalance',
-      payees: [
-        'aPayee',
-        { name: 'another', publicKey: 'another-public-key'}
-      ],
-      activeWallet: {
-        publicKey: 'wallet-public-key',
-      },
-      connection: 'currentConnection'
+      payees: ['aPayee', { name: 'another', publicKey: 'another-public-key' }],
+      publicKey: 'wallet-public-key',
+      connection: 'currentConnection',
     })
     expect(getFee(10)).toEqual('currentConnection 10')
   })
 
   it('mapStateToProps with locked account', () => {
-    const state = <RootState> <any> {
+    const state = <RootState>(<any>{
       wallets: {
         activeWallet: {
           publicKey: 'wallet-public-key',
         },
-        walletList: [
-          {publicKey: 'another-public-key', accountName: 'another'}
-        ],
+        walletList: [{ publicKey: 'another-public-key', accountName: 'another' }],
       },
       accounts: {
         accountsMap: {
@@ -79,24 +69,22 @@ describe('TransferForm', () => {
           },
         },
       },
-      connections: {currentConnection: 'currentConnection'},
+      connections: { currentConnection: 'currentConnection' },
       passwords: { livePasswords: {} },
-      payees: { payees: []},
-      transfer: {form: {}, isTransferring: 'isTransferring'},
+      payees: { payeesList: [] },
+      transfer: { form: {}, isTransferring: 'isTransferring' },
       other: 'unused',
-    }
+    })
 
     const { getFee, ...rest } = mapStateToProps(state)
 
     expect(rest).toEqual({
       accountBalance: undefined,
-      activeWallet: {
-        publicKey: 'wallet-public-key',
-      },
+      publicKey: 'wallet-public-key',
       connection: 'currentConnection',
       isTransferring: 'isTransferring',
       isWalletUnlocked: false,
-      payees: [{name: 'another', publicKey: 'another-public-key'}],
+      payees: [{ name: 'another', publicKey: 'another-public-key' }],
     })
   })
 })

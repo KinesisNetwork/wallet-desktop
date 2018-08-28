@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Sidebar should render correctly 1`] = `
+<div
+  className="vertical-spaced"
+  style={
+    Object {
+      "backgroundColor": "#2b3e50",
+    }
+  }
+>
+  <img
+    className="logo-sidebar"
+    src="./Kinesis_Alpha.svg"
+  />
+  <Connect(WalletList) />
+  <Connect(SidebarPayee) />
+  <Connect(SidebarSettings) />
+</div>
+`;

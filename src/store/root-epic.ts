@@ -1,8 +1,9 @@
 import { values } from 'lodash'
 import { combineEpics, Epic } from 'redux-observable'
 
-import { generalFailureAlert, generalSuccessAlert } from '@helpers/alert'
+import { formAlert, generalFailureAlert, generalSuccessAlert } from '@helpers/alert'
 import { loadAccount } from '@services/accounts'
+import { decryptPrivateKey } from '@services/encryption'
 import { getTransactionErrorMessage, getTransactions } from '@services/kinesis'
 import { createKinesisTransfer, submitSignedTransaction } from '@services/transfer'
 
@@ -14,6 +15,7 @@ import { getActiveKeys, getCurrentConnection } from './selectors'
 
 export const epicDependencies = {
   createKinesisTransfer,
+  formAlert,
   generalFailureAlert,
   generalSuccessAlert,
   getActiveKeys,
@@ -23,6 +25,7 @@ export const epicDependencies = {
   loadAccount,
   submitSignedTransaction,
   withPolling,
+  decryptPrivateKey,
 }
 
 export type EpicDependencies = typeof epicDependencies

@@ -57,3 +57,5 @@ export const PayeeSelector: React.SFC<Props> = ({ targetPayee, payees, handleCha
     </div>
   )
 }
+
+PayeeSelector.displayName = 'PayeeSelector'

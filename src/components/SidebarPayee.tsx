@@ -12,3 +12,5 @@ export const SidebarPayee: React.SFC<Props> = ({ changeWalletView }) => (
     </button>
   </div>
 )
+
+SidebarPayee.displayName = 'SidebarPayee'

@@ -1,36 +1,28 @@
 import { connect } from 'react-redux'
 
-import { changeUnlockPasswordInput, lockWallet, unlockWallet } from '@actions'
+import { changeUnlockPasswordInput, lockWallet, unlockWalletRequest } from '@actions'
 import { Password as PasswordPresentation } from '@components/Password'
-import { formAlert } from '@helpers/alert'
-import { decryptPrivateKey } from '@services/encryption'
-import { Dispatch, RootState } from '@store'
-import { Wallet } from '@types'
+import { getActiveKeys } from '@selectors'
+import { RootState } from '@store'
 
-export const mapStateToProps = ({ wallets, accounts, passwords }: RootState) => {
-  const activeWallet = wallets.activeWallet as Wallet
-  const isAccountUnlocked = accounts.accountsMap[activeWallet.publicKey].isUnlocked
-  const password = passwords.currentInput
-  const decryptedPrivateKey = isAccountUnlocked ? passwords.livePasswords[activeWallet.publicKey].privateKey : ''
+export const mapStateToProps = (state: RootState) => {
+  const activeKeys = getActiveKeys(state)
+  const password = state.passwords.currentInput
   return {
-    activeWallet,
-    isAccountUnlocked,
+    activePublicKey: activeKeys.publicKey,
+    isAccountUnlocked: !!activeKeys.privateKey,
     password,
-    decryptedPrivateKey,
+    decryptedPrivateKey: activeKeys.privateKey,
   }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  lockWallet: (wallet: Wallet) => dispatch(lockWallet(wallet)),
-  setPasswordInput: (password: string) => dispatch(changeUnlockPasswordInput(password)),
-  unlockWallet: ({ encryptedPrivateKey, publicKey }: Wallet, password: string) => {
-    const decryptedPrivateKey = decryptPrivateKey(encryptedPrivateKey, password)
-    if (decryptedPrivateKey !== '') {
-      return dispatch(unlockWallet({ password, publicKey, decryptedPrivateKey }))
-    } else {
-      return formAlert('Account password is incorrect', 'wallet-unlock-password')
-    }
-  },
-})
+const mapDispatchToProps = {
+  lockWallet,
+  setPasswordInput: changeUnlockPasswordInput,
+  unlockWallet: unlockWalletRequest,
+}
 
-export const Password = connect(mapStateToProps, mapDispatchToProps)(PasswordPresentation)
+export const Password = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(PasswordPresentation)
