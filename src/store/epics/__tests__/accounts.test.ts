@@ -11,6 +11,7 @@ import {
 } from '@actions/accounts'
 import { loadAccountTransactions } from '@actions/transactions'
 import { loadAccount$ } from '../accounts'
+import { mockServices } from './helpers'
 
 describe('Accounts epic', () => {
   describe('loadAccount$', () => {
@@ -24,11 +25,9 @@ describe('Accounts epic', () => {
       },
     })
 
-    const action$ = ActionsObservable.from([
-      accountLoadRequest(publicKey),
-    ])
+    const action$ = ActionsObservable.from([accountLoadRequest(publicKey)])
 
-    it('success', (done) => {
+    it('success', done => {
       const expectedOutputActions = [
         { type: getType(accountIsLoading) },
         { type: getType(loadAccountTransactions), payload: publicKey },
@@ -37,16 +36,16 @@ describe('Accounts epic', () => {
 
       const loadAccount = jest.fn(() => Promise.resolve(account))
 
-      loadAccount$(action$, store, { loadAccount })
+      loadAccount$(action$, store, mockServices({ loadAccount }))
         .pipe(toArray())
-        .subscribe((actions) => {
+        .subscribe(actions => {
           expect(actions).toEqual(expectedOutputActions)
           expect(loadAccount).toHaveBeenCalledWith(publicKey, connection)
           done()
         })
     })
 
-    it('failure', (done) => {
+    it('failure', done => {
       const expectedOutputActions = [
         { type: getType(accountIsLoading) },
         { type: getType(loadAccountTransactions), payload: publicKey },
@@ -55,14 +54,13 @@ describe('Accounts epic', () => {
 
       const loadAccount = jest.fn(() => Promise.reject(error))
 
-      loadAccount$(action$, store, { loadAccount })
+      loadAccount$(action$, store, mockServices({ loadAccount }))
         .pipe(toArray())
-        .subscribe((actions) => {
+        .subscribe(actions => {
           expect(actions).toEqual(expectedOutputActions)
           expect(loadAccount).toHaveBeenCalledWith(publicKey, connection)
           done()
         })
     })
   })
-
 })

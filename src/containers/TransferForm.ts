@@ -1,30 +1,26 @@
 import { connect } from 'react-redux'
 
-import {
-  changeTransferView,
-  changeWalletView,
-  transferRequest,
-  updateTransferForm,
-} from '@actions'
+import { changeTransferView, changeWalletView, transferRequest, updateTransferForm } from '@actions'
 import { TransferForm as TransferPresentation } from '@components/TransferForm'
+import { getActiveKeys } from '@selectors'
 import { getFeeInKinesis } from '@services/kinesis'
 import { RootState } from '@store'
-import { Payee, Wallet } from '@types'
+import { Payee } from '@types'
 
-export const mapStateToProps = ({ wallets, connections, transfer, accounts, payees, passwords }: RootState) => {
-  const activeWallet = wallets.activeWallet as Wallet
-  const livePassword = passwords.livePasswords[activeWallet.publicKey]
+export const mapStateToProps = (state: RootState) => {
+  const { wallets, connections, transfer, accounts, payees } = state
+  const { privateKey, publicKey } = getActiveKeys(state)
   const otherWalletsAsPayees: Payee[] = wallets.walletList
-    .filter((wallet) => wallet.publicKey !== activeWallet.publicKey)
+    .filter(wallet => wallet.publicKey !== publicKey)
     .map((wallet): Payee => ({ name: wallet.accountName, publicKey: wallet.publicKey }))
   return {
     ...transfer.form,
     getFee: (amount: number) => getFeeInKinesis(connections.currentConnection, amount),
     isTransferring: transfer.isTransferring,
-    isWalletUnlocked: !!livePassword,
-    accountBalance: accounts.accountsMap[activeWallet.publicKey].balance,
-    payees: payees.payees.concat(otherWalletsAsPayees),
-    activeWallet,
+    isWalletUnlocked: !!privateKey,
+    accountBalance: accounts.accountsMap[publicKey].balance,
+    payees: payees.payeesList.concat(otherWalletsAsPayees),
+    publicKey,
     connection: connections.currentConnection,
   }
 }

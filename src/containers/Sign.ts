@@ -9,15 +9,15 @@ import {
   updateVerifyForm,
 } from '@actions'
 import { Sign as SignPresentation } from '@components/Sign'
+import { getActiveKeys } from '@selectors'
 import { Dispatch, RootState } from '@store'
-import { FormAlert, RawMessage, SignBehaviour, SignedMessage, Wallet } from '@types'
+import { FormAlert, RawMessage, SignBehaviour, SignedMessage } from '@types'
 
-const mapStateToProps = ({ sign, wallets, passwords, accounts }: RootState) => {
-  const activeWallet = wallets.activeWallet as Wallet
-  const isWalletUnlocked = accounts.accountsMap[activeWallet.publicKey].isUnlocked
-  const decryptedPrivateKey = isWalletUnlocked
-    ? passwords.livePasswords[activeWallet.publicKey].privateKey
-    : ''
+const mapStateToProps = (state: RootState) => {
+  const { sign } = state
+  const activeKeys = getActiveKeys(state)
+  const isWalletUnlocked = !!activeKeys.privateKey
+  const decryptedPrivateKey = activeKeys.privateKey
   return {
     decryptedPrivateKey,
     isWalletUnlocked,
@@ -41,7 +41,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
   signMessage: (signature: string) => dispatch(signMessage(signature)),
   messageVerificationResult: (isValid: boolean) => dispatch(messageVerificationResult(isValid)),
-  formIsInvalid: (error: FormAlert) => dispatch(invalidForm(error))
+  formIsInvalid: (error: FormAlert) => dispatch(invalidForm(error)),
 })
 
 export type SignProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>

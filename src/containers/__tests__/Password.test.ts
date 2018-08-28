@@ -3,7 +3,7 @@ import { mapStateToProps } from '../Password'
 
 describe('Password', () => {
   it('mapStateToProps with unlocked account', () => {
-    const state = <RootState> <any> {
+    const state = <RootState>(<any>{
       wallets: {
         activeWallet: {
           publicKey: 'wallet-public-key',
@@ -25,14 +25,12 @@ describe('Password', () => {
         },
       },
       other: 'unused',
-    }
+    })
 
     const result = mapStateToProps(state)
 
     expect(result).toEqual({
-      activeWallet: {
-        publicKey: 'wallet-public-key',
-      },
+      activePublicKey: 'wallet-public-key',
       decryptedPrivateKey: 'private-key',
       isAccountUnlocked: true,
       password: 'password-input',
@@ -40,7 +38,7 @@ describe('Password', () => {
   })
 
   it('mapStateToProps with locked account', () => {
-    const state = <RootState> <any> {
+    const state = <RootState>(<any>{
       wallets: {
         activeWallet: {
           publicKey: 'wallet-public-key',
@@ -55,17 +53,16 @@ describe('Password', () => {
       },
       passwords: {
         currentInput: '',
+        livePasswords: {},
       },
       other: 'unused',
-    }
+    })
 
     const result = mapStateToProps(state)
 
     expect(result).toEqual({
-      activeWallet: {
-        publicKey: 'wallet-public-key',
-      },
-      decryptedPrivateKey: '',
+      activePublicKey: 'wallet-public-key',
+      decryptedPrivateKey: null,
       isAccountUnlocked: false,
       password: '',
     })

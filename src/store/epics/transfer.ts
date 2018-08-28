@@ -1,4 +1,3 @@
-
 import { of } from 'rxjs'
 import { fromPromise } from 'rxjs/observable/fromPromise'
 import {
@@ -21,7 +20,11 @@ import {
 } from '@actions'
 import { RootEpic } from '@store'
 
-export const transferRequest$: RootEpic = (action$, state$, { createKinesisTransfer, getActiveKeys, getCurrentConnection }) =>
+export const transferRequest$: RootEpic = (
+  action$,
+  state$,
+  { createKinesisTransfer, getActiveKeys, getCurrentConnection },
+) =>
   action$.pipe(
     filter(isActionOf(transferRequest)),
     map(({ payload }) => payload),
@@ -29,7 +32,7 @@ export const transferRequest$: RootEpic = (action$, state$, { createKinesisTrans
     mergeMap(([request, state]) =>
       fromPromise(
         createKinesisTransfer(
-          getActiveKeys(state).privateKey,
+          getActiveKeys(state).privateKey!,
           getCurrentConnection(state),
           request,
         ),
@@ -40,7 +43,11 @@ export const transferRequest$: RootEpic = (action$, state$, { createKinesisTrans
     ),
   )
 
-export const transactionSubmission$: RootEpic = (action$, state$, { getCurrentConnection, submitSignedTransaction }) =>
+export const transactionSubmission$: RootEpic = (
+  action$,
+  state$,
+  { getCurrentConnection, submitSignedTransaction },
+) =>
   action$.pipe(
     filter(isActionOf(transactionRequest)),
     mergeMap(({ payload }) =>
@@ -51,14 +58,22 @@ export const transactionSubmission$: RootEpic = (action$, state$, { getCurrentCo
     ),
   )
 
-export const transactionSuccess$: RootEpic = (action$, state$, { generalSuccessAlert, getActiveKeys }) =>
+export const transactionSuccess$: RootEpic = (
+  action$,
+  state$,
+  { generalSuccessAlert, getActiveKeys },
+) =>
   action$.pipe(
     filter(isActionOf(transactionSuccess)),
     flatMap(() => generalSuccessAlert('The transfer was successful.')),
     map(() => accountLoadRequest(getActiveKeys(state$.value).publicKey)),
   )
 
-export const transactionFailed$: RootEpic = (action$, _, { generalFailureAlert, getTransactionErrorMessage }) =>
+export const transactionFailed$: RootEpic = (
+  action$,
+  _,
+  { generalFailureAlert, getTransactionErrorMessage },
+) =>
   action$.pipe(
     filter(isActionOf(transactionFailed)),
     map(({ payload }) => generalFailureAlert(getTransactionErrorMessage(payload))),

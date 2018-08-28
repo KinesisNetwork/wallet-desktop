@@ -1,4 +1,4 @@
-import { changeUnlockPasswordInput, lockWallet, unlockWallet } from '@actions'
+import { changeUnlockPasswordInput, lockWallet, unlockWalletSuccess } from '@actions'
 import { RootAction } from '@store'
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
@@ -6,8 +6,8 @@ import { getType } from 'typesafe-actions'
 interface PasswordMap {
   [publicKey: string]: {
     timestamp: Date
-    privateKey: string,
-    password: string,
+    privateKey: string
+    password: string
   }
 }
 
@@ -19,14 +19,17 @@ export interface PasswordsState {
 export const passwords = combineReducers<PasswordsState, RootAction>({
   currentInput: (state = '', action) => {
     switch (action.type) {
-      case getType(changeUnlockPasswordInput): return action.payload
-      case getType(unlockWallet): return ''
-      default: return state
+      case getType(changeUnlockPasswordInput):
+        return action.payload
+      case getType(unlockWalletSuccess):
+        return ''
+      default:
+        return state
     }
   },
   livePasswords: (state = {}, action) => {
     switch (action.type) {
-      case getType(unlockWallet):
+      case getType(unlockWalletSuccess):
         return {
           ...state,
           [action.payload.publicKey]: {
@@ -37,9 +40,10 @@ export const passwords = combineReducers<PasswordsState, RootAction>({
         }
       case getType(lockWallet):
         return Object.keys(state)
-          .filter((key) => key !== action.payload.publicKey)
+          .filter(key => key !== action.payload)
           .reduce((newState, key) => ({ ...newState, [key]: state[key] }), {})
-      default: return state
+      default:
+        return state
     }
   },
 })
