@@ -43,9 +43,6 @@
       "@store": [
         "store"
       ],
-      "@actions/*": [
-        "store/actions/*"
-      ],
       "@actions": [
         "store/actions"
       ],

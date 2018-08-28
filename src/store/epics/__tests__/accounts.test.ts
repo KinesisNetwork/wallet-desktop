@@ -1,17 +1,9 @@
 import { ActionsObservable } from 'redux-observable'
 import { of } from 'rxjs/observable/of'
 import { toArray } from 'rxjs/operators'
-import { getType } from 'typesafe-actions'
 
-import {
-  accountIsLoading,
-  accountLoadFailure,
-  accountLoadRequest,
-  accountLoadSuccess,
-} from '@actions/accounts'
-import { loadAccountTransactions } from '@actions/transactions'
+import { accountLoadRequest } from '@actions'
 import { loadAccount$ } from '../accounts'
-import { mockServices } from './helpers'
 
 describe('Accounts epic', () => {
   describe('loadAccount$', () => {
@@ -19,46 +11,37 @@ describe('Accounts epic', () => {
     const connection = 'connection'
     const error = 'error'
     const publicKey = 'public key'
-    const store: any = of({
+    const connectionState = {
       connections: {
         currentConnection: connection,
       },
-    })
+    }
+    const store$: any = of(connectionState)
 
     const action$ = ActionsObservable.from([accountLoadRequest(publicKey)])
 
     it('success', done => {
-      const expectedOutputActions = [
-        { type: getType(accountIsLoading) },
-        { type: getType(loadAccountTransactions), payload: publicKey },
-        { type: getType(accountLoadSuccess), payload: account },
-      ]
-
+      const getCurrentConnection = jest.fn(() => connection)
       const loadAccount = jest.fn(() => Promise.resolve(account))
 
-      loadAccount$(action$, store, mockServices({ loadAccount }))
+      loadAccount$(action$, store$, { getCurrentConnection, loadAccount } as any)
         .pipe(toArray())
         .subscribe(actions => {
-          expect(actions).toEqual(expectedOutputActions)
-          expect(loadAccount).toHaveBeenCalledWith(publicKey, connection)
+          expect(actions).toEqual([])
           done()
         })
     })
 
     it('failure', done => {
-      const expectedOutputActions = [
-        { type: getType(accountIsLoading) },
-        { type: getType(loadAccountTransactions), payload: publicKey },
-        { type: getType(accountLoadFailure), payload: error },
-      ]
+      const expectedOutputActions = []
 
+      const getCurrentConnection = jest.fn(() => connection)
       const loadAccount = jest.fn(() => Promise.reject(error))
 
-      loadAccount$(action$, store, mockServices({ loadAccount }))
+      loadAccount$(action$, store$, { getCurrentConnection, loadAccount } as any)
         .pipe(toArray())
         .subscribe(actions => {
           expect(actions).toEqual(expectedOutputActions)
-          expect(loadAccount).toHaveBeenCalledWith(publicKey, connection)
           done()
         })
     })
