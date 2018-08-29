@@ -9,6 +9,14 @@ import { Connection } from '@types'
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 
+const DEFAULT_CONNECTIONS: Connection[] = [
+  {
+    horizonURL: 'https://kau-testnet.kinesisgroup.io',
+    name: 'KAU Testnet',
+    networkPassphrase: 'Kinesis UAT',
+  },
+]
+
 export interface ConnectionsState {
   connectionList: Connection[]
   currentConnection: Connection
@@ -34,7 +42,7 @@ const form = combineReducers<Connection, RootAction>({
 
 export const connections = combineReducers<ConnectionsState, RootAction>({
   form,
-  connectionList: (state = [], action) => {
+  connectionList: (state = DEFAULT_CONNECTIONS, action) => {
     switch (action.type) {
       case getType(loadConnectionsSuccess):
         return [
@@ -49,12 +57,10 @@ export const connections = combineReducers<ConnectionsState, RootAction>({
         return state
     }
   },
-  currentConnection: (state = {} as Connection, action) => {
+  currentConnection: (state = DEFAULT_CONNECTIONS[0], action) => {
     switch (action.type) {
       case getType(selectConnection):
         return action.payload
-      case getType(loadConnectionsSuccess):
-        return state ? state : action.payload.length ? action.payload[0] : state
       default:
         return state
     }
