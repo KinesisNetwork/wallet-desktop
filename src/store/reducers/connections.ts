@@ -1,68 +1,70 @@
-import {
-  addConnection,
-  handleConnectionFormChange,
-  loadConnectionsSuccess,
-  selectConnection,
-} from '@actions'
-import { RootAction } from '@store'
-import { Connection } from '@types'
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 
-const DEFAULT_CONNECTIONS: Connection[] = [
-  {
-    horizonURL: 'https://kau-testnet.kinesisgroup.io',
-    name: 'KAU Testnet',
-    networkPassphrase: 'Kinesis UAT',
+import {
+  handleConnectionFormChange,
+  selectForEditConnection,
+  stopEditingConnection,
+} from '@actions'
+import { RootAction } from '@store'
+import { Connection, ConnectionStage, Currency } from '@types'
+
+const DEFAULT_CONNECTIONS: Connections = {
+  [ConnectionStage.testnet]: {
+    [Currency.KAU]: {
+      endpoint: 'https://kau-testnet.kinesisgroup.io',
+      passphrase: 'Kinesis UAT',
+    },
+    [Currency.KAG]: {
+      endpoint: 'https://kag-testnet.kinesisgroup.io',
+      passphrase: 'Kinesis KAG UAT',
+    },
   },
-]
+}
+
+type Connections = { [S in ConnectionStage]?: { [C in Currency]: Connection } }
+
+interface UpdateConnections {
+  selectedCurrency: Currency
+  isEditing: 'endpoint' | 'passphrase' | null
+}
 
 export interface ConnectionsState {
-  connectionList: Connection[]
-  currentConnection: Connection
-  form: Connection
+  currentStage: ConnectionStage
+  currentCurrency: Currency
+  connections: Connections
+  updating: UpdateConnections
 }
 
-const handleChange = (name: keyof Connection) => (state = '', action: RootAction) => {
-  switch (action.type) {
-    case getType(handleConnectionFormChange):
-      return action.payload.field === name ? action.payload.newValue : state
-    case getType(addConnection):
-      return ''
-    default:
-      return state
-  }
-}
-
-const form = combineReducers<Connection, RootAction>({
-  horizonURL: handleChange('horizonURL'),
-  name: handleChange('name'),
-  networkPassphrase: handleChange('networkPassphrase'),
+const updating = combineReducers<UpdateConnections, RootAction>({
+  isEditing: (state = null, action) => {
+    switch (action.type) {
+      case getType(selectForEditConnection):
+        return action.payload
+      case getType(stopEditingConnection):
+        return null
+      default:
+        return state
+    }
+  },
+  selectedCurrency: (state = Currency.KAU) => state,
 })
 
 export const connections = combineReducers<ConnectionsState, RootAction>({
-  form,
-  connectionList: (state = DEFAULT_CONNECTIONS, action) => {
-    switch (action.type) {
-      case getType(loadConnectionsSuccess):
-        return [
+  updating,
+  currentCurrency: (state = Currency.KAU) => state,
+  currentStage: (state = ConnectionStage.testnet) => state,
+  connections: (state = DEFAULT_CONNECTIONS, action) =>
+    action.type === getType(handleConnectionFormChange)
+      ? {
+          [action.payload.currentStage]: {
+            [action.payload.currentCurrency]: {
+              [action.payload.field]: action.payload.newValue,
+              ...state[action.payload.currentStage]![action.payload.currentCurrency],
+            },
+            ...state[action.payload.currentStage],
+          },
           ...state,
-          ...action.payload.filter(
-            conn => !state.find(existing => existing.horizonURL === conn.horizonURL),
-          ),
-        ]
-      case getType(addConnection):
-        return [...state, action.payload]
-      default:
-        return state
-    }
-  },
-  currentConnection: (state = DEFAULT_CONNECTIONS[0], action) => {
-    switch (action.type) {
-      case getType(selectConnection):
-        return action.payload
-      default:
-        return state
-    }
-  },
+        }
+      : state,
 })

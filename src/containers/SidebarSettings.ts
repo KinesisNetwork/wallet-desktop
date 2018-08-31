@@ -5,7 +5,10 @@ import { SidebarSettings as SidebarSettingsPresentation } from '@components/Side
 import { RootState } from '@store'
 
 const mapStateToProps = ({ connections }: RootState) => ({
-  connectionName: connections.currentConnection.name,
+  connectionName: connections.currentStage as string,
 })
 
-export const SidebarSettings = connect(mapStateToProps, { changeWalletView })(SidebarSettingsPresentation)
+export const SidebarSettings = connect(
+  mapStateToProps,
+  { changeWalletView },
+)(SidebarSettingsPresentation)

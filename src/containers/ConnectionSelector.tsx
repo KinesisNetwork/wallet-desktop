@@ -1,22 +1,35 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 
-import { selectConnection } from '@actions'
+import { EditableText } from '@components/EditableText'
+
+import {
+  handleConnectionFormChange,
+  selectConnection,
+  selectForEditConnection,
+  stopEditingConnection,
+} from '@actions'
+import { getCurrentConnectionForEditing } from '@selectors'
 import { RootState } from '@store'
 import { Currency } from '@types'
 
 export const mapStateToProps = ({ connections }: RootState) => ({
-  connections: connections.connectionList,
-  activeConnection: connections.connectionList.findIndex(
-    conn => conn.horizonURL === connections.currentConnection.horizonURL,
-  ),
+  isEditing: connections.updating.isEditing,
+  connectionToEdit: getCurrentConnectionForEditing(connections),
+  currentCurrency: connections.updating.selectedCurrency,
+  currentStage: connections.currentStage,
 })
 
 const mapDispatchToProps = {
   selectConnection,
+  selectForEditConnection,
+  handleConnectionFormChange,
+  stopEditingConnection,
 }
 
-const ConnectionSelectorComponent: React.SFC = () => (
+type Props = typeof mapDispatchToProps & ReturnType<typeof mapStateToProps>
+
+const ConnectionSelectorComponent: React.SFC<Props> = props => (
   <nav className="panel">
     <div className="panel-heading">
       <div className="field is-grouped is-horizontal">
@@ -39,12 +52,54 @@ const ConnectionSelectorComponent: React.SFC = () => (
       <a className="is-active">{Currency.KAU}</a>
       <a>{Currency.KAG}</a>
     </div>
-    <div className="panel-block">
-      <div className="control has-icons-left">
-        <input className="input" placeholder="add new endpoint" />
-        <span className="icon is-left">
-          <i className="fas fa-plus" />
-        </span>
+    <div className="panel-block is-block">
+      <div className="field is-horizontal">
+        <div className="field-label is-normal">
+          <label className="label">Endpoint</label>
+        </div>
+        <div className="field-body">
+          <div className="field">
+            <EditableText
+              isEditing={props.isEditing === 'endpoint'}
+              value={props.connectionToEdit.endpoint}
+              onChangeHandler={ev =>
+                props.handleConnectionFormChange({
+                  field: 'endpoint',
+                  newValue: ev.currentTarget.value,
+                  currentCurrency: props.currentCurrency,
+                  currentStage: props.currentStage,
+                })
+              }
+              onStartEditing={() => props.selectForEditConnection('endpoint')}
+              onStopEditing={() => props.stopEditingConnection()}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div className="panel-block is-block">
+      <div className="field is-horizontal">
+        <div className="field-label is-normal">
+          <label className="label">Passphrase</label>
+        </div>
+        <div className="field-body">
+          <div className="field">
+            <EditableText
+              isEditing={props.isEditing === 'passphrase'}
+              value={props.connectionToEdit.passphrase}
+              onChangeHandler={ev =>
+                props.handleConnectionFormChange({
+                  field: 'passphrase',
+                  newValue: ev.currentTarget.value,
+                  currentCurrency: props.currentCurrency,
+                  currentStage: props.currentStage,
+                })
+              }
+              onStartEditing={() => props.selectForEditConnection('passphrase')}
+              onStopEditing={() => props.stopEditingConnection()}
+            />
+          </div>
+        </div>
       </div>
     </div>
   </nav>

@@ -12,17 +12,13 @@ export type Dispatch = Dispatch<RootAction>
 export { RootAction, RootEpic, RootState }
 
 export function configureStore() {
-  
-  const epicMiddleware = createEpicMiddleware<
-    RootAction,
-    RootAction,
-    RootState,
-    EpicDependencies
-  >({ dependencies: epicDependencies })
-  
+  const epicMiddleware = createEpicMiddleware<RootAction, RootAction, RootState, EpicDependencies>({
+    dependencies: epicDependencies,
+  })
+
   const storage = createStorage()
   const persistedReducer = persistReducer(
-    { key: 'root', storage, blacklist: ['passwords'],  },
+    { key: 'root', storage, whitelist: ['wallets', 'payees'] },
     rootReducer,
   )
 

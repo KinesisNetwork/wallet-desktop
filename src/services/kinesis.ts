@@ -34,8 +34,8 @@ export function getTransactionErrorMessage(failedTxPayload: any) {
 }
 
 export function getServer(connection: Connection): Server {
-  Network.use(new Network(connection.networkPassphrase))
-  return new Server(connection.horizonURL)
+  Network.use(new Network(connection.passphrase))
+  return new Server(connection.endpoint)
 }
 
 export async function getFeeInStroops(server: Server, amountInKinesis: number): Promise<string> {
