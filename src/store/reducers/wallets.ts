@@ -1,6 +1,6 @@
-import { addWallet, deleteWallet, loadWallets, selectWallet, walletsSaved } from '@actions'
+import { addWallet, deleteWallet, loadWallets, selectWallet, unlockWalletFailure, walletsSaved } from '@actions'
 import { RootAction } from '@store'
-import { Wallet } from '@types'
+import { LockAccount, Wallet } from '@types'
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 
@@ -8,6 +8,7 @@ export interface WalletsState {
   readonly walletList: Wallet[]
   readonly currentlySelected: number
   readonly activeWallet: Wallet | null
+  readonly accountLocked: LockAccount
 }
 
 export const wallets = combineReducers<WalletsState, RootAction>({
@@ -35,4 +36,35 @@ export const wallets = combineReducers<WalletsState, RootAction>({
         return state
     }
   },
+  accountLocked: (state = { isAccountLocked: false, timestamps: [] }, action) => {
+    switch (action.type) {
+      case getType(unlockWalletFailure):
+        return shouldGetLocked(state.timestamps) ?
+          {
+            isAccountLocked: true,
+            timestamps: [...state.timestamps, action.payload.timestamp]
+          } :
+          {
+            isAccountLocked: false,
+            timestamps: [...state.timestamps, action.payload.timestamp]
+          }
+      default:
+        return state
+    }
+  }
 })
+
+function shouldGetLocked(timestamps: Date[]): boolean {
+  const length = timestamps.length
+  const TIME_LIMIT_IN_MS = 5 * 60 * 1000
+  const MAX_ATTEMPTS = 10
+
+  if (
+    length > MAX_ATTEMPTS &&
+    (timestamps[length].getTime() - timestamps[length - MAX_ATTEMPTS].getTime() < TIME_LIMIT_IN_MS)
+  ) {
+    return true
+  }
+
+  return false
+}
