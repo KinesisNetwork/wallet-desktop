@@ -3,6 +3,7 @@ import {
   accountLoadRequest,
   accountLoadSuccess,
   accountTransactionsLoaded,
+  selectConnectedCurrency,
 } from '@actions'
 import { RootEpic } from '@store'
 import { AccountPage, WalletView } from '@types'
@@ -57,3 +58,9 @@ export const loadAccount$: RootEpic = (
 
   return accountLoadPoll$
 }
+
+export const initiateLoadRequest$: RootEpic = (action$, state$) =>
+  action$.pipe(
+    filter(isActionOf([selectConnectedCurrency])),
+    map(() => accountLoadRequest(state$.value.wallets.activeWallet!.publicKey)),
+  )

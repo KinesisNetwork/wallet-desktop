@@ -18,6 +18,8 @@ const accountInfo = combineReducers<AccountInfo, RootAction>({
     switch (action.type) {
       case getType(accountLoadSuccess):
         return getBalance(action.payload)
+      case getType(accountLoadFailure):
+        return 0
       default:
         return state
     }
