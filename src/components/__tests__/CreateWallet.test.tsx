@@ -139,8 +139,8 @@ describe('WalletForm', () => {
         addWallet={mockCreateNewWallet}
         changeFormView={() => null}
         handleChange={() => null}
-        password='asd'
-        passwordVerify='asd'
+        password='qwertyuiopas'
+        passwordVerify='qwertyuiopas'
         privateKey='zxc'
       />
     )
