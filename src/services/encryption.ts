@@ -5,6 +5,10 @@ export function encryptPrivateKey(privateKey: string, password: string) {
 }
 
 export function decryptPrivateKey(privateKey: string, password: string): string {
-  const decryptedKey = AES.decrypt(privateKey, password).toString(enc.Utf8)
-  return decryptedKey
+  try {
+    const decryptedKey = AES.decrypt(privateKey, password).toString(enc.Utf8)
+    return decryptedKey
+  } catch (e) {
+    return ''
+  }
 }

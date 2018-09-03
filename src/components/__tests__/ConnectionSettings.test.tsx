@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { shallow } from 'enzyme'
 import * as React from 'react'
 
 import { ConnectionSettings } from '@components/ConnectionSettings'
@@ -16,7 +16,6 @@ describe('ConnectionSettings', () => {
 
     expect(wrapper.find('h1')).toHaveLength(1)
     expect(wrapper.find('h1').text()).toEqual('Manage Connections')
-    expect(wrapper.find('Connect(ConnectionSelector)')).toHaveLength(1)
-    expect(wrapper.find('Connect(ConnectionForm)')).toHaveLength(1)
+    expect(wrapper.find('Connect(ConnectionSelectorComponent)')).toHaveLength(1)
   })
 })

@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 
 import { changeTransferView, changeWalletView, transferRequest, updateTransferForm } from '@actions'
 import { TransferForm as TransferPresentation } from '@components/TransferForm'
-import { getActiveKeys } from '@selectors'
+import { getActiveKeys, getCurrentConnection } from '@selectors'
 import { getFeeInKinesis } from '@services/kinesis'
 import { RootState } from '@store'
 import { Payee } from '@types'
@@ -15,13 +15,13 @@ export const mapStateToProps = (state: RootState) => {
     .map((wallet): Payee => ({ name: wallet.accountName, publicKey: wallet.publicKey }))
   return {
     ...transfer.form,
-    getFee: (amount: number) => getFeeInKinesis(connections.currentConnection, amount),
+    getFee: (amount: number) => getFeeInKinesis(getCurrentConnection(connections), amount),
     isTransferring: transfer.isTransferring,
     isWalletUnlocked: !!privateKey,
-    accountBalance: accounts.accountsMap[publicKey].balance,
+    accountBalance: accounts.accountInfo.balance,
     payees: payees.payeesList.concat(otherWalletsAsPayees),
     publicKey,
-    connection: connections.currentConnection,
+    connection: getCurrentConnection(connections),
   }
 }
 
