@@ -1,24 +1,24 @@
-jest.mock('@services/kinesis', () => ({
-  getFeeInKinesis: (connection, amount) => `${connection} ${amount}`,
-}))
-
 import { mapStateToProps } from '@containers/TransferForm'
 import { RootState } from '@store'
+import { ConnectionStage, Currency, Payee } from '@types'
+import { DeepPartial } from 'redux'
 
 describe('TransferForm', () => {
-  it('mapStateToProps with active wallet', () => {
-    const state = <RootState>(<any>{
-      accounts: {
-        accountsMap: {
-          'wallet-public-key': {
-            isUnlocked: true,
-            publicKey: 'wallet-public-key',
-            balance: 'accountBalance',
-          },
-        },
+  const connection = { endpoint: '', passphrase: '' }
+  const connections = {
+    connections: {
+      [ConnectionStage.testnet]: {
+        [Currency.KAU]: connection,
       },
-      connections: {
-        currentConnection: 'currentConnection',
+    },
+    currentCurrency: Currency.KAU,
+    currentStage: ConnectionStage.testnet,
+  }
+  it('mapStateToProps with active wallet', () => {
+    const payee: Payee = { name: 'aPayee1', publicKey: 'asdf' }
+    const state: DeepPartial<RootState> = {
+      accounts: {
+        accountInfo: { balance: 0 },
       },
       passwords: {
         currentInput: 'password-input',
@@ -26,63 +26,57 @@ describe('TransferForm', () => {
           'wallet-public-key': { privateKey: 'private-key' },
         },
       },
+      connections,
       payees: {
-        payeesList: ['aPayee'],
+        payeesList: [payee],
       },
       transfer: {
-        form: { formKey1: 'formValue1' },
-        isTransferring: 'isTransferring',
+        form: { amount: 'formValue1' },
+        isTransferring: true,
       },
       wallets: {
         activeWallet: { publicKey: 'wallet-public-key' },
         walletList: [{ publicKey: 'another-public-key', accountName: 'another' }],
       },
-      other: 'unused',
-    })
+    }
 
-    const { getFee, ...rest } = mapStateToProps(state)
+    const { getFee, ...rest } = mapStateToProps(state as RootState)
 
     expect(rest).toEqual({
-      formKey1: 'formValue1',
-      isTransferring: 'isTransferring',
+      amount: 'formValue1',
+      isTransferring: true,
       isWalletUnlocked: true,
-      accountBalance: 'accountBalance',
-      payees: ['aPayee', { name: 'another', publicKey: 'another-public-key' }],
+      accountBalance: 0,
+      payees: [payee, { name: 'another', publicKey: 'another-public-key' }],
       publicKey: 'wallet-public-key',
-      connection: 'currentConnection',
+      connection,
     })
-    expect(getFee(10)).toEqual('currentConnection 10')
   })
 
   it('mapStateToProps with locked account', () => {
-    const state = <RootState>(<any>{
+    const state: DeepPartial<RootState> = {
       wallets: {
         activeWallet: {
           publicKey: 'wallet-public-key',
         },
         walletList: [{ publicKey: 'another-public-key', accountName: 'another' }],
       },
+      connections,
       accounts: {
-        accountsMap: {
-          'wallet-public-key': {
-            isUnlocked: false,
-          },
-        },
+        accountInfo: { balance: 0 },
       },
-      connections: { currentConnection: 'currentConnection' },
       passwords: { livePasswords: {} },
       payees: { payeesList: [] },
-      transfer: { form: {}, isTransferring: 'isTransferring' },
-      other: 'unused',
-    })
+      transfer: { form: {}, isTransferring: true },
+    }
 
-    const { getFee, ...rest } = mapStateToProps(state)
+    const { getFee, ...rest } = mapStateToProps(state as RootState)
 
     expect(rest).toEqual({
-      accountBalance: undefined,
+      accountBalance: 0,
       publicKey: 'wallet-public-key',
-      connection: 'currentConnection',
-      isTransferring: 'isTransferring',
+      connection,
+      isTransferring: true,
       isWalletUnlocked: false,
       payees: [{ name: 'another', publicKey: 'another-public-key' }],
     })

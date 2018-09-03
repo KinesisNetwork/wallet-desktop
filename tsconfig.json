@@ -62,7 +62,6 @@
     "tabSize": 2
   },
   "exclude": [
-    "out",
-    "**/*.test.ts"
+    "out"
   ]
 }

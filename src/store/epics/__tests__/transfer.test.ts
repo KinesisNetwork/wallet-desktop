@@ -12,18 +12,33 @@ import {
   transferRequest,
 } from '@actions'
 import { RootState } from '@store'
+import { Connection, ConnectionStage, Currency } from '@types'
+import { DeepPartial } from 'redux'
+import { ConnectionsState } from '../../reducers'
 import {
   transactionFailed$,
   transactionSubmission$,
   transactionSuccess$,
   transferRequest$,
 } from '../transfer'
-import { mockServices } from './helpers'
+import { epicTest, mockServices } from './helpers'
 
 describe('Transfer epic', () => {
+  const connection: Connection = {
+    endpoint: 'endpoint',
+    passphrase: 'passphrase',
+  }
+  const connections: DeepPartial<ConnectionsState> = {
+    currentCurrency: Currency.KAU,
+    currentStage: ConnectionStage.testnet,
+    connections: {
+      testnet: {
+        KAU: connection,
+      },
+    },
+  }
   const payee = 'payee'
   const amount = 'amount'
-  const connection = 'connection'
   const memo = 'memo'
   const publicKey = 'public key'
   const privateKey = 'private key'
@@ -37,9 +52,7 @@ describe('Transfer epic', () => {
   }
 
   const store = {
-    connections: {
-      currentConnection: connection,
-    },
+    connections,
     passwords: {
       livePasswords: {
         [wallet.publicKey]: {
@@ -75,7 +88,7 @@ describe('Transfer epic', () => {
         .subscribe(actions => {
           expect(actions).toEqual(expectedOutputActions)
           expect(getActiveKeys).toHaveBeenCalledWith(store)
-          expect(getCurrentConnection).toHaveBeenCalledWith(store)
+          expect(getCurrentConnection).toHaveBeenCalledWith(store.connections)
           expect(createKinesisTransfer).toHaveBeenCalledWith(
             privateKey,
             connection,
@@ -101,7 +114,7 @@ describe('Transfer epic', () => {
         .subscribe(actions => {
           expect(actions).toEqual(expectedOutputActions)
           expect(getActiveKeys).toHaveBeenCalledWith(store)
-          expect(getCurrentConnection).toHaveBeenCalledWith(store)
+          expect(getCurrentConnection).toHaveBeenCalledWith(store.connections)
           expect(createKinesisTransfer).toHaveBeenCalledWith(
             privateKey,
             connection,
@@ -114,49 +127,34 @@ describe('Transfer epic', () => {
 
   describe('transactionSubmission$', () => {
     const transaction = <Transaction>(<any>{})
-    const store$ = <StateObservable<RootState>>(<any>of(store))
-
-    const action$ = ActionsObservable.from([transactionRequest(transaction)])
-
-    it('success', done => {
-      const expectedOutputActions = [{ type: getType(transactionSuccess) }]
-
+    it('success', async () => {
       const getCurrentConnection = jest.fn(() => connection)
       const submitSignedTransaction = jest.fn(() => Promise.resolve())
 
-      transactionSubmission$(
-        action$,
-        store$,
-        mockServices({ getCurrentConnection, submitSignedTransaction }),
-      )
-        .pipe(toArray())
-        .subscribe(actions => {
-          expect(actions).toEqual(expectedOutputActions)
-          expect(getCurrentConnection).toHaveBeenCalledWith(store)
-          expect(submitSignedTransaction).toHaveBeenCalledWith(connection, transaction)
-          done()
-        })
+      await epicTest({
+        epic: transactionSubmission$,
+        inputActions: [transactionRequest(transaction)],
+        state: { connections },
+        dependencies: { getCurrentConnection, submitSignedTransaction },
+      })
+      expect(getCurrentConnection).toHaveBeenCalledWith(connections)
+      expect(submitSignedTransaction).toHaveBeenCalledWith(connection, transaction)
     })
 
-    it('failure', done => {
-      const error = 'error'
-      const expectedOutputActions = [{ type: getType(transactionFailed), payload: error }]
-
+    it('failure', async () => {
+      const error = new Error('error')
       const getCurrentConnection = jest.fn(() => connection)
       const submitSignedTransaction = jest.fn(() => Promise.reject(error))
 
-      transactionSubmission$(
-        action$,
-        store$,
-        mockServices({ getCurrentConnection, submitSignedTransaction }),
-      )
-        .pipe(toArray())
-        .subscribe(actions => {
-          expect(actions).toEqual(expectedOutputActions)
-          expect(getCurrentConnection).toHaveBeenCalledWith(store)
-          expect(submitSignedTransaction).toHaveBeenCalledWith(connection, transaction)
-          done()
-        })
+      await epicTest({
+        epic: transactionSubmission$,
+        inputActions: [transactionRequest(transaction)],
+        expectedActions: [transactionFailed(error)],
+        state: { connections },
+        dependencies: { getCurrentConnection, submitSignedTransaction },
+      })
+      expect(getCurrentConnection).toHaveBeenCalledWith(connections)
+      expect(submitSignedTransaction).toHaveBeenCalledWith(connection, transaction)
     })
   })
 
