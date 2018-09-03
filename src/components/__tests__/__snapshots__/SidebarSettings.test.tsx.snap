@@ -10,7 +10,7 @@ exports[`SidebarSettings renders correctly 1`] = `
   }
 >
   <label
-    className="label is-small"
+    className="label is-small is-capitalized"
   >
     Connection: 
     Kinesis KAU Testnet

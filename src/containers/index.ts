@@ -15,5 +15,4 @@ export { SignTransactionForm, SignTransactionFormProps } from './SignTransaction
 export { Transactions } from './Transactions'
 export { TransferForm, TransferProps } from './TransferForm'
 export { ConnectionSelector } from './ConnectionSelector'
-export { ConnectionForm } from './ConnectionForm'
 export { Transfer } from './Transfer'

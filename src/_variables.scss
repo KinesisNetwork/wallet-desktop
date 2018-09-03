@@ -1,25 +1,80 @@
 ////////////////////////////////////////////////
-// SUPERHERO
+// Initial Variables
 ////////////////////////////////////////////////
 $grey-darker:  #1f2d3b;
 $grey-dark:    #2B3E50;
 $grey:         #4E5D6C;
 $grey-light:   #8694a4;
 $grey-lighter: #dee5ed;
-
+$black:        #1a2531;
+$white:        #ffffff;
 $yellow:       #f0ad4e;
 $green:        #5cb85c;
 $blue:         #5bc0de;
 $red:          #d9534f;
 
-$primary: #ffc800 !default;
-// $primary-invert: findColorInvert($primary);
 
-$dark: darken($grey-darker, 3);
+$primary: #ffc800;
+$info: #2574a9;
+$success: #03a678;
+$warning: #ff794e;
+$error: #ff6361;
+$link: #446cb3;
 
-$text: $grey-lighter;
-$text-strong: darken($grey-lighter, 10);
-$text-light: $grey-light;
+// Derived Variables
+
+$background: $grey-dark;
+$body-background-color: $grey-darker;
+
+$text: $grey-light;
+$text-strong: $white;
+$text-light: $grey-lighter;
+$text-dark: $grey-darker;
+
+$link-active: $primary;
+$link-active-border: $primary;
+$link-hover: $white;
+
+$shadow-large-primary:
+  0px 5px 5px -3px rgba($primary, 0.2),
+  0px 8px 10px 1px rgba($primary, 0.14),
+  0px 3px 14px 2px rgba($primary, 0.12);
+$shadow-large:
+  0px 5px 5px -3px rgba($black, 0.2),
+  0px 8px 10px 1px rgba($black, 0.14),
+  0px 3px 14px 2px rgba($black, 0.12);
+$shadow:
+    0px 3px 1px -2px rgba($black, 0.2),
+    0px 2px 2px 0px  rgba($black, 0.14),
+    0px 1px 5px 0px  rgba($black, 0.12);
+
+// INPUT
+$input-color: $text-light;
+$input-background-color: $black;
+$input-border-color: $grey;
+$input-shadow: inset 0 1px 2px rgba($white, 0.1);
+$input-hover-color: $white;
+$input-hover-border-color: $grey-light;
+$input-focus-border-color: $white;
+
+// BUTTON
+$button-color: $grey-lighter;
+$button-hover-color: $grey-lighter;
+$button-active-color: $primary;
+$button-focus-color: $grey-lighter;
+$button-text-color: $grey-lighter;
+
+$button-background-color: $grey;
+$button-hover-background-color: lighten($grey, 5);
+
+$button-border-color: transparent;
+$button-hover-border-color: transparent;
+$button-focus-border-color: transparent;
+$button-active-border-color: transparent;
+
+$button-focus-box-shadow-color: rgba($black, 0.2);
+$button-focus-box-shadow-size: 0;
+
 
 $title-color: $grey-lighter;
 $title-weight: 400;
@@ -27,53 +82,12 @@ $subtitle-strong-color: $grey-lighter;
 $subtitle-color: darken($grey-lighter, 10);
 $subtitle-strong-color: darken($grey-lighter, 10);
 
-$background: $grey-dark;
-$body-background-color: $grey-darker;
 
 $border: $grey;
 
-$family-sans-serif: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
-
-$input-color: $grey-lighter;
-$input-background-color: $dark;
-$input-border-color: $grey;
+$family-sans-serif: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
 $label-color: $grey-light;
-
-$link: $grey-light;
-$link-hover: $grey-lighter;
-$link-focus: $grey-lighter;
-$link-active: $primary;
-
-$button-color: $grey-lighter;
-$button-background-color: $grey;
-$button-border-color: $grey;
-
-$button-hover-border: transparent;
-$button-active-border-color: transparent;
-
-$radius: 0;
-$radius-small: 0;
-
-$input-hover-color: $link-hover;
-
-$table-color: $text;
-$table-head-color: $grey-lighter;
-$table-background-color: $grey-dark;
-$table-cell-border: 1px solid $grey;
-$table-row-hover-background-color: $grey-darker;
-$table-striped-row-even-background-color: $grey-darker;
-$table-striped-row-even-hover-background-color: lighten($grey-darker, 4);
-
-$navbar-background-color: $background;
-$navbar-item-color: $text;
-$navbar-item-hover-color: $grey-light;
-$navbar-item-active-color: $primary;
-$navbar-item-hover-background-color: rgba($grey-darker, 0.1);
-$navbar-item-active-background-color: rgba($grey-darker, 0.1);
-$navbar-dropdown-item-hover-color: $grey-light;
-$navbar-dropdown-item-active-color: $primary;
-$navbar-dropdown-background-color: $background;
 
 $dropdown-content-background-color: $background;
 $dropdown-item-color: $text;
@@ -81,6 +95,7 @@ $dropdown-item-hover-color: $text-light;
 
 $panel-block-active-border-left-color: $link-active;
 $panel-block-active-icon-color: $link-active;
+$panel-block-hover-background-color: lighten($background, 5);
 
 $tabs-link-active-border-bottom-color: $primary;
 $tabs-link-active-color: $primary;

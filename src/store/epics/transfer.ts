@@ -33,7 +33,7 @@ export const transferRequest$: RootEpic = (
       fromPromise(
         createKinesisTransfer(
           getActiveKeys(state).privateKey!,
-          getCurrentConnection(state),
+          getCurrentConnection(state.connections),
           request,
         ),
       ).pipe(
@@ -51,7 +51,9 @@ export const transactionSubmission$: RootEpic = (
   action$.pipe(
     filter(isActionOf(transactionRequest)),
     mergeMap(({ payload }) =>
-      fromPromise(submitSignedTransaction(getCurrentConnection(state$.value), payload)).pipe(
+      fromPromise(
+        submitSignedTransaction(getCurrentConnection(state$.value.connections), payload),
+      ).pipe(
         map(transactionSuccess),
         catchError(err => of(transactionFailed(err))),
       ),

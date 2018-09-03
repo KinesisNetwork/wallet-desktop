@@ -1,4 +1,4 @@
-import { accountLoadRequest, changeWalletView, loadConnections, lockAllAccounts } from '@actions'
+import { accountLoadRequest, changeWalletView } from '@actions'
 import { RootEpic } from '@store'
 import { WalletView } from '@types'
 import { ofType } from 'redux-observable'
@@ -22,9 +22,5 @@ export const initalLoad$: RootEpic = (action$, state$) => {
     }),
   )
 
-  const lockAllAccounts$ = rehydrate$.pipe(map(() => lockAllAccounts()))
-
-  const loadConnections$ = rehydrate$.pipe(map(loadConnections))
-
-  return merge(loadAccount$, lockAllAccounts$, loadConnections$)
+  return merge(loadAccount$)
 }

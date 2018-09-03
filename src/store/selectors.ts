@@ -1,5 +1,6 @@
 import { RootState } from '@store'
 import { Connection } from '@types'
+import { ConnectionsState } from './reducers'
 
 export function getActiveKeys(
   state: RootState,
@@ -17,6 +18,18 @@ export function getActivePublicKey({ wallets: { activeWallet } }: RootState): st
   return activeWallet!.publicKey
 }
 
-export function getCurrentConnection(state: RootState): Connection {
-  return state.connections.currentConnection
+export function getCurrentConnection({
+  connections,
+  currentStage,
+  currentCurrency,
+}: ConnectionsState): Connection {
+  return connections[currentStage]![currentCurrency]
+}
+
+export function getCurrentConnectionForEditing({
+  connections,
+  updating,
+  currentStage,
+}: ConnectionsState) {
+  return connections[currentStage]![updating.selectedCurrency]
 }

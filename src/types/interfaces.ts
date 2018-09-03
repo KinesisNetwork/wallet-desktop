@@ -7,9 +7,8 @@ export interface Wallet {
 }
 
 export interface Connection {
-  horizonURL: string
-  name: string
-  networkPassphrase: string
+  endpoint: string
+  passphrase: string
 }
 
 export interface ViewParams {
