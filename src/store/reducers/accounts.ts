@@ -1,79 +1,31 @@
-import {
-  accountLoadFailure,
-  accountLoadRequest,
-  accountLoadSuccess,
-  addWallet,
-  lockAllAccounts,
-  lockWallet,
-  unlockWallet,
-} from '@actions'
-import { AccountMissingError } from '@helpers/errors'
+import { accountLoadFailure, accountLoadRequest, accountLoadSuccess } from '@actions'
 import { getBalance } from '@services/accounts'
 import { RootAction } from '@store'
-import { Account } from '@types'
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 
-export interface AccountsState {
-  readonly accountsMap: { [key: string]: Account }
-  readonly isAccountLoading: boolean
+interface AccountInfo {
+  balance: number
 }
 
-export const accounts = combineReducers<AccountsState, RootAction>({
-  accountsMap: (state = {}, action) => {
+export interface AccountsState {
+  readonly isAccountLoading: boolean
+  readonly accountInfo: AccountInfo
+}
+
+const accountInfo = combineReducers<AccountInfo, RootAction>({
+  balance: (state = 0, action) => {
     switch (action.type) {
-      case getType(lockAllAccounts):
-        return Object.entries(state).reduce(
-          (map, [key, account]) => ({ ...map, [key]: { ...account, isUnlocked: false } }),
-          {},
-        )
-      case getType(addWallet):
-        return {
-          ...state,
-          [action.payload.publicKey]: {
-            balance: '0',
-            isUnlocked: false,
-          },
-        }
-      case getType(unlockWallet):
-        return {
-          ...state,
-          [action.payload.publicKey]: {
-            ...state[action.payload.publicKey],
-            isUnlocked: true,
-          },
-        }
-      case getType(lockWallet):
-        return {
-          ...state,
-          [action.payload]: {
-            ...state[action.payload],
-            isUnlocked: false,
-          },
-        }
       case getType(accountLoadSuccess):
-        return {
-          ...state,
-          [action.payload.account_id]: {
-            ...state[action.payload.account_id],
-            balance: getBalance(action.payload),
-          },
-        }
-      case getType(accountLoadFailure):
-        const e = action.payload
-        return e instanceof AccountMissingError
-          ? {
-              ...state,
-              [e.publicKey]: {
-                ...state[e.publicKey],
-                balance: '0',
-              },
-            }
-          : state
+        return getBalance(action.payload)
       default:
         return state
     }
   },
+})
+
+export const accounts = combineReducers<AccountsState, RootAction>({
+  accountInfo,
   isAccountLoading: (state = false, action) => {
     switch (action.type) {
       case getType(accountLoadRequest):
