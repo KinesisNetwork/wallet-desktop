@@ -18,7 +18,7 @@ export function configureStore() {
 
   const storage = createStorage()
   const persistedReducer = persistReducer(
-    { key: 'root', storage, whitelist: ['wallets', 'payees'] },
+    { key: 'root', storage, whitelist: ['wallets', 'payees', 'connections'] },
     rootReducer,
   )
 

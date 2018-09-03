@@ -5,13 +5,15 @@ import { EditableText } from '@components/EditableText'
 
 import {
   handleConnectionFormChange,
-  selectConnection,
+  selectConnectedCurrency,
+  selectConnectedStage,
   selectForEditConnection,
+  selectUpdatingCurrency,
   stopEditingConnection,
 } from '@actions'
 import { getCurrentConnectionForEditing } from '@selectors'
 import { RootState } from '@store'
-import { Currency } from '@types'
+import { ConnectionStage, Currency } from '@types'
 
 export const mapStateToProps = ({ connections }: RootState) => ({
   isEditing: connections.updating.isEditing,
@@ -21,10 +23,12 @@ export const mapStateToProps = ({ connections }: RootState) => ({
 })
 
 const mapDispatchToProps = {
-  selectConnection,
+  selectConnectedStage,
+  selectConnectedCurrency,
   selectForEditConnection,
   handleConnectionFormChange,
   stopEditingConnection,
+  selectUpdatingCurrency,
 }
 
 type Props = typeof mapDispatchToProps & ReturnType<typeof mapStateToProps>
@@ -39,18 +43,48 @@ const ConnectionSelectorComponent: React.SFC<Props> = props => (
         <div className="field-body">
           <div className="field has-addons has-addons-right">
             <div className="control">
-              <button className="button is-success is-selected">Main</button>
+              <button
+                className={[
+                  'button',
+                  ...(props.currentStage === ConnectionStage.mainnet
+                    ? ['is-active', 'is-success']
+                    : []),
+                ].join(' ')}
+                onClick={() => props.selectConnectedStage(ConnectionStage.mainnet)}
+              >
+                Main
+              </button>
             </div>
             <div className="control">
-              <button className="button">Test</button>
+              <button
+                className={[
+                  'button',
+                  ...(props.currentStage === ConnectionStage.testnet
+                    ? ['is-active', 'is-success']
+                    : []),
+                ].join(' ')}
+                onClick={() => props.selectConnectedStage(ConnectionStage.testnet)}
+              >
+                Test
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
     <div className="panel-tabs">
-      <a className="is-active">{Currency.KAU}</a>
-      <a>{Currency.KAG}</a>
+      <a
+        className={props.currentCurrency === Currency.KAU ? 'is-active' : ''}
+        onClick={() => props.selectUpdatingCurrency(Currency.KAU)}
+      >
+        {Currency.KAU}
+      </a>
+      <a
+        className={props.currentCurrency === Currency.KAG ? 'is-active' : ''}
+        onClick={() => props.selectUpdatingCurrency(Currency.KAG)}
+      >
+        {Currency.KAG}
+      </a>
     </div>
     <div className="panel-block is-block">
       <div className="field is-horizontal">
