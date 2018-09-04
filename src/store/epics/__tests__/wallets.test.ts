@@ -50,6 +50,8 @@ describe('wallets epic', () => {
 
     it('sends failure action', async () => {
       const decryptPrivateKey = jest.fn(() => '')
+      const dateNow = Date.now()
+      Date.now = jest.fn(() => dateNow)
 
       await epicTest({
         epic: unlockWallet$,
@@ -70,6 +72,7 @@ describe('wallets epic', () => {
       })
 
       expect(decryptPrivateKey).toHaveBeenCalledWith('jumble', 'password')
+      jest.resetAllMocks()
     })
   })
 })
