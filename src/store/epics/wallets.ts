@@ -61,15 +61,11 @@ export const unlockWallet$: RootEpic = (action$, state$, { decryptPrivateKey }) 
 
       return decryptedPrivateKey !== ''
         ? unlockWalletSuccess({
-          password: state.passwords.currentInput,
-          decryptedPrivateKey,
-          publicKey: state.wallets.activeWallet!.publicKey,
-          isAccountLocked: false,
-          timestamps: []
-        })
-        : unlockWalletFailure({
-          timestamp: new Date()
-        })
+            password: state.passwords.currentInput,
+            decryptedPrivateKey,
+            publicKey: state.wallets.activeWallet!.publicKey,
+          })
+        : unlockWalletFailure()
     }),
   )
 

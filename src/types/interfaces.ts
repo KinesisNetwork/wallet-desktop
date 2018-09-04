@@ -34,15 +34,6 @@ export interface UnlockWallet {
   readonly decryptedPrivateKey: string
 }
 
-export interface LockAccount {
-  isAccountLocked: boolean
-  timestamps: Date[]
-}
-
-export interface TimeStamp {
-  timestamp: Date
-}
-
 export interface TransferRequest {
   readonly targetPayee: string
   readonly amount: string
