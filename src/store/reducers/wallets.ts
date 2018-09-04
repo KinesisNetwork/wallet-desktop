@@ -54,14 +54,14 @@ export const wallets = combineReducers<WalletsState, RootAction>({
   }
 })
 
-function shouldGetLocked(timestamps: number[]): boolean {
+function shouldGetLocked(timestamps: Date[]): boolean {
   const length = timestamps.length
   const TIME_LIMIT_IN_MS = 5 * 60 * 1000
   const MAX_ATTEMPTS = 10
 
   if (
     length > MAX_ATTEMPTS &&
-    (timestamps[length] - timestamps[length - MAX_ATTEMPTS] < TIME_LIMIT_IN_MS)
+    (timestamps[length].getTime() - timestamps[length - MAX_ATTEMPTS].getTime() < TIME_LIMIT_IN_MS)
   ) {
     return true
   }

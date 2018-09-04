@@ -36,11 +36,11 @@ export interface UnlockWallet {
 
 export interface LockAccount {
   isAccountLocked: boolean
-  timestamps: number[]
+  timestamps: Date[]
 }
 
 export interface TimeStamp {
-  timestamp: number
+  timestamp: Date
 }
 
 export interface TransferRequest {

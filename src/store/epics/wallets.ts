@@ -68,7 +68,7 @@ export const unlockWallet$: RootEpic = (action$, state$, { decryptPrivateKey }) 
           timestamps: []
         })
         : unlockWalletFailure({
-          timestamp: Date.now()
+          timestamp: new Date()
         })
     }),
   )

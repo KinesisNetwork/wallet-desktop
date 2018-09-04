@@ -51,7 +51,7 @@ describe('wallets epic', () => {
 
     it('sends failure action', async () => {
       const decryptPrivateKey = jest.fn(() => '')
-      const timestamp = Date.now()
+      const timestamp = new Date()
 
       await epicTest({
         epic: unlockWallet$,
