@@ -36,6 +36,7 @@ describe('wallets epic', () => {
               encryptedPrivateKey: 'jumble',
               publicKey,
             },
+            failureAttemptTimestamps: []
           },
           passwords: {
             currentInput: password,
@@ -54,12 +55,13 @@ describe('wallets epic', () => {
         epic: unlockWallet$,
         inputActions: [unlockWalletRequest()],
         dependencies: { decryptPrivateKey },
-        expectedActions: [unlockWalletFailure()],
+        expectedActions: [unlockWalletFailure(Date.now())],
         state: {
           wallets: {
             activeWallet: {
               encryptedPrivateKey: 'jumble',
             },
+            failureAttemptTimestamps: []
           },
           passwords: {
             currentInput: 'password',

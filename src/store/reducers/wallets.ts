@@ -1,4 +1,13 @@
-import { addWallet, deleteWallet, loadWallets, selectWallet, walletsSaved } from '@actions'
+import {
+  addWallet,
+  clearWalletFailures,
+  deleteWallet,
+  loadWallets,
+  selectWallet,
+  unlockWalletFailure,
+  unlockWalletSuccess,
+  walletsSaved
+} from '@actions'
 import { RootAction } from '@store'
 import { Wallet } from '@types'
 import { combineReducers } from 'redux'
@@ -8,6 +17,7 @@ export interface WalletsState {
   readonly walletList: Wallet[]
   readonly currentlySelected: number
   readonly activeWallet: Wallet | null
+  readonly failureAttemptTimestamps: number[]
 }
 
 export const wallets = combineReducers<WalletsState, RootAction>({
@@ -35,4 +45,15 @@ export const wallets = combineReducers<WalletsState, RootAction>({
         return state
     }
   },
+  failureAttemptTimestamps: (state = [], action) => {
+    switch (action.type) {
+      case getType(unlockWalletSuccess):
+      case getType(clearWalletFailures):
+        return []
+      case getType(unlockWalletFailure):
+        return [...state, action.payload]
+      default:
+        return state
+    }
+  }
 })

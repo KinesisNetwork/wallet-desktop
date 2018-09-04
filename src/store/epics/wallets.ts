@@ -2,13 +2,16 @@ import { saveAs } from 'file-saver'
 import { startCase } from 'lodash'
 import { merge } from 'rxjs'
 import { filter, ignoreElements, map, tap, withLatestFrom } from 'rxjs/operators'
+
 import { isActionOf } from 'typesafe-actions'
 
 import {
   accountLoadRequest,
   addWallet,
   clearSignForms,
+  clearWalletFailures,
   deleteWallet as deleteWalletAction,
+  failureAttemptMessage,
   selectWallet,
   unlockWalletFailure,
   unlockWalletRequest,
@@ -54,6 +57,16 @@ export const unlockWallet$: RootEpic = (action$, state$, { decryptPrivateKey }) 
     filter(isActionOf(unlockWalletRequest)),
     withLatestFrom(state$),
     map(([_, state]) => {
+      const now = Date.now()
+      const LOCK_TIME_IN_MS = 1 * 60 * 1000
+      const MAX_ATTEMPTS = 3
+      const failureAttemptTimestamps = state.wallets.failureAttemptTimestamps
+      if (failureAttemptTimestamps[failureAttemptTimestamps.length - 1] + LOCK_TIME_IN_MS < now) {
+        return clearWalletFailures()
+      } else if (failureAttemptTimestamps[failureAttemptTimestamps.length - 1] + LOCK_TIME_IN_MS > now && failureAttemptTimestamps.length > MAX_ATTEMPTS) {
+        return failureAttemptMessage()
+      }
+
       const decryptedPrivateKey = decryptPrivateKey(
         state.wallets.activeWallet!.encryptedPrivateKey,
         state.passwords.currentInput,
@@ -61,11 +74,11 @@ export const unlockWallet$: RootEpic = (action$, state$, { decryptPrivateKey }) 
 
       return decryptedPrivateKey !== ''
         ? unlockWalletSuccess({
-            password: state.passwords.currentInput,
-            decryptedPrivateKey,
-            publicKey: state.wallets.activeWallet!.publicKey,
-          })
-        : unlockWalletFailure()
+          password: state.passwords.currentInput,
+          decryptedPrivateKey,
+          publicKey: state.wallets.activeWallet!.publicKey,
+        })
+        : unlockWalletFailure(Date.now())
     }),
   )
 
@@ -73,5 +86,12 @@ export const walletLockFailure$: RootEpic = (action$, _, { generalFailureAlert }
   action$.pipe(
     filter(isActionOf(unlockWalletFailure)),
     map(() => generalFailureAlert('Incorrect Password')),
+    ignoreElements(),
+  )
+
+export const failureAttemptMessage$: RootEpic = (action$, _, { generalFailureAlert }) =>
+  action$.pipe(
+    filter(isActionOf(failureAttemptMessage)),
+    map(() => generalFailureAlert('Too many failed attempts')),
     ignoreElements(),
   )
