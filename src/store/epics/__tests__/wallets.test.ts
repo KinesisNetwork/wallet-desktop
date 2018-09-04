@@ -21,16 +21,14 @@ describe('wallets epic', () => {
     it('sends success action', async () => {
       const decryptedPrivateKey = 'success'
       const publicKey = 'publicKey'
-      const password = 'password1234'
-      const isAccountLocked = false
-      const timestamps = []
+      const password = 'password'
 
       const decryptPrivateKey = jest.fn(() => decryptedPrivateKey)
 
       await epicTest({
         epic: unlockWallet$,
         inputActions: [unlockWalletRequest()],
-        expectedActions: [unlockWalletSuccess({ password, publicKey, decryptedPrivateKey, isAccountLocked, timestamps })],
+        expectedActions: [unlockWalletSuccess({ password, publicKey, decryptedPrivateKey })],
         dependencies: { decryptPrivateKey },
         state: {
           wallets: {
@@ -51,13 +49,12 @@ describe('wallets epic', () => {
 
     it('sends failure action', async () => {
       const decryptPrivateKey = jest.fn(() => '')
-      const timestamp = new Date()
 
       await epicTest({
         epic: unlockWallet$,
         inputActions: [unlockWalletRequest()],
         dependencies: { decryptPrivateKey },
-        expectedActions: [unlockWalletFailure({ timestamp })],
+        expectedActions: [unlockWalletFailure()],
         state: {
           wallets: {
             activeWallet: {
