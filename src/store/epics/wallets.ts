@@ -11,14 +11,15 @@ import {
   clearSignForms,
   clearWalletFailures,
   deleteWallet as deleteWalletAction,
-  failureAttemptMessage,
   selectWallet,
+  tooManyFailuresMessage,
   unlockWalletFailure,
   unlockWalletRequest,
   unlockWalletSuccess,
 } from '@actions'
 import { RootEpic } from '@store'
 import { getActivePublicKey } from '../selectors'
+import { failureAttemptHandler } from './utils'
 
 export const deleteWallet$: RootEpic = action$ => {
   const deleteWalletAction$ = action$.pipe(filter(isActionOf(deleteWalletAction)))
@@ -58,13 +59,18 @@ export const unlockWallet$: RootEpic = (action$, state$, { decryptPrivateKey }) 
     withLatestFrom(state$),
     map(([_, state]) => {
       const now = Date.now()
-      const LOCK_TIME_IN_MS = 5 * 60 * 1000
-      const MAX_ATTEMPTS = 10
-      const failureAttemptTimestamps = state.wallets.failureAttemptTimestamps
-      if (failureAttemptTimestamps[failureAttemptTimestamps.length - 1] + LOCK_TIME_IN_MS < now) {
+      // const LOCK_TIME_IN_MS = 5 * 60 * 1000
+      // const MAX_ATTEMPTS = 10
+      // const failureAttemptTimestamps = state.wallets.failureAttemptTimestamps
+      // if (failureAttemptTimestamps[failureAttemptTimestamps.length - 1] + LOCK_TIME_IN_MS < now) {
+      //   return clearWalletFailures()
+      // } else if (failureAttemptTimestamps[failureAttemptTimestamps.length - 1] + LOCK_TIME_IN_MS >= now && failureAttemptTimestamps.length >= MAX_ATTEMPTS) {
+      //   return tooManyFailuresMessage()
+      // }
+      if (failureAttemptHandler(state.wallets.failureAttemptTimestamps, now).afterLockInTime) {
         return clearWalletFailures()
-      } else if (failureAttemptTimestamps[failureAttemptTimestamps.length - 1] + LOCK_TIME_IN_MS > now && failureAttemptTimestamps.length >= MAX_ATTEMPTS) {
-        return failureAttemptMessage()
+      } else if (failureAttemptHandler(state.wallets.failureAttemptTimestamps, now).withinLockInTime) {
+        return tooManyFailuresMessage()
       }
 
       const decryptedPrivateKey = decryptPrivateKey(
@@ -89,9 +95,10 @@ export const walletLockFailure$: RootEpic = (action$, _, { generalFailureAlert }
     ignoreElements(),
   )
 
-export const failureAttemptMessage$: RootEpic = (action$, _, { generalFailureAlert }) =>
+export const tooManyFailuresMessage$: RootEpic = (action$, _, { generalFailureAlert }) =>
   action$.pipe(
-    filter(isActionOf(failureAttemptMessage)),
+    filter(isActionOf(tooManyFailuresMessage)),
     map(() => generalFailureAlert('Too many failed attempts')),
     ignoreElements(),
   )
+

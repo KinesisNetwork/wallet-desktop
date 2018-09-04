@@ -18,4 +18,4 @@ export const changeUnlockPasswordInput = buildAction('CHANGE_UNLOCK_PASSWORD_INP
   >()
 export const lockWallet = buildAction('LOCK_WALLET').payload<string>()
 export const clearWalletFailures = buildAction('CLEAR_WALLET_FAILURES').empty()
-export const failureAttemptMessage = buildAction('FAILURE_ATTEMPT_MESSAGE').empty()
+export const tooManyFailuresMessage = buildAction('TOO_MANY_FAILURES').empty()
