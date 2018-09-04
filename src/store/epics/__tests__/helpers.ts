@@ -3,6 +3,7 @@ import { epicDependencies, EpicDependencies } from '../../root-epic'
 import { RootState } from '../../root-reducer'
 
 import { RootAction, RootEpic } from '@store'
+import { DeepPartial } from 'redux'
 import { Subject } from 'rxjs'
 import { toArray } from 'rxjs/operators'
 
@@ -10,9 +11,6 @@ const stateInput$ = new Subject<RootState>()
 const state$ = new StateObservable<RootState>(stateInput$, undefined as any)
 
 type MockDependencies = Partial<Record<keyof EpicDependencies, jest.Mock>>
-type DeepPartial<T> = {
-  [K in keyof T]?: Partial<T[K] extends Array<infer U> ? Array<DeepPartial<U>> : DeepPartial<T[K]>>
-}
 
 type IEpicTest = (
   params: {

@@ -2,25 +2,24 @@
 
 exports[`ConnectionSettings renders correctly 1`] = `
 <div
-  className="vertical-spaced has-text-centered"
+  className="vertical-spaced"
 >
   <h1
-    className="title-heading"
+    className="title-heading has-text-centered"
   >
     Manage Connections
   </h1>
   <div
-    className="columns"
+    className="columns is-centered"
   >
     <div
-      className="column"
+      className="column is-two-thirds"
     >
-      <Connect(ConnectionSelector) />
-    </div>
-    <div
-      className="column"
-    >
-      <Connect(ConnectionForm) />
+      <section
+        className="section"
+      >
+        <Connect(ConnectionSelectorComponent) />
+      </section>
     </div>
   </div>
 </div>

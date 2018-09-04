@@ -3,6 +3,7 @@ import {
   accountLoadRequest,
   accountLoadSuccess,
   accountTransactionsLoaded,
+  selectConnectedCurrency,
 } from '@actions'
 import { RootEpic } from '@store'
 import { AccountPage, WalletView } from '@types'
@@ -39,13 +40,13 @@ export const loadAccount$: RootEpic = (
         withLatestFrom(state$),
         // Want to skip while not focused on dashboard page
         skipWhile(([_, state]) => state.accountPage.accountPage !== AccountPage.dashboard),
-        switchMap(([_, state]) =>
+        switchMap(([_, { connections }]) =>
           merge(
-            from(loadAccount(action.payload, getCurrentConnection(state))).pipe(
+            from(loadAccount(action.payload, getCurrentConnection(connections))).pipe(
               map(accountLoadSuccess),
               catchError(err => of(accountLoadFailure(err))),
             ),
-            from(getTransactions(getCurrentConnection(state), action.payload)).pipe(
+            from(getTransactions(getCurrentConnection(connections), action.payload)).pipe(
               map(accountTransactionsLoaded),
             ),
           ),
@@ -57,3 +58,9 @@ export const loadAccount$: RootEpic = (
 
   return accountLoadPoll$
 }
+
+export const initiateLoadRequest$: RootEpic = (action$, state$) =>
+  action$.pipe(
+    filter(isActionOf([selectConnectedCurrency])),
+    map(() => accountLoadRequest(state$.value.wallets.activeWallet!.publicKey)),
+  )

@@ -1,68 +1,86 @@
-import {
-  addConnection,
-  handleConnectionFormChange,
-  loadConnectionsSuccess,
-  selectConnection,
-} from '@actions'
-import { RootAction } from '@store'
-import { Connection } from '@types'
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 
-const DEFAULT_CONNECTIONS: Connection[] = [
-  {
-    horizonURL: 'https://kau-testnet.kinesisgroup.io',
-    name: 'KAU Testnet',
-    networkPassphrase: 'Kinesis UAT',
+import {
+  handleConnectionFormChange,
+  selectConnectedCurrency,
+  selectConnectedStage,
+  selectForEditConnection,
+  selectUpdatingCurrency,
+  stopEditingConnection,
+} from '@actions'
+import { RootAction } from '@store'
+import { Connection, ConnectionStage, Currency } from '@types'
+
+const DEFAULT_CONNECTIONS: Connections = {
+  [ConnectionStage.testnet]: {
+    [Currency.KAU]: {
+      endpoint: 'https://kau-testnet.kinesisgroup.io',
+      passphrase: 'Kinesis UAT',
+    },
+    [Currency.KAG]: {
+      endpoint: 'https://kag-testnet.kinesisgroup.io',
+      passphrase: 'Kinesis KAG UAT',
+    },
   },
-]
+  [ConnectionStage.mainnet]: {
+    [Currency.KAU]: {
+      endpoint: 'https://kau-testnet.kinesisgroup.io',
+      passphrase: 'Kinesis UAT',
+    },
+    [Currency.KAG]: {
+      endpoint: 'https://kag-testnet.kinesisgroup.io',
+      passphrase: 'Kinesis KAG UAT',
+    },
+  },
+}
+
+type Connections = { [S in ConnectionStage]: { [C in Currency]: Connection } }
+
+interface UpdateConnections {
+  selectedCurrency: Currency
+  isEditing: keyof Connection | null
+}
 
 export interface ConnectionsState {
-  connectionList: Connection[]
-  currentConnection: Connection
-  form: Connection
+  currentStage: ConnectionStage
+  currentCurrency: Currency
+  connections: Connections
+  updating: UpdateConnections
 }
 
-const handleChange = (name: keyof Connection) => (state = '', action: RootAction) => {
-  switch (action.type) {
-    case getType(handleConnectionFormChange):
-      return action.payload.field === name ? action.payload.newValue : state
-    case getType(addConnection):
-      return ''
-    default:
-      return state
-  }
-}
-
-const form = combineReducers<Connection, RootAction>({
-  horizonURL: handleChange('horizonURL'),
-  name: handleChange('name'),
-  networkPassphrase: handleChange('networkPassphrase'),
+const updating = combineReducers<UpdateConnections, RootAction>({
+  isEditing: (state = null, action) => {
+    switch (action.type) {
+      case getType(selectForEditConnection):
+        return action.payload
+      case getType(stopEditingConnection):
+        return null
+      default:
+        return state
+    }
+  },
+  selectedCurrency: (state = Currency.KAU, action) =>
+    action.type === getType(selectUpdatingCurrency) ? action.payload : state,
 })
 
 export const connections = combineReducers<ConnectionsState, RootAction>({
-  form,
-  connectionList: (state = DEFAULT_CONNECTIONS, action) => {
-    switch (action.type) {
-      case getType(loadConnectionsSuccess):
-        return [
+  updating,
+  currentCurrency: (state = Currency.KAU, action) =>
+    action.type === getType(selectConnectedCurrency) ? action.payload : state,
+  currentStage: (state = ConnectionStage.testnet, action) =>
+    action.type === getType(selectConnectedStage) ? action.payload : state,
+  connections: (state = DEFAULT_CONNECTIONS, action) =>
+    action.type === getType(handleConnectionFormChange)
+      ? {
           ...state,
-          ...action.payload.filter(
-            conn => !state.find(existing => existing.horizonURL === conn.horizonURL),
-          ),
-        ]
-      case getType(addConnection):
-        return [...state, action.payload]
-      default:
-        return state
-    }
-  },
-  currentConnection: (state = DEFAULT_CONNECTIONS[0], action) => {
-    switch (action.type) {
-      case getType(selectConnection):
-        return action.payload
-      default:
-        return state
-    }
-  },
+          [action.payload.currentStage]: {
+            ...state[action.payload.currentStage],
+            [action.payload.currentCurrency]: {
+              ...state[action.payload.currentStage][action.payload.currentCurrency],
+              [action.payload.field]: action.payload.newValue,
+            },
+          },
+        }
+      : state,
 })

@@ -26,3 +26,13 @@ export enum TransferView {
   transfer,
   addPayee,
 }
+
+export enum Currency {
+  KAU = 'KAU',
+  KAG = 'KAG',
+}
+
+export enum ConnectionStage {
+  testnet = 'testnet',
+  mainnet = 'mainnet',
+}

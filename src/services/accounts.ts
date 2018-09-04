@@ -25,14 +25,11 @@ export async function getAccountIfExists(server: Server, publicKey: string): Pro
   }
 }
 
-export function getBalance(account: AccountResponse): string {
+export function getBalance(account: AccountResponse): number {
   const nativeBalance = account.balances.find(
     balance => balance.asset_type === Asset.native().getAssetType(),
   )
-  if (!nativeBalance) {
-    throw new Error('Native balance not found')
-  }
-  return nativeBalance.balance
+  return Number(nativeBalance!.balance)
 }
 
 export async function getTransactionSigners(server: Server, transaction: Transaction) {
