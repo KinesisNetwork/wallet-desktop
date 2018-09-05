@@ -1,5 +1,4 @@
 export { WalletList } from './WalletList'
-export { SidebarPayee } from './SidebarPayee'
 export { SidebarSettings } from './SidebarSettings'
 export { CreateWallet } from './CreateWallet'
 export { WalletInfo } from './WalletInfo'

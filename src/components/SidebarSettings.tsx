@@ -1,24 +1,21 @@
-import { WalletView } from '@types'
+import { RootRoutes } from '@types'
 import * as React from 'react'
+import { NavLink, RouteComponentProps } from 'react-router-dom'
 
 export interface Props {
   connectionName: string
-  changeWalletView: (view: WalletView) => any
 }
 
-export const SidebarSettings: React.SFC<Props> = ({ connectionName, changeWalletView }) => (
+const SidebarSettings: React.SFC<Props & RouteComponentProps<any>> = ({ connectionName }) => (
   <div className="has-text-centered vertical-spaced" style={{ justifyContent: 'flex-end' }}>
     <label className="label is-small is-capitalized">Connection: {connectionName}</label>
-    <button
-      className="button is-outlined is-fullwidth"
-      onClick={() => changeWalletView(WalletView.settings)}
-    >
+    <NavLink to={RootRoutes.settings} className="button is-fullwidth" activeClassName="is-active">
       Settings
-    </button>
+    </NavLink>
     <p className="is-size-4 has-text-primary" style={{ marginTop: '1rem' }}>
       Kinesis Wallet - alpha
     </p>
   </div>
 )
 
-SidebarSettings.displayName = 'SidebarSettings'
+export { SidebarSettings }
