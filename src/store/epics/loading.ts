@@ -1,6 +1,6 @@
-import { accountLoadRequest, changeWalletView } from '@actions'
+import { accountLoadRequest } from '@actions'
 import { RootEpic } from '@store'
-import { WalletView } from '@types'
+import { RootRoutes } from '@types'
 import { ofType } from 'redux-observable'
 import { REHYDRATE } from 'redux-persist'
 import { merge } from 'rxjs'
@@ -14,12 +14,8 @@ export const initalLoad$: RootEpic = (action$, state$) => {
   )
 
   const loadAccount$ = rehydrate$.pipe(
-    filter(({ view }) => view.walletView === WalletView.dashboard),
-    map(({ wallets: { activeWallet } }) => {
-      return activeWallet
-        ? accountLoadRequest(activeWallet.publicKey)
-        : changeWalletView(WalletView.create)
-    }),
+    filter(({ router }) => router.location.pathname.startsWith(RootRoutes.dashboard)),
+    map(({ wallets: { activeWallet } }) => accountLoadRequest(activeWallet!.publicKey)),
   )
 
   return merge(loadAccount$)
