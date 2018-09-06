@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "build",
+    "outDir": "out",
     "removeComments": false,
     "preserveConstEnums": true,
     "sourceMap": true,
@@ -60,8 +60,5 @@
   "formatCodeOptions": {
     "indentSize": 2,
     "tabSize": 2
-  },
-  "exclude": [
-    "out"
-  ]
+  }
 }

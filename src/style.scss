@@ -19,8 +19,15 @@
   display: none;
 }
 
-button::-moz-focus-inner {
-  border: 0;
+a, button, select {
+  &::-moz-focus-inner {
+    border: 0;
+    outline: 0
+  }
+}
+
+:-moz-focusring {
+  outline: 0;
 }
 
 body {

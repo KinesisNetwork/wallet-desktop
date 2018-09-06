@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { shallow } from 'enzyme'
 import * as React from 'react'
 
 import { Sidebar } from '@components/Sidebar'
@@ -9,14 +9,5 @@ describe('Sidebar', () => {
     const wrapper = shallow(<Sidebar />)
 
     expect(wrapper).toMatchSnapshot()
-  })
-
-  it('displays the logo and three components', () => {
-    const wrapper = shallow(<Sidebar />)
-
-    expect(wrapper.find('img')).toHaveLength(1)
-    expect(wrapper.find('Connect(WalletList)')).toHaveLength(1)
-    expect(wrapper.find('Connect(SidebarPayee)')).toHaveLength(1)
-    expect(wrapper.find('Connect(SidebarSettings)')).toHaveLength(1)
   })
 })

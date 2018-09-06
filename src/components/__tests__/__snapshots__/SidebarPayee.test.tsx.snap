@@ -4,11 +4,13 @@ exports[`SidebarPayee renders correctly 1`] = `
 <div
   className="has-text-centered"
 >
-  <button
+  <NavLink
+    activeClassName="is-active"
+    aria-current="page"
     className="button is-outlined is-fullwidth"
-    onClick={[Function]}
+    to="/address-book"
   >
     Manage Payees
-  </button>
+  </NavLink>
 </div>
 `;

@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { SidebarPayee } from '@containers/SidebarPayee'
+import { SidebarPayee } from '@components/SidebarPayee'
 import { SidebarSettings } from '@containers/SidebarSettings'
 import { WalletList } from '@containers/WalletList'
 
@@ -10,8 +10,8 @@ if (process.env.IS_WEB) {
 }
 
 export const Sidebar: React.SFC = () => (
-  <div className='vertical-spaced' style={{ backgroundColor: '#2b3e50' }}>
-    <img src={logo ? logo : './Kinesis_Alpha.svg'} className='logo-sidebar' />
+  <div className="vertical-spaced" style={{ backgroundColor: '#2b3e50' }}>
+    <img src={logo ? logo : './Kinesis_Alpha.svg'} className="logo-sidebar" />
     <WalletList />
     <SidebarPayee />
     <SidebarSettings />

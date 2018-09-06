@@ -6,7 +6,7 @@ import {
   selectConnectedCurrency,
 } from '@actions'
 import { RootEpic } from '@store'
-import { AccountPage, WalletView } from '@types'
+import { AccountPage, RootRoutes } from '@types'
 import { from, interval, merge, of } from 'rxjs'
 import {
   catchError,
@@ -30,7 +30,7 @@ export const loadAccount$: RootEpic = (
   // If there are other things that would invalidate the polling, should add to here
   const invalidatePoll$ = merge(
     accountLoadRequest$,
-    state$.pipe(filter(state => state.view.walletView !== WalletView.dashboard)),
+    state$.pipe(filter(({ router }) => !router.location.pathname.startsWith(RootRoutes.dashboard))),
   )
 
   const accountLoadPoll$ = accountLoadRequest$.pipe(

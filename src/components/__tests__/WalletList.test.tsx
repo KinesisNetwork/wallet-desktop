@@ -1,30 +1,32 @@
-import { shallow } from 'enzyme';
+import { shallow } from 'enzyme'
 import * as React from 'react'
 
 import { WalletList, WalletListItem } from '@components/WalletList'
 import '../../setupTests'
 
 describe('WalletList', () => {
-  let props
-
-  beforeEach(() => {
-    props = {
-      activeWallet: {},
-      addWallet: () => null,
-      deleteWallet: () => null,
-      selectWallet: () => null,
-      wallets: [
-        {
-          name: 'Fred',
-          publicKey: '123'
-        },
-        {
-          name: 'Bob',
-          publicKey: '456'
-        }
-      ]
-    }
-  })
+  const props = {
+    activeWallet: {
+      accountName: 'Fred',
+      publicKey: '123',
+      encryptedPrivateKey: '',
+    },
+    addWallet: () => null,
+    deleteWallet: () => null,
+    selectWallet: () => null,
+    wallets: [
+      {
+        accountName: 'Fred',
+        publicKey: '123',
+        encryptedPrivateKey: '',
+      },
+      {
+        accountName: 'Bob',
+        publicKey: '456',
+        encryptedPrivateKey: '',
+      },
+    ],
+  }
 
   it('renders correctly', () => {
     const wrapper = shallow(<WalletList {...props} />)
@@ -37,18 +39,7 @@ describe('WalletList', () => {
 
     expect(wrapper.find('.panel-heading').text()).toEqual('Accounts')
     expect(wrapper.find('WalletListItem')).toHaveLength(2)
-    expect(wrapper.find('button')).toHaveLength(1)
-    expect(wrapper.find('button').text()).toEqual('Add Account')
-  })
-
-  it('calls the addWallet on clicking the button', () => {
-    const addWalletMock = jest.fn()
-    const wrapper = shallow(<WalletList {...props} addWallet={addWalletMock} />)
-
-    const button = wrapper.find('button')
-    button.simulate('click')
-
-    expect(addWalletMock).toHaveBeenCalled()
+    expect(wrapper.find('NavLink')).toHaveLength(1)
   })
 })
 
@@ -63,8 +54,8 @@ describe('WalletListItem', () => {
       wallet: {
         accountName: 'Fred',
         encryptedPrivateKey: 'qwer',
-        publicKey: '123'
-      }
+        publicKey: '123',
+      },
     }
   })
 
@@ -79,13 +70,12 @@ describe('WalletListItem', () => {
     const selectWalletMockParam = {
       accountName: 'Fred',
       encryptedPrivateKey: 'qwer',
-      publicKey: '123'
+      publicKey: '123',
     }
     const wrapper = shallow(<WalletListItem {...props} selectWallet={selectWalletMock} />)
 
-    const element = wrapper.find('a')
+    const element = wrapper.find('NavLink')
     expect(element).toHaveLength(1)
-    expect(element.hasClass('is-active')).toBe(true)
 
     element.simulate('click')
 
@@ -96,7 +86,7 @@ describe('WalletListItem', () => {
     const wrapper = shallow(<WalletListItem {...props} />)
 
     expect(wrapper.find('.info').text()).toEqual('Fred')
-    expect(wrapper.find('button')).toHaveLength(1)
+    expect(wrapper.find('NavLink')).toHaveLength(1)
   })
 
   it('calls the deleteWallet method on clicking the button', () => {
@@ -104,7 +94,7 @@ describe('WalletListItem', () => {
     const deleteWalletMockParam = {
       accountName: 'Fred',
       encryptedPrivateKey: 'qwer',
-      publicKey: '123'
+      publicKey: '123',
     }
     const wrapper = shallow(<WalletListItem {...props} deleteWallet={deleteWalletMock} />)
 
