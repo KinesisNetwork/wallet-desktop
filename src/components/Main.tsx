@@ -1,42 +1,28 @@
 import * as React from 'react'
 
+import { AccountPage } from '@components/AccountPage'
 import { ConnectionSettings } from '@components/ConnectionSettings'
 import { Payee } from '@components/Payee'
 import { Sidebar } from '@components/Sidebar'
-import { AccountPage } from '@containers/AccountPage'
 import { CreateWallet } from '@containers/CreateWallet'
-import { WalletView } from '@types'
+import { RootRoutes } from '@types'
+import { Redirect, Route, Switch } from 'react-router'
 
-export interface Props {
-  activeView: WalletView
-}
+const MainPresentation: React.SFC = () => (
+  <div className="columns is-marginless" style={{ height: '100vh' }}>
+    <div className="column is-one-quarter" style={{ backgroundColor: '#2b3e50' }}>
+      <Sidebar />
+    </div>
+    <div className="column">
+      <Switch>
+        <Route path={RootRoutes.dashboard} component={AccountPage} />
+        <Route path={RootRoutes.addressBook} component={Payee} />
+        <Route path={RootRoutes.settings} component={ConnectionSettings} />
+        <Route path={RootRoutes.create} component={CreateWallet} />
+        <Redirect exact={true} path="/" to="/dashboard" />
+      </Switch>
+    </div>
+  </div>
+)
 
-export class Main extends React.PureComponent<Props> {
-  displayName = 'Main'
-
-  viewMap = (view: WalletView) => {
-    switch (view) {
-      case WalletView.create:
-        return <CreateWallet />
-      case WalletView.dashboard:
-        return <AccountPage />
-      case WalletView.settings:
-        return <ConnectionSettings />
-      case WalletView.payees:
-        return <Payee />
-      default:
-        return <div />
-    }
-  }
-
-  render() {
-    return (
-      <div className="columns is-marginless" style={{ height: '100vh' }}>
-        <div className="column is-one-quarter" style={{ backgroundColor: '#2b3e50' }}>
-          <Sidebar />
-        </div>
-        <div className="column">{this.viewMap(this.props.activeView)}</div>
-      </div>
-    )
-  }
-}
+export { MainPresentation as Main }

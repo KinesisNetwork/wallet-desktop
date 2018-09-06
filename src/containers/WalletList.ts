@@ -1,23 +1,15 @@
 import { connect } from 'react-redux'
 
-import {
-  changeWalletView,
-  deleteWallet,
-  selectWallet,
-} from '@actions'
+import { changeWalletView, deleteWallet, selectWallet } from '@actions'
 import { getPasswordConfirmation } from '@components/PasswordConfirmation'
 import { WalletList as WalletPresentation } from '@components/WalletList'
-import {
-  Dispatch,
-  RootState,
-} from '@store'
-import {
-  Wallet,
-  WalletView,
-} from '@types'
+import { Dispatch, RootState } from '@store'
+import { RootRoutes, Wallet, WalletView } from '@types'
 
-const mapStateToProps = ({ wallets, view }: RootState) => ({
-  activeWallet: view.walletView === WalletView.dashboard ? wallets.activeWallet : null,
+const mapStateToProps = ({ wallets, router }: RootState) => ({
+  activeWallet: router.location.pathname.startsWith(RootRoutes.dashboard)
+    ? wallets.activeWallet
+    : null,
   wallets: wallets.walletList,
 })
 
@@ -43,4 +35,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
 })
 
-export const WalletList = connect(mapStateToProps, mapDispatchToProps)(WalletPresentation)
+export const WalletList = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(WalletPresentation)

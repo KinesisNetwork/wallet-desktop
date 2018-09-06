@@ -36,3 +36,10 @@ export enum ConnectionStage {
   testnet = 'testnet',
   mainnet = 'mainnet',
 }
+
+export enum RootRoutes {
+  dashboard = '/dashboard',
+  addressBook = '/address-book',
+  settings = '/settings',
+  create = '/create',
+}
