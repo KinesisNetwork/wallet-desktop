@@ -14,7 +14,7 @@ exports[`Sidebar should render correctly 1`] = `
     src="./Kinesis_Alpha.svg"
   />
   <Connect(WalletList) />
-  <Connect(SidebarPayee) />
-  <Connect(SidebarSettings) />
+  <SidebarPayee />
+  <withRouter(Connect(SidebarSettings)) />
 </div>
 `;

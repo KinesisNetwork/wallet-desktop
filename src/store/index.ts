@@ -1,3 +1,5 @@
+import { connectRouter, routerMiddleware } from 'connected-react-router'
+import { History } from 'history'
 import { applyMiddleware, compose, createStore, Dispatch } from 'redux'
 import { createEpicMiddleware } from 'redux-observable'
 import { persistReducer, persistStore } from 'redux-persist'
@@ -11,7 +13,7 @@ export type Dispatch = Dispatch<RootAction>
 
 export { RootAction, RootEpic, RootState }
 
-export function configureStore() {
+export function configureStore(history: History) {
   const epicMiddleware = createEpicMiddleware<RootAction, RootAction, RootState, EpicDependencies>({
     dependencies: epicDependencies,
   })
@@ -19,13 +21,16 @@ export function configureStore() {
   const storage = createStorage()
   const persistedReducer = persistReducer(
     { key: 'root', storage, whitelist: ['wallets', 'payees', 'connections'] },
-    rootReducer,
+    connectRouter(history)(rootReducer),
   )
 
   const w = window as any
   const composeEnhancers = w.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-  const store = createStore(persistedReducer, composeEnhancers(applyMiddleware(epicMiddleware)))
+  const store = createStore(
+    persistedReducer,
+    composeEnhancers(applyMiddleware(routerMiddleware(history), epicMiddleware)),
+  )
   const persistor = persistStore(store)
 
   epicMiddleware.run(rootEpic)
