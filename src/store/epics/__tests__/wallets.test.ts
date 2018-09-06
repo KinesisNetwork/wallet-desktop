@@ -9,7 +9,7 @@ import {
   tooManyFailedAttempts$,
   unlockWallet$,
   unlockWalletFailureAlert$,
-  // walletLockFailure$
+  walletLockFailure$
 } from '../wallets'
 
 import { epicTest } from './helpers'
@@ -139,5 +139,35 @@ describe('unlock wallet request', () => {
     })
 
     expect(decryptPrivateKey).not.toHaveBeenCalled()
+  })
+})
+
+describe('walletLockFailure$', () => {
+  it('calls TOO_MANY_FAILED_ATTEMPS action when more than 10 failed attempts have been made', async () => {
+    await epicTest({
+      epic: walletLockFailure$,
+      inputActions: [unlockWalletFailure(new Date())],
+      dependencies: {},
+      expectedActions: [tooManyFailedAttempts(new Date())],
+      state: {
+        wallets: {
+          failureAttemptTimestamps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, new Date()],
+        },
+      },
+    })
+  })
+
+  it('calls UNLOCK_WALLET_FAILURE_ALERT action when max 10 failed attempts have been made', async () => {
+    await epicTest({
+      epic: walletLockFailure$,
+      inputActions: [unlockWalletFailure(new Date())],
+      dependencies: {},
+      expectedActions: [unlockWalletFailureAlert()],
+      state: {
+        wallets: {
+          failureAttemptTimestamps: [1, 2, 3, 4, 5, 6, 7, 8, new Date()],
+        },
+      },
+    })
   })
 })
