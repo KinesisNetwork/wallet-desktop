@@ -56,8 +56,8 @@ export const unlockWallet$: RootEpic = (action$, state$, { decryptPrivateKey }) 
   action$.pipe(
     filter(isActionOf(unlockWalletRequest)),
     withLatestFrom(state$),
-    map(([_, state]) => {
-      const now = new Date()
+    map(([action, state]) => {
+      const now = action.payload
 
       const decryptedPrivateKey = decryptPrivateKey(
         state.wallets.activeWallet!.encryptedPrivateKey,

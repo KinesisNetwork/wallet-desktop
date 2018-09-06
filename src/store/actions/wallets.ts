@@ -9,7 +9,7 @@ export const deleteWallet = buildAction('DELETE_WALLET').payload<
   >()
 export const walletsSaved = buildAction('WALLETS_SAVED').payload<Wallet[]>()
 
-export const unlockWalletRequest = buildAction('UNLOCK_WALLET_REQUEST').empty()
+export const unlockWalletRequest = buildAction('UNLOCK_WALLET_REQUEST').payload<Date>()
 export const unlockWalletSuccess = buildAction('UNLOCK_WALLET_SUCCESS').payload<UnlockWallet>()
 export const unlockWalletFailure = buildAction('UNLOCK_WALLET_FAILURE').payload<Date>()
 export const unlockWallet = buildAction('UNLOCK_WALLET').payload<UnlockWallet>()

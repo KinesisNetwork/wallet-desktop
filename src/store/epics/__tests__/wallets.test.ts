@@ -45,17 +45,7 @@ describe('wallets epic', () => {
 })
 
 describe('unlock wallet request', () => {
-  const dateObj = Date
-
-  beforeEach(() => {
-    const dateStub = jest.fn(() => Date)
-    const _GLOBAL: any = global
-    _GLOBAL.Date = dateStub
-  })
-
-  afterEach(() => {
-    global.Date = dateObj
-  })
+  const now = new Date()
 
   it('sends success action', async () => {
     const decryptedPrivateKey = 'success'
@@ -66,7 +56,7 @@ describe('unlock wallet request', () => {
 
     await epicTest({
       epic: unlockWallet$,
-      inputActions: [unlockWalletRequest()],
+      inputActions: [unlockWalletRequest(now)],
       expectedActions: [unlockWalletSuccess({ password, publicKey, decryptedPrivateKey })],
       dependencies: { decryptPrivateKey },
       state: {
@@ -93,9 +83,9 @@ describe('unlock wallet request', () => {
 
     await epicTest({
       epic: unlockWallet$,
-      inputActions: [unlockWalletRequest()],
+      inputActions: [unlockWalletRequest(now)],
       dependencies: { decryptPrivateKey },
-      expectedActions: [unlockWalletFailure(new Date())],
+      expectedActions: [unlockWalletFailure(now)],
       state: {
         wallets: {
           activeWallet: {
@@ -115,11 +105,10 @@ describe('unlock wallet request', () => {
 
   it('sends TOO_MANY_FAILED_ATTEMPTS action if within the lock time', async () => {
     const decryptPrivateKey = jest.fn(() => '')
-    const now = new Date()
 
     await epicTest({
       epic: unlockWallet$,
-      inputActions: [unlockWalletRequest()],
+      inputActions: [unlockWalletRequest(now)],
       dependencies: {},
       expectedActions: [tooManyFailedAttempts(now)],
       state: {
@@ -129,7 +118,7 @@ describe('unlock wallet request', () => {
           },
           failureAttemptTimestamps: [],
           setAccountLocked: {
-            unlockTimestamp: now.valueOf() + 15000
+            unlockTimestamp: now.valueOf() + 150000
           }
         },
         passwords: {
@@ -143,15 +132,17 @@ describe('unlock wallet request', () => {
 })
 
 describe('walletLockFailure$', () => {
+  const now = new Date()
+
   it('calls TOO_MANY_FAILED_ATTEMPS action when more than 10 failed attempts have been made', async () => {
     await epicTest({
       epic: walletLockFailure$,
-      inputActions: [unlockWalletFailure(new Date())],
+      inputActions: [unlockWalletFailure(now)],
       dependencies: {},
-      expectedActions: [tooManyFailedAttempts(new Date())],
+      expectedActions: [tooManyFailedAttempts(now)],
       state: {
         wallets: {
-          failureAttemptTimestamps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, new Date()],
+          failureAttemptTimestamps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, now],
         },
       },
     })
@@ -160,12 +151,12 @@ describe('walletLockFailure$', () => {
   it('calls UNLOCK_WALLET_FAILURE_ALERT action when max 10 failed attempts have been made', async () => {
     await epicTest({
       epic: walletLockFailure$,
-      inputActions: [unlockWalletFailure(new Date())],
+      inputActions: [unlockWalletFailure(now)],
       dependencies: {},
       expectedActions: [unlockWalletFailureAlert()],
       state: {
         wallets: {
-          failureAttemptTimestamps: [1, 2, 3, 4, 5, 6, 7, 8, new Date()],
+          failureAttemptTimestamps: [1, 2, 3, 4, 5, 6, 7, 8, now],
         },
       },
     })
