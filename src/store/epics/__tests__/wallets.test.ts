@@ -85,7 +85,7 @@ describe('unlock wallet request', () => {
       epic: unlockWallet$,
       inputActions: [unlockWalletRequest(now)],
       dependencies: { decryptPrivateKey },
-      expectedActions: [unlockWalletFailure(now)],
+      expectedActions: [unlockWalletFailure({ now, maxAttempts: 10 })],
       state: {
         wallets: {
           activeWallet: {
@@ -109,7 +109,7 @@ describe('unlock wallet request', () => {
     await epicTest({
       epic: unlockWallet$,
       inputActions: [unlockWalletRequest(now)],
-      dependencies: {},
+      dependencies: { decryptPrivateKey },
       expectedActions: [tooManyFailedAttempts(now)],
       state: {
         wallets: {
@@ -134,29 +134,33 @@ describe('unlock wallet request', () => {
 describe('walletLockFailure$', () => {
   const now = new Date()
 
-  it('calls TOO_MANY_FAILED_ATTEMPS action when more than 10 failed attempts have been made', async () => {
+  it('calls TOO_MANY_FAILED_ATTEMPS action when more attempts have been made than allowed', async () => {
+    const maxAttempts = 5
+
     await epicTest({
       epic: walletLockFailure$,
-      inputActions: [unlockWalletFailure(now)],
+      inputActions: [unlockWalletFailure({ now, maxAttempts })],
       dependencies: {},
       expectedActions: [tooManyFailedAttempts(now)],
       state: {
         wallets: {
-          failureAttemptTimestamps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, now],
+          failureAttemptTimestamps: [1, 2, 3, 4, 5, now],
         },
       },
     })
   })
 
-  it('calls UNLOCK_WALLET_FAILURE_ALERT action when max 10 failed attempts have been made', async () => {
+  it('calls UNLOCK_WALLET_FAILURE_ALERT action when no more attempts have been made than allowed', async () => {
+    const maxAttempts = 5
+
     await epicTest({
       epic: walletLockFailure$,
-      inputActions: [unlockWalletFailure(now)],
+      inputActions: [unlockWalletFailure({ now, maxAttempts })],
       dependencies: {},
       expectedActions: [unlockWalletFailureAlert()],
       state: {
         wallets: {
-          failureAttemptTimestamps: [1, 2, 3, 4, 5, 6, 7, 8, now],
+          failureAttemptTimestamps: [1, 2, 3, 4, now],
         },
       },
     })

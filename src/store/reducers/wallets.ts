@@ -52,8 +52,8 @@ export const wallets = combineReducers<WalletsState, RootAction>({
       case getType(unlockWalletSuccess):
         return []
       case getType(unlockWalletFailure):
-        return [...state, action.payload].filter((timestamp) => {
-          return calculateUnlockTime(timestamp) >= action.payload.valueOf()
+        return [...state, action.payload.now].filter((timestamp) => {
+          return calculateUnlockTime(timestamp) >= action.payload.now.valueOf()
         })
       default:
         return state

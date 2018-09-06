@@ -72,7 +72,10 @@ export const unlockWallet$: RootEpic = (action$, state$, { decryptPrivateKey }) 
             decryptedPrivateKey,
             publicKey: state.wallets.activeWallet!.publicKey,
           })
-          : unlockWalletFailure(now)
+          : unlockWalletFailure({
+            now,
+            maxAttempts: 10
+          })
     }),
   )
 
@@ -80,12 +83,11 @@ export const walletLockFailure$: RootEpic = (action$, state$) =>
   action$.pipe(
     filter(isActionOf(unlockWalletFailure)),
     withLatestFrom(state$),
-    map(([_, state]) => {
+    map(([action, state]) => {
       const failureAttemptTimestamps = state.wallets.failureAttemptTimestamps
       const numberOfFailedAttempts = failureAttemptTimestamps.length;
-      const MAX_ATTEMPTS = 10
 
-      return numberOfFailedAttempts > MAX_ATTEMPTS
+      return numberOfFailedAttempts > action.payload.maxAttempts
         ? tooManyFailedAttempts(failureAttemptTimestamps[numberOfFailedAttempts - 1])
         : unlockWalletFailureAlert()
     }),
