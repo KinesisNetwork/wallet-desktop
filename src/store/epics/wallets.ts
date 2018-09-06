@@ -64,7 +64,7 @@ export const unlockWallet$: RootEpic = (action$, state$, { decryptPrivateKey }) 
         state.passwords.currentInput,
       )
 
-      return state.wallets.lockedPeriod.unlockTimestamp > now.valueOf()
+      return state.wallets.setAccountLocked.unlockTimestamp > now.valueOf()
         ? tooManyFailedAttempts(now)
         : decryptedPrivateKey !== ''
           ? unlockWalletSuccess({
@@ -83,7 +83,7 @@ export const walletLockFailure$: RootEpic = (action$, state$) =>
     map(([_, state]) => {
       const failureAttemptTimestamps = state.wallets.failureAttemptTimestamps
       const numberOfFailedAttempts = failureAttemptTimestamps.length;
-      const MAX_ATTEMPTS = 3
+      const MAX_ATTEMPTS = 10
 
       return numberOfFailedAttempts > MAX_ATTEMPTS
         ? tooManyFailedAttempts(failureAttemptTimestamps[numberOfFailedAttempts - 1])

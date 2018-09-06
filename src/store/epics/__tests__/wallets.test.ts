@@ -1,14 +1,15 @@
 import {
-  clearWalletFailures,
-  tooManyFailuresMessage,
+  tooManyFailedAttempts,
   unlockWalletFailure,
+  unlockWalletFailureAlert,
   unlockWalletRequest,
   unlockWalletSuccess
 } from '@actions'
 import {
-  tooManyFailuresMessage$,
+  tooManyFailedAttempts$,
   unlockWallet$,
-  walletLockFailure$
+  unlockWalletFailureAlert$,
+  // walletLockFailure$
 } from '../wallets'
 
 import { epicTest } from './helpers'
@@ -17,26 +18,23 @@ describe('wallets epic', () => {
   describe('unlock failure', () => {
     it('throws failure alert on failure', async () => {
       const generalFailureAlert = jest.fn(() => Promise.resolve())
-      const dateNow = Date.now()
-      jest.spyOn(Date, 'now').mockImplementation(() => dateNow)
 
       await epicTest({
-        epic: walletLockFailure$,
-        inputActions: [unlockWalletFailure(dateNow)],
+        epic: unlockWalletFailureAlert$,
+        inputActions: [unlockWalletFailureAlert()],
         expectedActions: [],
         dependencies: { generalFailureAlert },
       })
 
       expect(generalFailureAlert).toHaveBeenCalled()
-      jest.restoreAllMocks()
     })
 
     it('throws a failure alert on too many failed attempts', async () => {
       const generalFailureAlert = jest.fn(() => Promise.resolve())
 
       await epicTest({
-        epic: tooManyFailuresMessage$,
-        inputActions: [tooManyFailuresMessage()],
+        epic: tooManyFailedAttempts$,
+        inputActions: [tooManyFailedAttempts(new Date())],
         expectedActions: [],
         dependencies: { generalFailureAlert },
       })
@@ -47,6 +45,18 @@ describe('wallets epic', () => {
 })
 
 describe('unlock wallet request', () => {
+  const dateObj = Date
+
+  beforeEach(() => {
+    const dateStub = jest.fn(() => Date)
+    const _GLOBAL: any = global
+    _GLOBAL.Date = dateStub
+  })
+
+  afterEach(() => {
+    global.Date = dateObj
+  })
+
   it('sends success action', async () => {
     const decryptedPrivateKey = 'success'
     const publicKey = 'publicKey'
@@ -65,7 +75,8 @@ describe('unlock wallet request', () => {
             encryptedPrivateKey: 'jumble',
             publicKey,
           },
-          failureAttemptTimestamps: []
+          failureAttemptTimestamps: [],
+          setAccountLocked: {}
         },
         passwords: {
           currentInput: password,
@@ -79,20 +90,19 @@ describe('unlock wallet request', () => {
 
   it('sends failure action', async () => {
     const decryptPrivateKey = jest.fn(() => '')
-    const dateNow = Date.now()
-    jest.spyOn(Date, 'now').mockImplementation(() => dateNow)
 
     await epicTest({
       epic: unlockWallet$,
       inputActions: [unlockWalletRequest()],
       dependencies: { decryptPrivateKey },
-      expectedActions: [unlockWalletFailure(Date.now())],
+      expectedActions: [unlockWalletFailure(new Date())],
       state: {
         wallets: {
           activeWallet: {
             encryptedPrivateKey: 'jumble',
           },
-          failureAttemptTimestamps: []
+          failureAttemptTimestamps: [],
+          setAccountLocked: {}
         },
         passwords: {
           currentInput: 'password',
@@ -101,39 +111,29 @@ describe('unlock wallet request', () => {
     })
 
     expect(decryptPrivateKey).toHaveBeenCalledWith('jumble', 'password')
-    jest.restoreAllMocks()
   })
 
-  it('sends CLEAR_WALLET_FAILURES if user waited for more than 5 minutes', async () => {
+  it('sends TOO_MANY_FAILED_ATTEMPTS action if within the lock time', async () => {
     const decryptPrivateKey = jest.fn(() => '')
-
-    await epicTest({
-      epic: unlockWallet$,
-      inputActions: [unlockWalletRequest()],
-      dependencies: { decryptPrivateKey },
-      expectedActions: [clearWalletFailures()],
-      state: {
-        wallets: {
-          failureAttemptTimestamps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-        },
-      },
-    })
-
-    expect(decryptPrivateKey).not.toHaveBeenCalled()
-  })
-
-  it('sends TOO_MANY_FAILURES_MESSAGE action if user tried at least 10 times in 5 minutes', async () => {
-    const decryptPrivateKey = jest.fn(() => '')
-    const lastDate = Date.now() - 10000
+    const now = new Date()
 
     await epicTest({
       epic: unlockWallet$,
       inputActions: [unlockWalletRequest()],
       dependencies: {},
-      expectedActions: [tooManyFailuresMessage()],
+      expectedActions: [tooManyFailedAttempts(now)],
       state: {
         wallets: {
-          failureAttemptTimestamps: [1, 2, 3, 4, 5, 6, 7, 8, 9, lastDate]
+          activeWallet: {
+            encryptedPrivateKey: 'jumble',
+          },
+          failureAttemptTimestamps: [],
+          setAccountLocked: {
+            unlockTimestamp: now.valueOf() + 15000
+          }
+        },
+        passwords: {
+          currentInput: 'password',
         },
       },
     })
