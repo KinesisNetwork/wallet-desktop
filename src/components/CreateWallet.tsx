@@ -84,11 +84,13 @@ export class WalletForm extends React.Component<Props> {
   }
 
   checkValidPassword = () => {
-    if (this.props.password.length < 12) {
-      throw new InputError('Password needs to be at least 12 characters long', `input-${kebabCase('password')}`)
+    const password = this.props.password
+    const lengthOfPassword = password.length
+    if (lengthOfPassword < 12 || lengthOfPassword > 30) {
+      throw new InputError('Password needs to be between 12 and 30 characters long', `input-${kebabCase('password')}`)
     }
 
-    if (this.props.password !== this.props.passwordVerify) {
+    if (password !== this.props.passwordVerify) {
       throw new InputError(`Passwords don't match`, `input-${kebabCase('passwordVerify')}`)
     }
   }
