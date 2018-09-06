@@ -1,15 +1,15 @@
 import {
   addWallet,
-  clearWalletFailures,
   deleteWallet,
   loadWallets,
   selectWallet,
+  tooManyFailedAttempts,
   unlockWalletFailure,
   unlockWalletSuccess,
-  walletsSaved
+  walletsSaved,
 } from '@actions'
 import { RootAction } from '@store'
-import { Wallet } from '@types'
+import { FailedAttemptsToUnlockWallet, Wallet } from '@types'
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 
@@ -17,7 +17,8 @@ export interface WalletsState {
   readonly walletList: Wallet[]
   readonly currentlySelected: number
   readonly activeWallet: Wallet | null
-  readonly failureAttemptTimestamps: number[]
+  readonly failureAttemptTimestamps: Date[]
+  readonly lockedPeriod: FailedAttemptsToUnlockWallet
 }
 
 export const wallets = combineReducers<WalletsState, RootAction>({
@@ -48,10 +49,23 @@ export const wallets = combineReducers<WalletsState, RootAction>({
   failureAttemptTimestamps: (state = [], action) => {
     switch (action.type) {
       case getType(unlockWalletSuccess):
-      case getType(clearWalletFailures):
         return []
       case getType(unlockWalletFailure):
-        return [...state, action.payload]
+        return [...state, action.payload].filter((timestamp) => {
+          return timestamp.valueOf() + 1 * 60 * 1000 >= action.payload.valueOf()
+        })
+      default:
+        return state
+    }
+  },
+  lockedPeriod: (state = { unlockTimestamp: 0 }, action) => {
+    switch (action.type) {
+      case getType(tooManyFailedAttempts):
+        const LOCKED_PERIOD_IN_MINUTES = 1
+        return {
+          ...state,
+          unlockTimestamp: action.payload.valueOf() + LOCKED_PERIOD_IN_MINUTES * 60 * 1000
+        }
       default:
         return state
     }
