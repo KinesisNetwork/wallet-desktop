@@ -17,14 +17,14 @@ import { calculateUnlockTime } from './helpers'
 export interface WalletsState {
   readonly walletList: Wallet[]
   readonly currentlySelected: number
-  readonly activeWallet: Wallet | null
+  readonly activeWallet: Wallet | any
   readonly failureAttemptTimestamps: Date[]
   readonly setAccountLocked: FailedAttemptsToUnlockWallet
 }
 
 export const wallets = combineReducers<WalletsState, RootAction>({
   currentlySelected: (state = -1) => state,
-  activeWallet: (state = null, action) => {
+  activeWallet: (state = {}, action) => {
     switch (action.type) {
       case getType(addWallet):
       case getType(selectWallet):

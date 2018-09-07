@@ -59,11 +59,12 @@ describe('unlock wallet request', () => {
       inputActions: [unlockWalletRequest(now)],
       expectedActions: [unlockWalletSuccess({ password, publicKey, decryptedPrivateKey })],
       dependencies: { decryptPrivateKey },
-      state: {
+      state: <any>{
         wallets: {
           activeWallet: {
             encryptedPrivateKey: 'jumble',
             publicKey,
+            accountName: ''
           },
           failureAttemptTimestamps: [],
           setAccountLocked: {}
@@ -86,7 +87,7 @@ describe('unlock wallet request', () => {
       inputActions: [unlockWalletRequest(now)],
       dependencies: { decryptPrivateKey },
       expectedActions: [unlockWalletFailure({ now, maxAttempts: 10 })],
-      state: {
+      state: <any>{
         wallets: {
           activeWallet: {
             encryptedPrivateKey: 'jumble',
@@ -104,15 +105,13 @@ describe('unlock wallet request', () => {
   })
 
   it('sends TOO_MANY_FAILED_ATTEMPTS action if within the lock time', async () => {
-    const decryptPrivateKey = jest.fn(() => '')
-
     await epicTest({
       epic: unlockWallet$,
       inputActions: [unlockWalletRequest(now)],
-      dependencies: { decryptPrivateKey },
+      dependencies: {},
       expectedActions: [tooManyFailedAttempts(now)],
       state: {
-        wallets: {
+        wallets: <any>{
           activeWallet: {
             encryptedPrivateKey: 'jumble',
           },
@@ -126,8 +125,6 @@ describe('unlock wallet request', () => {
         },
       },
     })
-
-    expect(decryptPrivateKey).not.toHaveBeenCalled()
   })
 })
 
