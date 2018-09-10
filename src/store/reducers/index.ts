@@ -9,3 +9,5 @@ export * from './transfer'
 export * from './transactions'
 export * from './accountPage'
 export * from './sign'
+
+export * from './wallet'

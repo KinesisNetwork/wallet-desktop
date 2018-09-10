@@ -1,15 +1,16 @@
 import * as bip39 from 'bip39'
-import { createHash } from 'crypto'
+import * as hdKey from 'ed25519-hd-key'
 import { Keypair } from 'js-kinesis-sdk'
 
-function getSeedphrase(): string[] {
-  return bip39.generateMnemonic().split(' ')
+export function generateMnemonic() {
+  return bip39.generateMnemonic()
 }
 
-function generateKeypair(seedphrase: string, index: number): Keypair {
-  const hash = createHash('sha256')
-    .update(seedphrase + String(index))
-    .digest()
-  const keypair = Keypair.fromRawEd25519Seed(hash)
-  return keypair
+export function validateMnemonic(mnemonic: string) {
+  return bip39.validateMnemonic(mnemonic)
+}
+
+export function getKeypair(mnemonic: string, index: number) {
+  const data = hdKey.derivePath(`m/44'/148'/${index}`, bip39.mnemonicToSeedHex(mnemonic))
+  return Keypair.fromRawEd25519Seed(data.key)
 }
