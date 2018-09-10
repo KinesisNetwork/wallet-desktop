@@ -4,9 +4,8 @@ import { connect } from 'react-redux'
 import { createWallet, updateFormField } from '@actions'
 import { InputField } from '@components/InputField'
 import { RootState } from '@store'
-import { RootRoutes, WALLET_CREATE_FORM_NAME } from '@types'
+import { RootRoutes, WalletCreationRoutes } from '@types'
 import { push } from 'connected-react-router'
-import { WalletCreationRoutes } from './index'
 
 const mapStateToProps = (state: RootState) => ({
   ...state.wallet.create,
@@ -14,7 +13,7 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = dispatch => ({
   updateFormField: (formField: keyof RootState['wallet']['create']) => (fieldValue: string) =>
-    dispatch(updateFormField({ fieldValue, formField, formName: WALLET_CREATE_FORM_NAME })),
+    dispatch(updateFormField({ fieldValue, formField, formName: 'WALLET_CREATE' })),
   confirmWalletCreate: () => (
     dispatch(createWallet()), dispatch(push(RootRoutes.create + WalletCreationRoutes.second))
   ),

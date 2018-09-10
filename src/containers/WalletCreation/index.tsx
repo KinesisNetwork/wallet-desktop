@@ -1,17 +1,11 @@
 import * as React from 'react'
 
 import { RootState } from '@store'
-import { RootRoutes } from '@types'
+import { RootRoutes, WalletCreationRoutes } from '@types'
 import { connect } from 'react-redux'
 import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router'
 import { NamingWallet } from './NamingWallet'
 import { Passphrase } from './Passphrase'
-
-export enum WalletCreationRoutes {
-  first = '/naming',
-  second = '/passphrase',
-  third = '/check',
-}
 
 const mapStateToProps = (state: RootState) => ({
   hasStartedForms: !!state.wallet.create.passphrase,

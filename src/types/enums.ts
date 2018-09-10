@@ -43,3 +43,9 @@ export enum RootRoutes {
   settings = '/settings',
   create = '/create',
 }
+
+export enum WalletCreationRoutes {
+  first = '/naming',
+  second = '/passphrase',
+  third = '/check',
+}

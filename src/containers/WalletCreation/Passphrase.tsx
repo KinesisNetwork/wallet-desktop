@@ -1,14 +1,20 @@
-import { RootState } from '@store'
+import { goBack as goBackAction } from 'connected-react-router'
 import * as React from 'react'
 import { connect } from 'react-redux'
+
+import { RootState } from '@store'
 
 const mapStateToProps = (state: RootState) => ({
   passphrase: state.wallet.create.passphrase,
 })
 
-type Props = ReturnType<typeof mapStateToProps>
+const mapDispatchToProps = {
+  goBack: goBackAction,
+}
 
-const PassphrasePresentation: React.SFC<Props> = ({ passphrase }) => (
+type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
+
+const PassphrasePresentation: React.SFC<Props> = ({ passphrase, goBack }) => (
   <React.Fragment>
     <h1 className="title has-text-primary has-text-centered">Record your paper key</h1>
     <div className="content">
@@ -25,7 +31,12 @@ const PassphrasePresentation: React.SFC<Props> = ({ passphrase }) => (
     <div className="field">
       <label className="label">Your paper key</label>
       <div className="control">
-        <textarea className="textarea is-static is-large" readOnly={true} value={passphrase} />
+        <textarea
+          className="textarea is-static is-large"
+          readOnly={true}
+          value={passphrase}
+          style={{ resize: 'none' }}
+        />
         <p className="help">Your paper key is not case sensitive</p>
       </div>
     </div>
@@ -39,7 +50,7 @@ const PassphrasePresentation: React.SFC<Props> = ({ passphrase }) => (
     </div>
     <div className="field is-grouped is-grouped-right">
       <div className="control">
-        <button type="button" className="button is-text">
+        <button type="button" className="button is-text" onClick={goBack}>
           Back
         </button>
       </div>
@@ -50,6 +61,9 @@ const PassphrasePresentation: React.SFC<Props> = ({ passphrase }) => (
   </React.Fragment>
 )
 
-export const Passphrase = connect(mapStateToProps)(PassphrasePresentation)
+export const Passphrase = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(PassphrasePresentation)
 
 export { PassphrasePresentation }
