@@ -76,6 +76,7 @@
     "bulma": "0.7.1",
     "bulma-checkradio": "^2.1.0",
     "bulma-divider": "1.0.4",
+    "bulma-steps": "^2.2.1",
     "clipboard": "2.0.1",
     "connected-react-router": "^4.4.1",
     "copy-to-clipboard": "^3.0.8",

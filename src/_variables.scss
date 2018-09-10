@@ -21,6 +21,7 @@ $warning: #ff794e;
 $error: #ff6361;
 $link: #446cb3;
 
+$primary-invert: $black;
 // Derived Variables
 
 $background: $grey-dark;
@@ -99,3 +100,7 @@ $panel-block-hover-background-color: lighten($background, 5);
 
 $tabs-link-active-border-bottom-color: $primary;
 $tabs-link-active-color: $primary;
+
+$steps-marker-default-border: 0 solid;
+$steps-default-color: $grey-dark;
+$steps-maker-default-color: $grey;

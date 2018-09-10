@@ -13,8 +13,41 @@ const mapStateToProps = (state: RootState) => ({
 
 type Props = RouteComponentProps<any> & ReturnType<typeof mapStateToProps>
 
-const WalletCreationScreensPresentation: React.SFC<Props> = ({ match, hasStartedForms }) => (
+const WalletCreationScreensPresentation: React.SFC<Props> = ({
+  match,
+  location: { pathname },
+  hasStartedForms,
+}) => (
   <section className="section">
+    <div className="steps">
+      <div className={`step-item is-success is-completed`}>
+        <div className="step-marker">
+          <span className="icon">
+            <i className="fas fa-user" />
+          </span>
+        </div>
+      </div>
+      <div
+        className={`step-item is-success ${!pathname.includes(WalletCreationRoutes.first) &&
+          'is-completed'}`}
+      >
+        <div className="step-marker">
+          <span className="icon">
+            <i className="fas fa-key" />
+          </span>
+        </div>
+      </div>
+      <div
+        className={`step-item is-success ${pathname.includes(WalletCreationRoutes.third) &&
+          'is-completed'}`}
+      >
+        <div className="step-marker">
+          <span className="icon">
+            <i className="fas fa-check" />
+          </span>
+        </div>
+      </div>
+    </div>
     <Switch>
       <Route path={match.path + WalletCreationRoutes.first} component={NamingWallet} />
       <Route
