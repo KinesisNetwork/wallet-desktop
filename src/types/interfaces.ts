@@ -82,9 +82,3 @@ export interface UnlockWalletFailure {
   now: Date
   maxAttempts: number
 }
-
-export interface Icons {
-  type: string
-  position: string
-  colour: string
-}
