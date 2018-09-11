@@ -7,6 +7,8 @@ import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-
 import { NamingWallet } from './NamingWallet'
 import { Passphrase } from './Passphrase'
 
+import * as logo from 'Kinesis_Alpha.svg'
+
 const mapStateToProps = (state: RootState) => ({
   hasStartedForms: !!state.wallet.create.passphrase,
 })
@@ -19,6 +21,11 @@ const WalletCreationScreensPresentation: React.SFC<Props> = ({
   hasStartedForms,
 }) => (
   <section className="section">
+    <div className="level">
+      <div className="level-item">
+        <img src={logo} className="logo-sidebar" />
+      </div>
+    </div>
     <div className="steps">
       <div className={`step-item is-success is-completed`}>
         <div className="step-marker">

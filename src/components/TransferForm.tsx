@@ -57,7 +57,10 @@ export class TransferForm extends React.Component<TransferProps> {
     const fee = await this.props.getFee(Number(this.props.amount))
 
     if (Number(fee) + Number(this.props.amount) > Number(this.props.accountBalance)) {
-      throw new InputError(`Transfer amount (including ${fee} fee) is higher than your account balance`, 'transfer-amount')
+      throw new InputError(
+        `Transfer amount (including ${fee} fee) is higher than your account balance`,
+        'transfer-amount',
+      )
     } else if (Number(this.props.amount) <= 0) {
       throw new InputError('Transfer amount must be greater than 0', 'transfer-amount')
     } else if (!this.props.amount) {
@@ -108,7 +111,7 @@ export class TransferForm extends React.Component<TransferProps> {
             id="transfer-target-address"
             icon="fa-address-card"
             placeholder="Or input target address"
-            isDisabled={this.isPayeeSelected()}
+            disabled={this.isPayeeSelected()}
             onChangeHandler={newValue => handleChange({ field: 'targetPayee', newValue })}
           />
           <InputField
