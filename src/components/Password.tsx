@@ -6,7 +6,7 @@ export interface Props {
   activePublicKey: string
   password: string
   decryptedPrivateKey: string
-  unlockWallet: () => any
+  unlockWallet: (date: Date) => any
   setPasswordInput: (input: string) => any
   lockWallet: (key: string) => any
 }
@@ -28,7 +28,7 @@ const LockedWallet: React.SFC<Props> = ({ password, unlockWallet, setPasswordInp
         </span>
       </div>
       <div className="control">
-        <button type="button" className="button" onClick={() => unlockWallet()}>
+        <button type="button" className="button" onClick={() => unlockWallet(new Date())}>
           <span className="icon">
             <i className="fas fa-lock-open" />
           </span>

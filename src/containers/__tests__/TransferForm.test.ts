@@ -16,7 +16,7 @@ describe('TransferForm', () => {
   }
   it('mapStateToProps with active wallet', () => {
     const payee: Payee = { name: 'aPayee1', publicKey: 'asdf' }
-    const state: DeepPartial<RootState> = {
+    const state: DeepPartial<RootState> = <any>{
       accounts: {
         accountInfo: { balance: 0 },
       },
@@ -54,7 +54,7 @@ describe('TransferForm', () => {
   })
 
   it('mapStateToProps with locked account', () => {
-    const state: DeepPartial<RootState> = {
+    const state: DeepPartial<RootState> = <any>{
       wallets: {
         activeWallet: {
           publicKey: 'wallet-public-key',

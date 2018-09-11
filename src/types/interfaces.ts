@@ -73,3 +73,12 @@ export interface FormAlert {
   message: string
   key: string
 }
+
+export interface FailedAttemptsToUnlockWallet {
+  unlockTimestamp: number
+}
+
+export interface UnlockWalletFailure {
+  now: Date
+  maxAttempts: number
+}
