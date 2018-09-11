@@ -60,19 +60,23 @@ const WalletCreationScreensPresentation: React.SFC<Props> = ({
       <Route path={match.path + WalletCreationRoutes.first} component={NamingWallet} />
       <Route
         path={match.path + WalletCreationRoutes.second}
-        render={
-          props => (
-            // hasStartedForms ? (
+        render={props =>
+          hasStartedForms ? (
             <Passphrase {...props} />
+          ) : (
+            <Redirect to={RootRoutes.create + WalletCreationRoutes.first} />
           )
-          // ) : (
-          //   <Redirect to={RootRoutes.create + WalletCreationRoutes.first} />
-          // )
         }
       />
       <Route
         path={match.path + WalletCreationRoutes.third}
-        render={props => <ValidatePassphrase />}
+        render={props =>
+          hasStartedForms ? (
+            <ValidatePassphrase {...props} />
+          ) : (
+            <Redirect to={RootRoutes.create + WalletCreationRoutes.first} />
+          )
+        }
       />
       <Redirect to={match.path + WalletCreationRoutes.first} />
     </Switch>

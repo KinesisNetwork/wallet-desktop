@@ -42,11 +42,11 @@ const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
     <div className="field">
       <label className="label">Your paper key</label>
       <div className="control">
-        <textarea
-          className="textarea is-static is-large"
+        <input
+          className="input is-large has-text-centered"
           readOnly={true}
           value={passphrase}
-          style={{ resize: 'none' }}
+          autoFocus={true}
         />
         <p className="help">Your paper key is not case sensitive</p>
       </div>
@@ -73,7 +73,7 @@ const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
         </button>
       </div>
       <div className="control">
-        <button className="button is-success" disabled={!hasConfirmed} onClick={nextPage}>
+        <button className="button is-primary" disabled={!hasConfirmed} onClick={nextPage}>
           Continue
         </button>
       </div>

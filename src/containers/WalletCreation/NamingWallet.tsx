@@ -88,7 +88,7 @@ const NamingWalletPresentation: React.SFC<NamingWalletProps> = props => (
         <div className="control">
           <button
             type="submit"
-            className="button is-success"
+            className="button is-primary"
             onClick={props.confirmWalletCreate}
             disabled={!props.canSubmit}
           >
