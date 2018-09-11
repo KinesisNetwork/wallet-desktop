@@ -1,12 +1,10 @@
-import { Icon } from '@components/Icon'
-import { Icons } from '@types';
 import * as React from 'react'
 
 export interface Props {
   id: string
   value: string
   label?: string
-  icon?: Icons
+  icon?: string
   helpText?: string
   placeholder?: string
   type?: 'password' | 'text' | 'number'
@@ -29,7 +27,7 @@ export const InputField: React.SFC<Props> = ({
 }) => (
     <div className={`field ${hasButton ? 'control is-expanded' : ''}`}>
       {label && <label className='label is-small'>{label}</label>}
-      <div className={`control ${icon ? `has-icons-${icon.position}` : ''}`}>
+      <div className={`control ${icon ? 'has-icons-left' : ''}`}>
         <input
           className='input'
           id={`input-${id}`}
@@ -39,7 +37,7 @@ export const InputField: React.SFC<Props> = ({
           value={value}
           disabled={isDisabled}
         />
-        {icon && <Icon type={icon.type} position={icon.position} colour={icon.colour} />}
+        {icon && <span className='icon is-left has-text-grey-lighter'><i className={`fas ${icon}`} /></span>}
       </div>
       <p className='help is-link'>
         {helpText}

@@ -106,7 +106,7 @@ export class TransferForm extends React.Component<TransferProps> {
           <InputField
             value={this.props.targetPayee}
             id="transfer-target-address"
-            icon={{ type: 'fa-address-card', colour: 'has-text-grey-lighter', position: 'left' }}
+            icon="fa-address-card"
             placeholder="Or input target address"
             isDisabled={this.isPayeeSelected()}
             onChangeHandler={newValue => handleChange({ field: 'targetPayee', newValue })}
@@ -114,7 +114,7 @@ export class TransferForm extends React.Component<TransferProps> {
           <InputField
             value={this.props.amount}
             id="transfer-amount"
-            icon={{ type: 'fa-coins', colour: 'has-text-grey-lighter', position: 'left' }}
+            icon="fa-coins"
             type="number"
             placeholder="Amount"
             onChangeHandler={newValue => handleChange({ field: 'amount', newValue })}
@@ -122,7 +122,7 @@ export class TransferForm extends React.Component<TransferProps> {
           <InputField
             value={this.props.memo}
             id="transfer-memo"
-            icon={{ type: 'fa-comment', colour: 'has-text-grey-lighter', position: 'left' }}
+            icon="fa-comment"
             placeholder="Optional message"
             onChangeHandler={newValue => handleChange({ field: 'memo', newValue })}
           />
