@@ -14,7 +14,14 @@ const mapDispatchToProps = {
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
-const PassphrasePresentation: React.SFC<Props> = ({ passphrase, goBack }) => (
+type StatefulProps = State & { onConfirmChange: React.ChangeEventHandler<HTMLInputElement> }
+
+const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
+  passphrase,
+  goBack,
+  hasConfirmed,
+  onConfirmChange,
+}) => (
   <React.Fragment>
     <h1 className="title has-text-primary has-text-centered">Record your paper key</h1>
     <div className="content">
@@ -42,7 +49,14 @@ const PassphrasePresentation: React.SFC<Props> = ({ passphrase, goBack }) => (
     </div>
     <div className="field">
       <div className="control">
-        <input className="is-checkradio" id="has-copied" type="checkbox" name="has-copied" />
+        <input
+          className="is-checkradio"
+          id="has-copied"
+          type="checkbox"
+          name="has-copied"
+          checked={hasConfirmed}
+          onChange={onConfirmChange}
+        />
         <label htmlFor="has-copied">
           I confirm I have recorded my paper key and stored it in a safe place
         </label>
@@ -55,15 +69,40 @@ const PassphrasePresentation: React.SFC<Props> = ({ passphrase, goBack }) => (
         </button>
       </div>
       <div className="control">
-        <button className="button is-success">Continue</button>
+        <button className="button is-success" disabled={!hasConfirmed}>
+          Continue
+        </button>
       </div>
     </div>
   </React.Fragment>
 )
 
-export const Passphrase = connect(
+const ConnectedPassphrase = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(PassphrasePresentation)
 
-export { PassphrasePresentation }
+interface State {
+  hasConfirmed: boolean
+}
+
+class PassphraseStateful extends React.Component<Props, State> {
+  state = {
+    hasConfirmed: false,
+  }
+
+  render() {
+    return (
+      <ConnectedPassphrase
+        hasConfirmed={this.state.hasConfirmed}
+        onConfirmChange={this.handleConfirm}
+      />
+    )
+  }
+
+  private handleConfirm: React.ChangeEventHandler<HTMLInputElement> = ev => {
+    this.setState({ hasConfirmed: ev.currentTarget.checked })
+  }
+}
+
+export { PassphraseStateful as Passphrase }
