@@ -7,6 +7,7 @@ import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-
 import { NamingWallet } from './NamingWallet'
 import { Passphrase } from './Passphrase'
 
+import { ValidatePassphrase } from '@containers/WalletCreation/ValidatePassphrase'
 import * as logo from 'Kinesis_Alpha.svg'
 
 const mapStateToProps = (state: RootState) => ({
@@ -59,13 +60,19 @@ const WalletCreationScreensPresentation: React.SFC<Props> = ({
       <Route path={match.path + WalletCreationRoutes.first} component={NamingWallet} />
       <Route
         path={match.path + WalletCreationRoutes.second}
-        render={props =>
-          hasStartedForms ? (
+        render={
+          props => (
+            // hasStartedForms ? (
             <Passphrase {...props} />
-          ) : (
-            <Redirect to={RootRoutes.create + WalletCreationRoutes.first} />
           )
+          // ) : (
+          //   <Redirect to={RootRoutes.create + WalletCreationRoutes.first} />
+          // )
         }
+      />
+      <Route
+        path={match.path + WalletCreationRoutes.third}
+        render={props => <ValidatePassphrase />}
       />
       <Redirect to={match.path + WalletCreationRoutes.first} />
     </Switch>

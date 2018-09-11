@@ -1,15 +1,18 @@
-import { goBack as goBackAction } from 'connected-react-router'
+import { push, replace } from 'connected-react-router'
 import * as React from 'react'
 import { connect } from 'react-redux'
 
 import { RootState } from '@store'
+import { RootRoutes, WalletCreationRoutes } from '@types'
+import { RouteComponentProps } from 'react-router'
 
 const mapStateToProps = (state: RootState) => ({
   passphrase: state.wallet.create.passphrase,
 })
 
 const mapDispatchToProps = {
-  goBack: goBackAction,
+  goBack: () => replace(RootRoutes.create + WalletCreationRoutes.first),
+  nextPage: () => push(RootRoutes.create + WalletCreationRoutes.third),
 }
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
@@ -21,6 +24,7 @@ const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
   goBack,
   hasConfirmed,
   onConfirmChange,
+  nextPage,
 }) => (
   <React.Fragment>
     <h1 className="title has-text-primary has-text-centered">Record your paper key</h1>
@@ -69,7 +73,7 @@ const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
         </button>
       </div>
       <div className="control">
-        <button className="button is-success" disabled={!hasConfirmed}>
+        <button className="button is-success" disabled={!hasConfirmed} onClick={nextPage}>
           Continue
         </button>
       </div>
@@ -86,7 +90,7 @@ interface State {
   hasConfirmed: boolean
 }
 
-class PassphraseStateful extends React.Component<Props, State> {
+class PassphraseStateful extends React.Component<RouteComponentProps<any>, State> {
   state = {
     hasConfirmed: false,
   }
