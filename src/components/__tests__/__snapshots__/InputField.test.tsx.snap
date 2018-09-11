@@ -8,7 +8,7 @@ exports[`InputField should render correctly 1`] = `
     className="control "
   >
     <input
-      className="input is-danger"
+      className="input "
       id="input-connection-name"
       onChange={[Function]}
       type="text"

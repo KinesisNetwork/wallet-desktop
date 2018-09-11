@@ -3,7 +3,7 @@ import * as React from 'react'
 
 export interface Props {
   hasAccount: boolean
-  isPasswordCorrect: boolean
+  isIncorrectPassword: boolean
   walletName: string
 }
 
@@ -53,7 +53,7 @@ export class HasAccount extends React.Component<Props> {
                 label="Password"
                 hasButton={true}
                 onChangeHandler={newValue => newValue}
-                isPasswordCorrect={this.props.isPasswordCorrect}
+                isInvalidInput={this.props.isIncorrectPassword}
               />
               <div className="control u-margin-bottom-xxs">
                 <button
@@ -62,7 +62,7 @@ export class HasAccount extends React.Component<Props> {
               </div>
             </div>
           </form>
-          {!this.props.isPasswordCorrect && <p className="is-size-7 has-text-danger">Password is incorrect</p>}
+          {!this.props.isIncorrectPassword && <p className="is-size-7 has-text-danger">Password is incorrect</p>}
         </section>
         <section className="has-text-centered u-margin-top-lg-1">
           <span className="has-text-grey-lighter">Forgot your password?</span>
