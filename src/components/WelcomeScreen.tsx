@@ -5,6 +5,7 @@ import * as React from 'react'
 export interface Props {
   password?: string
   hasAccount?: boolean
+  isPasswordCorrect?: boolean
 }
 
 let logo
@@ -28,12 +29,12 @@ export const WelcomeScreen: React.SFC<Props> = ({
         </div>
       </header>
       {hasAccount ? <HasAccount password='' /> : <NoAccount />}
-
     </div >
   )
 
 export const HasAccount: React.SFC<Props> = ({
-  password
+  password,
+  isPasswordCorrect = false
 }) => (
     <div>
       <section className="has-text-left level-left" style={{ marginTop: '3.5em' }}>
@@ -51,6 +52,7 @@ export const HasAccount: React.SFC<Props> = ({
               label="Password"
               hasButton={true}
               onChangeHandler={newValue => newValue}
+              isPasswordCorrect={isPasswordCorrect}
             />
             <div className="control" style={{ marginBottom: '0.25rem' }}>
               <button
@@ -60,6 +62,7 @@ export const HasAccount: React.SFC<Props> = ({
             </div>
           </div>
         </form>
+        {!isPasswordCorrect && <p className="is-size-7 has-text-danger">Password is incorrect</p>}
       </section>
       <section className="has-text-centered" style={{ marginTop: '2.5em' }}>
         <span className="has-text-grey-lighter">Forgot your password?</span>
