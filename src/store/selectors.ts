@@ -33,3 +33,8 @@ export function getCurrentConnectionForEditing({
 }: ConnectionsState) {
   return connections[currentStage]![updating.selectedCurrency]
 }
+
+export function getActiveAccount({ wallet }: RootState) {
+  const accountIndex = wallet.persisted.activeAccount
+  return wallet.accounts[accountIndex]
+}

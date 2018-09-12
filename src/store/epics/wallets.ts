@@ -2,6 +2,7 @@ import { saveAs } from 'file-saver'
 import { startCase } from 'lodash'
 import { merge } from 'rxjs'
 import { filter, ignoreElements, map, tap, withLatestFrom } from 'rxjs/operators'
+
 import { isActionOf } from 'typesafe-actions'
 
 import {
@@ -10,7 +11,9 @@ import {
   clearSignForms,
   deleteWallet as deleteWalletAction,
   selectWallet,
+  tooManyFailedAttempts,
   unlockWalletFailure,
+  unlockWalletFailureAlert,
   unlockWalletRequest,
   unlockWalletSuccess,
 } from '@actions'
@@ -53,25 +56,57 @@ export const unlockWallet$: RootEpic = (action$, state$, { decryptWithPassword }
   action$.pipe(
     filter(isActionOf(unlockWalletRequest)),
     withLatestFrom(state$),
-    map(([_, state]) => {
+    map(([action, state]) => {
+      const now = action.payload
+
       const decryptedPrivateKey = decryptWithPassword(
         state.wallets.activeWallet!.encryptedPrivateKey,
         state.passwords.currentInput,
       )
 
-      return decryptedPrivateKey !== ''
-        ? unlockWalletSuccess({
-            password: state.passwords.currentInput,
-            decryptedPrivateKey,
-            publicKey: state.wallets.activeWallet!.publicKey,
-          })
-        : unlockWalletFailure()
+      return state.wallets.setAccountLocked.unlockTimestamp > now.valueOf()
+        ? tooManyFailedAttempts(now)
+        : decryptedPrivateKey !== ''
+          ? unlockWalletSuccess({
+              password: state.passwords.currentInput,
+              decryptedPrivateKey,
+              publicKey: state.wallets.activeWallet!.publicKey,
+            })
+          : unlockWalletFailure({
+              now,
+              maxAttempts: 10,
+            })
     }),
   )
 
-export const walletLockFailure$: RootEpic = (action$, _, { generalFailureAlert }) =>
+export const walletLockFailure$: RootEpic = (action$, state$) =>
   action$.pipe(
     filter(isActionOf(unlockWalletFailure)),
+    withLatestFrom(state$),
+    map(([action, state]) => {
+      const failureAttemptTimestamps = state.wallets.failureAttemptTimestamps
+      const numberOfFailedAttempts = failureAttemptTimestamps.length
+
+      return numberOfFailedAttempts > action.payload.maxAttempts
+        ? tooManyFailedAttempts(failureAttemptTimestamps[numberOfFailedAttempts - 1])
+        : unlockWalletFailureAlert()
+    }),
+  )
+
+export const tooManyFailedAttempts$: RootEpic = (action$, _, { generalFailureAlert }) =>
+  action$.pipe(
+    filter(isActionOf(tooManyFailedAttempts)),
+    map(() =>
+      generalFailureAlert(
+        'You have made too many failed attempts. You can try to unlock your account in 5 minutes.',
+      ),
+    ),
+    ignoreElements(),
+  )
+
+export const unlockWalletFailureAlert$: RootEpic = (action$, _, { generalFailureAlert }) =>
+  action$.pipe(
+    filter(isActionOf(unlockWalletFailureAlert)),
     map(() => generalFailureAlert('Incorrect Password')),
     ignoreElements(),
   )

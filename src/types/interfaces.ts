@@ -88,3 +88,11 @@ export interface WalletLoggedInState {
   accounts: WalletAccount[]
   passphrase: string
 }
+export interface FailedAttemptsToUnlockWallet {
+  unlockTimestamp: number
+}
+
+export interface UnlockWalletFailure {
+  now: Date
+  maxAttempts: number
+}
