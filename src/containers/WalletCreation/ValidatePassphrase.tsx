@@ -1,3 +1,4 @@
+import { finaliseWalletCreation } from '@actions'
 import { FinaliseSetupModal } from '@containers/WalletCreation/FinaliseSetupModal'
 import { RootState } from '@store'
 import { RootRoutes, WalletCreationRoutes } from '@types'
@@ -111,11 +112,12 @@ class PassphraseCheck extends React.Component<PassphraseCheckProps, PassphraseSt
 }
 
 const mapStateToProps = (state: RootState) => ({
-  passphrase: state.wallet.passphrase.creation,
+  passphrase: state.createWallet.passphrase,
 })
 
 const mapDispatchToProps = {
   goBack: () => replace(RootRoutes.create + WalletCreationRoutes.second),
+  handleConfirm: finaliseWalletCreation,
 }
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 class ValidatePassphrasePresentation extends React.Component<Props, any> {
@@ -156,7 +158,11 @@ class ValidatePassphrasePresentation extends React.Component<Props, any> {
             </button>
           </div>
         </div>
-        <FinaliseSetupModal isActive={this.state.activeModal} closeModal={this.closeModal} />
+        <FinaliseSetupModal
+          isActive={this.state.activeModal}
+          closeModal={this.closeModal}
+          handleConfirm={this.props.handleConfirm}
+        />
       </React.Fragment>
     )
   }

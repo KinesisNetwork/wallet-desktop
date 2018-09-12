@@ -3,6 +3,7 @@ import * as React from 'react'
 interface Props {
   isActive: boolean
   closeModal: (() => any)
+  handleConfirm: () => any
 }
 class FinaliseSetupModal extends React.Component<Props> {
   state = {
@@ -64,10 +65,18 @@ class FinaliseSetupModal extends React.Component<Props> {
               </div>
               <div className="field is-grouped is-grouped-right">
                 <div className="control">
-                  <button className="button is-text">Back</button>
+                  <button className="button is-text" onClick={this.props.closeModal}>
+                    Back
+                  </button>
                 </div>
                 <div className="control">
-                  <button className="button is-primary">Confirm</button>
+                  <button
+                    className="button is-primary"
+                    disabled={!this.state.noServer || !this.state.recovery}
+                    onClick={this.props.handleConfirm}
+                  >
+                    Confirm
+                  </button>
                 </div>
               </div>
             </div>

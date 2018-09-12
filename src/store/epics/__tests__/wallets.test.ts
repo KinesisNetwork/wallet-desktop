@@ -23,13 +23,13 @@ describe('wallets epic', () => {
       const publicKey = 'publicKey'
       const password = 'password'
 
-      const decryptPrivateKey = jest.fn(() => decryptedPrivateKey)
+      const decryptWithPassword = jest.fn(() => decryptedPrivateKey)
 
       await epicTest({
         epic: unlockWallet$,
         inputActions: [unlockWalletRequest()],
         expectedActions: [unlockWalletSuccess({ password, publicKey, decryptedPrivateKey })],
-        dependencies: { decryptPrivateKey },
+        dependencies: { decryptWithPassword },
         state: {
           wallets: {
             activeWallet: {
@@ -43,17 +43,17 @@ describe('wallets epic', () => {
         },
       })
 
-      expect(decryptPrivateKey).toHaveBeenCalled()
-      expect(decryptPrivateKey).toHaveBeenCalledWith('jumble', password)
+      expect(decryptWithPassword).toHaveBeenCalled()
+      expect(decryptWithPassword).toHaveBeenCalledWith('jumble', password)
     })
 
     it('sends failure action', async () => {
-      const decryptPrivateKey = jest.fn(() => '')
+      const decryptWithPassword = jest.fn(() => '')
 
       await epicTest({
         epic: unlockWallet$,
         inputActions: [unlockWalletRequest()],
-        dependencies: { decryptPrivateKey },
+        dependencies: { decryptWithPassword },
         expectedActions: [unlockWalletFailure()],
         state: {
           wallets: {
@@ -67,7 +67,7 @@ describe('wallets epic', () => {
         },
       })
 
-      expect(decryptPrivateKey).toHaveBeenCalledWith('jumble', 'password')
+      expect(decryptWithPassword).toHaveBeenCalledWith('jumble', 'password')
     })
   })
 })

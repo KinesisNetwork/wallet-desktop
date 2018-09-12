@@ -9,16 +9,16 @@ const isValidWalletName = (name: string) => name.length > 0 && name.length <= 50
 const isValidPassword = (password: string) => password.length >= 12 && password.length <= 30
 
 function validCreateWalletState(state: RootState): boolean {
-  const { name, password, confirmPassword } = state.wallet.createForm
+  const { name, password, confirmPassword } = state.createWallet.createForm
   return isValidWalletName(name) && isValidPassword(password) && password === confirmPassword
 }
 const mapStateToProps = (state: RootState) => ({
-  ...state.wallet.createForm,
+  ...state.createWallet.createForm,
   canSubmit: validCreateWalletState(state),
 })
 
 const mapDispatchToProps = {
-  updateFormField: (formField: keyof RootState['wallet']['createForm'], fieldValue: string) =>
+  updateFormField: (formField: keyof RootState['createWallet']['createForm'], fieldValue: string) =>
     updateFormField({ fieldValue, formField, formName: 'WALLET_CREATE' }),
   startWalletCreation,
 }

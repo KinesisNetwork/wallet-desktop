@@ -11,7 +11,7 @@ import { NamingWallet } from './NamingWallet'
 import { ValidatePassphrase } from './ValidatePassphrase'
 
 const mapStateToProps = (state: RootState) => ({
-  hasStartedForms: !!state.wallet.passphrase.creation,
+  hasStartedForms: !!state.createWallet.passphrase,
 })
 
 type Props = RouteComponentProps<any> & ReturnType<typeof mapStateToProps>

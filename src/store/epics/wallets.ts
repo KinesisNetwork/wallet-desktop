@@ -49,12 +49,12 @@ export const changeWallet: RootEpic = (action$, state$) => {
   return merge(loadAccount$, clearSignFields$)
 }
 
-export const unlockWallet$: RootEpic = (action$, state$, { decryptPrivateKey }) =>
+export const unlockWallet$: RootEpic = (action$, state$, { decryptWithPassword }) =>
   action$.pipe(
     filter(isActionOf(unlockWalletRequest)),
     withLatestFrom(state$),
     map(([_, state]) => {
-      const decryptedPrivateKey = decryptPrivateKey(
+      const decryptedPrivateKey = decryptWithPassword(
         state.wallets.activeWallet!.encryptedPrivateKey,
         state.passwords.currentInput,
       )

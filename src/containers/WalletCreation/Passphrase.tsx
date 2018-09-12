@@ -7,7 +7,7 @@ import { RootRoutes, WalletCreationRoutes } from '@types'
 import { RouteComponentProps } from 'react-router'
 
 const mapStateToProps = (state: RootState) => ({
-  passphrase: state.wallet.passphrase.creation,
+  passphrase: state.createWallet.passphrase,
 })
 
 const mapDispatchToProps = {

@@ -1,44 +1,42 @@
-import { combineReducers } from 'redux'
+import { createPassphrase, updateFormField } from '@actions'
+import { RootAction } from '@store'
+import { WALLET_CREATE_FORM_NAME } from '@types'
+import { combineReducers, Reducer } from 'redux'
 import { getType } from 'typesafe-actions'
 
-import {
-  addWallet,
-  changeCreateWalletView,
-  changeWalletView,
-  updateCreateWalletForm,
-} from '@actions'
-import { RootAction } from '@store'
-import { CreateWalletForm, CreateWalletFormView } from '@types'
-
-export interface CreateWalletState {
-  readonly form: CreateWalletForm
-  readonly formView: CreateWalletFormView
+interface WalletCreationForm {
+  name: string
+  password: string
+  confirmPassword: string
 }
 
-const handleChange = (name: keyof CreateWalletForm) => (state = '', action: RootAction) => {
-  switch (action.type) {
-    case getType(updateCreateWalletForm):
-      return action.payload.field === name ? action.payload.newValue : state
-    case getType(addWallet): return ''
-    default: return state
-  }
+interface WalletState {
+  createForm: WalletCreationForm
+  passphrase: string
 }
 
-const form = combineReducers<CreateWalletForm, RootAction>({
-  accountName: handleChange('accountName'),
-  privateKey: handleChange('privateKey'),
+function isChangeAction(action: ReturnType<typeof updateFormField>, formField: string) {
+  return (
+    action.payload.formName === WALLET_CREATE_FORM_NAME && action.payload.formField === formField
+  )
+}
+
+const handleChange = (formField: keyof WalletCreationForm): Reducer<string, RootAction> => (
+  state = '',
+  action,
+) =>
+  action.type === getType(updateFormField) && isChangeAction(action, formField)
+    ? action.payload.fieldValue
+    : state
+
+const createForm = combineReducers<WalletCreationForm, RootAction>({
+  confirmPassword: handleChange('confirmPassword'),
+  name: handleChange('name'),
   password: handleChange('password'),
-  passwordVerify: handleChange('passwordVerify'),
 })
 
-export const createWallet = combineReducers<CreateWalletState, RootAction>({
-  form,
-  formView: (state = CreateWalletFormView.select, action) => {
-    switch (action.type) {
-      case getType(changeCreateWalletView): return action.payload
-      case getType(changeWalletView): return CreateWalletFormView.select
-      case getType(addWallet): return CreateWalletFormView.select
-      default: return state
-    }
-  },
+export const createWallet = combineReducers<WalletState, RootAction>({
+  createForm,
+  passphrase: (state = '', action) =>
+    action.type === getType(createPassphrase) ? action.payload.passphrase : state,
 })

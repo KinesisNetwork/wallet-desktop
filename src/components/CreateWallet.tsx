@@ -5,7 +5,7 @@ import * as React from 'react'
 import { InputField } from '@components/InputField'
 import { formAlert } from '@helpers/alert'
 import { InputError } from '@helpers/errors'
-import { encryptPrivateKey } from '@services/encryption'
+import { encryptWithPassword } from '@services/encryption'
 import { CreateWalletForm, CreateWalletFormView as FormView, Wallet } from '@types'
 
 export interface Props extends CreateWalletForm {
@@ -15,11 +15,13 @@ export interface Props extends CreateWalletForm {
   changeFormView: (newView: FormView) => any
 }
 
-export const CreateWallet: React.SFC<Props> = (props) => (
-  <div className='vertical-spaced has-text-centered'>
-    <h1 className='title-heading'>ADD A NEW ACCOUNT</h1>
-    <section className='section'>
-      {props.activeView === FormView.select && <FormSelection changeFormView={props.changeFormView} />}
+export const CreateWallet: React.SFC<Props> = props => (
+  <div className="vertical-spaced has-text-centered">
+    <h1 className="title-heading">ADD A NEW ACCOUNT</h1>
+    <section className="section">
+      {props.activeView === FormView.select && (
+        <FormSelection changeFormView={props.changeFormView} />
+      )}
       {props.activeView !== FormView.select && <WalletForm {...props} />}
     </section>
   </div>
@@ -28,11 +30,11 @@ export const CreateWallet: React.SFC<Props> = (props) => (
 CreateWallet.displayName = 'CreateWallet'
 
 const FormSelection: React.SFC<Pick<Props, 'changeFormView'>> = ({ changeFormView }) => (
-  <div className='buttons is-centered'>
-    <button className='button' onClick={() => changeFormView(FormView.generate)}>
+  <div className="buttons is-centered">
+    <button className="button" onClick={() => changeFormView(FormView.generate)}>
       Generate New Account
     </button>
-    <button className='button' onClick={() => changeFormView(FormView.import)}>
+    <button className="button" onClick={() => changeFormView(FormView.import)}>
       Import Existing Account
     </button>
   </div>
@@ -50,7 +52,7 @@ export class WalletForm extends React.Component<Props> {
     try {
       this.validateProps()
       const { publicKey, privateKey } = this.generateKeyOrExtractFromProps()
-      const encryptedPrivateKey = encryptPrivateKey(privateKey, this.props.password)
+      const encryptedPrivateKey = encryptWithPassword(privateKey, this.props.password)
       this.props.addWallet({
         encryptedPrivateKey,
         publicKey,
@@ -71,9 +73,10 @@ export class WalletForm extends React.Component<Props> {
   }
 
   generateKeyOrExtractFromProps = () => {
-    const keypair = this.props.activeView === FormView.import
-      ? Keypair.fromSecret(this.props.privateKey)
-      : Keypair.random()
+    const keypair =
+      this.props.activeView === FormView.import
+        ? Keypair.fromSecret(this.props.privateKey)
+        : Keypair.random()
     return { publicKey: keypair.publicKey(), privateKey: keypair.secret() }
   }
 
@@ -91,11 +94,11 @@ export class WalletForm extends React.Component<Props> {
 
   renderImportFields = () => (
     <InputField
-      label='Private Key'
+      label="Private Key"
       value={this.props.privateKey}
-      id='private-key'
-      helpText='Add your private key'
-      onChangeHandler={(newValue) => this.props.handleChange('privateKey', newValue)}
+      id="private-key"
+      helpText="Add your private key"
+      onChangeHandler={newValue => this.props.handleChange('privateKey', newValue)}
     />
   )
 
@@ -112,44 +115,46 @@ export class WalletForm extends React.Component<Props> {
     return (
       <div>
         <div>
-          <span className='icon is-large'>
-            <i className='far fa-user' />
+          <span className="icon is-large">
+            <i className="far fa-user" />
           </span>
-          <h1 className='title is-4 heading primary-font'>
-            {`${action} Account`}
-          </h1>
+          <h1 className="title is-4 heading primary-font">{`${action} Account`}</h1>
         </div>
-        <div className='columns is-centered'>
-          <form onSubmit={this.createNewWallet} className='column is-half'>
+        <div className="columns is-centered">
+          <form onSubmit={this.createNewWallet} className="column is-half">
             <InputField
-              label='Account Name'
+              label="Account Name"
               value={accountName}
-              id='account-name'
-              helpText='Add an alias for your account'
-              onChangeHandler={(newValue) => handleChange('accountName', newValue)}
+              id="account-name"
+              helpText="Add an alias for your account"
+              onChangeHandler={newValue => handleChange('accountName', newValue)}
             />
             {activeView === FormView.import && this.renderImportFields()}
             <InputField
-              label='Account Password'
+              label="Account Password"
               value={password}
               type={'password'}
-              id='password'
-              helpText='Add a password for locking this account'
-              onChangeHandler={(newValue) => handleChange('password', newValue)}
+              id="password"
+              helpText="Add a password for locking this account"
+              onChangeHandler={newValue => handleChange('password', newValue)}
             />
             <InputField
-              label='Repeat Password'
+              label="Repeat Password"
               value={passwordVerify}
               type={'password'}
-              id='password-verify'
-              onChangeHandler={(newValue) => handleChange('passwordVerify', newValue)}
+              id="password-verify"
+              onChangeHandler={newValue => handleChange('passwordVerify', newValue)}
             />
-            <div className='field is-grouped'>
-              <div className='control is-expanded'>
-                <button className='button is-fullwidth' type='submit'>{`${action} Account`}</button>
+            <div className="field is-grouped">
+              <div className="control is-expanded">
+                <button className="button is-fullwidth" type="submit">{`${action} Account`}</button>
               </div>
-              <div className='control'>
-                <button className='button is-danger' type='button' onClick={() => changeFormView(FormView.select)}>
+              <div className="control">
+                <button
+                  className="button is-danger"
+                  type="button"
+                  onClick={() => changeFormView(FormView.select)}
+                >
                   Back
                 </button>
               </div>

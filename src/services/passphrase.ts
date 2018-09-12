@@ -10,7 +10,11 @@ export function validateMnemonic(mnemonic: string) {
   return bip39.validateMnemonic(mnemonic)
 }
 
-export function getKeypair(mnemonic: string, index: number) {
-  const data = hdKey.derivePath(`m/44'/148'/${index}`, bip39.mnemonicToSeedHex(mnemonic))
+export function getKeypairFromMnemonic(mnemonic: string, index: number) {
+  const data = hdKey.derivePath(`m/44'/148'/${index}'`, bip39.mnemonicToSeedHex(mnemonic))
   return Keypair.fromRawEd25519Seed(data.key)
+}
+
+export function getKeypairFromSecret(secret: string) {
+  return Keypair.fromSecret(secret)
 }
