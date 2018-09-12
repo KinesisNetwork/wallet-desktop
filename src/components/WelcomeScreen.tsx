@@ -13,17 +13,25 @@ if (process.env.IS_WEB) {
 }
 
 export const WelcomeScreen: React.SFC<Props> = (props) => (
-  <div className="container u-padding-left-sm-2 u-padding-right-sm-2" style={{ maxWidth: '540px' }}>
-    <header className="u-margin-top-xl vertical-spaced level">
-      <figure>
-        <img src={logo} alt="Kinesis logo" />
-      </figure>
-      <div className="heading u-margin-top-xl">
-        <h2 className="is-size-3 has-text-weight-semibold has-text-grey-lighter">Welcome to the</h2>
-        <h1 className="is-size-1 has-text-weight-bold has-text-primary">future of money</h1>
+  <div className="section">
+    <div className="container">
+      <div className="columns is-mobile is-centered">
+        <div className="column is-two-fifths-fullhd is-half-desktop is-three-fifths-tablet is-four-fifths-mobile">
+          <header className="u-margin-bottom-lg-1">
+            <div className="vertical-spaced level is-mobile">
+              <figure className="has-text-centered u-margin-bottom-xl">
+                <img src={logo ? logo : './logo2.svg'} alt="Kinesis logo" style={{ maxWidth: '60%' }} />
+              </figure>
+              <div className="heading">
+                <h2 className="is-size-5-mobile is-size-4-tablet is-size-2-desktop has-text-weight-semibold has-text-grey-lighter">Welcome to the</h2>
+                <h1 className="is-size-3-mobile is-size-2-tablet is-size-1-desktop has-text-weight-bold has-text-primary">future of money</h1>
+              </div>
+            </div>
+          </header>
+          {props.hasAccount ? <HasAccount {...props} /> : <NoAccount />}
+        </div>
       </div>
-    </header>
-    {props.hasAccount ? <HasAccount {...props} /> : <NoAccount />}
+    </div>
   </div >
 )
 
@@ -37,54 +45,54 @@ export class HasAccount extends React.Component<Props> {
 
   render() {
     return (
-      <div>
-        <section className="level-left u-margin-top-xl">
-          <div className="image is-64x64 has-background-grey level-item is-marginless" style={{ borderRadius: '100px' }}>
-            <span className="is-size-3 has-text-grey-light">{this.getInitials(this.props.walletName)}</span>
+      <main>
+        <section className="level is-mobile u-margin-bottom-lg-1">
+          <div className="level-left">
+            <div className="image is-64x64 has-background-grey level-item" style={{ borderRadius: '100px' }}>
+              <span className="is-size-3 has-text-grey-light">{this.getInitials(this.props.walletName)}</span>
+            </div>
+            <div className="is-size-3-mobile is-size-2-tablet is-size-1-desktop has-text-weight-bold has-text-grey-lighter u-margin-left-sm-1">{this.props.walletName}</div>
           </div>
-          <div className="is-size-1 has-text-weight-bold has-text-grey-lighter u-margin-left-md-1">{this.props.walletName}</div>
         </section>
-        <section className="u-margin-top-lg-1">
-          <form>
-            <div className="field is-grouped" style={{ alignItems: 'flex-end' }}>
-              <InputField
-                id="password"
-                value=""
-                label="Password"
-                hasButton={true}
-                onChangeHandler={newValue => newValue}
-                isInvalidInput={this.props.isIncorrectPassword}
-              />
-              <div className="control u-margin-bottom-xxs">
-                <button
-                  className="button is-primary is-uppercase has-text-grey-darker"
-                >Login</button>
-              </div>
+        <section className="u-margin-bottom-lg-2">
+          <form className="field is-grouped" style={{ alignItems: 'flex-end' }}>
+            <InputField
+              id="password"
+              value=""
+              label="Password"
+              hasButton={true}
+              onChangeHandler={newValue => newValue}
+              isInvalidInput={this.props.isIncorrectPassword}
+            />
+            <div className="control u-margin-bottom-xxs">
+              <button
+                className="button is-primary is-uppercase has-text-grey-darker"
+              >Login</button>
             </div>
           </form>
-          {!this.props.isIncorrectPassword && <p className="is-size-7 has-text-danger">Password is incorrect</p>}
+          {this.props.isIncorrectPassword && <p className="help has-text-danger">Password is incorrect</p>}
         </section>
-        <section className="has-text-centered u-margin-top-lg-1">
+        <section className="has-text-centered">
           <span className="has-text-grey-lighter">Forgot your password?</span>
           <a href="#" className="is-link u-margin-left-sm-1">Restore your wallet</a>
         </section>
-      </div>
+      </main>
     )
   }
 }
 
 export const NoAccount: React.SFC<any> = () => (
-  <div className="vertical-spaced level u-margin-top-md-2">
-    <div className="control">
+  <main className="has-text-centered">
+    <div className="u-margin-bottom-lg-2">
       <button className="button is-primary is-uppercase has-text-grey-darker is-large">Begin</button>
     </div>
-    <section className="u-margin-top-lg-1">
+    <section className="u-margin-bottom-sm-2">
       <span className="has-text-grey-lighter">Already have Kinesis?</span>
       <a href="#" className="is-link u-margin-left-sm-1">Restore an existing wallet</a>
     </section>
-    <section className="is-size-7 u-margin-top-lg-1">
+    <section className="is-size-7">
       <span className="has-text-grey-lighter">Why choose Kinesis?</span>
       <a href="#" className="is-link u-margin-left-xxs">Learn more</a>
     </section>
-  </div>
+  </main>
 )
