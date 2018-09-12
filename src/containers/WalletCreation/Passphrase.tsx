@@ -7,7 +7,7 @@ import { RootRoutes, WalletCreationRoutes } from '@types'
 import { RouteComponentProps } from 'react-router'
 
 const mapStateToProps = (state: RootState) => ({
-  passphrase: state.wallet.create.passphrase,
+  passphrase: state.wallet.passphrase.creation,
 })
 
 const mapDispatchToProps = {
@@ -42,11 +42,11 @@ const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
     <div className="field">
       <label className="label">Your paper key</label>
       <div className="control">
-        <input
-          className="input is-large has-text-centered"
+        <textarea
+          className="textarea is-large has-text-centered"
           readOnly={true}
           value={passphrase}
-          autoFocus={true}
+          style={{ resize: 'none' }}
         />
         <p className="help">Your paper key is not case sensitive</p>
       </div>
@@ -74,7 +74,7 @@ const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
       </div>
       <div className="control">
         <button className="button is-primary" disabled={!hasConfirmed} onClick={nextPage}>
-          Continue
+          I have saved my passphrase
         </button>
       </div>
     </div>

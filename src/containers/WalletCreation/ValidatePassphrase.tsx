@@ -4,14 +4,14 @@ import { replace } from 'connected-react-router'
 import * as React from 'react'
 import { connect } from 'react-redux'
 
-interface InputCheckerProps {
+interface InputProps {
   placeholder: string
   isValid: boolean
   currentValue: string
   handleInput: (newValue: string) => any
 }
 
-class InputChecker extends React.Component<InputCheckerProps> {
+class PassphraseWordInput extends React.Component<InputProps> {
   render() {
     return (
       <div className="field">
@@ -79,7 +79,7 @@ class PassphraseCheck extends React.Component<PassphraseCheckProps, PassphraseSt
         {this.props.passphrase.slice(rowSplit, rowSplit + 4).map((word, splitIndex) => (
           <div className="tile is-child" key={word}>
             {this.idsToCheck.includes(rowSplit + splitIndex) ? (
-              <InputChecker
+              <PassphraseWordInput
                 currentValue={this.state.validInputs[word] || ''}
                 handleInput={newValue => this.handleInput(word, newValue)}
                 placeholder={`Word ${rowSplit + splitIndex + 1}`}
@@ -110,7 +110,7 @@ class PassphraseCheck extends React.Component<PassphraseCheckProps, PassphraseSt
 }
 
 const mapStateToProps = (state: RootState) => ({
-  passphrase: state.wallet.create.passphrase,
+  passphrase: state.wallet.passphrase.creation,
 })
 
 const mapDispatchToProps = {
@@ -146,7 +146,7 @@ class ValidatePassphrasePresentation extends React.Component<Props, any> {
           </div>
           <div className="control">
             <button className="button is-primary" disabled={!this.state.isVerified}>
-              Finish Setup
+              Verify
             </button>
           </div>
         </div>
