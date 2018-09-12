@@ -1,8 +1,8 @@
 import * as React from 'react'
 
 import { AccountDashboard } from '@components/AccountDashboard'
-import { Password } from '@containers/Password'
 import { Sign } from '@containers/Sign'
+import { getLoginState } from '@selectors'
 import { RootState } from '@store'
 import { RootRoutes } from '@types'
 import { connect } from 'react-redux'
@@ -10,13 +10,13 @@ import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-
 import { NavLink } from 'react-router-dom'
 
 const mapStateToProps = (state: RootState) => ({
-  hasActiveAccount: !!state.wallets.activeWallet,
+  isLoggedIn: getLoginState(state),
 })
 
 type Props = RouteComponentProps<any> & ReturnType<typeof mapStateToProps>
 
-const AccountPagePresentation: React.SFC<Props> = ({ match, hasActiveAccount }) =>
-  !hasActiveAccount ? (
+const AccountPagePresentation: React.SFC<Props> = ({ match, isLoggedIn }) =>
+  !isLoggedIn ? (
     <Redirect to={RootRoutes.create} />
   ) : (
     <div className="vertical-spaced">
@@ -41,11 +41,6 @@ const AccountPagePresentation: React.SFC<Props> = ({ match, hasActiveAccount }) 
                   </span>
                 </NavLink>
               </div>
-            </div>
-          </div>
-          <div className="level-right">
-            <div className="level-item">
-              <Password />
             </div>
           </div>
         </div>

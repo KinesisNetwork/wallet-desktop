@@ -6,13 +6,14 @@ import { connect } from 'react-redux'
 import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router'
 import { Passphrase } from './Passphrase'
 
+import { getLoginState } from '@selectors'
 import * as logo from 'Kinesis_Alpha.svg'
 import { NamingWallet } from './NamingWallet'
 import { ValidatePassphrase } from './ValidatePassphrase'
 
 const mapStateToProps = (state: RootState) => ({
   hasStartedForms: !!state.createWallet.passphrase,
-  isLoggedIn: !!state.wallet.passphrase,
+  isLoggedIn: getLoginState(state),
 })
 
 type Props = RouteComponentProps<any> & ReturnType<typeof mapStateToProps>

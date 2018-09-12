@@ -38,3 +38,7 @@ export function getActiveAccount({ wallet }: RootState) {
   const accountIndex = wallet.persisted.activeAccount
   return wallet.accounts[accountIndex]
 }
+
+export function getLoginState({ wallet }: RootState) {
+  return !!wallet.passphrase
+}
