@@ -97,7 +97,7 @@ export class SignForm extends React.Component<SignProps, State> {
     const { signData, handleSignFormChange, signature } = this.props
     const { copied } = this.state
     return (
-      <div className="is-centered">
+      <div>
         <form onSubmit={this.signData}>
           <InputField
             label="Message"
@@ -108,7 +108,7 @@ export class SignForm extends React.Component<SignProps, State> {
           />
           <div className="field is-grouped">
             <div className="control is-expanded">
-              <button className="button is-fullwidth" type="submit">
+              <button className="button is-fullwidth is-primary is-outlined" type="submit">
                 Sign
               </button>
             </div>
@@ -218,7 +218,7 @@ export class VerifyForm extends React.Component<SignProps> {
           />
           <div className="field is-grouped">
             <div className="control is-expanded">
-              <button className="button is-fullwidth" type="submit">
+              <button className="button is-fullwidth is-primary is-outlined" type="submit">
                 Verify
               </button>
             </div>

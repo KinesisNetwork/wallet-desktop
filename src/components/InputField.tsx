@@ -37,7 +37,7 @@ export const InputField: React.SFC<Props> = ({
         />
         {icon && <span className='icon is-left has-text-grey-lighter'><i className={`fas ${icon}`} /></span>}
       </div>
-      <p className='help is-link'>
+      <p className='help'>
         {helpText}
       </p>
     </div>
