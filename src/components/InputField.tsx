@@ -24,7 +24,7 @@ export const InputField: React.SFC<Props & React.InputHTMLAttributes<HTMLInputEl
     {label && <label className="label is-small">{label}</label>}
     <div className={`control ${icon && 'has-icons-left'}`}>
       <input
-        className={`input ${errorText && 'is-danger'}`}
+        className={`input ${errorText ? 'is-danger' : ''}`}
         id={`input-${id}`}
         onChange={ev => onChangeHandler(ev.target.value)}
         value={value}
@@ -36,7 +36,7 @@ export const InputField: React.SFC<Props & React.InputHTMLAttributes<HTMLInputEl
         </span>
       )}
     </div>
-    <p className={`help ${errorText && 'is-danger'}`}>{errorText || helpText}</p>
+    <p className={`help ${errorText ? 'is-danger' : ''}`}>{errorText || helpText}</p>
   </div>
 )
 

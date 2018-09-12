@@ -5,18 +5,17 @@ exports[`InputField should render correctly 1`] = `
   className="field"
 >
   <div
-    className="control "
+    className="control undefined"
   >
     <input
-      className="input"
+      className="input "
       id="input-connection-name"
       onChange={[Function]}
-      type="text"
       value=""
     />
   </div>
   <p
-    className="help is-link"
+    className="help "
   />
 </div>
 `;

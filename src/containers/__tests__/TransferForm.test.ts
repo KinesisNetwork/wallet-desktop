@@ -1,6 +1,7 @@
 import { mapStateToProps } from '@containers/TransferForm'
 import { RootState } from '@store'
 import { ConnectionStage, Currency, Payee } from '@types'
+import { Keypair } from 'js-kinesis-sdk'
 import { DeepPartial } from 'redux'
 
 describe('TransferForm', () => {
@@ -15,8 +16,9 @@ describe('TransferForm', () => {
     currentStage: ConnectionStage.testnet,
   }
   it('mapStateToProps with active wallet', () => {
+    const keypair = Keypair.random()
     const payee: Payee = { name: 'aPayee1', publicKey: 'asdf' }
-    const state: DeepPartial<RootState> = <any>{
+    const state: DeepPartial<RootState> = {
       accounts: {
         accountInfo: { balance: 0 },
       },
@@ -38,6 +40,12 @@ describe('TransferForm', () => {
         activeWallet: { publicKey: 'wallet-public-key' },
         walletList: [{ publicKey: 'another-public-key', accountName: 'another' }],
       },
+      wallet: {
+        accounts: [{ keypair, name: 'x' }],
+        persisted: {
+          activeAccount: 0,
+        },
+      },
     }
 
     const { getFee, ...rest } = mapStateToProps(state as RootState)
@@ -48,12 +56,13 @@ describe('TransferForm', () => {
       isWalletUnlocked: true,
       accountBalance: 0,
       payees: [payee, { name: 'another', publicKey: 'another-public-key' }],
-      publicKey: 'wallet-public-key',
+      publicKey: keypair.publicKey(),
       connection,
     })
   })
 
   it('mapStateToProps with locked account', () => {
+    const keypair = Keypair.random()
     const state: DeepPartial<RootState> = <any>{
       wallets: {
         activeWallet: {
@@ -68,16 +77,22 @@ describe('TransferForm', () => {
       passwords: { livePasswords: {} },
       payees: { payeesList: [] },
       transfer: { form: {}, isTransferring: true },
+      wallet: {
+        accounts: [{ keypair, name: 'x' }],
+        persisted: {
+          activeAccount: 0,
+        },
+      },
     }
 
     const { getFee, ...rest } = mapStateToProps(state as RootState)
 
     expect(rest).toEqual({
       accountBalance: 0,
-      publicKey: 'wallet-public-key',
+      publicKey: keypair.publicKey(),
       connection,
       isTransferring: true,
-      isWalletUnlocked: false,
+      isWalletUnlocked: true,
       payees: [{ name: 'another', publicKey: 'another-public-key' }],
     })
   })
