@@ -49,3 +49,9 @@ export enum WalletCreationRoutes {
   second = '/passphrase',
   third = '/check',
 }
+
+export enum WalletCreationModals {
+  none,
+  passwordConfirm,
+  encrypting,
+}

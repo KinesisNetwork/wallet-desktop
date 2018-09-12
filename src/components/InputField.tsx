@@ -32,7 +32,7 @@ export const InputField: React.SFC<Props & React.InputHTMLAttributes<HTMLInputEl
       />
       {icon && (
         <span className={`icon is-left has-text-grey-lighter`}>
-          <i className={`fas ${icon}`} />
+          <i className={`fal fa-lg ${icon}`} />
         </span>
       )}
     </div>

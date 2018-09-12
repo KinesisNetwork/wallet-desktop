@@ -11,9 +11,9 @@ import { Redirect, Route, Switch } from 'react-router'
 
 const MainPresentation: React.SFC = () => (
   <div className="columns is-marginless" style={{ height: '100vh' }}>
-    <div className="column is-one-quarter" style={{ backgroundColor: '#2b3e50' }}>
+    {/* <div className="column is-one-quarter" style={{ backgroundColor: '#2b3e50' }}>
       <Sidebar />
-    </div>
+    </div> */}
     <div className="column">
       <Switch>
         <Route path={RootRoutes.dashboard} component={AccountPage} />
