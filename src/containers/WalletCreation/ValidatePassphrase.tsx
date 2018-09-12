@@ -1,3 +1,4 @@
+import { FinaliseSetupModal } from '@containers/WalletCreation/FinaliseSetupModal'
 import { RootState } from '@store'
 import { RootRoutes, WalletCreationRoutes } from '@types'
 import { replace } from 'connected-react-router'
@@ -27,10 +28,10 @@ class PassphraseWordInput extends React.Component<InputProps> {
           />
           {/* Need to have both since fa updates differently to react */}
           <span className={`icon is-right has-text-success ${!this.props.isValid && 'is-hidden'}`}>
-            <i className="fas fa-check-circle" />
+            <i className="fal fa-check-circle" />
           </span>
           <span className={`icon is-right has-text-danger ${this.props.isValid && 'is-hidden'}`}>
-            <i className="fas fa-times-circle" />
+            <i className="fal fa-times-circle" />
           </span>
         </div>
       </div>
@@ -120,6 +121,7 @@ type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 class ValidatePassphrasePresentation extends React.Component<Props, any> {
   state = {
     isVerified: false,
+    activeModal: false,
   }
 
   render() {
@@ -145,14 +147,22 @@ class ValidatePassphrasePresentation extends React.Component<Props, any> {
             </button>
           </div>
           <div className="control">
-            <button className="button is-primary" disabled={!this.state.isVerified}>
+            <button
+              className="button is-primary"
+              disabled={!this.state.isVerified}
+              onClick={this.handleVerifyClick}
+            >
               Verify
             </button>
           </div>
         </div>
+        <FinaliseSetupModal isActive={this.state.activeModal} closeModal={this.closeModal} />
       </React.Fragment>
     )
   }
+
+  handleVerifyClick = () => this.setState({ activeModal: true })
+  closeModal = () => this.setState({ activeModal: false })
 }
 
 const ConnectedValidatePassphrase = connect(

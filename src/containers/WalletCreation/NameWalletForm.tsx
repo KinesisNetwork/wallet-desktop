@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 
-import { createWallet, updateFormField } from '@actions'
+import { startWalletCreation, updateFormField } from '@actions'
 import { InputField } from '@components/InputField'
 import { RootState } from '@store'
 
@@ -16,17 +16,20 @@ const mapStateToProps = (state: RootState) => ({
   ...state.wallet.createForm,
   canSubmit: validCreateWalletState(state),
 })
+
 const mapDispatchToProps = {
   updateFormField: (formField: keyof RootState['wallet']['createForm'], fieldValue: string) =>
     updateFormField({ fieldValue, formField, formName: 'WALLET_CREATE' }),
-  createWallet,
+  startWalletCreation,
 }
+
 type NameWalletProps = ReturnType<typeof mapStateToProps> &
   typeof mapDispatchToProps & {
     openConfirmModal: () => any
   }
+
 const NameWalletFormPresentation: React.SFC<NameWalletProps> = props => (
-  <form onSubmit={ev => (ev.preventDefault(), props.createWallet())}>
+  <form onSubmit={ev => (ev.preventDefault(), props.startWalletCreation())}>
     <InputField
       id="wallet-create-name"
       label="Name your wallet"

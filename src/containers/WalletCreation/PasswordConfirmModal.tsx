@@ -13,7 +13,7 @@ export const PasswordConfirmModal: React.SFC<ModalProps> = props => (
       <article className="message">
         <div className="message-header">
           <span className="icon is-medium has-text-danger ">
-            <i className="fal fa-2x fa-info-circle" />
+            <i className="fal fa-2x fa-exclamation-circle" />
           </span>
           <span className="title is-marginless">Keep your password safe</span>
           <button className="delete" aria-label="close" onClick={props.closeModal} />

@@ -59,3 +59,9 @@
     transition: 0s;
   }
 }
+
+.field {
+  &:not(:last-child) {
+    margin-bottom: 2rem;
+  }
+}
