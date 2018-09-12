@@ -2,7 +2,6 @@ import * as React from 'react'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 
-import { Main } from '@components/Main'
 import { Routing } from '@containers/Routing'
 import { ConnectedRouter } from 'connected-react-router'
 import { createBrowserHistory } from 'history'

@@ -13,7 +13,7 @@ const mapStateToProps = (state: RootState) => ({
 })
 
 type Props = RouteComponentProps<any> & ReturnType<typeof mapStateToProps>
-const RoutingPresentation: React.SFC<Props> = props => (
+const RoutingPresentation: React.SFC<Props> = _ => (
   <Switch>
     <Route path={RootRoutes.dashboard} component={AccountPage} />
     <Route path={RootRoutes.addressBook} component={Payee} />
