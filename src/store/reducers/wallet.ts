@@ -10,6 +10,7 @@ interface WalletPersistedState {
   encryptedPassphrase: string
   activeAccount: number
   createdAccounts: PersistedAccount[]
+  walletName: string
 }
 
 interface WalletState extends WalletLoggedInState {
@@ -35,6 +36,8 @@ const persisted = combineReducers<WalletPersistedState, RootAction>({
   },
   encryptedPassphrase: (state = '', action) =>
     action.type === getType(initialiseWallet) ? action.payload.encryptedPassphrase : state,
+  walletName: (state = '', action) =>
+    action.type === getType(initialiseWallet) ? action.payload.walletName : state,
 })
 
 export const wallet = combineReducers<WalletState, RootAction>({

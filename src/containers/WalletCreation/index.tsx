@@ -25,7 +25,7 @@ const WalletCreationScreensPresentation: React.SFC<Props> = ({
   isLoggedIn,
 }) =>
   isLoggedIn ? (
-    <Redirect to={RootRoutes.dashboard} />
+    <Redirect to="/" />
   ) : (
     <section className="section">
       <div className="container">

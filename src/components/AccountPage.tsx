@@ -4,7 +4,6 @@ import { AccountDashboard } from '@components/AccountDashboard'
 import { Sign } from '@containers/Sign'
 import { getLoginState } from '@selectors'
 import { RootState } from '@store'
-import { RootRoutes } from '@types'
 import { connect } from 'react-redux'
 import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router'
 import { NavLink } from 'react-router-dom'
@@ -17,7 +16,7 @@ type Props = RouteComponentProps<any> & ReturnType<typeof mapStateToProps>
 
 const AccountPagePresentation: React.SFC<Props> = ({ match, isLoggedIn }) =>
   !isLoggedIn ? (
-    <Redirect to={RootRoutes.create} />
+    <Redirect to="/" />
   ) : (
     <div className="vertical-spaced">
       <div>

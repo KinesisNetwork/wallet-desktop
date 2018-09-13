@@ -1,6 +1,7 @@
 import { AccountPage } from '@components/AccountPage'
 import { ConnectionSettings } from '@components/ConnectionSettings'
 import { Payee } from '@components/Payee'
+import { WelcomeScreen } from '@containers//WelcomeScreen'
 import { WalletCreationScreens } from '@containers/WalletCreation'
 import { RootState } from '@store'
 import { RootRoutes } from '@types'
@@ -13,15 +14,21 @@ const mapStateToProps = (state: RootState) => ({
 })
 
 type Props = RouteComponentProps<any> & ReturnType<typeof mapStateToProps>
-const RoutingPresentation: React.SFC<Props> = _ => (
-  <Switch>
-    <Route path={RootRoutes.dashboard} component={AccountPage} />
-    <Route path={RootRoutes.addressBook} component={Payee} />
-    <Route path={RootRoutes.settings} component={ConnectionSettings} />
-    <Route path={RootRoutes.create} component={WalletCreationScreens} />
-    <Redirect exact={true} path="/" to={RootRoutes.create} />
-  </Switch>
-)
+const RoutingPresentation: React.SFC<Props> = props =>
+  props.isLoggedIn ? (
+    <Switch>
+      <Route path={RootRoutes.dashboard} component={AccountPage} />
+      <Route path={RootRoutes.addressBook} component={Payee} />
+      <Route path={RootRoutes.settings} component={ConnectionSettings} />
+      <Redirect to={RootRoutes.dashboard} />
+    </Switch>
+  ) : (
+    <Switch>
+      <Route exact={true} path="/" component={WelcomeScreen} />
+      <Route path={RootRoutes.create} component={WalletCreationScreens} />
+      <Redirect to="/" />
+    </Switch>
+  )
 
 const Routing = withRouter(connect(mapStateToProps)(RoutingPresentation))
 

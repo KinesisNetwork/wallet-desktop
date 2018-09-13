@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { startWalletCreation, updateFormField } from '@actions'
 import { InputField } from '@components/InputField'
 import { RootState } from '@store'
+import { Link } from 'react-router-dom'
 
 const isValidWalletName = (name: string) => name.length > 0 && name.length <= 50
 const isValidPassword = (password: string) => password.length >= 12 && password.length <= 30
@@ -75,9 +76,9 @@ const NameWalletFormPresentation: React.SFC<NameWalletProps> = props => (
     />
     <div className="field is-grouped is-grouped-right">
       <div className="control">
-        <button type="button" className="button is-text">
+        <Link to="/" type="button" className="button is-text">
           Cancel
-        </button>
+        </Link>
       </div>
       <div className="control">
         <button

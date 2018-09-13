@@ -8,6 +8,7 @@ export const createPassphrase = buildAction('CREATE_PASSPHRASE').payload<{ passp
 interface InitialiseWallet {
   encryptedPassphrase: string
   createdAccount: PersistedAccount
+  walletName: string
 }
 export const initialiseWallet = buildAction('INITIALISE_WALLET').payload<InitialiseWallet>()
 
