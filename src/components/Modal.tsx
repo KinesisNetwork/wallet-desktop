@@ -1,15 +1,19 @@
-import { closeModal } from '@actions'
+import { closeModal, completeOnBoarding } from '@actions'
 import { RootState } from '@store';
 import * as React from 'react'
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state: RootState) => ({
-  isModalActive: state.modals.modalDisplay
+  isModalActive: state.modals.modalDisplay,
+  hasOnBoarded: state.modals.onBoarding
 })
 
 const mapDispatchToProps = (dispatch) => ({
   closeModal: () => (
     dispatch(closeModal())
+  ),
+  completeOnBoarding: () => (
+    dispatch(completeOnBoarding())
   )
 })
 
@@ -23,11 +27,12 @@ if (process.env.IS_WEB) {
 export class ModalPresentation extends React.Component<Props> {
   closeModal = () => {
     this.props.closeModal()
+    this.props.completeOnBoarding()
   }
 
   render() {
     return (
-      <main className={`modal ${this.props.isModalActive ? 'is-active' : ''}`}>
+      <main className={`modal ${this.props.isModalActive && !this.props.hasOnBoarded ? 'is-active' : ''}`}>
         <div className="modal-background" />
         <section className="modal-content has-background-grey-dark section" style={{ width: '60rem' }}>
           <h1
