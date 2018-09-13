@@ -1,12 +1,10 @@
 import * as React from 'react'
 
 import { CurrencySelector } from '@containers/CurrencySelector'
-import { Transactions } from '@containers/Transactions'
-// import { Transfer } from '@containers/Transfer'
-// import { WalletInfo } from '@containers/WalletInfo'
 
 import * as logo from '@icons/kau-icon.svg'
 import { RootRoutes } from '@types'
+import * as sleeping from 'images/wally-sleeping.svg'
 import { NavLink } from 'react-router-dom'
 
 export const AccountDashboard: React.SFC = () => (
@@ -37,7 +35,27 @@ export const AccountDashboard: React.SFC = () => (
           </div>
         </div>
       </section>
-      <Transactions />
+      <section className="section">
+        <h1 className="subtitle">Transactions</h1>
+        <hr />
+        <div className="level">
+          <div className="level-item">
+            <img src={sleeping} style={{ height: '200px' }} />
+          </div>
+          <div className="level-item">
+            <div>
+              <h2 className="subtitle">There's nothing here...</h2>
+              <h2 className="subtitle">
+                Once KAU transactions have been made, we'll show the history here!
+              </h2>
+              <h2 className="subtitle">Need to buy Kinesis?</h2>
+              <div>
+                <a>Visit the exchange</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </React.Fragment>
 )
