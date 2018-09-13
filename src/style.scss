@@ -6,6 +6,7 @@
 @import 'node_modules/bulma-divider/dist/bulma-divider.sass';
 
 @import "src/_overrides.scss";
+@import 'src/_utilities';
 @font-face {
   font-family: 'Fira Mono';
   src: url("./fonts/FiraMono-Regular.ttf") format('truetype');

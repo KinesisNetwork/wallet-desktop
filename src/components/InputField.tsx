@@ -7,10 +7,12 @@ export interface Props {
   icon?: string
   helpText?: string
   errorText?: string
+  type?: 'password' | 'text' | 'number'
+  hasButton?: boolean
   onChangeHandler: (newValue: string) => any
 }
 
-export const InputField: React.SFC<Props & React.InputHTMLAttributes<HTMLInputElement>> = ({
+const InputField: React.SFC<Props & React.InputHTMLAttributes<HTMLInputElement>> = ({
   value,
   label,
   onChangeHandler,
@@ -18,9 +20,10 @@ export const InputField: React.SFC<Props & React.InputHTMLAttributes<HTMLInputEl
   helpText,
   icon,
   errorText,
+  hasButton,
   ...inputProps
 }) => (
-  <div className="field">
+  <div className={`field ${hasButton ? 'control is-expanded' : ''}`}>
     {label && <label className="label is-small">{label}</label>}
     <div className={`control ${icon && 'has-icons-left'}`}>
       <input
@@ -35,9 +38,9 @@ export const InputField: React.SFC<Props & React.InputHTMLAttributes<HTMLInputEl
           <i className={`fal fa-lg ${icon}`} />
         </span>
       )}
+      <p className={`help ${errorText ? 'is-danger' : ''}`}>{errorText || helpText}</p>
     </div>
-    <p className={`help ${errorText ? 'is-danger' : ''}`}>{errorText || helpText}</p>
   </div>
 )
 
-InputField.displayName = 'InputField'
+export { InputField }

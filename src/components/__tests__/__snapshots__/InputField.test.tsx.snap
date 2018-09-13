@@ -2,7 +2,7 @@
 
 exports[`InputField should render correctly 1`] = `
 <div
-  className="field"
+  className="field "
 >
   <div
     className="control undefined"
