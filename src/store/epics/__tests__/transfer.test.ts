@@ -1,8 +1,4 @@
-import { Transaction } from 'js-kinesis-sdk'
-import { ActionsObservable, StateObservable } from 'redux-observable'
-import { of } from 'rxjs/observable/of'
-import { toArray } from 'rxjs/operators'
-import { getType } from 'typesafe-actions'
+import { Keypair, Transaction } from 'js-kinesis-sdk'
 
 import {
   accountLoadRequest,
@@ -11,7 +7,6 @@ import {
   transactionSuccess,
   transferRequest,
 } from '@actions'
-import { RootState } from '@store'
 import { Connection, ConnectionStage, Currency } from '@types'
 import { DeepPartial } from 'redux'
 import { ConnectionsState } from '../../reducers'
@@ -21,7 +16,7 @@ import {
   transactionSuccess$,
   transferRequest$,
 } from '../transfer'
-import { epicTest, mockServices } from './helpers'
+import { epicTest } from './helpers'
 
 describe('Transfer epic', () => {
   const connection: Connection = {
@@ -66,62 +61,58 @@ describe('Transfer epic', () => {
   }
 
   describe('transferRequest$', () => {
-    const action$ = ActionsObservable.from([transferRequest(transferPayload)])
-    const store$: StateObservable<RootState> = of(store) as any
-
-    const getActiveKeys = jest.fn(() => ({ privateKey }))
     const getCurrentConnection = jest.fn(() => connection)
 
-    it('success', done => {
-      const expectedOutputActions = [
-        { type: getType(transactionRequest), payload: transferPayload },
-      ]
-
+    it('success', async () => {
+      const keypair = Keypair.random()
       const createKinesisTransfer = jest.fn(() => Promise.resolve(transferPayload))
-
-      transferRequest$(
-        action$,
-        store$,
-        mockServices({ createKinesisTransfer, getActiveKeys, getCurrentConnection }),
+      await epicTest({
+        epic: transferRequest$,
+        inputActions: [transferRequest(transferPayload)],
+        state: {
+          connections,
+          wallet: {
+            accounts: [{ keypair }],
+            persisted: {
+              activeAccount: 0,
+            },
+          },
+        },
+        dependencies: { createKinesisTransfer, getCurrentConnection },
+      })
+      expect(getCurrentConnection).toHaveBeenCalledWith(store.connections)
+      expect(createKinesisTransfer).toHaveBeenCalledWith(
+        keypair.secret(),
+        connection,
+        transferPayload,
       )
-        .pipe(toArray())
-        .subscribe(actions => {
-          expect(actions).toEqual(expectedOutputActions)
-          expect(getActiveKeys).toHaveBeenCalledWith(store)
-          expect(getCurrentConnection).toHaveBeenCalledWith(store.connections)
-          expect(createKinesisTransfer).toHaveBeenCalledWith(
-            privateKey,
-            connection,
-            transferPayload,
-          )
-          done()
-        })
     })
 
-    it('failure', done => {
-      const error = 'error'
-
-      const expectedOutputActions = [{ type: getType(transactionFailed), payload: error }]
-
+    it('failure', async () => {
+      const keypair = Keypair.random()
+      const error = new Error()
       const createKinesisTransfer = jest.fn(() => Promise.reject(error))
-
-      transferRequest$(
-        action$,
-        store$,
-        mockServices({ createKinesisTransfer, getActiveKeys, getCurrentConnection }),
+      await epicTest({
+        epic: transferRequest$,
+        inputActions: [transferRequest(transferPayload)],
+        expectedActions: [transactionFailed(error)],
+        dependencies: { createKinesisTransfer, getCurrentConnection },
+        state: {
+          connections,
+          wallet: {
+            accounts: [{ keypair }],
+            persisted: {
+              activeAccount: 0,
+            },
+          },
+        },
+      })
+      expect(getCurrentConnection).toHaveBeenCalledWith(store.connections)
+      expect(createKinesisTransfer).toHaveBeenCalledWith(
+        keypair.secret(),
+        connection,
+        transferPayload,
       )
-        .pipe(toArray())
-        .subscribe(actions => {
-          expect(actions).toEqual(expectedOutputActions)
-          expect(getActiveKeys).toHaveBeenCalledWith(store)
-          expect(getCurrentConnection).toHaveBeenCalledWith(store.connections)
-          expect(createKinesisTransfer).toHaveBeenCalledWith(
-            privateKey,
-            connection,
-            transferPayload,
-          )
-          done()
-        })
     })
   })
 
@@ -159,23 +150,26 @@ describe('Transfer epic', () => {
   })
 
   describe('transactionSuccess$', () => {
-    const store$ = <StateObservable<RootState>>(<any>of(store))
-    const action$ = ActionsObservable.from([transactionSuccess()])
-
-    it('success', done => {
-      const expectedOutputActions = [{ type: getType(accountLoadRequest), payload: publicKey }]
-
+    it('success', async () => {
       const generalSuccessAlert = jest.fn(() => Promise.resolve())
-      const getActiveKeys = jest.fn(() => ({ publicKey }))
+      const keypair = Keypair.random()
 
-      transactionSuccess$(action$, store$, mockServices({ generalSuccessAlert, getActiveKeys }))
-        .pipe(toArray())
-        .subscribe(actions => {
-          expect(actions).toEqual(expectedOutputActions)
-          expect(generalSuccessAlert).toHaveBeenCalledWith('The transfer was successful.')
-          expect(getActiveKeys).toHaveBeenCalledWith(store)
-          done()
-        })
+      await epicTest({
+        epic: transactionSuccess$,
+        inputActions: [transactionSuccess()],
+        state: {
+          wallet: {
+            accounts: [{ keypair }],
+            persisted: {
+              activeAccount: 0,
+            },
+          },
+        },
+        dependencies: { generalSuccessAlert },
+        expectedActions: [accountLoadRequest(keypair.publicKey())],
+      })
+
+      expect(generalSuccessAlert).toHaveBeenCalledWith('The transfer was successful.')
     })
   })
 
@@ -183,27 +177,18 @@ describe('Transfer epic', () => {
     const errorMessage = 'errorMessage'
     const error = <Error>(<any>'error')
 
-    const action$ = ActionsObservable.from([transactionFailed(error)])
-
-    it('failure', done => {
-      const expectedOutputActions = []
-      const state$ = <StateObservable<RootState>>(<any>of({}))
-
+    it('failure', async () => {
       const getTransactionErrorMessage = jest.fn(() => errorMessage)
       const generalFailureAlert = jest.fn(() => Promise.resolve())
 
-      transactionFailed$(
-        action$,
-        state$,
-        mockServices({ generalFailureAlert, getTransactionErrorMessage }),
-      )
-        .pipe(toArray())
-        .subscribe(actions => {
-          expect(actions).toEqual(expectedOutputActions)
-          expect(getTransactionErrorMessage).toHaveBeenCalledWith(error)
-          expect(generalFailureAlert).toHaveBeenCalledWith(errorMessage)
-          done()
-        })
+      await epicTest({
+        epic: transactionFailed$,
+        inputActions: [transactionFailed(error)],
+        dependencies: { generalFailureAlert, getTransactionErrorMessage },
+      })
+
+      expect(getTransactionErrorMessage).toHaveBeenCalledWith(error)
+      expect(generalFailureAlert).toHaveBeenCalledWith(errorMessage)
     })
   })
 })

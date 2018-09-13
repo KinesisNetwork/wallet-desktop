@@ -25,9 +25,9 @@ exports[`TransferForm renders correctly 1`] = `
       targetPayee="asdf"
     />
     <InputField
+      disabled={false}
       icon="fa-address-card"
       id="transfer-target-address"
-      isDisabled={false}
       onChangeHandler={[Function]}
       placeholder="Or input target address"
       value="asdf"

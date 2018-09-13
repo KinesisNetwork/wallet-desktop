@@ -9,18 +9,17 @@ import {
   updateVerifyForm,
 } from '@actions'
 import { Sign as SignPresentation } from '@components/Sign'
-import { getActiveKeys } from '@selectors'
+import { getActiveAccount } from '@selectors'
 import { Dispatch, RootState } from '@store'
 import { FormAlert, RawMessage, SignBehaviour, SignedMessage } from '@types'
 
 const mapStateToProps = (state: RootState) => {
   const { sign } = state
-  const activeKeys = getActiveKeys(state)
-  const isWalletUnlocked = !!activeKeys.privateKey
-  const decryptedPrivateKey = activeKeys.privateKey
+  const { keypair } = getActiveAccount(state.wallet)
+  const decryptedPrivateKey = keypair.secret()
   return {
     decryptedPrivateKey,
-    isWalletUnlocked,
+    isWalletUnlocked: true,
     focus: sign.focus,
     signature: sign.signature,
     isValidSignature: sign.isValidSignature,

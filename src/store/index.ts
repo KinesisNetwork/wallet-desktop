@@ -20,7 +20,7 @@ export function configureStore(history: History) {
 
   const storage = createStorage()
   const persistedReducer = persistReducer(
-    { key: 'root', storage, whitelist: ['wallets', 'payees', 'connections'] },
+    { key: 'root', storage, whitelist: ['payees', 'connections'] },
     connectRouter(history)(rootReducer),
   )
 

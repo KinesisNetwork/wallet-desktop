@@ -1,8 +1,13 @@
 @import "src/_variables.scss";
+
 @import "node_modules/bulma/bulma.sass";
-@import "src/_overrides.scss";
+@import "node_modules/bulma-checkradio/dist/css/bulma-checkradio.sass";
+@import "node_modules/bulma-steps/dist/css/bulma-steps.sass";
 @import 'node_modules/bulma-divider/dist/bulma-divider.sass';
 @import 'node_modules/bulma-modal-fx/dist/css/modal-fx.min';
+
+@import "src/_overrides.scss";
+@import 'src/_utilities';
 @font-face {
   font-family: 'Fira Mono';
   src: url("./fonts/FiraMono-Regular.ttf") format('truetype');
@@ -20,7 +25,7 @@
   display: none;
 }
 
-a, button, select {
+a, button, select, input, label {
   &::-moz-focus-inner {
     border: 0;
     outline: 0

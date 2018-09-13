@@ -1,0 +1,1 @@
+export const WALLET_CREATE_FORM_NAME = 'WALLET_CREATE'

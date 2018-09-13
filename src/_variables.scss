@@ -2,8 +2,7 @@
 // Initial Variables
 ////////////////////////////////////////////////
 $grey-darker:  #1f2d3b;
-$grey-dark:    #2B3E50;
-$grey:         #4E5D6C;
+$grey-dark:    #2B3E50; $grey:         #4E5D6C;
 $grey-light:   #8694a4;
 $grey-lighter: #dee5ed;
 $black:        #1a2531;
@@ -18,9 +17,10 @@ $primary: #ffc800;
 $info: #2574a9;
 $success: #03a678;
 $warning: #ff794e;
-$error: #ff6361;
+$danger: #ff6361;
 $link: #446cb3;
 
+$primary-invert: $grey-dark;
 // Derived Variables
 
 $background: $grey-dark;
@@ -85,7 +85,7 @@ $subtitle-strong-color: darken($grey-lighter, 10);
 
 $border: $grey;
 
-$family-sans-serif: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$family-sans-serif: "Roboto", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
 $label-color: $grey-light;
 
@@ -99,3 +99,10 @@ $panel-block-hover-background-color: lighten($background, 5);
 
 $tabs-link-active-border-bottom-color: $primary;
 $tabs-link-active-color: $primary;
+
+$steps-marker-default-border: 0 solid;
+$steps-default-color: $grey-dark;
+$steps-maker-default-color: $grey;
+
+// MESSAGE
+$message-header-background-color: $background;

@@ -14,7 +14,7 @@ export const initalLoad$: RootEpic = (action$, state$) => {
   )
 
   const loadAccount$ = rehydrate$.pipe(
-    filter(({ router }) => router.location.pathname.startsWith(RootRoutes.dashboard)),
+    filter(({ router }) => router.location.pathname.startsWith(RootRoutes.dashboard + 'bad')),
     map(({ wallets: { activeWallet } }) => accountLoadRequest(activeWallet!.publicKey)),
   )
 

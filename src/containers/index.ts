@@ -1,8 +1,6 @@
 export { WalletList } from './WalletList'
 export { SidebarSettings } from './SidebarSettings'
-export { CreateWallet } from './CreateWallet'
 export { WalletInfo } from './WalletInfo'
-export { Password } from './Password'
 export { PayeeList } from './PayeeList'
 export { PayeeForm } from './PayeeForm'
 export { DeleteWallet } from './DeleteWallet'
