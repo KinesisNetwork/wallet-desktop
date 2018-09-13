@@ -32,7 +32,7 @@ export class ModalPresentation extends React.Component<Props> {
 
   render() {
     return (
-      <main className={`modal ${this.props.isModalActive && !this.props.hasOnBoarded ? 'is-active' : ''}`}>
+      <main className={`modal modal-fx-slideTop ${this.props.isModalActive && !this.props.hasOnBoarded ? 'is-active' : ''}`}>
         <div className="modal-background" />
         <section className="modal-content has-background-grey-dark section" style={{ width: '60rem' }}>
           <h1
