@@ -61,7 +61,7 @@ class HasAccountPresentation extends React.Component<Props> {
               id="password"
               value={this.props.currentPasswordInput}
               type="password"
-              icon="fa-key"
+              icon="fa-lock-alt"
               button={
                 <div className="control">
                   <button className="button is-primary" type="submit">
