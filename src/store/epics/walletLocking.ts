@@ -13,8 +13,8 @@ import {
   unlockWalletFailure,
   unlockWalletRequest,
 } from '@actions'
+import { getActiveAccount } from '@selectors'
 import { RootEpic } from '@store'
-import { getActivePublicKey } from '../selectors'
 
 // export const deleteWallet$: RootEpic = action$ => {
 //   const deleteWalletAction$ = action$.pipe(filter(isActionOf(deleteWalletAction)))
@@ -40,7 +40,7 @@ export const changeWallet: RootEpic = (action$, state$) => {
 
   const loadAccount$ = switchWallet$.pipe(
     withLatestFrom(state$),
-    map(([_, state]) => accountLoadRequest(getActivePublicKey(state))),
+    map(([_, state]) => accountLoadRequest(getActiveAccount(state.wallet).keypair.publicKey())),
   )
 
   const clearSignFields$ = switchWallet$.pipe(map(clearSignForms))

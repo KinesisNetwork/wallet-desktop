@@ -13,7 +13,7 @@ import { ValidatePassphrase } from './ValidatePassphrase'
 
 const mapStateToProps = (state: RootState) => ({
   hasStartedForms: !!state.createWallet.passphrase,
-  isLoggedIn: getLoginState(state),
+  isLoggedIn: getLoginState(state.wallet),
 })
 
 type Props = RouteComponentProps<any> & ReturnType<typeof mapStateToProps>

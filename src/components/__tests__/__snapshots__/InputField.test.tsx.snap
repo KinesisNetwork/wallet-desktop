@@ -5,7 +5,7 @@ exports[`InputField should render correctly 1`] = `
   className="field "
 >
   <div
-    className="control undefined"
+    className="control  "
   >
     <input
       className="input "
@@ -13,9 +13,9 @@ exports[`InputField should render correctly 1`] = `
       onChange={[Function]}
       value=""
     />
+    <p
+      className="help "
+    />
   </div>
-  <p
-    className="help "
-  />
 </div>
 `;

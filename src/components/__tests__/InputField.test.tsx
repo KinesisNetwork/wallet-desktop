@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { shallow } from 'enzyme'
 import * as React from 'react'
 
 import { InputField } from '@components/InputField'
@@ -7,11 +7,7 @@ import '../../setupTests'
 describe('InputField', () => {
   it('should render correctly', () => {
     const wrapper = shallow(
-      <InputField
-        id='connection-name'
-        value=''
-        onChangeHandler={() => null}
-      />
+      <InputField id="connection-name" value="" onChangeHandler={() => null} />,
     )
 
     expect(wrapper).toMatchSnapshot()
@@ -20,14 +16,14 @@ describe('InputField', () => {
   it('should display a label if defined in props', () => {
     const wrapper = shallow(
       <InputField
-        id='connection-name'
-        value=''
-        label='Connection Name'
+        id="connection-name"
+        value=""
+        label="Connection Name"
         onChangeHandler={() => null}
-      />
+      />,
     )
 
-    expect(wrapper.children()).toHaveLength(3)
+    expect(wrapper.children()).toHaveLength(2)
     expect(wrapper.find('label')).toHaveLength(1)
     expect(wrapper.find('label').text()).toEqual('Connection Name')
   })
@@ -35,12 +31,12 @@ describe('InputField', () => {
   it('displays input element with the optional props', () => {
     const wrapper = shallow(
       <InputField
-        id='connection-name'
-        value=''
+        id="connection-name"
+        value=""
         onChangeHandler={() => null}
-        type='text'
-        placeholder='Enter something'
-      />
+        type="text"
+        placeholder="Enter something"
+      />,
     )
 
     const input = wrapper.find('input')
@@ -51,12 +47,7 @@ describe('InputField', () => {
 
   it('renders an icon if defined in props', () => {
     const wrapper = shallow(
-      <InputField
-        id='connection-name'
-        value=''
-        onChangeHandler={() => null}
-        icon='fa-plug'
-      />
+      <InputField id="connection-name" value="" onChangeHandler={() => null} icon="fa-plug" />,
     )
 
     const icon = wrapper.find('i')
@@ -67,12 +58,7 @@ describe('InputField', () => {
 
   it('renders a paragraph with help text if it is defined in props', () => {
     const wrapper = shallow(
-      <InputField
-        id='connection-name'
-        value=''
-        onChangeHandler={() => null}
-        helpText='Help'
-      />
+      <InputField id="connection-name" value="" onChangeHandler={() => null} helpText="Help" />,
     )
 
     const helpText = wrapper.find('.help')
@@ -84,11 +70,11 @@ describe('InputField', () => {
     const onChangeHandlerMock = jest.fn()
     const wrapper = shallow(
       <InputField
-        id='connection-name'
-        value=''
+        id="connection-name"
+        value=""
         onChangeHandler={onChangeHandlerMock}
-        helpText='Help'
-      />
+        helpText="Help"
+      />,
     )
 
     const input = wrapper.find('input')

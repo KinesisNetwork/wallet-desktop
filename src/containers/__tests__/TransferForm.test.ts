@@ -24,9 +24,6 @@ describe('TransferForm', () => {
       },
       passwords: {
         currentInput: 'password-input',
-        livePasswords: {
-          'wallet-public-key': { privateKey: 'private-key' },
-        },
       },
       connections,
       payees: {

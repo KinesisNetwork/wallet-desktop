@@ -16,14 +16,13 @@ import * as epics from './epics'
 import { withPolling } from './epics/utils'
 import { RootAction } from './root-action'
 import { RootState } from './root-reducer'
-import { getActiveKeys, getCurrentConnection } from './selectors'
+import { getCurrentConnection } from './selectors'
 
 export const epicDependencies = {
   createKinesisTransfer,
   formAlert,
   generalFailureAlert,
   generalSuccessAlert,
-  getActiveKeys,
   getCurrentConnection,
   getTransactionErrorMessage,
   getTransactions,

@@ -40,7 +40,7 @@ const InputField: React.SFC<Props & React.InputHTMLAttributes<HTMLInputElement>>
       )}
       <p className={`help ${errorText ? 'is-danger' : ''}`}>{errorText || helpText}</p>
     </div>
-    {button}
+    {button ? button : null}
   </div>
 )
 

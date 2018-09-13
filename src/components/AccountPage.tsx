@@ -9,7 +9,7 @@ import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-
 import { NavLink } from 'react-router-dom'
 
 const mapStateToProps = (state: RootState) => ({
-  isLoggedIn: getLoginState(state),
+  isLoggedIn: getLoginState(state.wallet),
 })
 
 type Props = RouteComponentProps<any> & ReturnType<typeof mapStateToProps>

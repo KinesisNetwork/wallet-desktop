@@ -9,7 +9,7 @@ import { Payee } from '@types'
 
 export const mapStateToProps = (state: RootState) => {
   const { wallets, connections, transfer, accounts, payees } = state
-  const { keypair } = getActiveAccount(state)
+  const { keypair } = getActiveAccount(state.wallet)
   const { privateKey, publicKey } = {
     publicKey: keypair.publicKey(),
     privateKey: keypair.secret(),

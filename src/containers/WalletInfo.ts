@@ -5,7 +5,7 @@ import { getActiveAccount } from '@selectors'
 import { RootState } from '@store'
 
 const mapStateToProps = (state: RootState) => {
-  const activeAccount = getActiveAccount(state)
+  const activeAccount = getActiveAccount(state.wallet)
   return {
     accountName: activeAccount.name,
     publicKey: activeAccount.keypair.publicKey(),
