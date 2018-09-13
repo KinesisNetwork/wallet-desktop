@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 
 import { RouterState } from 'connected-react-router'
 import * as reducers from './reducers'
+
 import { GetAction, RootAction } from './root-action'
 
 export type CreateReducerMap = {

@@ -1,5 +1,5 @@
 import { focus } from '@helpers/focus'
-import { decryptPrivateKey } from '@services/encryption'
+import { decryptWithPassword } from '@services/encryption'
 import { Wallet } from '@types'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
@@ -17,7 +17,7 @@ export class PasswordInput extends React.Component<{ activeWallet: Wallet }, { p
     }
   }
 
-  changeText = (e) => {
+  changeText = e => {
     const text = e.target.value
     this.setState({ password: text })
     const decryptedPrivateKeyOrEmpty = this.decryptKey(text)
@@ -30,27 +30,30 @@ export class PasswordInput extends React.Component<{ activeWallet: Wallet }, { p
   }
 
   decryptKey = (passwordInput: string) => {
-    return decryptPrivateKey(this.props.activeWallet.encryptedPrivateKey, passwordInput)
+    return decryptWithPassword(this.props.activeWallet.encryptedPrivateKey, passwordInput)
   }
 
   render() {
     setTimeout(() => focus('popup-password-confirmation'))
     return (
       <input
-        id='popup-password-confirmation'
-        type='password'
-        className='input is-large has-text-centered'
+        id="popup-password-confirmation"
+        type="password"
+        className="input is-large has-text-centered"
         value={this.state.password}
-        onChange={(ev) => this.changeText(ev)}
+        onChange={ev => this.changeText(ev)}
       />
     )
   }
 }
 
-export const getPasswordConfirmation = async (activeWallet: Wallet, mode = 'danger'): Promise<{ value: string }> => {
+export const getPasswordConfirmation = async (
+  activeWallet: Wallet,
+  mode = 'danger',
+): Promise<{ value: string }> => {
   const wrapper = document.createElement('div')
   ReactDOM.render(<PasswordInput activeWallet={activeWallet} />, wrapper)
-  const element = (wrapper.firstChild as Node)
+  const element = wrapper.firstChild as Node
 
   const typeOfPopup = mode === 'danger' ? { icon: 'warning', dangerMode: true } : { icon: mode }
   return await sweetAlert({

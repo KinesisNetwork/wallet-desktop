@@ -3,29 +3,37 @@ import { combineEpics, Epic } from 'redux-observable'
 
 import { formAlert, generalFailureAlert, generalSuccessAlert } from '@helpers/alert'
 import { loadAccount } from '@services/accounts'
-import { decryptPrivateKey } from '@services/encryption'
+import { decryptWithPassword, encryptWithPassword } from '@services/encryption'
 import { getTransactionErrorMessage, getTransactions } from '@services/kinesis'
 import { createKinesisTransfer, submitSignedTransaction } from '@services/transfer'
 
+import {
+  generateMnemonic,
+  getKeypairFromMnemonic,
+  getKeypairFromSecret,
+} from '@services/passphrase'
 import * as epics from './epics'
 import { withPolling } from './epics/utils'
 import { RootAction } from './root-action'
 import { RootState } from './root-reducer'
-import { getActiveKeys, getCurrentConnection } from './selectors'
+import { getCurrentConnection } from './selectors'
 
 export const epicDependencies = {
   createKinesisTransfer,
   formAlert,
   generalFailureAlert,
   generalSuccessAlert,
-  getActiveKeys,
   getCurrentConnection,
   getTransactionErrorMessage,
   getTransactions,
   loadAccount,
   submitSignedTransaction,
   withPolling,
-  decryptPrivateKey,
+  decryptWithPassword,
+  generateMnemonic,
+  getKeypairFromMnemonic,
+  getKeypairFromSecret,
+  encryptWithPassword,
 }
 
 export type EpicDependencies = typeof epicDependencies

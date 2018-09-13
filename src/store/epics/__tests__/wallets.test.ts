@@ -1,73 +1,31 @@
-import {
-  tooManyFailedAttempts,
-  unlockWalletFailure,
-  unlockWalletFailureAlert,
-  unlockWalletRequest,
-  unlockWalletSuccess
-} from '@actions'
-import {
-  tooManyFailedAttempts$,
-  unlockWallet$,
-  unlockWalletFailureAlert$,
-  walletLockFailure$
-} from '../wallets'
+import { login, tooManyFailedAttempts, unlockWalletFailure, unlockWalletRequest } from '@actions'
+import { unlockWallet$, walletLockFailure$ } from '../walletLocking'
 
 import { epicTest } from './helpers'
 
-describe('wallets epic', () => {
-  describe('unlock failure', () => {
-    it('throws failure alert on failure', async () => {
-      const generalFailureAlert = jest.fn(() => Promise.resolve())
-
-      await epicTest({
-        epic: unlockWalletFailureAlert$,
-        inputActions: [unlockWalletFailureAlert()],
-        expectedActions: [],
-        dependencies: { generalFailureAlert },
-      })
-
-      expect(generalFailureAlert).toHaveBeenCalled()
-    })
-
-    it('throws a failure alert on too many failed attempts', async () => {
-      const generalFailureAlert = jest.fn(() => Promise.resolve())
-
-      await epicTest({
-        epic: tooManyFailedAttempts$,
-        inputActions: [tooManyFailedAttempts(new Date())],
-        expectedActions: [],
-        dependencies: { generalFailureAlert },
-      })
-
-      expect(generalFailureAlert).toHaveBeenCalled()
-    })
-  })
-})
-
 describe('unlock wallet request', () => {
   const now = new Date()
-
   it('sends success action', async () => {
     const decryptedPrivateKey = 'success'
-    const publicKey = 'publicKey'
     const password = 'password'
 
-    const decryptPrivateKey = jest.fn(() => decryptedPrivateKey)
+    const decryptWithPassword = jest.fn(() => decryptedPrivateKey)
 
     await epicTest({
       epic: unlockWallet$,
       inputActions: [unlockWalletRequest(now)],
-      expectedActions: [unlockWalletSuccess({ password, publicKey, decryptedPrivateKey })],
-      dependencies: { decryptPrivateKey },
-      state: <any>{
+      expectedActions: [login({ password })],
+      dependencies: { decryptWithPassword },
+      state: {
         wallets: {
-          activeWallet: {
-            encryptedPrivateKey: 'jumble',
-            publicKey,
-            accountName: ''
-          },
           failureAttemptTimestamps: [],
-          setAccountLocked: {}
+          setAccountLocked: {},
+        },
+        wallet: {
+          persisted: {
+            activeAccount: 0,
+            encryptedPassphrase: 'jumble',
+          },
         },
         passwords: {
           currentInput: password,
@@ -75,33 +33,35 @@ describe('unlock wallet request', () => {
       },
     })
 
-    expect(decryptPrivateKey).toHaveBeenCalled()
-    expect(decryptPrivateKey).toHaveBeenCalledWith('jumble', password)
+    expect(decryptWithPassword).toHaveBeenCalled()
+    expect(decryptWithPassword).toHaveBeenCalledWith('jumble', password)
   })
 
   it('sends failure action', async () => {
-    const decryptPrivateKey = jest.fn(() => '')
+    const decryptWithPassword = jest.fn(() => '')
 
     await epicTest({
       epic: unlockWallet$,
       inputActions: [unlockWalletRequest(now)],
-      dependencies: { decryptPrivateKey },
+      dependencies: { decryptWithPassword },
       expectedActions: [unlockWalletFailure({ now, maxAttempts: 10 })],
-      state: <any>{
+      state: {
         wallets: {
-          activeWallet: {
-            encryptedPrivateKey: 'jumble',
-          },
           failureAttemptTimestamps: [],
-          setAccountLocked: {}
+          setAccountLocked: {},
         },
         passwords: {
           currentInput: 'password',
         },
+        wallet: {
+          persisted: {
+            encryptedPassphrase: 'jumble',
+          },
+        },
       },
     })
 
-    expect(decryptPrivateKey).toHaveBeenCalledWith('jumble', 'password')
+    expect(decryptWithPassword).toHaveBeenCalledWith('jumble', 'password')
   })
 
   it('sends TOO_MANY_FAILED_ATTEMPTS action if within the lock time', async () => {
@@ -111,14 +71,19 @@ describe('unlock wallet request', () => {
       dependencies: {},
       expectedActions: [tooManyFailedAttempts(now)],
       state: {
-        wallets: <any>{
+        wallets: {
           activeWallet: {
             encryptedPrivateKey: 'jumble',
           },
           failureAttemptTimestamps: [],
           setAccountLocked: {
-            unlockTimestamp: now.valueOf() + 150000
-          }
+            unlockTimestamp: now.valueOf() + 150000,
+          },
+        },
+        wallet: {
+          persisted: {
+            encryptedPassphrase: 'jumble',
+          },
         },
         passwords: {
           currentInput: 'password',
@@ -142,22 +107,6 @@ describe('walletLockFailure$', () => {
       state: {
         wallets: {
           failureAttemptTimestamps: [1, 2, 3, 4, 5, now],
-        },
-      },
-    })
-  })
-
-  it('calls UNLOCK_WALLET_FAILURE_ALERT action when no more attempts have been made than allowed', async () => {
-    const maxAttempts = 5
-
-    await epicTest({
-      epic: walletLockFailure$,
-      inputActions: [unlockWalletFailure({ now, maxAttempts })],
-      dependencies: {},
-      expectedActions: [unlockWalletFailureAlert()],
-      state: {
-        wallets: {
-          failureAttemptTimestamps: [1, 2, 3, 4, now],
         },
       },
     })

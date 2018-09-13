@@ -5,14 +5,14 @@ import './style.scss'
 
 import { App } from './app'
 
-import { register } from 'tsconfig-paths/lib'
+import { register } from 'tsconfig-paths'
 
 // tslint:disable-next-line:no-var-requires no-require-imports
 const config = require('../tsconfig.json')
 
 register({
   baseUrl: config.compilerOptions.baseUrl,
-  paths: config.compilerOptions.paths
+  paths: config.compilerOptions.paths,
 })
 
 const renderApp = () => {
