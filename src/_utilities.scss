@@ -1,0 +1,25 @@
+$sizes: (
+  ('xxs', 0.25),
+  ('xs', 0.5),
+  ('sm-1', 0.75),
+  ('sm-2', 1,),
+  ('md-1', 1.5),
+  ('md-2', 2),
+  ('lg-1', 2.5),
+  ('lg-2', 3),
+  ('xl', 3.5)
+);
+$positions: ('top', 'right', 'bottom', 'left');
+
+@each $size in $sizes {
+  $sizeKey: nth($size, 1);
+  $sizeValue: nth($size, 2);
+  @each $position in $positions {
+    .u-margin-#{$position}-#{$sizeKey} {
+      margin-#{$position}: #{$sizeValue}rem !important;
+    }
+    .u-padding-#{$position}-#{$sizeKey} {
+      padding-#{$position}: #{$sizeValue}rem !important;
+    }
+  }
+}

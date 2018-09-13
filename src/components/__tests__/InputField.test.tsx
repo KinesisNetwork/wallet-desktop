@@ -65,7 +65,7 @@ describe('InputField', () => {
     expect(icon.hasClass('fa-plug')).toBe(true)
   })
 
-  it('renders a paragparh with help text if it is defined in props', () => {
+  it('renders a paragraph with help text if it is defined in props', () => {
     const wrapper = shallow(
       <InputField
         id='connection-name'

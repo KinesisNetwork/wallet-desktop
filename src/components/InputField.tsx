@@ -9,6 +9,8 @@ export interface Props {
   placeholder?: string
   type?: 'password' | 'text' | 'number'
   isDisabled?: boolean
+  hasButton?: boolean
+  isInvalidInput?: boolean
   onChangeHandler: (newValue: string) => any
 }
 
@@ -21,13 +23,15 @@ export const InputField: React.SFC<Props> = ({
   helpText,
   placeholder,
   icon,
+  hasButton,
   isDisabled,
+  isInvalidInput
 }) => (
-    <div className='field'>
+    <div className={`field ${hasButton ? 'control is-expanded' : ''}`}>
       {label && <label className='label is-small'>{label}</label>}
       <div className={`control ${icon ? 'has-icons-left' : ''}`}>
         <input
-          className='input'
+          className={`input ${isInvalidInput ? 'is-danger' : ''}`}
           id={`input-${id}`}
           onChange={(ev) => onChangeHandler(ev.target.value)}
           type={type}
