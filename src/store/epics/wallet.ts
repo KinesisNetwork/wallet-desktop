@@ -60,6 +60,8 @@ export const initialiseWallet$: RootEpic = (
   return merge(setupWallet$, loginToWallet$)
 }
 
+// This assumes that the password has already been validated
+// And that the there is a wallet unlock success
 export const login$: RootEpic = (action$, state$, { decryptWithPassword, getKeypairFromSecret }) =>
   action$.pipe(
     filter(isActionOf(login)),

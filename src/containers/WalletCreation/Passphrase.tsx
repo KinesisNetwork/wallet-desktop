@@ -47,6 +47,7 @@ const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
           readOnly={true}
           value={passphrase}
           style={{ resize: 'none' }}
+          disabled={true}
         />
         <p className="help">Your paper key is not case sensitive</p>
       </div>
