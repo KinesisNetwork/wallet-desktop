@@ -3,9 +3,11 @@ import { RootState } from '@store';
 import * as React from 'react'
 import { connect } from 'react-redux'
 
+import * as onboarding from 'onboarding_stickers_Artboard.svg'
+
 const mapStateToProps = (state: RootState) => ({
   isModalActive: state.modals.modalDisplay,
-  hasOnBoarded: state.modals.onBoarding
+  hasOnBoarded: state.settings.onBoarding
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -19,11 +21,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>
 
-let onboarding
-if (process.env.IS_WEB) {
-  onboarding = require('../onboarding_stickers_Artboard.svg')
-}
-
 export class ModalPresentation extends React.Component<Props> {
   closeModal = () => {
     this.props.closeModal()
@@ -32,9 +29,9 @@ export class ModalPresentation extends React.Component<Props> {
 
   render() {
     return (
-      <main className={`modal modal-fx-slideTop ${this.props.isModalActive && !this.props.hasOnBoarded ? 'is-active' : ''}`}>
+      <main className={`modal ${this.props.isModalActive && !this.props.hasOnBoarded ? 'is-active' : ''}`}>
         <div className="modal-background" />
-        <section className="modal-content has-background-grey-dark section" style={{ width: '60rem' }}>
+        <section className="modal-content has-background-grey-dark section" style={{ borderRadius: '5px', width: '60rem' }}>
           <h1
             className="is-size-3 has-text-weight-semibold has-text-grey-lighter has-text-centered"
             style={{ letterSpacing: '1px', marginBottom: '3rem' }}

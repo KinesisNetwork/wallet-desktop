@@ -1,23 +1,24 @@
 import * as React from 'react'
 
 import { AccountDashboard } from '@components/AccountDashboard'
+import { Modal } from '@containers/Modal'
 import { Sign } from '@containers/Sign'
 import { getLoginState } from '@selectors'
 import { RootState } from '@store'
 import { connect } from 'react-redux'
-import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router'
+import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
 import { NavLink } from 'react-router-dom'
 
 const mapStateToProps = (state: RootState) => ({
   isLoggedIn: getLoginState(state.wallet),
+  hasOnBoarded: state.modals.onBoarding
 })
 
 type Props = RouteComponentProps<any> & ReturnType<typeof mapStateToProps>
 
-const AccountPagePresentation: React.SFC<Props> = ({ match, isLoggedIn }) =>
-  !isLoggedIn ? (
-    <Redirect to="/" />
-  ) : (
+const AccountPagePresentation: React.SFC<Props> = ({ match, hasOnBoarded }) =>
+  <React.Fragment>
+    {!hasOnBoarded && <Modal />}
     <div className="vertical-spaced">
       <div>
         <div className="level">
@@ -49,7 +50,7 @@ const AccountPagePresentation: React.SFC<Props> = ({ match, isLoggedIn }) =>
         <Route path={`${match.path}/sign`} component={Sign} />
       </Switch>
     </div>
-  )
+  </React.Fragment>
 
 const AccountPage = withRouter(connect(mapStateToProps)(AccountPagePresentation))
 
