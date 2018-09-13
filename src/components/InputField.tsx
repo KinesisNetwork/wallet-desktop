@@ -8,7 +8,7 @@ export interface Props {
   helpText?: string
   errorText?: string
   type?: 'password' | 'text' | 'number'
-  hasButton?: boolean
+  button?: React.ReactElement<any>
   onChangeHandler: (newValue: string) => any
 }
 
@@ -20,12 +20,12 @@ const InputField: React.SFC<Props & React.InputHTMLAttributes<HTMLInputElement>>
   helpText,
   icon,
   errorText,
-  hasButton,
+  button,
   ...inputProps
 }) => (
-  <div className={`field ${hasButton ? 'control is-expanded' : ''}`}>
+  <div className={`field ${button ? 'is-grouped' : ''}`}>
     {label && <label className="label is-small">{label}</label>}
-    <div className={`control ${icon && 'has-icons-left'}`}>
+    <div className={`control ${icon ? 'has-icons-left' : ''} ${button ? 'is-expanded' : ''}`}>
       <input
         className={`input ${errorText ? 'is-danger' : ''}`}
         id={`input-${id}`}
@@ -40,6 +40,7 @@ const InputField: React.SFC<Props & React.InputHTMLAttributes<HTMLInputElement>>
       )}
       <p className={`help ${errorText ? 'is-danger' : ''}`}>{errorText || helpText}</p>
     </div>
+    {button}
   </div>
 )
 

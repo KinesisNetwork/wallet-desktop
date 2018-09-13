@@ -1,5 +1,5 @@
 import { merge } from 'rxjs'
-import { filter, ignoreElements, map, withLatestFrom } from 'rxjs/operators'
+import { filter, map, withLatestFrom } from 'rxjs/operators'
 
 import { isActionOf } from 'typesafe-actions'
 
@@ -11,7 +11,6 @@ import {
   selectWallet,
   tooManyFailedAttempts,
   unlockWalletFailure,
-  unlockWalletFailureAlert,
   unlockWalletRequest,
 } from '@actions'
 import { RootEpic } from '@store'
@@ -72,30 +71,14 @@ export const walletLockFailure$: RootEpic = (action$, state$) =>
   action$.pipe(
     filter(isActionOf(unlockWalletFailure)),
     withLatestFrom(state$),
-    map(([action, state]) => {
+    filter(([action, state]) => {
       const failureAttemptTimestamps = state.wallets.failureAttemptTimestamps
       const numberOfFailedAttempts = failureAttemptTimestamps.length
-
       return numberOfFailedAttempts > action.payload.maxAttempts
-        ? tooManyFailedAttempts(failureAttemptTimestamps[numberOfFailedAttempts - 1])
-        : unlockWalletFailureAlert()
     }),
-  )
-
-export const tooManyFailedAttempts$: RootEpic = (action$, _, { generalFailureAlert }) =>
-  action$.pipe(
-    filter(isActionOf(tooManyFailedAttempts)),
-    map(() =>
-      generalFailureAlert(
-        'You have made too many failed attempts. You can try to unlock your account in 5 minutes.',
-      ),
-    ),
-    ignoreElements(),
-  )
-
-export const unlockWalletFailureAlert$: RootEpic = (action$, _, { generalFailureAlert }) =>
-  action$.pipe(
-    filter(isActionOf(unlockWalletFailureAlert)),
-    map(() => generalFailureAlert('Incorrect Password')),
-    ignoreElements(),
+    map(([_, state]) => {
+      const failureAttemptTimestamps = state.wallets.failureAttemptTimestamps
+      const numberOfFailedAttempts = failureAttemptTimestamps.length
+      return tooManyFailedAttempts(failureAttemptTimestamps[numberOfFailedAttempts - 1])
+    }),
   )

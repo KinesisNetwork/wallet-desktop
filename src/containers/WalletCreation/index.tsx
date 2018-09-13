@@ -7,7 +7,7 @@ import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-
 import { Passphrase } from './Passphrase'
 
 import { getLoginState } from '@selectors'
-import * as logo from 'Kinesis_Alpha.svg'
+import * as logo from 'logo2.svg'
 import { NamingWallet } from './NamingWallet'
 import { ValidatePassphrase } from './ValidatePassphrase'
 

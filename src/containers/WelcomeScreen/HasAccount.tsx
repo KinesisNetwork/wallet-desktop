@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { changeUnlockPasswordInput, unlockWalletRequest } from '@actions'
 import { InputField } from '@components/InputField'
 import { RootState } from '@store'
+import { RootRoutes } from '@types'
+import { Link } from 'react-router-dom'
 
 const mapStateToProps = (state: RootState) => ({
   walletName: state.wallet.persisted.walletName,
@@ -28,48 +30,57 @@ class HasAccountPresentation extends React.Component<Props> {
   render() {
     return (
       <main>
-        <section className="level is-mobile u-margin-bottom-lg-1">
+        <section className="level is-mobile">
           <div className="level-left">
-            <div
-              className="image is-64x64 has-background-grey level-item"
-              style={{ borderRadius: '100px' }}
-            >
-              <span className="is-size-3 has-text-grey-light">
-                {this.getInitials(this.props.walletName)}
-              </span>
+            <div className="level-item">
+              <div
+                className="image is-64x64 has-background-grey level-item"
+                style={{ borderRadius: '100px' }}
+              >
+                <span className="is-size-3 has-text-grey-light">
+                  {this.getInitials(this.props.walletName)}
+                </span>
+              </div>
             </div>
-            <div className="is-size-3-mobile is-size-2-tablet is-size-1-desktop has-text-weight-bold has-text-grey-lighter u-margin-left-sm-1">
-              {this.props.walletName}
+            <div className="level-item">
+              <div className="is-size-3-mobile is-size-2-tablet is-size-1-desktop has-text-weight-bold has-text-grey-lighter">
+                {this.props.walletName}
+              </div>
             </div>
           </div>
         </section>
-        <section className="u-margin-bottom-lg-2">
+        <section>
           <form
-            className="field is-grouped"
-            style={{ alignItems: 'flex-end' }}
+            className="field"
             onSubmit={ev => (ev.preventDefault(), this.props.unlockWalletRequest(new Date()))}
           >
+            <label htmlFor="" className="label">
+              Password
+            </label>
             <InputField
               id="password"
               value={this.props.currentPasswordInput}
               type="password"
-              label="Password"
-              hasButton={true}
+              icon="fa-key"
+              button={
+                <div className="control">
+                  <button className="button is-primary" type="submit">
+                    Login
+                  </button>
+                </div>
+              }
               onChangeHandler={this.props.changeUnlockPasswordInput}
               errorText={this.props.passwordError}
             />
-            <div className="control u-margin-bottom-xxs">
-              <button className="button is-primary is-uppercase has-text-grey-darker" type="submit">
-                Login
-              </button>
-            </div>
           </form>
-        </section>
-        <section className="has-text-centered">
-          <span className="has-text-grey-lighter">Forgot your password?</span>
-          <a href="#" className="is-link u-margin-left-sm-1">
-            Restore your wallet
-          </a>
+          <div className="level">
+            <div className="level-item">
+              <p>Forgot your password?</p>
+            </div>
+            <div className="level-item" style={{ justifyContent: 'flex-start' }}>
+              <Link to={RootRoutes.create}>Restore your wallet</Link>
+            </div>
+          </div>
         </section>
       </main>
     )
