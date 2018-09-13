@@ -1,5 +1,5 @@
 export * from './accounts'
-export * from './wallets'
+export * from './walletLocking'
 export * from './transfer'
 export * from './logging'
 export * from './sign'

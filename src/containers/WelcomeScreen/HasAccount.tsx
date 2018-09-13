@@ -1,15 +1,22 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 
+import { changeUnlockPasswordInput, unlockWalletRequest } from '@actions'
 import { InputField } from '@components/InputField'
 import { RootState } from '@store'
 
 const mapStateToProps = (state: RootState) => ({
   walletName: state.wallet.persisted.walletName,
-  isIncorrectPassword: false,
+  passwordError: state.passwords.unlockFailureText,
+  currentPasswordInput: state.passwords.currentInput,
 })
 
-type Props = ReturnType<typeof mapStateToProps>
+const mapDispatchToProps = {
+  changeUnlockPasswordInput,
+  unlockWalletRequest,
+}
+
+type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
 class HasAccountPresentation extends React.Component<Props> {
   getInitials(walletName: string): string {
@@ -37,17 +44,24 @@ class HasAccountPresentation extends React.Component<Props> {
           </div>
         </section>
         <section className="u-margin-bottom-lg-2">
-          <form className="field is-grouped" style={{ alignItems: 'flex-end' }}>
+          <form
+            className="field is-grouped"
+            style={{ alignItems: 'flex-end' }}
+            onSubmit={ev => (ev.preventDefault(), this.props.unlockWalletRequest(new Date()))}
+          >
             <InputField
               id="password"
-              value=""
+              value={this.props.currentPasswordInput}
+              type="password"
               label="Password"
               hasButton={true}
-              onChangeHandler={newValue => newValue}
-              errorText={this.props.isIncorrectPassword ? 'Password is incorrect' : ''}
+              onChangeHandler={this.props.changeUnlockPasswordInput}
+              errorText={this.props.passwordError}
             />
             <div className="control u-margin-bottom-xxs">
-              <button className="button is-primary is-uppercase has-text-grey-darker">Login</button>
+              <button className="button is-primary is-uppercase has-text-grey-darker" type="submit">
+                Login
+              </button>
             </div>
           </form>
         </section>
@@ -62,6 +76,9 @@ class HasAccountPresentation extends React.Component<Props> {
   }
 }
 
-const ConnectedHasAccount = connect(mapStateToProps)(HasAccountPresentation)
+const ConnectedHasAccount = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(HasAccountPresentation)
 
 export { ConnectedHasAccount as HasAccount }

@@ -1,7 +1,5 @@
-import { saveAs } from 'file-saver'
-import { startCase } from 'lodash'
 import { merge } from 'rxjs'
-import { filter, ignoreElements, map, tap, withLatestFrom } from 'rxjs/operators'
+import { filter, ignoreElements, map, withLatestFrom } from 'rxjs/operators'
 
 import { isActionOf } from 'typesafe-actions'
 
@@ -9,35 +7,34 @@ import {
   accountLoadRequest,
   addWallet,
   clearSignForms,
-  deleteWallet as deleteWalletAction,
+  login,
   selectWallet,
   tooManyFailedAttempts,
   unlockWalletFailure,
   unlockWalletFailureAlert,
   unlockWalletRequest,
-  unlockWalletSuccess,
 } from '@actions'
 import { RootEpic } from '@store'
 import { getActivePublicKey } from '../selectors'
 
-export const deleteWallet$: RootEpic = action$ => {
-  const deleteWalletAction$ = action$.pipe(filter(isActionOf(deleteWalletAction)))
+// export const deleteWallet$: RootEpic = action$ => {
+//   const deleteWalletAction$ = action$.pipe(filter(isActionOf(deleteWalletAction)))
 
-  const downloadPaperWallet$ = deleteWalletAction$.pipe(
-    tap(({ payload }) => {
-      const text = Object.entries(payload)
-        .filter(([key]) => key !== 'encryptedPrivateKey')
-        .sort((a, b) => (a[0] < b[0] ? -1 : 1))
-        .map(([key, value]) => `${startCase(key)},${value}`)
-        .join('\n')
-      const blob = new Blob([text], { type: 'text/csv;charset=utf-8' })
-      saveAs(blob, `${payload.accountName} Credentials.csv`)
-    }),
-    ignoreElements(),
-  )
+//   const downloadPaperWallet$ = deleteWalletAction$.pipe(
+//     tap(({ payload }) => {
+//       const text = Object.entries(payload)
+//         .filter(([key]) => key !== 'encryptedPrivateKey')
+//         .sort((a, b) => (a[0] < b[0] ? -1 : 1))
+//         .map(([key, value]) => `${startCase(key)},${value}`)
+//         .join('\n')
+//       const blob = new Blob([text], { type: 'text/csv;charset=utf-8' })
+//       saveAs(blob, `${payload.accountName} Credentials.csv`)
+//     }),
+//     ignoreElements(),
+//   )
 
-  return merge(downloadPaperWallet$)
-}
+//   return merge(downloadPaperWallet$)
+// }
 
 export const changeWallet: RootEpic = (action$, state$) => {
   const switchWallet$ = action$.pipe(filter(isActionOf([selectWallet, addWallet])))
@@ -56,22 +53,14 @@ export const unlockWallet$: RootEpic = (action$, state$, { decryptWithPassword }
   action$.pipe(
     filter(isActionOf(unlockWalletRequest)),
     withLatestFrom(state$),
-    map(([action, state]) => {
-      const now = action.payload
-
-      const decryptedPrivateKey = decryptWithPassword(
-        state.wallets.activeWallet!.encryptedPrivateKey,
-        state.passwords.currentInput,
-      )
+    map(([{ payload: now }, state]) => {
+      const password = state.passwords.currentInput
+      const didLogin = decryptWithPassword(state.wallet.persisted.encryptedPassphrase, password)
 
       return state.wallets.setAccountLocked.unlockTimestamp > now.valueOf()
         ? tooManyFailedAttempts(now)
-        : decryptedPrivateKey !== ''
-          ? unlockWalletSuccess({
-              password: state.passwords.currentInput,
-              decryptedPrivateKey,
-              publicKey: state.wallets.activeWallet!.publicKey,
-            })
+        : didLogin !== ''
+          ? login({ password })
           : unlockWalletFailure({
               now,
               maxAttempts: 10,

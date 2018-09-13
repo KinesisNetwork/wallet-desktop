@@ -1,19 +1,17 @@
-import { changeUnlockPasswordInput, lockWallet, unlockWalletSuccess } from '@actions'
+import {
+  changeUnlockPasswordInput,
+  login,
+  tooManyFailedAttempts,
+  unlockWalletFailure,
+  unlockWalletSuccess,
+} from '@actions'
 import { RootAction } from '@store'
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 
-interface PasswordMap {
-  [publicKey: string]: {
-    timestamp: Date
-    privateKey: string
-    password: string
-  }
-}
-
 export interface PasswordsState {
   currentInput: string
-  livePasswords: PasswordMap
+  unlockFailureText: string
 }
 
 export const passwords = combineReducers<PasswordsState, RootAction>({
@@ -27,21 +25,14 @@ export const passwords = combineReducers<PasswordsState, RootAction>({
         return state
     }
   },
-  livePasswords: (state = {}, action) => {
+  unlockFailureText: (state = '', action) => {
     switch (action.type) {
-      case getType(unlockWalletSuccess):
-        return {
-          ...state,
-          [action.payload.publicKey]: {
-            privateKey: action.payload.decryptedPrivateKey,
-            password: action.payload.password,
-            timestamp: new Date(),
-          },
-        }
-      case getType(lockWallet):
-        return Object.keys(state)
-          .filter(key => key !== action.payload)
-          .reduce((newState, key) => ({ ...newState, [key]: state[key] }), {})
+      case getType(unlockWalletFailure):
+        return 'Password is incorrect'
+      case getType(tooManyFailedAttempts):
+        return 'You have made too many failed attempts. You can try to unlock your account in 5 minutes.'
+      case getType(login):
+        return ''
       default:
         return state
     }
