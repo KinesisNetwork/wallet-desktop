@@ -5,6 +5,7 @@ import {
   accountTransactionsLoaded,
   selectConnectedCurrency,
 } from '@actions'
+import { getActiveAccount } from '@selectors'
 import { RootEpic } from '@store'
 import { AccountPage, RootRoutes } from '@types'
 import { from, interval, merge, of } from 'rxjs'
@@ -62,5 +63,5 @@ export const loadAccount$: RootEpic = (
 export const initiateLoadRequest$: RootEpic = (action$, state$) =>
   action$.pipe(
     filter(isActionOf([selectConnectedCurrency])),
-    map(() => accountLoadRequest(state$.value.wallets.activeWallet!.publicKey)),
+    map(() => accountLoadRequest(getActiveAccount(state$.value.wallet).keypair.publicKey())),
   )
