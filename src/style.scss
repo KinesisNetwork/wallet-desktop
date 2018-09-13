@@ -1,5 +1,6 @@
 @import "src/_variables.scss";
 @import "node_modules/bulma/bulma.sass";
+@import "node_modules/bulma-tooltip/dist/css/bulma-tooltip.sass";
 @import "src/_overrides.scss";
 @import 'node_modules/bulma-divider/dist/bulma-divider.sass';
 @font-face {
@@ -217,4 +218,15 @@ body {
     transform: perspective(140px) rotateY(180deg);
     opacity: 0;
   }
+}
+
+.expandable {
+  overflow: hidden;
+  transition: all .5s ease-in-out;
+  height: 0;
+}
+
+.inline-button {
+  box-shadow: 0px 0px 0px 0px;
+  border: 0;
 }
