@@ -14,13 +14,23 @@ export interface TransactionsState {
 
 export const transactions = combineReducers<TransactionsState, RootAction>({
   transactionOperations,
-  currentPage: (state = null) => state,
+  currentPage: (state = null, action) => {
+    switch (action.type) {
+      case getType(accountTransactionsLoaded):
+        return action.payload.transactionPage
+      default:
+        return state
+    }
+  },
   isLastPage: (state = false) => state,
   isLoading: (state = false, action) => {
     switch (action.type) {
-      case getType(loadAccountTransactions): return true
-      case getType(accountTransactionsLoaded): return false
-      default: return state
+      case getType(loadAccountTransactions):
+        return true
+      case getType(accountTransactionsLoaded):
+        return false
+      default:
+        return state
     }
   },
 })
@@ -30,8 +40,11 @@ function transactionOperations(
   action: RootAction,
 ): TransactionOperationView[] {
   switch (action.type) {
-    case getType(loadAccountTransactions): return []
-    case getType(accountTransactionsLoaded): return [...action.payload]
-    default: return state
+    case getType(loadAccountTransactions):
+      return []
+    case getType(accountTransactionsLoaded):
+      return action.payload.operations
+    default:
+      return state
   }
 }

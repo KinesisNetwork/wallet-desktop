@@ -1,4 +1,4 @@
-import { Keypair, OperationRecord } from 'js-kinesis-sdk'
+import { CollectionPage, Keypair, OperationRecord, TransactionRecord } from 'js-kinesis-sdk'
 
 export interface Wallet {
   publicKey: string
@@ -95,4 +95,9 @@ export interface FailedAttemptsToUnlockWallet {
 export interface UnlockWalletFailure {
   now: Date
   maxAttempts: number
+}
+
+export interface TransactionLoader {
+  transactionPage: CollectionPage<TransactionRecord> | null
+  operations: TransactionOperationView[]
 }
