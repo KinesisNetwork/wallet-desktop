@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Modal should render correctly 1`] = `
+<main
+  className="modal is-active"
+>
+  <div
+    className="modal-background"
+  />
+  <section
+    className="modal-content has-background-grey-dark section"
+    style={
+      Object {
+        "borderRadius": "5px",
+        "width": "60rem",
+      }
+    }
+  >
+    <h1
+      className="is-size-3 has-text-weight-semibold has-text-grey-lighter has-text-centered"
+      style={
+        Object {
+          "letterSpacing": "1px",
+          "marginBottom": "3rem",
+        }
+      }
+    >
+      Your new wallet is now active
+    </h1>
+    <div
+      className="columns is-vcentered"
+      style={
+        Object {
+          "marginBottom": "3rem",
+        }
+      }
+    >
+      <div
+        className="column"
+      >
+        <div
+          className="content has-text-grey-lighter has-text-weight-semibold is-size-5"
+        >
+          <p
+            style={
+              Object {
+                "letterSpacing": "3px",
+              }
+            }
+          >
+            Buy Kinesis from the exchange and store it in your wallet.
+          </p>
+          <p
+            style={
+              Object {
+                "letterSpacing": "3px",
+              }
+            }
+          >
+            Kinesis is the world's most stable currency, backed 1:1 against gold (KAU) and silver (KAG) bullion.
+          </p>
+          <a
+            className="is-link is-size-6"
+          >
+            Learn more
+          </a>
+        </div>
+      </div>
+      <div
+        className="column"
+      >
+        <figure
+          className="image is-4by3"
+        >
+          <img
+            className=""
+            src="test-file-stub"
+          />
+        </figure>
+      </div>
+    </div>
+    <div
+      className="is-pulled-right"
+    >
+      <button
+        className="button has-text-grey-darker is-uppercase is-primary"
+        onClick={[Function]}
+      >
+        OK
+      </button>
+    </div>
+  </section>
+</main>
+`;
