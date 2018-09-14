@@ -2,6 +2,7 @@ import { push, replace } from 'connected-react-router'
 import * as React from 'react'
 import { connect } from 'react-redux'
 
+import { TermsAndConditions } from '@components/TermsAndConditions'
 import { RootState } from '@store'
 import { RootRoutes, WalletCreationRoutes } from '@types'
 import { RouteComponentProps } from 'react-router'
@@ -17,12 +18,17 @@ const mapDispatchToProps = {
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
-type StatefulProps = State & { onConfirmChange: React.ChangeEventHandler<HTMLInputElement> }
+type StatefulProps = State & {
+  onRecordedChange: React.ChangeEventHandler<HTMLInputElement>
+  onConfirmChange: React.ChangeEventHandler<HTMLInputElement>
+}
 
 const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
   passphrase,
   goBack,
-  hasConfirmed,
+  hasRecorded,
+  onRecordedChange,
+  hasConfirmedTC,
   onConfirmChange,
   nextPage,
 }) => (
@@ -59,14 +65,15 @@ const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
           id="has-copied"
           type="checkbox"
           name="has-copied"
-          checked={hasConfirmed}
-          onChange={onConfirmChange}
+          checked={hasRecorded}
+          onChange={onRecordedChange}
         />
         <label htmlFor="has-copied">
           I confirm I have recorded my paper key and stored it in a safe place
         </label>
       </div>
     </div>
+    <TermsAndConditions hasConfirmed={hasConfirmedTC} onConfirmChange={onConfirmChange} />
     <div className="field is-grouped is-grouped-right">
       <div className="control">
         <button type="button" className="button is-text" onClick={goBack}>
@@ -74,7 +81,11 @@ const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
         </button>
       </div>
       <div className="control">
-        <button className="button is-primary" disabled={!hasConfirmed} onClick={nextPage}>
+        <button
+          className="button is-primary"
+          disabled={!hasRecorded || !hasConfirmedTC}
+          onClick={nextPage}
+        >
           I have saved my passphrase
         </button>
       </div>
@@ -88,26 +99,31 @@ const ConnectedPassphrase = connect(
 )(PassphrasePresentation)
 
 interface State {
-  hasConfirmed: boolean
+  hasRecorded: boolean
+  hasConfirmedTC: boolean
 }
 
 class PassphraseStateful extends React.Component<RouteComponentProps<any>, State> {
   state = {
-    hasConfirmed: false,
+    hasRecorded: false,
+    hasConfirmedTC: false,
   }
 
   render() {
     return (
       <ConnectedPassphrase
-        hasConfirmed={this.state.hasConfirmed}
-        onConfirmChange={this.handleConfirm}
+        onRecordedChange={this.handleRecordedChange}
+        onConfirmChange={this.handleConfirmChange}
+        {...this.state}
       />
     )
   }
 
-  private handleConfirm: React.ChangeEventHandler<HTMLInputElement> = ev => {
-    this.setState({ hasConfirmed: ev.currentTarget.checked })
+  private handleRecordedChange: React.ChangeEventHandler<HTMLInputElement> = ev => {
+    this.setState({ hasRecorded: ev.currentTarget.checked })
   }
+
+  private handleConfirmChange = ev => this.setState({ hasConfirmedTC: ev.currentTarget.checked })
 }
 
 export { PassphraseStateful as Passphrase }
