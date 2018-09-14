@@ -63,5 +63,7 @@ export const loadAccount$: RootEpic = (
 export const initiateLoadRequest$: RootEpic = (action$, state$) =>
   action$.pipe(
     filter(isActionOf([selectConnectedCurrency])),
-    map(() => accountLoadRequest(getActiveAccount(state$.value.wallet).keypair.publicKey())),
+    withLatestFrom(state$),
+    map(([_, state]) => getActiveAccount(state.wallet)),
+    map(({ keypair }) => accountLoadRequest(keypair.publicKey())),
   )
