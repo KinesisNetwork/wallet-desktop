@@ -17,23 +17,17 @@ exports[`Modal should render correctly 1`] = `
     }
   >
     <h1
-      className="is-size-3 has-text-weight-semibold has-text-grey-lighter has-text-centered"
+      className="is-size-3 has-text-weight-semibold has-text-grey-lighter has-text-centered u-margin-bottom-lg-2"
       style={
         Object {
           "letterSpacing": "1px",
-          "marginBottom": "3rem",
         }
       }
     >
       Your new wallet is now active
     </h1>
     <div
-      className="columns is-vcentered"
-      style={
-        Object {
-          "marginBottom": "3rem",
-        }
-      }
+      className="columns is-vcentered u-margin-bottom-lg-2"
     >
       <div
         className="column"
