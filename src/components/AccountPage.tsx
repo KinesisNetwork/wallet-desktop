@@ -11,7 +11,7 @@ import { NavLink } from 'react-router-dom'
 
 const mapStateToProps = (state: RootState) => ({
   isLoggedIn: getLoginState(state.wallet),
-  hasOnBoarded: state.modals.onBoarding
+  hasOnBoarded: state.settings.onBoarding
 })
 
 type Props = RouteComponentProps<any> & ReturnType<typeof mapStateToProps>
