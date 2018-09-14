@@ -119,11 +119,11 @@ class PassphraseStateful extends React.Component<RouteComponentProps<any>, State
     )
   }
 
-  private handleRecordedChange: React.ChangeEventHandler<HTMLInputElement> = ev => {
+  private handleRecordedChange: React.ChangeEventHandler<HTMLInputElement> = ev =>
     this.setState({ hasRecorded: ev.currentTarget.checked })
-  }
 
-  private handleConfirmChange = ev => this.setState({ hasConfirmedTC: ev.currentTarget.checked })
+  private handleConfirmChange: React.ChangeEventHandler<HTMLInputElement> = ev =>
+    this.setState({ hasConfirmedTC: ev.currentTarget.checked })
 }
 
 export { PassphraseStateful as Passphrase }
