@@ -3,7 +3,7 @@ import { RootState } from '@store';
 import * as React from 'react'
 import { connect } from 'react-redux'
 
-import * as onboarding from 'onboarding_stickers_Artboard.svg'
+import * as onboarding from '@images/onboarding_stickers_Artboard.svg'
 
 const mapStateToProps = (state: RootState) => ({
   isModalActive: state.modals.modalDisplay,
