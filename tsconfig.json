@@ -54,6 +54,9 @@
       ],
       "@reducers/*": [
         "store/reducers/*"
+      ],
+      "@icons/*": [
+        "icons/*"
       ]
     }
   },
