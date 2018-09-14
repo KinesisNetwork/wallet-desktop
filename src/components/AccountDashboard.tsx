@@ -1,21 +1,26 @@
+import { push } from 'connected-react-router'
 import * as React from 'react'
+import { connect } from 'react-redux'
 
 import { CurrencySelector } from '@containers/CurrencySelector'
 
 import * as kagLogo from '@icons/kag-icon.svg'
 import * as kauLogo from '@icons/kau-icon.svg'
+import * as sleeping from 'images/wally-sleeping.svg'
+
 import { RootState } from '@store'
 import { Currency, RootRoutes } from '@types'
-import * as sleeping from 'images/wally-sleeping.svg'
-import { connect } from 'react-redux'
-import { NavLink } from 'react-router-dom'
 
 const mapStateToProps = (state: RootState) => ({
   currency: state.connections.currentCurrency,
   balance: state.accounts.accountInfo.balance,
 })
 
-type Props = ReturnType<typeof mapStateToProps>
+const mapDispatchToProps = {
+  goToSend: () => push(RootRoutes.dashboard + '/send'),
+}
+
+type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
 const AccountDashboardPresentation: React.SFC<Props> = props => (
   <React.Fragment>
@@ -43,12 +48,16 @@ const AccountDashboardPresentation: React.SFC<Props> = props => (
         </div>
         <div className="level">
           <div className="level-item">
-            <NavLink to={RootRoutes.dashboard + '/send'} className="button is-primary is-large">
+            <button
+              className="button is-primary is-large"
+              disabled={props.balance === 0}
+              onClick={props.goToSend}
+            >
               <span className="icon is-large">
                 <i className="fal fa-arrow-up" />
               </span>
               <span>Send</span>
-            </NavLink>
+            </button>
           </div>
         </div>
       </section>
@@ -77,6 +86,9 @@ const AccountDashboardPresentation: React.SFC<Props> = props => (
   </React.Fragment>
 )
 
-const AccountDashboard = connect(mapStateToProps)(AccountDashboardPresentation)
+const AccountDashboard = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AccountDashboardPresentation)
 
 export { AccountDashboard }
