@@ -33,12 +33,12 @@ export class ModalPresentation extends React.Component<Props> {
         <div className="modal-background" />
         <section className="modal-content has-background-grey-dark section" style={{ borderRadius: '5px', width: '60rem' }}>
           <h1
-            className="is-size-3 has-text-weight-semibold has-text-grey-lighter has-text-centered"
-            style={{ letterSpacing: '1px', marginBottom: '3rem' }}
+            className="is-size-3 has-text-weight-semibold has-text-grey-lighter has-text-centered u-margin-bottom-lg-2"
+            style={{ letterSpacing: '1px' }}
           >
             Your new wallet is now active
           </h1>
-          <div className="columns is-vcentered" style={{ marginBottom: '3rem' }}>
+          <div className="columns is-vcentered u-margin-bottom-lg-2">
             <div className="column">
               <div className="content has-text-grey-lighter has-text-weight-semibold is-size-5">
                 <p style={{ letterSpacing: '3px' }}>Buy Kinesis from the exchange and store it in your wallet.</p>

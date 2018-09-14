@@ -77,7 +77,7 @@ class HasAccountPresentation extends React.Component<Props> {
             <div className="level-item" style={{ justifyContent: 'flex-end' }}>
               <p>Forgot your password?</p>
             </div>
-            <div className="level-item" style={{ marginLeft: '10px', justifyContent: 'flex-start' }}>
+            <div className="level-item u-margin-left-xs" style={{ justifyContent: 'flex-start' }}>
               <Link to={RootRoutes.create}>Restore your wallet</Link>
             </div>
           </div>
