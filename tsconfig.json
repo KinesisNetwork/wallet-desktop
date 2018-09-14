@@ -57,6 +57,9 @@
       ],
       "@images/*": [
         "images/*"
+      ],
+      "@icons/*": [
+        "icons/*"
       ]
     }
   },

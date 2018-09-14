@@ -13,15 +13,23 @@ export type Dispatch = Dispatch<RootAction>
 
 export { RootAction, RootEpic, RootState }
 
+const IS_DEV = false && process.env.NODE_ENV !== 'production'
+
 export function configureStore(history: History) {
   const epicMiddleware = createEpicMiddleware<RootAction, RootAction, RootState, EpicDependencies>({
     dependencies: epicDependencies,
   })
 
+  let fullReducer = connectRouter(history)(rootReducer)
   const storage = createStorage()
+
+  if (IS_DEV) {
+    fullReducer = persistReducer({ key: 'dev', storage }, fullReducer)
+  }
+  const reducerWhitelist = ['payees', 'connections', 'settings']
   const persistedReducer = persistReducer(
-    { key: 'root', storage, whitelist: ['payees', 'connections', 'settings'] },
-    connectRouter(history)(rootReducer),
+    { key: 'root', storage, whitelist: reducerWhitelist },
+    fullReducer,
   )
 
   const w = window as any

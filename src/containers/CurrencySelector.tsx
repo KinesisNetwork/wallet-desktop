@@ -16,12 +16,12 @@ const mapDispatchToProps = {
 type Props = typeof mapDispatchToProps & ReturnType<typeof mapStateToProps>
 
 const CurrencySelectorPresentation: React.SFC<Props> = props => (
-  <div className="tabs is-small">
+  <div className="tabs is-large ">
     <ul>
       <li className={props.activeCurrency === Currency.KAU ? 'is-active' : ''}>
         <a onClick={() => props.selectConnectedCurrency(Currency.KAU)}>
           <span className="icon is-small">
-            <i className="fas fa-cubes" />
+            <i className="fal fa-cubes" />
           </span>
           <span>KAU</span>
         </a>
@@ -29,7 +29,7 @@ const CurrencySelectorPresentation: React.SFC<Props> = props => (
       <li className={props.activeCurrency === Currency.KAG ? 'is-active' : ''}>
         <a onClick={() => props.selectConnectedCurrency(Currency.KAG)}>
           <span className="icon is-small">
-            <i className="fas fa-cubes" />
+            <i className="fal fa-cubes" />
           </span>
           <span>KAG</span>
         </a>
