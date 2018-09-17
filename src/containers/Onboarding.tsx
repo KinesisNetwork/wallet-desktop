@@ -27,18 +27,15 @@ export class OnboardingPresentation extends React.Component<Props> {
     return (
       <main className={`modal ${this.props.isModalActive && !this.props.hasOnBoarded ? 'is-active' : ''}`}>
         <div className="modal-background" />
-        <section className="modal-content has-background-grey-dark section" style={{ borderRadius: '5px', width: '60rem' }}>
-          <h1
-            className="is-size-3 has-text-weight-semibold has-text-grey-lighter has-text-centered u-margin-bottom-lg-2"
-            style={{ letterSpacing: '1px' }}
-          >
+        <section className="modal-content box" style={{ width: '55rem' }}>
+          <h1 className="title is-2 has-text-primary is-uppercase has-text-centered">
             Your new wallet is now active
           </h1>
-          <div className="columns is-vcentered u-margin-bottom-lg-2">
+          <div className="columns is-vcentered">
             <div className="column">
-              <div className="content has-text-grey-lighter has-text-weight-semibold is-size-5">
-                <p style={{ letterSpacing: '3px' }}>Buy Kinesis from the exchange and store it in your wallet.</p>
-                <p style={{ letterSpacing: '3px' }}>Kinesis is the world's most stable currency, backed 1:1 against gold (KAU) and silver (KAG) bullion.</p>
+              <div className="content has-text-grey-lighter is-size-4">
+                <p>Buy Kinesis from the exchange and store it in your wallet.</p>
+                <p>Kinesis is the world's most stable currency, backed 1:1 against gold (KAU) and silver (KAG) bullion.</p>
                 <a className="is-link is-size-6">Learn more</a>
               </div>
             </div>
@@ -48,11 +45,13 @@ export class OnboardingPresentation extends React.Component<Props> {
               </figure>
             </div>
           </div>
-          <div className="is-pulled-right">
-            <button
-              className="button has-text-grey-darker is-uppercase is-primary"
-              onClick={() => this.closeModal()}
-            >OK</button>
+          <div className="field is-grouped is-grouped-right">
+            <div className="control">
+              <button
+                className="button is-primary"
+                onClick={() => this.closeModal()}
+              >OK</button>
+            </div>
           </div>
         </section>
       </main>
