@@ -15,7 +15,6 @@ export const App = () => (
     <PersistGate persistor={persistor}>
       <ConnectedRouter history={history}>
         <Routing />
-        {/* <Main /> */}
       </ConnectedRouter>
     </PersistGate>
   </Provider>
