@@ -1,26 +1,27 @@
+import { closeModal, completeOnBoarding } from '@actions'
 import { shallow } from 'enzyme'
 import * as React from 'react'
 
-import { ModalPresentation } from '@containers/Modal'
+import { OnboardingPresentation } from '@containers/Onboarding'
 import '../../setupTests'
 
 describe('Modal', () => {
   const props = {
-    closeModal: () => null,
-    completeOnBoarding: () => null,
+    closeModal,
+    completeOnBoarding,
     isModalActive: true,
     hasOnBoarded: false
   }
 
   it('should render correctly', () => {
-    const wrapper = shallow(<ModalPresentation {...props} />)
+    const wrapper = shallow(<OnboardingPresentation {...props} />)
 
     expect(wrapper).toMatchSnapshot()
     expect(wrapper.find('.modal').hasClass('is-active')).toBe(true)
   })
 
   it('should not render modal if the onboarding has already been done', () => {
-    const wrapper = shallow(<ModalPresentation {...props} hasOnBoarded={true} />)
+    const wrapper = shallow(<OnboardingPresentation {...props} hasOnBoarded={true} />)
 
     expect(wrapper.find('.modal').hasClass('is-active')).toBe(false)
   })
@@ -28,7 +29,7 @@ describe('Modal', () => {
   it('calls closeModal and completeOnBoarding methods on clicking the button', () => {
     const closeModalStub = jest.fn()
     const completeOnBoardingStub = jest.fn()
-    const wrapper = shallow(<ModalPresentation {...props} closeModal={closeModalStub} completeOnBoarding={completeOnBoardingStub} />)
+    const wrapper = shallow(<OnboardingPresentation {...props} closeModal={closeModalStub} completeOnBoarding={completeOnBoardingStub} />)
 
     const button = wrapper.find('button')
     button.simulate('click')

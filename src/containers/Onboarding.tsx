@@ -10,18 +10,14 @@ const mapStateToProps = (state: RootState) => ({
   hasOnBoarded: state.settings.onBoarding
 })
 
-const mapDispatchToProps = (dispatch) => ({
-  closeModal: () => (
-    dispatch(closeModal())
-  ),
-  completeOnBoarding: () => (
-    dispatch(completeOnBoarding())
-  )
-})
+const mapDispatchToProps = {
+  closeModal,
+  completeOnBoarding
+}
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>
+type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
-export class ModalPresentation extends React.Component<Props> {
+export class OnboardingPresentation extends React.Component<Props> {
   closeModal = () => {
     this.props.closeModal()
     this.props.completeOnBoarding()
@@ -64,9 +60,9 @@ export class ModalPresentation extends React.Component<Props> {
   }
 }
 
-const ConnectedModalPresentation = connect(
+const ConnectedOnboardingPresentation = connect(
   mapStateToProps,
   mapDispatchToProps
-)(ModalPresentation)
+)(OnboardingPresentation)
 
-export { ConnectedModalPresentation as Modal }
+export { ConnectedOnboardingPresentation as Onboarding }

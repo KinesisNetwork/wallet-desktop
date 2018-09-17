@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import { AccountDashboard } from '@components/AccountDashboard'
-import { Modal } from '@containers/Modal'
+import { Onboarding } from '@containers/Onboarding'
 import { Sign } from '@containers/Sign'
 import { getLoginState } from '@selectors'
 import { RootState } from '@store'
@@ -18,7 +18,7 @@ type Props = RouteComponentProps<any> & ReturnType<typeof mapStateToProps>
 
 const AccountPagePresentation: React.SFC<Props> = ({ match, hasOnBoarded }) =>
   <React.Fragment>
-    {!hasOnBoarded && <Modal />}
+    {!hasOnBoarded && <Onboarding />}
     <div className="vertical-spaced">
       <div>
         <div className="level">
