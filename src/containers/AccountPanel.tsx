@@ -1,9 +1,20 @@
 import { EditableText } from '@components/EditableText'
 import { Sign } from '@containers/Sign'
+import { getActiveAccount } from '@selectors'
+import { RootState } from '@store'
 import * as copy from 'copy-to-clipboard'
 import * as React from 'react'
+import { connect } from 'react-redux'
 
-class AccountManagement extends React.Component<{}, { isToggled: boolean, copied: boolean, isEditing: boolean }> {
+export const mapStateToProps = ({ wallet }: RootState) => ({
+  activeAccount: getActiveAccount(wallet),
+})
+
+const mapDispatchToProps = {}
+
+type Props = typeof mapDispatchToProps & ReturnType<typeof mapStateToProps>
+
+class AccountPanelComponent extends React.Component<Props, { isToggled: boolean, copied: boolean, isEditing: boolean }> {
   public state = { isToggled: false, copied: false, isEditing: false }
   public toggleAdvanced = () => this.setState({isToggled: !this.state.isToggled})
 
@@ -18,8 +29,8 @@ class AccountManagement extends React.Component<{}, { isToggled: boolean, copied
                   <div className='level-item'>
                     <EditableText
                       isEditing={this.state.isEditing}
-                      value='Account 1'
-                      onChangeHandler={ev => true}
+                      value={this.props.activeAccount.name}
+                      onChangeHandler={() => true}
                       onStartEditing={() => this.setState({isEditing: !this.state.isEditing})}
                       onStopEditing={() => this.setState({isEditing: !this.state.isEditing})}
                       opts={{isLarge: true}}
@@ -29,7 +40,7 @@ class AccountManagement extends React.Component<{}, { isToggled: boolean, copied
                 <div style={{ position: 'relative' }}>
                   <div className='tooltip is-tooltip-top' data-tooltip={this.state.copied ? 'Copied!' : 'Copy Public Address' }>
                     <button className='button is-primary is-outlined' onClick={this.copyPublicKey}>
-                      GC5AIC4OGSVKYOERINIIDXVYMC5KZPNLA65BPZVOFEBFG4CBAIDHG353
+                      {this.props.activeAccount.keypair.publicKey()}
                       &nbsp;
                       <i className='far fa-copy' />
                     </button>
@@ -57,9 +68,14 @@ class AccountManagement extends React.Component<{}, { isToggled: boolean, copied
 
   private copyPublicKey = () => {
     this.setState({copied: true})
-    copy('GC5AIC4OGSVKYOERINIIDXVYMC5KZPNLA65BPZVOFEBFG4CBAIDHG353')
+    copy(this.props.activeAccount.keypair.publicKey())
     setTimeout(() => this.setState({copied: false}), 5000)
   }
 }
 
-export { AccountManagement }
+
+
+export const AccountPanel = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AccountPanelComponent)

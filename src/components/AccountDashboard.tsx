@@ -1,4 +1,4 @@
-import { AccountManagement } from '@components/AccountManagement'
+import { AccountPanel } from '@containers/AccountPanel'
 import { CurrencySelector } from '@containers/CurrencySelector'
 import { push } from 'connected-react-router'
 import * as React from 'react'
@@ -24,8 +24,8 @@ type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
 const AccountDashboardPresentation: React.SFC<Props> = props => (
   <div className="container">
+    <AccountPanel />
     <CurrencySelector />
-    <AccountManagement />
     <section className="section has-text-centered">
       <div className="level">
         <div className="level-item">
