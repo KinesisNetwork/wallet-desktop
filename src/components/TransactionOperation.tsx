@@ -19,12 +19,16 @@ const isTransfer = (
 ): op is PaymentOperationRecord | CreateAccountOperationRecord =>
   ['create_account', 'payment'].includes(op.type)
 
-const getAddress = (t: TransactionOperationView) =>
-  isTransfer(t.operation) && t.isIncoming
-    ? t.operation.type === 'create_account'
-      ? t.operation.funder
-      : t.operation.from
-    : t.source
+const getAddress = (t: TransactionOperationView) => {
+  switch (t.operation.type) {
+    case 'create_account':
+      return t.isIncoming ? t.operation.funder : t.operation.account
+    case 'payment':
+      return t.isIncoming ? t.operation.from : t.operation.to
+    default:
+      return t.source
+  }
+}
 
 const getAmount = (t: TransactionOperationView) => {
   let amount = 0
@@ -112,7 +116,7 @@ const TransactionCard: React.SFC<Props & StateProps> = ({
       </div>
       <div className={`column is-12 ${moreInfoIsHidden ? 'is-hidden' : ''}`}>
         <HorizontalLabelledField
-          label={t.isIncoming ? "Sender's Address:" : "Recipient' Address:"}
+          label={t.isIncoming ? "Sender's Address:" : "Recipient's Address:"}
           value={getAddress(t)}
           isCompact={true}
         />

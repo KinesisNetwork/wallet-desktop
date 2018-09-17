@@ -13,24 +13,20 @@ export type Dispatch = Dispatch<RootAction>
 
 export { RootAction, RootEpic, RootState }
 
-const IS_DEV = true && process.env.NODE_ENV !== 'production'
+const IS_DEV = false && process.env.NODE_ENV !== 'production'
 
 export function configureStore(history: History) {
   const epicMiddleware = createEpicMiddleware<RootAction, RootAction, RootState, EpicDependencies>({
     dependencies: epicDependencies,
   })
 
-  let fullReducer = connectRouter(history)(rootReducer)
+  const fullReducer = connectRouter(history)(rootReducer)
   const storage = createStorage()
 
-  if (IS_DEV) {
-    fullReducer = persistReducer({ key: 'dev', storage }, fullReducer)
-  }
   const reducerWhitelist = ['payees', 'connections']
-  const persistedReducer = persistReducer(
-    { key: 'root', storage, whitelist: reducerWhitelist },
-    fullReducer,
-  )
+  const persistedReducer = IS_DEV
+    ? persistReducer({ key: 'dev', storage, blacklist: ['transactions'] }, fullReducer)
+    : persistReducer({ key: 'root', storage, whitelist: reducerWhitelist }, fullReducer)
 
   const w = window as any
   const composeEnhancers = w.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
