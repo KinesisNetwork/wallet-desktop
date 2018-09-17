@@ -73,11 +73,11 @@ class HasAccountPresentation extends React.Component<Props> {
               errorText={this.props.passwordError}
             />
           </form>
-          <div className="level">
-            <div className="level-item" style={{ justifyContent: 'flex-end' }}>
+          <div className="columns">
+            <div className="column has-text-right">
               <p>Forgot your password?</p>
             </div>
-            <div className="level-item level-left u-margin-left-xs">
+            <div className="column">
               <Link to={RootRoutes.create}>Restore your wallet</Link>
             </div>
           </div>
