@@ -38,7 +38,7 @@ const AccountDashboardPresentation: React.SFC<Props> = props => (
           <h1
             className={`title is-size-2 has-text-weight-bold ${
               props.currency === Currency.KAU ? 'has-text-primary' : 'has-text-grey-light'
-            }`}
+              }`}
           >{`${props.balance} ${props.currency}`}</h1>
         </div>
       </div>
@@ -46,7 +46,7 @@ const AccountDashboardPresentation: React.SFC<Props> = props => (
         <div className="level-item">
           <button
             className="button is-primary is-large"
-            disabled={props.balance === 0}
+            // disabled={props.balance === 0}
             onClick={props.goToSend}
           >
             <span className="icon is-large">
