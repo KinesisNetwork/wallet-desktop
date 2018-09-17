@@ -5,6 +5,7 @@
 @import "node_modules/bulma-checkradio/dist/css/bulma-checkradio.sass";
 @import "node_modules/bulma-steps/dist/css/bulma-steps.sass";
 @import 'node_modules/bulma-divider/dist/bulma-divider.sass';
+@import 'styles/sidebar.scss';
 
 @import "src/_overrides.scss";
 @import 'src/_utilities';
@@ -84,13 +85,6 @@ body {
   padding: 30px 0;
 }
 
-.logo-sidebar {
-  display: block;
-  height: 86px;
-  margin-bottom: 1rem;
-  width: 100%;
-}
-
 .wallet-heading {
   font-family: "Open Sans";
   font-size: 17px;
@@ -98,6 +92,12 @@ body {
   letter-spacing: 0.2em;
   text-align: center;
   color: white;
+}
+
+.sidebar-wrapper {
+  background-color: $grey-dark;
+  margin-top: 12;
+  min-width: 192px;
 }
 
 .scrollable {

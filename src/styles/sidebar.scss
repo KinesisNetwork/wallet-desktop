@@ -1,0 +1,110 @@
+.sidebar {
+  .button {
+    height: 3.5rem;
+    text-transform: none;
+
+    &:hover {
+      color: $primary;
+    }
+  }
+}
+
+.sidebar-upper {
+  align-items: flex-start;
+
+  .sidebar-heading {
+    background: linear-gradient(135deg, $grey 0%, $grey-dark 100%);
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16), 0 3px 4px 0 rgba(0,0,0,0.16), 0 1px 5px 0 rgba(0,0,0,0.16);
+    margin: 0px 12px 0px 12px;
+    padding: 24px 0px 0px 0px;
+  }
+}
+
+.sidebar-logo {
+  height: 50px;
+  margin-bottom: 1.5rem;
+  padding-top: .5rem;
+  width: 100%;
+}
+
+.sidebar-dropdown {
+  .dropdown, .dropdown-trigger, .dropdown-menu {
+    width: 100%;
+  }
+
+  .dropdown-button.button {
+    background: none;
+    box-shadow: 0px 2px 4px 0 rgba(0,0,0,0.5);
+    color: $grey-lighter;
+    justify-content: space-between;
+    z-index: 10;
+  }
+  
+  .dropdown-item {
+    .button {
+      justify-content: flex-start;
+      
+      &:hover {
+        color: $grey-lighter;
+        background-color: $grey-darker;
+      }
+      .icon {
+        margin-right: 1.188rem;
+      }
+    }
+
+    &.is-active {
+      .button, .button:hover {
+        color: $success;
+      }
+    }
+  }
+
+  .dropdown-divider {
+    background-color: $grey-lighter;
+  }
+}
+
+.sidebar-list {
+  margin-top: -5px;
+  
+  .sidebar-item {
+    &:first-child .button {
+      margin-top: -0.4rem;
+    }
+
+    &:not(:first-child) .button {
+      margin-top: -1.5rem;
+    }
+
+    .button {
+      background-color: $grey-dark;
+      justify-content: flex-start;
+
+      .icon {
+        margin-right: 1.188rem;
+      }
+    }
+
+    .button.is-active {
+      background-color: $grey-darker;
+    }
+  }
+}
+
+.sidebar-lower {
+  align-items: flex-end;
+}
+
+.sidebar-lower-icon-list {
+  display: flex;
+  justify-content: space-around;
+}
+
+.sidebar-lower-icon {
+  background: none;
+
+  &:hover.button {
+    background: none;
+  }
+}
