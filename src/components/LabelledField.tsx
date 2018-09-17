@@ -48,7 +48,7 @@ export const HorizontalLabelledField: React.SFC<Props> = props => (
     <div className="field-body">
       <div className="field is-grouped">
         <div
-          className={`control ${props.isLoading && 'is-loading'}`}
+          className={`control is-expanded ${props.isLoading && 'is-loading'}`}
           style={clippedStyle(props.isClipped)}
         >
           <p className="input is-static is-small is-block">{props.value}</p>
