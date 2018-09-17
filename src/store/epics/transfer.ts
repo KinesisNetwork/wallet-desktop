@@ -18,12 +18,13 @@ import {
   transactionSuccess,
   transferRequest,
 } from '@actions'
+import { getActiveAccount } from '@selectors'
 import { RootEpic } from '@store'
 
 export const transferRequest$: RootEpic = (
   action$,
   state$,
-  { createKinesisTransfer, getActiveKeys, getCurrentConnection },
+  { createKinesisTransfer, getCurrentConnection },
 ) =>
   action$.pipe(
     filter(isActionOf(transferRequest)),
@@ -32,7 +33,7 @@ export const transferRequest$: RootEpic = (
     mergeMap(([request, state]) =>
       fromPromise(
         createKinesisTransfer(
-          getActiveKeys(state).privateKey!,
+          getActiveAccount(state.wallet).keypair.secret(),
           getCurrentConnection(state.connections),
           request,
         ),
@@ -60,15 +61,11 @@ export const transactionSubmission$: RootEpic = (
     ),
   )
 
-export const transactionSuccess$: RootEpic = (
-  action$,
-  state$,
-  { generalSuccessAlert, getActiveKeys },
-) =>
+export const transactionSuccess$: RootEpic = (action$, state$, { generalSuccessAlert }) =>
   action$.pipe(
     filter(isActionOf(transactionSuccess)),
     flatMap(() => generalSuccessAlert('The transfer was successful.')),
-    map(() => accountLoadRequest(getActiveKeys(state$.value).publicKey)),
+    map(() => accountLoadRequest(getActiveAccount(state$.value.wallet).keypair.publicKey())),
   )
 
 export const transactionFailed$: RootEpic = (

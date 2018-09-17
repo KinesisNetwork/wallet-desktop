@@ -7,6 +7,7 @@ import { RootState } from './root-reducer'
 export interface RehydrateAction {
   type: typeof REHYDRATE
   payload: RootState
+  key: string
 }
 
 export type RootAction = ActionsUnion<typeof actions> | RehydrateAction

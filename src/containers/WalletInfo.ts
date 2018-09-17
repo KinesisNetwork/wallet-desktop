@@ -1,16 +1,16 @@
 import { connect } from 'react-redux'
 
 import { WalletInfo as WalletInfoPresentation } from '@components/WalletInfo'
+import { getActiveAccount } from '@selectors'
 import { RootState } from '@store'
 
-const mapStateToProps = ({ accounts, wallets }: RootState) => {
-  const { accountName, publicKey } = wallets.activeWallet!
-  const activeAccount = accounts.accountInfo
+const mapStateToProps = (state: RootState) => {
+  const activeAccount = getActiveAccount(state.wallet)
   return {
-    accountName,
-    publicKey,
-    accountBalance: activeAccount.balance,
-    isAccountLoading: accounts.isAccountLoading,
+    accountName: activeAccount.name,
+    publicKey: activeAccount.keypair.publicKey(),
+    accountBalance: 0,
+    isAccountLoading: false,
   }
 }
 

@@ -1,4 +1,4 @@
-import { OperationRecord } from 'js-kinesis-sdk'
+import { Keypair, OperationRecord } from 'js-kinesis-sdk'
 
 export interface Wallet {
   publicKey: string
@@ -74,6 +74,20 @@ export interface FormAlert {
   key: string
 }
 
+export interface PersistedAccount {
+  name: string
+  encryptedSecret: string
+}
+
+export interface WalletAccount {
+  name: string
+  keypair: Keypair
+}
+
+export interface WalletLoggedInState {
+  accounts: WalletAccount[]
+  passphrase: string
+}
 export interface FailedAttemptsToUnlockWallet {
   unlockTimestamp: number
 }

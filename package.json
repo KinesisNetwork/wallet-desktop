@@ -72,13 +72,17 @@
     }
   },
   "dependencies": {
+    "bip39": "^2.5.0",
     "bulma": "0.7.1",
+    "bulma-checkradio": "^2.1.0",
     "bulma-divider": "1.0.4",
     "bulma-tooltip": "^2.0.2",
+    "bulma-steps": "^2.2.1",
     "clipboard": "2.0.1",
     "connected-react-router": "^4.4.1",
     "copy-to-clipboard": "^3.0.8",
     "crypto-js": "3.1.9-1",
+    "ed25519-hd-key": "^1.0.0",
     "electron-compile": "6.4.2",
     "electron-devtools-installer": "^2.2.4",
     "electron-json-storage": "4.0.2",
@@ -102,6 +106,7 @@
     "typesafe-actions": "2.0.0-1"
   },
   "devDependencies": {
+    "@types/bip39": "^2.4.0",
     "@types/crypto-js": "3.1.39",
     "@types/electron": "1.6.10",
     "@types/electron-devtools-installer": "2.0.3",

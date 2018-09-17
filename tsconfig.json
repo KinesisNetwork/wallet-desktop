@@ -37,9 +37,6 @@
       "@components/*": [
         "components/*"
       ],
-      "@components": [
-        "components"
-      ],
       "@store": [
         "store"
       ],
@@ -54,6 +51,12 @@
       ],
       "@containers": [
         "containers"
+      ],
+      "@reducers/*": [
+        "store/reducers/*"
+      ],
+      "@icons/*": [
+        "icons/*"
       ]
     }
   },
