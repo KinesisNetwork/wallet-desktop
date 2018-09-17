@@ -61,7 +61,7 @@ class HasAccountPresentation extends React.Component<Props> {
               id="password"
               value={this.props.currentPasswordInput}
               type="password"
-              icon="fa-key"
+              icon="fa-lock-alt"
               button={
                 <div className="control">
                   <button className="button is-primary" type="submit">
@@ -73,11 +73,11 @@ class HasAccountPresentation extends React.Component<Props> {
               errorText={this.props.passwordError}
             />
           </form>
-          <div className="level">
-            <div className="level-item">
+          <div className="columns">
+            <div className="column has-text-right">
               <p>Forgot your password?</p>
             </div>
-            <div className="level-item" style={{ justifyContent: 'flex-start' }}>
+            <div className="column">
               <Link to={RootRoutes.create}>Restore your wallet</Link>
             </div>
           </div>
