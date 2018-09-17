@@ -4,7 +4,7 @@ module.exports = {
   },
   testEnvironment: 'node', // This may need to change if we test any window dependencies
   testRegex: '/__tests__/.*.(test|spec)\\.(tsx|ts)$',
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node', 'svg', 'png', 'jpg'],
   moduleNameMapper: {
     '@services(.*)': '<rootDir>/src/services$1',
     '@components(.*)': '<rootDir>/src/components$1',
@@ -14,6 +14,7 @@ module.exports = {
     '@store(.*)': '<rootDir>/src/store$1',
     '@actions(.*)': '<rootDir>/src/store/actions$1',
     '@selectors(.*)': '<rootDir>/src/store/selectors$1',
+    '@images(.*)': '<rootDir>/src/test/__mocks__/imageMock.js',
     '@icons(.*)': '<rootDir>/src/icons$1',
   },
   snapshotSerializers: ['enzyme-to-json/serializer'],

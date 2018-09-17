@@ -26,7 +26,7 @@ export function configureStore(history: History) {
   if (IS_DEV) {
     fullReducer = persistReducer({ key: 'dev', storage }, fullReducer)
   }
-  const reducerWhitelist = ['payees', 'connections']
+  const reducerWhitelist = ['payees', 'connections', 'settings']
   const persistedReducer = persistReducer(
     { key: 'root', storage, whitelist: reducerWhitelist },
     fullReducer,
