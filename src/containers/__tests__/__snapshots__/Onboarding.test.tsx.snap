@@ -8,49 +8,31 @@ exports[`Modal should render correctly 1`] = `
     className="modal-background"
   />
   <section
-    className="modal-content has-background-grey-dark section"
+    className="modal-content box"
     style={
       Object {
-        "borderRadius": "5px",
-        "width": "60rem",
+        "width": "55rem",
       }
     }
   >
     <h1
-      className="is-size-3 has-text-weight-semibold has-text-grey-lighter has-text-centered u-margin-bottom-lg-2"
-      style={
-        Object {
-          "letterSpacing": "1px",
-        }
-      }
+      className="title is-2 has-text-primary is-uppercase has-text-centered"
     >
       Your new wallet is now active
     </h1>
     <div
-      className="columns is-vcentered u-margin-bottom-lg-2"
+      className="columns is-vcentered"
     >
       <div
         className="column"
       >
         <div
-          className="content has-text-grey-lighter has-text-weight-semibold is-size-5"
+          className="content has-text-grey-lighter is-size-4"
         >
-          <p
-            style={
-              Object {
-                "letterSpacing": "3px",
-              }
-            }
-          >
+          <p>
             Buy Kinesis from the exchange and store it in your wallet.
           </p>
-          <p
-            style={
-              Object {
-                "letterSpacing": "3px",
-              }
-            }
-          >
+          <p>
             Kinesis is the world's most stable currency, backed 1:1 against gold (KAU) and silver (KAG) bullion.
           </p>
           <a
@@ -74,14 +56,18 @@ exports[`Modal should render correctly 1`] = `
       </div>
     </div>
     <div
-      className="is-pulled-right"
+      className="field is-grouped is-grouped-right"
     >
-      <button
-        className="button has-text-grey-darker is-uppercase is-primary"
-        onClick={[Function]}
+      <div
+        className="control"
       >
-        OK
-      </button>
+        <button
+          className="button is-primary"
+          onClick={[Function]}
+        >
+          OK
+        </button>
+      </div>
     </div>
   </section>
 </main>
