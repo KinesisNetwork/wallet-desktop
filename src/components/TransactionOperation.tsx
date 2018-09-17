@@ -2,39 +2,16 @@ import {
   CreateAccountOperationRecord,
   OperationRecord,
   PaymentOperationRecord,
-  TransactionOperation,
 } from 'js-kinesis-sdk'
-import { startCase } from 'lodash'
 import * as React from 'react'
 
+import { AddressView } from '@components/AddressView'
 import { HorizontalLabelledField } from '@components/LabelledField'
-import { TransactionOperationView } from '@types'
+import { Currency, TransactionOperationView } from '@types'
 
 export interface Props {
   transactionWithOperation: TransactionOperationView
-}
-
-// keyof BaseOperationRecord
-const baseOperationRecordKeys = [
-  'id',
-  '_links',
-  'effects',
-  'paging_token',
-  'precedes',
-  'self',
-  'succeeds',
-  'transaction',
-  'type',
-  'type_i',
-]
-
-export const renderOperationRecords = (operation: OperationRecord | TransactionOperation) => {
-  const entries = Object.entries(operation).filter(
-    ([key, value]) => !baseOperationRecordKeys.includes(key) && ['string'].includes(typeof value),
-  )
-  return entries.map(([key, value]) => (
-    <HorizontalLabelledField key={key} label={startCase(key)} value={value} isCompact={true} />
-  ))
+  currency: Currency
 }
 
 const isTransfer = (
@@ -64,46 +41,112 @@ const getAmount = (t: TransactionOperationView) => {
   return t.isIncoming ? amount : amount + Number(t.fee)
 }
 
-const TransactionCard: React.SFC<Props> = ({ transactionWithOperation: t }) => (
-  <article className="level box has-text-grey-lighter">
-    <div className="level-left">
-      <div className="level-item">
-        {isTransfer(t.operation) ? (
-          t.isIncoming ? (
-            <span className="icon is-medium has-text-success">
-              <i className="fal fa-arrow-down" />
-            </span>
+interface StateProps {
+  moreInfoIsHidden: boolean
+  toggleMoreInfo: () => any
+}
+const TransactionCard: React.SFC<Props & StateProps> = ({
+  transactionWithOperation: t,
+  currency,
+  moreInfoIsHidden,
+  toggleMoreInfo,
+}) => (
+  <article className="level">
+    <div
+      className="columns box level-item is-gapless has-text-grey-lighter is-multiline"
+      style={{ width: '100%' }}
+    >
+      <div className="column is-4">
+        <div className="is-flex" style={{ alignItems: 'center' }}>
+          {isTransfer(t.operation) ? (
+            t.isIncoming ? (
+              <span className="icon is-large has-text-success">
+                <i className="fal fa-lg fa-arrow-down" />
+              </span>
+            ) : (
+              <span className="icon is-large has-text-danger">
+                <i className="fal fa-lg fa-arrow-up" />
+              </span>
+            )
           ) : (
-            <span className="icon is-medium has-text-danger">
-              <i className="fal fa-arrow-up" />
+            <span className="icon is-large has-text-grey-light">
+              <i className="fal fa-lg fa-dash" />
             </span>
-          )
-        ) : (
-          <span className="icon is-medium has-text-grey-light">
-            <i className="fal fa-dash" />
+          )}
+          <span className="has-text-weight-bold">
+            <AddressView address={getAddress(t)} />
           </span>
-        )}
-        <h3 className="is-6">{getAddress(t)}</h3>
+        </div>
+      </div>
+      <div className="column is-3">
+        <p>{t.memo || '(no description)'}</p>
+      </div>
+      <div className="column is-2">
+        <span className="icon is-small has-text-success">
+          <i className="fal fa-xs fa-check-circle" />
+        </span>
+        <span>{t.date.toTimeString().slice(0, 8)}</span>
+      </div>
+      <div className="column is-2">
+        <p
+          className={`${
+            t.isIncoming ? 'has-text-success' : 'has-text-danger'
+          } has-text-weight-bold has-text-right`}
+        >
+          {getAmount(t)} {currency}
+        </p>
+      </div>
+      <div className="column is-1 has-text-right">
+        <button className="button is-text" onClick={toggleMoreInfo}>
+          {moreInfoIsHidden && (
+            <span className="icon">
+              <i className="fal fa-lg fa-angle-down" />
+            </span>
+          )}
+          {!moreInfoIsHidden && (
+            <span className="icon">
+              <i className="fal fa-lg fa-angle-up" />
+            </span>
+          )}
+        </button>
+      </div>
+      <div className={`column is-12 ${moreInfoIsHidden ? 'is-hidden' : ''}`}>
+        <HorizontalLabelledField
+          label={t.isIncoming ? "Sender's Address:" : "Recipient' Address:"}
+          value={getAddress(t)}
+          isCompact={true}
+        />
+        <HorizontalLabelledField
+          label="Transaction Hash:"
+          value={t.operation.transaction_hash}
+          isCompact={true}
+        />
+        <HorizontalLabelledField label="Fee:" value={`${t.fee} ${currency}`} isCompact={true} />
       </div>
     </div>
-    <div className="level-item">
-      <p>{t.memo}</p>
-    </div>
-    <div className="level-item">
-      <span className="icon is-small has-text-success">
-        <i className="fal fa-xs fa-check-circle" />
-      </span>
-      <p>{t.date.toTimeString()}</p>
-    </div>
-    <div className="level-item">
-      <p
-        className={`${t.isIncoming ? 'has-text-success' : 'has-text-danger'} has-text-weight-bold`}
-      >
-        {getAmount(t)}
-      </p>
-    </div>
-    <div className="level-item" />
   </article>
 )
 
-export { TransactionCard }
+interface State {
+  moreInfoIsHidden: boolean
+}
+class TransactionCardStateful extends React.Component<Props, State> {
+  state: State = {
+    moreInfoIsHidden: true,
+  }
+
+  render() {
+    return (
+      <TransactionCard
+        moreInfoIsHidden={this.state.moreInfoIsHidden}
+        toggleMoreInfo={this.toggleMoreInfo}
+        {...this.props}
+      />
+    )
+  }
+
+  private toggleMoreInfo = () =>
+    this.setState(state => ({ moreInfoIsHidden: !state.moreInfoIsHidden }))
+}
+
+export { TransactionCardStateful as TransactionCard }

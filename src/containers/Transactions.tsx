@@ -9,10 +9,11 @@ import { EmptyTransactions } from '@components/EmptyTransactions'
 import { TransactionCard } from '@components/TransactionOperation'
 import { TransactionOperationView } from '@types'
 
-const mapStateToProps = ({ transactions }: RootState) => ({
+const mapStateToProps = ({ transactions, connections }: RootState) => ({
   isLastPage: transactions.isLastPage,
   isLoading: transactions.isLoading,
   operations: transactions.transactionOperations,
+  currency: connections.currentCurrency,
 })
 
 const mapDispatchToProps = {
@@ -26,15 +27,21 @@ class TransactionsPresentation extends React.Component<Props> {
     if (this.props.operations.length === 0) {
       return <EmptyTransactions />
     }
-    return this.groupByDate()
+    return this.groupOperationsByDate()
   }
 
-  groupByDate = () =>
+  groupOperationsByDate = () =>
     Object.entries(this.groupOperations()).map(([date, ops]) => (
-      <div key={date}>
+      <React.Fragment key={date}>
         <h1 className="subtitle">{date}</h1>
-        {ops.map(op => <TransactionCard key={op.operation.id} transactionWithOperation={op} />)}
-      </div>
+        {ops.map(op => (
+          <TransactionCard
+            key={op.operation.id}
+            transactionWithOperation={op}
+            currency={this.props.currency}
+          />
+        ))}
+      </React.Fragment>
     ))
 
   groupOperations = (): { [date: string]: TransactionOperationView[] } =>
