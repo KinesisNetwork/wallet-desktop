@@ -25,7 +25,7 @@ export function configureStore(history: History) {
 
   const reducerWhitelist = ['payees', 'connections']
   const persistedReducer = IS_DEV
-    ? persistReducer({ key: 'dev', storage, blacklist: ['transactions'] }, fullReducer)
+    ? persistReducer({ key: 'dev', storage, blacklist: ['transactions', 'wallet'] }, fullReducer)
     : persistReducer({ key: 'root', storage, whitelist: reducerWhitelist }, fullReducer)
 
   const w = window as any

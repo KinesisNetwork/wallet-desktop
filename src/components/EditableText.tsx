@@ -15,7 +15,7 @@ export class EditableText extends React.Component<EditableProps> {
     return (
       <div className={this.controlClasses()}>
         <input
-          style={{textTransform: 'initial'}}
+          style={{ textTransform: 'initial' }}
           className={this.inputClasses() + (isLarge ? ' is-large' : '')}
           value={this.props.value}
           onChange={this.props.onChangeHandler}
@@ -23,8 +23,8 @@ export class EditableText extends React.Component<EditableProps> {
           onClick={this.onClick}
         />
         {!this.props.isEditing && (
-          <span className="icon is-right" style={isLarge ? {fontSize: '24px'} : {}}>
-            <i className="fa fa-edit" />
+          <span className="icon is-right" style={isLarge ? { fontSize: '24px' } : {}}>
+            <i className="fal fa-edit" />
           </span>
         )}
       </div>
