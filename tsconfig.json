@@ -55,6 +55,9 @@
       "@reducers/*": [
         "store/reducers/*"
       ],
+      "@images/*": [
+        "images/*"
+      ],
       "@icons/*": [
         "icons/*"
       ]

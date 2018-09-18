@@ -5,7 +5,7 @@ import { RootState } from '@store'
 import { HasAccount } from './HasAccount'
 import { NoAccount } from './NoAccount'
 
-import * as logo from 'logo2.svg'
+import * as logo from '@images/logo2.svg'
 
 const mapStateToProps = (state: RootState) => ({
   hasAccount: !!state.wallet.persisted.encryptedPassphrase,
