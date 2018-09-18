@@ -69,70 +69,68 @@ exports[`Sign should render correctly 1`] = `
 `;
 
 exports[`SignForm renders correctly 1`] = `
-<div>
-  <form
-    onSubmit={[Function]}
+<form
+  onSubmit={[Function]}
+>
+  <InputField
+    helpText="Enter the text to sign"
+    id="signdata-message"
+    label="Message"
+    onChangeHandler={[Function]}
+    value=""
+  />
+  <div
+    className="field is-grouped"
   >
-    <InputField
-      helpText="Enter the text to sign"
-      id="signdata-message"
-      label="Message"
-      onChangeHandler={[Function]}
-      value=""
-    />
+    <div
+      className="control is-expanded"
+    >
+      <button
+        className="button is-fullwidth is-primary is-outlined"
+        type="submit"
+      >
+        Sign
+      </button>
+    </div>
+  </div>
+  <div
+    className="field"
+  >
+    <label
+      className="label is-small"
+    >
+      Signature
+    </label>
     <div
       className="field is-grouped"
     >
       <div
         className="control is-expanded"
       >
+        <input
+          className="input"
+          disabled={true}
+          readOnly={true}
+          value=""
+        />
+      </div>
+      <div
+        className="control"
+      >
         <button
-          className="button is-fullwidth is-primary is-outlined"
-          type="submit"
+          className="button"
+          disabled={true}
+          onClick={[Function]}
+          type="button"
         >
-          Sign
+          <span>
+            Copy
+          </span>
         </button>
       </div>
     </div>
-    <div
-      className="field"
-    >
-      <label
-        className="label is-small"
-      >
-        Signature
-      </label>
-      <div
-        className="field is-grouped"
-      >
-        <div
-          className="control is-expanded"
-        >
-          <input
-            className="input"
-            disabled={true}
-            readOnly={true}
-            value=""
-          />
-        </div>
-        <div
-          className="control"
-        >
-          <button
-            className="button"
-            disabled={true}
-            onClick={[Function]}
-            type="button"
-          >
-            <span>
-              Copy
-            </span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </form>
-</div>
+  </div>
+</form>
 `;
 
 exports[`VerifyForm renders correctly 1`] = `
