@@ -3,7 +3,7 @@ import * as React from 'react'
 import { AccountDashboard } from '@components/AccountDashboard'
 import { Onboarding } from '@containers/Onboarding'
 import { Sign } from '@containers/Sign'
-import { TransferCurrency } from '@containers/TransferCurrency'
+import { ConfirmationPage, TransactionPage } from '@containers/TransferCurrency'
 import { getLoginState } from '@selectors'
 import { RootState } from '@store'
 import { connect } from 'react-redux'
@@ -48,8 +48,8 @@ const AccountPagePresentation: React.SFC<Props> = ({ match, hasOnBoarded }) =>
         <Switch>
           <Route exact={true} path={`${match.path}`} component={AccountDashboard} />
           <Route path={`${match.path}/sign`} component={Sign} />
-          <Route path={`${match.path}/send`} component={TransferCurrency} />
-          <Route path={`${match.path}/confirm`} component={AccountDashboard} />
+          <Route path={`${match.path}/send`} component={TransactionPage} />
+          <Route path={`${match.path}/confirm`} component={ConfirmationPage} />
         </Switch>
       </div>
     </div>
