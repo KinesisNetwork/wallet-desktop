@@ -45,10 +45,49 @@ export const ConfirmationPagePresentation: React.SFC<Props> = ({
               <AddToAddressBook recipientPublicKey='GDJ5YLMOAVKTA74F5QHOMYISQYZFZQMDZD5RPYLUNE6VSHDFCB3GY7LD' />
             </div>
           </section>
-          <section>Summary</section>
+          <section className="section">
+            <div className="columns is-centered">
+              <div className="column is-two-thirds">
+                <div className="has-text-centered content">
+                  <h1 className={`is-size-1 has-text-weight-bold ${
+                    currency === Currency.KAU ? 'has-text-primary' : 'has-text-grey-light'
+                    }`}>
+                    4.50 {currency}
+                  </h1>
+                  <p className="has-text-grey-lighter">
+                    <q>This is a description</q>
+                  </p>
+                </div>
+                <div className="is-divider" />
+                <div className="level">
+                  <div className="level-left">
+                    <div className="level-item has-text-grey-lighter">Transaction fee</div>
+                  </div>
+                  <div className="level-right">
+                    <div className="level-item has-text-primary">0.02025 {currency}</div>
+                  </div>
+                </div>
+                <div className="is-divider" />
+                <section className="field is-grouped is-grouped-right">
+                  <p className="control">
+                    <button
+                      className="button is-primary is-outlined"
+                      onClick={() => null}
+                    >Back</button>
+                  </p>
+                  <p className="control">
+                    <a className="button is-primary" onClick={() => null}>
+                      <span className="icon"><i className="fal fa-arrow-up" /></span>
+                      <span>Confirm</span>
+                    </a>
+                  </p>
+                </section>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
-    </React.Fragment>
+    </React.Fragment >
   )
 
 const ConnectedConfirmationPage = connect(
