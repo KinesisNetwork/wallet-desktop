@@ -5,13 +5,14 @@ import { connect } from 'react-redux'
 import * as kagLogo from '@icons/kag-icon.svg'
 import * as kauLogo from '@icons/kau-icon.svg'
 
-import { getInitials } from '@helpers/walletName'
+import { getInitials } from '@helpers/walletUtils'
+import { AddToAddressBook } from './AddToAddressBook'
 
 import { Currency } from '@types'
 
 const mapStateToProps = (state: RootState) => ({
   currency: state.connections.currentCurrency,
-  walletName: state.wallet.persisted.walletName
+  walletName: state.wallet.persisted.walletName,
 })
 
 type Props = ReturnType<typeof mapStateToProps>
@@ -22,7 +23,7 @@ export const ConfirmationPagePresentation: React.SFC<Props> = ({
 }) => (
     <React.Fragment>
       <div className="columns is-mobile is-centered">
-        <div className="column is-half">
+        <div className="column is-three-fifths">
           <section className="section has-centered">
             <div className="level">
               <div className="level-item">
@@ -43,19 +44,12 @@ export const ConfirmationPagePresentation: React.SFC<Props> = ({
                 <div className="level">
                   <div className="level-left">
                     <div className="level-item">
-                      <div
-                        className="image is-32x32 has-background-grey level-item"
-                        style={{ borderRadius: '100px' }}
-                      >
-                        <span className="has-text-grey-light">
-                          {getInitials(walletName)}
-                        </span>
+                      <div className="image is-32x32 has-background-grey level-item" style={{ borderRadius: '100px' }}>
+                        <span className="has-text-grey-light">{getInitials(walletName)}</span>
                       </div>
                     </div>
                     <div className="level-item">
-                      <div className="has-text-grey-lighter">
-                        Accountname
-                  </div>
+                      <p className="has-text-grey-lighter">Accountname</p>
                     </div>
                   </div>
                 </div>
@@ -71,29 +65,7 @@ export const ConfirmationPagePresentation: React.SFC<Props> = ({
               </div>
             </div>
             <div className="column is-5">
-              <div className="box">
-                <div className="level">
-                  <div className="level-left">
-                    <div className="level-item">
-                      <div
-                        className="image is-32x32 has-background-grey level-item"
-                        style={{ borderRadius: '100px' }}
-                      >
-                        <span className="has-text-grey-light">
-                          {getInitials(walletName)}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="level-item">
-                      <div className="has-text-grey-lighter">
-                        Accountname
-                  </div>
-                    </div>
-                  </div>
-                </div>
-                <div>save to address book</div>
-                <div>input element</div>
-              </div>
+              <AddToAddressBook addresseePublicKey='GDJ5YLMOAVKTA74F5QHOMYISQYZFZQMDZD5RPYLUNE6VSHDFCB3GY7LD' />
             </div>
           </section>
           <section>Summary</section>

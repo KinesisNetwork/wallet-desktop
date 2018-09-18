@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { changeUnlockPasswordInput, unlockWalletRequest } from '@actions'
 import { InputField } from '@components/InputField'
-import { getInitials } from '@helpers/walletName'
+import { getInitials } from '@helpers/walletUtils'
 import { RootState } from '@store'
 import { RootRoutes } from '@types'
 import { Link } from 'react-router-dom'
