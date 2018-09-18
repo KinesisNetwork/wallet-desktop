@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import { changeUnlockPasswordInput, unlockWalletRequest } from '@actions'
 import { InputField } from '@components/InputField'
+import { getInitials } from '@helpers/walletName'
 import { RootState } from '@store'
 import { RootRoutes } from '@types'
 import { Link } from 'react-router-dom'
@@ -21,12 +22,6 @@ const mapDispatchToProps = {
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
 class HasAccountPresentation extends React.Component<Props> {
-  getInitials(walletName: string): string {
-    const [firstName, surName] = walletName.split(' ')
-    const firstInitial = firstName.charAt(0)
-    const secondInitial = surName ? surName.charAt(0) : ''
-    return `${firstInitial}${secondInitial}`.toUpperCase()
-  }
   render() {
     return (
       <main>
@@ -38,7 +33,7 @@ class HasAccountPresentation extends React.Component<Props> {
                 style={{ borderRadius: '100px' }}
               >
                 <span className="is-size-3 has-text-grey-light">
-                  {this.getInitials(this.props.walletName)}
+                  {getInitials(this.props.walletName)}
                 </span>
               </div>
             </div>
