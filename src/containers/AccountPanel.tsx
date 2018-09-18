@@ -17,7 +17,7 @@ const mapDispatchToProps = { showNotification, updateAccountName }
 
 type Props = typeof mapDispatchToProps & ReturnType<typeof mapStateToProps>
 
-class AccountPanelComponent extends React.Component<Props, { isToggled: boolean, copied: boolean, isEditing: boolean, name: string }> {
+export class AccountPanelComponent extends React.Component<Props, { isToggled: boolean, copied: boolean, isEditing: boolean, name: string }> {
   constructor(props) {
     super(props)
     this.state = { isToggled: false, copied: false, isEditing: false, name: this.props.activeAccount.name }
@@ -25,10 +25,17 @@ class AccountPanelComponent extends React.Component<Props, { isToggled: boolean,
 
   public toggleAdvanced = () => this.setState({isToggled: !this.state.isToggled})
 
+  public onChange = (ev) => this.setState({name: ev.target.value})
+
   public onStopEditing = () => {
     const existingAccountWithName = this.props.accountNames.find(name => this.state.name === name)
     if (existingAccountWithName && this.props.activeAccount.name !== this.state.name) {
-      // Error Notifier
+      this.props.showNotification({type: NotificationType.error, message: 'Account name must be unique'})
+      return
+    }
+
+    if (this.props.activeAccount.name === this.state.name) {
+      return
     }
 
     this.setState({isEditing: !this.state.isEditing})
@@ -48,7 +55,7 @@ class AccountPanelComponent extends React.Component<Props, { isToggled: boolean,
                     <EditableText
                       isEditing={this.state.isEditing}
                       value={this.state.name}
-                      onChangeHandler={(ev) => this.setState({name: ev.target.value})}
+                      onChangeHandler={this.onChange}
                       onStartEditing={() => this.setState({isEditing: !this.state.isEditing})}
                       onStopEditing={this.onStopEditing}
                       opts={{isLarge: true}}

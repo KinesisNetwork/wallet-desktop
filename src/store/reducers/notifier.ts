@@ -30,8 +30,6 @@ export const notifier = combineReducers<NotificationState, RootAction>({
     switch (action.type) {
       case getType(showNotification):
         return action.payload.message
-      case getType(clearNotification):
-        return ''
       default:
         return state
     }
