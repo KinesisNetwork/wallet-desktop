@@ -1,18 +1,21 @@
 import * as React from 'react'
+import { NavLink } from 'react-router-dom'
+
+import { RootRoutes } from '@types'
 
 let logo
 if (process.env.IS_WEB) {
-  logo = require('../Kinesis_Alpha.svg')
+  logo = require('../icons/png/64x64.png')
 }
 
 export const Sidebar: React.SFC = () => (
   <aside className="sidebar tile is-ancestor vertical-spaced">
     <div className="sidebar-upper tile">
       <div className="tile is-vertical">
-        <div className="sidebar-heading tile is-parent is-vertical">
-          <div className="tile is-child">
-            <img src={logo ? logo : './Kinesis_Alpha.svg'} className="sidebar-logo" alt="Logo alpha" />
-            <p className="has-text-primary has-text-centered">
+        <div className="sidebar-header tile is-parent is-vertical">
+          <div className="tile is-child has-text-centered">
+            <img src={logo ? logo : './icons/png/64x64.png'} className="sidebar-logo" alt="Logo alpha" />
+            <p className="has-text-primary">
               100.00 KINESIS
             </p>
           </div>
@@ -29,46 +32,46 @@ export const Sidebar: React.SFC = () => (
               <div className="dropdown-menu is-paddingless" id="dropdown-menu" role="menu">
                 <div className="dropdown-content is-paddingless">
                   <div className="dropdown-item is-paddingless is-active">
-                    <span className="button is-radiusless is-fullwidth is-shadowless">
+                    <a className="button is-radiusless is-fullwidth is-shadowless">
                       <span className="icon">
                         <i className="fal fa-lg fa-check-circle" />
                       </span>
                       <span>Account 1</span>
-                    </span>
-                  </div>
-                  <div className="dropdown-item is-paddingless is-active">
-                    <span className="button is-radiusless is-fullwidth is-shadowless">
-                      <span className="icon" />
-                      <span>Account 2</span>
-                    </span>
+                    </a>
                   </div>
                   <div className="dropdown-item is-paddingless">
-                    <span className="button is-radiusless is-fullwidth is-shadowless">
+                    <a className="button is-radiusless is-fullwidth is-shadowless">
+                      <span className="icon" />
+                      <span>Account 2</span>
+                    </a>
+                  </div>
+                  <div className="dropdown-item is-paddingless">
+                    <a className="button is-radiusless is-fullwidth is-shadowless">
                       <span className="icon" />
                       <span>Account 3</span>
-                    </span>
+                    </a>
                   </div>
                   
                   <hr className="dropdown-divider is-marginless" />
                   
                   <div className="dropdown-item is-paddingless">
-                    <span className="button is-radiusless is-fullwidth is-shadowless">
+                    <a className="button is-radiusless is-fullwidth is-shadowless">
                       <span className="icon">
                         <i className="fal fa-lg fa-plus-circle" />
                       </span>
                       <span>Add Account</span>
-                    </span>
+                    </a>
                   </div>
                   
                   <hr className="dropdown-divider is-marginless" />
                   
                   <div className="dropdown-item is-paddingless">
-                    <span className="button is-radiusless is-fullwidth is-shadowless">
+                    <a className="button is-radiusless is-fullwidth is-shadowless">
                       <span className="icon">
                         <i className="fal fa-lg fa-download" />
                       </span>
                       <span>Import Account</span>
-                    </span>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -77,42 +80,12 @@ export const Sidebar: React.SFC = () => (
         </div>
         
         <div className="sidebar-list tile is-parent is-vertical">
-          <div className="sidebar-item tile is-child">
-            <a className="button is-radiusless is-fullwidth is-shadowless is-active" href="/portfolio">
-              <div className="icon is-medium">
-                <i className="fal fa-lg fa-chart-pie" />
-              </div>
-              <div>Portfolio</div>
-            </a>
-          </div>
-
-          <div className="sidebar-item tile is-child">
-            <a className="button is-radiusless is-fullwidth is-shadowless" href="/funds">
-              <span className="icon is-medium">
-                <i className="fal fa-lg fa-wallet" />
-              </span>
-              <span>Funds</span>
-            </a>
-          </div>
-
-          <div className="sidebar-item tile is-child">
-            <a className="button is-radiusless is-fullwidth is-shadowless" href="/address-book">
-              <span className="icon is-medium">
-                <i className="fal fa-lg fa-address-book" />
-              </span>
-              <span>Address Book</span>
-            </a>
-          </div>
-
-          <div className="sidebar-item tile is-child">
-            <a className="button is-radiusless is-fullwidth is-shadowless" href="/exchange">
-              <span className="icon is-medium">
-                <i className="fal fa-lg fa-exchange" />
-              </span>
-              <span>Exchange</span>
-            </a>
-          </div>
+          <SidebarItem title="Portfolio" to={RootRoutes.dashboard} icon="chart-pie" />
+          <SidebarItem title="Funds" to="/funds" icon="wallet" />
+          <SidebarItem title="Address Book" to={RootRoutes.addressBook} icon="address-book" />
+          <SidebarItem title="Exchange" to="/exchange" icon="exchange" />
         </div>
+      
       </div>
     </div>
     <div className="sidebar-lower tile is-parent">
@@ -137,4 +110,14 @@ export const Sidebar: React.SFC = () => (
   </aside>
 )
 
-Sidebar.displayName = 'Sidebar'
+const SidebarItem: React.SFC<{ title: string, to: string, icon: string }> = ({ icon, title, to }) => (
+  <div className="sidebar-item tile is-child">
+    <NavLink activeClassName="is-active" className="button is-radiusless is-fullwidth is-shadowless" to={to}>
+      <div className="icon is-medium">
+        <i className={`fal fa-lg fa-${icon}`} />
+      </div>
+      <div>{title}</div>
+    </NavLink>
+  </div>
+
+)
