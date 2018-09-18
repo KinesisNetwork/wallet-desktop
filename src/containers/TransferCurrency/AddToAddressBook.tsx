@@ -1,9 +1,10 @@
 import * as React from 'react'
 
+import { InputField } from '@components/InputField';
 import { cropPublicKey } from '@helpers/walletUtils'
 
 interface AddressBook {
-  addresseePublicKey: string
+  recipientPublicKey: string
 }
 
 export const AddToAddressBook: React.SFC<AddressBook> = (props: AddressBook) => (
@@ -16,16 +17,33 @@ export const AddToAddressBook: React.SFC<AddressBook> = (props: AddressBook) => 
           </div>
         </div>
         <div className="level-item">
-          <p className="has-text-grey-lighter">{cropPublicKey(props.addresseePublicKey)}</p>
+          <p className="has-text-grey-lighter">{cropPublicKey(props.recipientPublicKey)}</p>
         </div>
       </div>
     </div>
     <div className="level">
       <div className="level-left">
-        <div className="level-item">Slider</div>
-        <div className="level-item">Save to Address Book</div>
+        <div className="field">
+          <input
+            id="switchRoundedSuccess"
+            type="checkbox"
+            name="switchRoundedSuccess"
+            className="switch is-rounded is-success"
+            checked={true}
+          />
+          <label>Save to Address Book</label>
+        </div>
       </div>
     </div>
-    <div>input element</div>
+    <div className="level">
+      <InputField
+        id='address-book-name'
+        label='Name'
+        onChangeHandler={() => null}
+        value=''
+        placeholder='Recipient name'
+        icon='fa-user-circle'
+      />
+    </div>
   </div>
 )

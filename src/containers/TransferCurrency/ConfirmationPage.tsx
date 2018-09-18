@@ -5,10 +5,9 @@ import { connect } from 'react-redux'
 import * as kagLogo from '@icons/kag-icon.svg'
 import * as kauLogo from '@icons/kau-icon.svg'
 
-import { getInitials } from '@helpers/walletUtils'
-import { AddToAddressBook } from './AddToAddressBook'
-
+import { FromAccountHolder } from '@containers/TransferCurrency/FromAccountHolder';
 import { Currency } from '@types'
+import { AddToAddressBook } from './AddToAddressBook'
 
 const mapStateToProps = (state: RootState) => ({
   currency: state.connections.currentCurrency,
@@ -38,34 +37,12 @@ export const ConfirmationPagePresentation: React.SFC<Props> = ({
               </div>
             </div>
           </section>
-          <section className="columns is-vcentered">
-            <div className="column is-5">
-              <div className="box">
-                <div className="level">
-                  <div className="level-left">
-                    <div className="level-item">
-                      <div className="image is-32x32 has-background-grey level-item" style={{ borderRadius: '100px' }}>
-                        <span className="has-text-grey-light">{getInitials(walletName)}</span>
-                      </div>
-                    </div>
-                    <div className="level-item">
-                      <p className="has-text-grey-lighter">Accountname</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="column is-2">
-              <div className="level">
-                <div className="level-item">
-                  <span className="has-text-grey-lighter is-size-2">
-                    <i className="fal fa-arrow-circle-right" />
-                  </span>
-                </div>
-              </div>
+          <section className="columns">
+            <div className="column is-7">
+              <FromAccountHolder walletName={walletName} />
             </div>
             <div className="column is-5">
-              <AddToAddressBook addresseePublicKey='GDJ5YLMOAVKTA74F5QHOMYISQYZFZQMDZD5RPYLUNE6VSHDFCB3GY7LD' />
+              <AddToAddressBook recipientPublicKey='GDJ5YLMOAVKTA74F5QHOMYISQYZFZQMDZD5RPYLUNE6VSHDFCB3GY7LD' />
             </div>
           </section>
           <section>Summary</section>
