@@ -6,17 +6,13 @@ import * as React from 'react'
 import '../../setupTests'
 
 describe.only('AccountPanel', () => {
-  let props
-
-  beforeEach(() => {
-    props = {
-      activeAccount: {
-        name: 'b',
-        keypair: Keypair.random()
-      },
-      accountNames: ['a', 'b', 'c'],
-    }
-  })
+  const props = {
+    activeAccount: {
+      name: 'b',
+      keypair: Keypair.random()
+    },
+    accountNames: ['a', 'b', 'c'],
+  }
 
   it('throws an error action if the name already exists on another account', () => {
     const showNotification = jest.fn()
@@ -29,8 +25,8 @@ describe.only('AccountPanel', () => {
     instance.onChange({target: {value: 'c'}})
     instance.onStopEditing()
 
-    expect(showNotification.mock.calls.length).toBe(1)
-    expect(updateAccountName.mock.calls.length).toBe(0)
+    expect(showNotification).toHaveBeenCalled()
+    expect(updateAccountName).not.toHaveBeenCalled()
     expect(showNotification).toBeCalledWith({message: 'Account name must be unique', type: NotificationType.error})
   })
 
@@ -45,8 +41,8 @@ describe.only('AccountPanel', () => {
     instance.onChange({target: {value: 'b'}})
     instance.onStopEditing()
 
-    expect(showNotification.mock.calls.length).toBe(0)
-    expect(updateAccountName.mock.calls.length).toBe(0)
+    expect(showNotification).not.toHaveBeenCalled()
+    expect(updateAccountName).not.toHaveBeenCalled()
   })
 
   it('dispatches a success banner when the account name is updated correctly', () => {
@@ -60,8 +56,8 @@ describe.only('AccountPanel', () => {
     instance.onChange({target: {value: 'd'}})
     instance.onStopEditing()
 
-    expect(showNotification.mock.calls.length).toBe(1)
-    expect(updateAccountName.mock.calls.length).toBe(1)
+    expect(showNotification).toHaveBeenCalled()
+    expect(updateAccountName).toHaveBeenCalled()
     expect(showNotification).toBeCalledWith({message: 'Account name successfully updated', type: NotificationType.success})
   })
 

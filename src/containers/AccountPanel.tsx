@@ -43,6 +43,8 @@ export class AccountPanelComponent extends React.Component<Props, { isToggled: b
     this.props.showNotification({type: NotificationType.success, message: 'Account name successfully updated'})
   }
 
+  public toggleIsEditing = () => this.setState({isEditing: !this.state.isEditing})
+
   public render() {
     return (
       <div className='section'>
@@ -56,7 +58,7 @@ export class AccountPanelComponent extends React.Component<Props, { isToggled: b
                       isEditing={this.state.isEditing}
                       value={this.state.name}
                       onChangeHandler={this.onChange}
-                      onStartEditing={() => this.setState({isEditing: !this.state.isEditing})}
+                      onStartEditing={this.toggleIsEditing}
                       onStopEditing={this.onStopEditing}
                       opts={{isLarge: true}}
                       />

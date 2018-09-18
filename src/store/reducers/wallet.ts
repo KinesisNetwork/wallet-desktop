@@ -18,13 +18,7 @@ interface WalletState extends WalletLoggedInState {
 }
 
 function accountNameStateChange<T extends BaseAccount>(state: any[], {existingName, newName}: {existingName: string, newName: string}): T[] {
-  const existingAccount = state.find(a => a.name === existingName)
-  const remainingAccounts = state.filter(a => a.name !== existingName)
-  const newAccount = {
-    ...existingAccount,
-    name: newName
-  }
-  return [...remainingAccounts, newAccount]
+  return state.map(a => a.name === existingName ? {...a, name: newName} : a)
 }
 
 const persisted = combineReducers<WalletPersistedState, RootAction>({
