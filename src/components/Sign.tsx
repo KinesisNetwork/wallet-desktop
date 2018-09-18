@@ -97,47 +97,45 @@ export class SignForm extends React.Component<SignProps, State> {
     const { signData, handleSignFormChange, signature } = this.props
     const { copied } = this.state
     return (
-      <div>
-        <form onSubmit={this.signData}>
-          <InputField
-            label="Message"
-            value={signData.message}
-            id="signdata-message"
-            helpText="Enter the text to sign"
-            onChangeHandler={newValue => handleSignFormChange('message', newValue)}
-          />
+      <form onSubmit={this.signData}>
+        <InputField
+          label="Message"
+          value={signData.message}
+          id="signdata-message"
+          helpText="Enter the text to sign"
+          onChangeHandler={newValue => handleSignFormChange('message', newValue)}
+        />
+        <div className="field is-grouped">
+          <div className="control is-expanded">
+            <button className="button is-fullwidth is-primary is-outlined" type="submit">
+              Sign
+            </button>
+          </div>
+        </div>
+        <div className="field">
+          <label className="label is-small">Signature</label>
           <div className="field is-grouped">
             <div className="control is-expanded">
-              <button className="button is-fullwidth is-primary is-outlined" type="submit">
-                Sign
+              <input className="input" value={signature} readOnly={true} disabled={true} />
+            </div>
+            <div className="control">
+              <button
+                type="button"
+                className="button"
+                onClick={this.copySignature}
+                disabled={!signature}
+              >
+                <span>{copied ? 'Copied' : 'Copy'}</span>
+                {copied && (
+                  <span className="icon has-text-success">
+                    <i className="fas fa-check" />
+                  </span>
+                )}
               </button>
             </div>
           </div>
-          <div className="field">
-            <label className="label is-small">Signature</label>
-            <div className="field is-grouped">
-              <div className="control is-expanded">
-                <input className="input" value={signature} readOnly={true} disabled={true} />
-              </div>
-              <div className="control">
-                <button
-                  type="button"
-                  className="button"
-                  onClick={this.copySignature}
-                  disabled={!signature}
-                >
-                  <span>{copied ? 'Copied' : 'Copy'}</span>
-                  {copied && (
-                    <span className="icon has-text-success">
-                      <i className="fas fa-check" />
-                    </span>
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
+        </div>
+      </form>
     )
   }
 }
