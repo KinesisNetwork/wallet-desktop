@@ -49,6 +49,7 @@ const AccountPagePresentation: React.SFC<Props> = ({ match, hasOnBoarded }) =>
           <Route exact={true} path={`${match.path}`} component={AccountDashboard} />
           <Route path={`${match.path}/sign`} component={Sign} />
           <Route path={`${match.path}/send`} component={TransferCurrency} />
+          <Route path={`${match.path}/confirm`} component={AccountDashboard} />
         </Switch>
       </div>
     </div>
