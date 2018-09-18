@@ -1,8 +1,7 @@
+import { CurrencySelector } from '@containers/CurrencySelector'
 import { push } from 'connected-react-router'
 import * as React from 'react'
 import { connect } from 'react-redux'
-
-import { CurrencySelector } from '@containers/CurrencySelector'
 
 import * as kagLogo from '@icons/kag-icon.svg'
 import * as kauLogo from '@icons/kau-icon.svg'
