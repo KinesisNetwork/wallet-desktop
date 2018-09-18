@@ -1,22 +1,40 @@
+import { showNotification, updateAccountName } from '@actions'
 import { EditableText } from '@components/EditableText'
 import { Sign } from '@containers/Sign'
 import { getActiveAccount } from '@selectors'
 import { RootState } from '@store'
+import { NotificationType } from '@types'
 import * as copy from 'copy-to-clipboard'
 import * as React from 'react'
 import { connect } from 'react-redux'
 
 export const mapStateToProps = ({ wallet }: RootState) => ({
   activeAccount: getActiveAccount(wallet),
+  accountNames: wallet.accounts.map(a => a.name)
 })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = { showNotification, updateAccountName }
 
 type Props = typeof mapDispatchToProps & ReturnType<typeof mapStateToProps>
 
-class AccountPanelComponent extends React.Component<Props, { isToggled: boolean, copied: boolean, isEditing: boolean }> {
-  public state = { isToggled: false, copied: false, isEditing: false }
+class AccountPanelComponent extends React.Component<Props, { isToggled: boolean, copied: boolean, isEditing: boolean, name: string }> {
+  constructor(props) {
+    super(props)
+    this.state = { isToggled: false, copied: false, isEditing: false, name: this.props.activeAccount.name }
+  }
+
   public toggleAdvanced = () => this.setState({isToggled: !this.state.isToggled})
+
+  public onStopEditing = () => {
+    const existingAccountWithName = this.props.accountNames.find(name => this.state.name === name)
+    if (existingAccountWithName && this.props.activeAccount.name !== this.state.name) {
+      // Error Notifier
+    }
+
+    this.setState({isEditing: !this.state.isEditing})
+    this.props.updateAccountName({existingName: this.props.activeAccount.name, newName: this.state.name})
+    this.props.showNotification({type: NotificationType.success, message: 'Account name successfully updated'})
+  }
 
   public render() {
     return (
@@ -29,10 +47,10 @@ class AccountPanelComponent extends React.Component<Props, { isToggled: boolean,
                   <div className='level-item'>
                     <EditableText
                       isEditing={this.state.isEditing}
-                      value={this.props.activeAccount.name}
-                      onChangeHandler={() => true}
+                      value={this.state.name}
+                      onChangeHandler={(ev) => this.setState({name: ev.target.value})}
                       onStartEditing={() => this.setState({isEditing: !this.state.isEditing})}
-                      onStopEditing={() => this.setState({isEditing: !this.state.isEditing})}
+                      onStopEditing={this.onStopEditing}
                       opts={{isLarge: true}}
                       />
                   </div>

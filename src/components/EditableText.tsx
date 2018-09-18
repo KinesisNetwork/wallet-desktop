@@ -4,7 +4,7 @@ interface EditableProps {
   isEditing: boolean
   value: string
   onChangeHandler: React.ChangeEventHandler<HTMLInputElement>
-  onStopEditing: React.FocusEventHandler<HTMLInputElement>
+  onStopEditing: () => void
   onStartEditing: React.UIEventHandler<HTMLInputElement>
   opts?: { isLarge: boolean }
 }
@@ -15,6 +15,7 @@ export class EditableText extends React.Component<EditableProps> {
     return (
       <div className={this.controlClasses()}>
         <input
+          style={{textTransform: 'initial'}}
           className={this.inputClasses() + (isLarge ? ' is-large' : '')}
           value={this.props.value}
           onChange={this.props.onChangeHandler}
