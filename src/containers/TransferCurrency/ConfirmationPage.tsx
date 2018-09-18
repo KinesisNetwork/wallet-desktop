@@ -9,18 +9,26 @@ import { AddToAddressBook } from '@containers/TransferCurrency/AddToAddressBook'
 import { FromAccountHolder } from '@containers/TransferCurrency/FromAccountHolder';
 import { TransferSummary } from '@containers/TransferCurrency/TransferSummary'
 import { addMetalColour } from '@helpers/walletUtils'
-import { Currency } from '@types'
+import { Currency, RootRoutes } from '@types'
+import { goBack, replace } from 'connected-react-router';
 
 const mapStateToProps = (state: RootState) => ({
   currency: state.connections.currentCurrency,
   walletName: state.wallet.persisted.walletName,
 })
 
-type Props = ReturnType<typeof mapStateToProps>
+const mapDispatchToProps = {
+  goBackToTransformPage: () => goBack(),
+  confirmAndGoToDashboard: () => replace(RootRoutes.dashboard)
+}
+
+type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
 export const ConfirmationPagePresentation: React.SFC<Props> = ({
   currency,
-  walletName
+  walletName,
+  goBackToTransformPage,
+  confirmAndGoToDashboard
 }) => (
     <React.Fragment>
       <div className="columns is-mobile is-centered">
@@ -75,11 +83,11 @@ export const ConfirmationPagePresentation: React.SFC<Props> = ({
                   <p className="control">
                     <button
                       className="button is-primary is-outlined"
-                      onClick={() => null}
+                      onClick={goBackToTransformPage}
                     >Back</button>
                   </p>
                   <p className="control">
-                    <a className="button is-primary" onClick={() => null}>
+                    <a className="button is-primary" onClick={confirmAndGoToDashboard}>
                       <span className="icon"><i className="fal fa-arrow-up" /></span>
                       <span>Confirm</span>
                     </a>
@@ -94,7 +102,8 @@ export const ConfirmationPagePresentation: React.SFC<Props> = ({
   )
 
 const ConnectedConfirmationPage = connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(ConfirmationPagePresentation)
 
 export { ConnectedConfirmationPage as ConfirmationPage }
