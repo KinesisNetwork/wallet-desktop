@@ -45,6 +45,23 @@ const getAmount = (t: TransactionOperationView) => {
   return t.isIncoming ? amount : amount + Number(t.fee)
 }
 
+const TransactionIcon: React.SFC<{ t: TransactionOperationView }> = ({ t }) =>
+  isTransfer(t.operation) ? (
+    t.isIncoming ? (
+      <span className="icon is-large has-text-success">
+        <i className="fal fa-lg fa-arrow-down" />
+      </span>
+    ) : (
+      <span className="icon is-large has-text-danger">
+        <i className="fal fa-lg fa-arrow-up" />
+      </span>
+    )
+  ) : (
+    <span className="icon is-large has-text-grey-light">
+      <i className="fal fa-lg fa-dash" />
+    </span>
+  )
+
 interface StateProps {
   moreInfoIsHidden: boolean
   toggleMoreInfo: () => any
@@ -62,21 +79,7 @@ const TransactionCard: React.SFC<Props & StateProps> = ({
     >
       <div className="column is-4">
         <div className="is-flex" style={{ alignItems: 'center' }}>
-          {isTransfer(t.operation) ? (
-            t.isIncoming ? (
-              <span className="icon is-large has-text-success">
-                <i className="fal fa-lg fa-arrow-down" />
-              </span>
-            ) : (
-              <span className="icon is-large has-text-danger">
-                <i className="fal fa-lg fa-arrow-up" />
-              </span>
-            )
-          ) : (
-            <span className="icon is-large has-text-grey-light">
-              <i className="fal fa-lg fa-dash" />
-            </span>
-          )}
+          <TransactionIcon t={t} />
           <span className="has-text-weight-bold">
             <AddressView address={getAddress(t)} />
           </span>
@@ -91,14 +94,10 @@ const TransactionCard: React.SFC<Props & StateProps> = ({
         </span>
         <span>{t.date.toTimeString().slice(0, 8)}</span>
       </div>
-      <div className="column is-2">
-        <p
-          className={`${
-            t.isIncoming ? 'has-text-success' : 'has-text-danger'
-          } has-text-weight-bold has-text-right`}
-        >
+      <div className="column is-2 has-text-weight-bold has-text-right">
+        <span className={`has-text-${t.isIncoming ? 'success' : 'danger'}`}>
           {getAmount(t)} {currency}
-        </p>
+        </span>
       </div>
       <div className="column is-1 has-text-right">
         <button className="button is-text" onClick={toggleMoreInfo}>

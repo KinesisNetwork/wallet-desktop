@@ -2,7 +2,6 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 
 import { loadNextTransactionPage } from '@actions'
-// import { Transactions as TransactionsPresentation } from '@components/Transactions'
 import { RootState } from '@store'
 
 import { EmptyTransactions } from '@components/EmptyTransactions'
