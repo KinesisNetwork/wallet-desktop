@@ -74,13 +74,15 @@ export interface FormAlert {
   key: string
 }
 
-export interface PersistedAccount {
+export interface BaseAccount {
   name: string
+}
+
+export interface PersistedAccount extends BaseAccount {
   encryptedSecret: string
 }
 
-export interface WalletAccount {
-  name: string
+export interface WalletAccount extends BaseAccount {
   keypair: Keypair
 }
 
