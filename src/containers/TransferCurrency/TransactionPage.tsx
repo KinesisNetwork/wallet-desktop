@@ -1,11 +1,12 @@
-import { goBack, push } from 'connected-react-router';
+import { goBack, push } from 'connected-react-router'
 import * as React from 'react'
 import { connect } from 'react-redux'
 
 import * as kagLogo from '@icons/kag-icon.svg'
 import * as kauLogo from '@icons/kau-icon.svg'
 
-import { InputField } from '@components/InputField';
+import { InputField } from '@components/InputField'
+import { addMetalColour } from '@helpers/walletUtils'
 import { RootState } from '@store'
 import { Currency, RootRoutes } from '@types'
 
@@ -40,9 +41,7 @@ export const TransactionPagePresentation: React.SFC<Props> = ({
             </div>
             <div className="level">
               <div className="level-item">
-                <h1 className={`title has-text-weight-bold is-uppercase ${
-                  currency === Currency.KAU ? 'has-text-primary' : 'has-text-grey-light'
-                  }`}>
+                <h1 className={`title has-text-weight-bold is-uppercase ${addMetalColour(currency)}`}>
                   Send {currency}
                 </h1>
               </div>
@@ -83,16 +82,14 @@ export const TransactionPagePresentation: React.SFC<Props> = ({
               <p>Transaction fee</p>
               <p>Remaining balance</p>
             </div>
-            <div className={`column has-text-right content ${
-              currency === Currency.KAU ? 'has-text-primary' : 'has-text-grey-light'
-              }`}>
+            <div className={`column has-text-right content ${addMetalColour(currency)}`}>
               <p>0.00 {currency}</p>
               <p>41.1807 {currency}</p>
             </div>
           </section>
           <section className="field is-grouped is-grouped-right">
             <p className="control">
-              <button className="button" onClick={goBackToDashboard}>Cancel</button>
+              <button className="button button is-primary is-outlined" onClick={goBackToDashboard}>Cancel</button>
             </p>
             <p className="control">
               <a className="button is-primary" onClick={goToConfirm}>

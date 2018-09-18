@@ -8,6 +8,7 @@ import * as kagLogo from '@icons/kag-icon.svg'
 import * as kauLogo from '@icons/kau-icon.svg'
 import * as sleeping from 'images/wally-sleeping.svg'
 
+import { addMetalColour } from '@helpers/walletUtils';
 import { RootState } from '@store'
 import { Currency, RootRoutes } from '@types'
 
@@ -36,9 +37,7 @@ const AccountDashboardPresentation: React.SFC<Props> = props => (
       <div className="level">
         <div className="level-item">
           <h1
-            className={`title is-size-2 has-text-weight-bold ${
-              props.currency === Currency.KAU ? 'has-text-primary' : 'has-text-grey-light'
-              }`}
+            className={`title is-size-2 has-text-weight-bold ${addMetalColour(props.currency)}`}
           >{`${props.balance} ${props.currency}`}</h1>
         </div>
       </div>

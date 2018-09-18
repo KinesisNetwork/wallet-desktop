@@ -1,3 +1,5 @@
+import { Currency } from '@types'
+
 export const getInitials = (walletName: string): string => {
   const [firstName, surName] = walletName.split(' ')
   const firstInitial = firstName.charAt(0)
@@ -11,3 +13,6 @@ export const cropPublicKey = (publicKey: string) => {
   return `${firstPart}...${lastPart}`
 }
 
+export const addMetalColour = (currency: string) => {
+  return currency === Currency.KAU ? 'has-text-primary' : 'has-text-grey-light'
+}
