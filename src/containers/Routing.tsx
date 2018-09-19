@@ -1,7 +1,7 @@
 import { AccountPage } from '@components/AccountPage'
 import { ConnectionSettings } from '@components/ConnectionSettings'
 import { Payee } from '@components/Payee'
-import { Sidebar } from '@components/Sidebar'
+import { Sidebar } from '@containers/Sidebar'
 import { WalletCreationScreens } from '@containers/WalletCreation'
 import { WelcomeScreen } from '@containers/WelcomeScreen'
 import { RootState } from '@store'
