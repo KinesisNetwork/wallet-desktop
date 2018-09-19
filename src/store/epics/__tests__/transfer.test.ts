@@ -37,10 +37,12 @@ describe('Transfer epic', () => {
   const memo = 'memo'
   const publicKey = 'public key'
   const privateKey = 'private key'
+  const fee = 'fee'
   const transferPayload = {
     amount,
     memo,
     targetPayee: payee,
+    fee
   }
   const wallet = {
     publicKey,

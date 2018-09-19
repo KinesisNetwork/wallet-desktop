@@ -33,18 +33,26 @@ const mapDispatchToProps = {
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
 export class TransactionPagePresentation extends React.Component<Props> {
-  checkValidAmount = async () => {
+  // checkValidAmount = async () => {
 
-    // if (Number(fee) + Number(this.props.amount) > Number(this.props.balance)) {
-    //   throw new InputError(
-    //     `Transfer amount (including ${fee} fee) is higher than your account balance`,
-    //     'transfer-amount',
-    //   )
-    // } else if (Number(this.props.amount) <= 0) {
-    //   throw new InputError('Transfer amount must be greater than 0', 'transfer-amount')
-    // } else if (!this.props.amount) {
-    //   throw new InputError('Amount is required', 'transfer-amount')
-    // }
+  // if (Number(fee) + Number(this.props.amount) > Number(this.props.balance)) {
+  //   throw new InputError(
+  //     `Transfer amount (including ${fee} fee) is higher than your account balance`,
+  //     'transfer-amount',
+  //   )
+  // } else if (Number(this.props.amount) <= 0) {
+  //   throw new InputError('Transfer amount must be greater than 0', 'transfer-amount')
+  // } else if (!this.props.amount) {
+  //   throw new InputError('Amount is required', 'transfer-amount')
+  // }
+  // }
+
+  calculateRemainingBalance() {
+    return Math.round((this.props.balance - (Number(this.props.amount) + Number(this.props.fee))) * 100000) / 100000
+  }
+
+  getRoundedTransactionFee() {
+    return this.props.amount && this.props.fee ? Math.round(Number(this.props.fee) * 100000) / 100000 : '0'
   }
 
   render() {
@@ -106,8 +114,8 @@ export class TransactionPagePresentation extends React.Component<Props> {
                 <p>Remaining balance</p>
               </div>
               <div className={`column has-text-right content ${addMetalColour(this.props.currency)}`}>
-                <p>{this.props.amount && this.props.fee ? this.props.fee : 0} {this.props.currency}</p>
-                <p>41.1807 {this.props.currency}</p>
+                <p>{this.getRoundedTransactionFee()} {this.props.currency}</p>
+                <p>{this.calculateRemainingBalance()} {this.props.currency}</p>
               </div>
             </section>
             <section className="field is-grouped is-grouped-right">
@@ -115,10 +123,12 @@ export class TransactionPagePresentation extends React.Component<Props> {
                 <button className="button is-text" onClick={this.props.goBackToDashboard}>Cancel</button>
               </p>
               <p className="control">
-                <a className="button is-primary" onClick={this.props.goToConfirm}>
+                <button
+                  className="button is-primary"
+                >
                   <span className="icon"><i className="fal fa-arrow-up" /></span>
                   <span>Send</span>
-                </a>
+                </button>
               </p>
             </section>
           </div>
