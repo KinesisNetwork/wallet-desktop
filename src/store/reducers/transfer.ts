@@ -6,6 +6,7 @@ import {
   transactionRequest,
   transactionSuccess,
   transferRequest,
+  updateFee,
   updateTransferForm,
 } from '@actions'
 import { RootAction } from '@store'
@@ -23,6 +24,7 @@ export const transfer = combineReducers<TransferState, RootAction>({
     amount: handleChange('amount'),
     targetPayee: handleChange('targetPayee'),
     memo: handleChange('memo'),
+    fee: handleChange('fee')
   }),
   isTransferring: (state = false, action) => {
     switch (action.type) {
@@ -47,6 +49,8 @@ function handleChange(name: keyof TransferRequest) {
         return action.payload.field === name ? action.payload.newValue : state
       case getType(addPayee):
         return name === 'targetPayee' ? action.payload.publicKey : state
+      case getType(updateFee):
+        return name === 'fee' ? action.payload : state
 
       case getType(changeWalletView):
       case getType(selectWallet):

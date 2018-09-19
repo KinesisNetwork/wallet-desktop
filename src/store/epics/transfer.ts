@@ -17,9 +17,27 @@ import {
   transactionRequest,
   transactionSuccess,
   transferRequest,
+  updateFee,
+  updateTransferForm,
 } from '@actions'
 import { getActiveAccount } from '@selectors'
+import { getFeeInKinesis } from '@services/kinesis'
 import { RootEpic } from '@store'
+
+export const calculateFee$: RootEpic = (action$, state$, { getCurrentConnection }) =>
+  action$.pipe(
+    filter(isActionOf(updateTransferForm)),
+    filter(({ payload }) => payload.field === 'amount'),
+    withLatestFrom(state$),
+    mergeMap(([action, state]) =>
+      fromPromise(
+        getFeeInKinesis(getCurrentConnection(state.connections), Number(action.payload.newValue))
+      ).pipe(
+        map(updateFee),
+        catchError(err => of(transactionFailed(err))),
+      )
+    )
+  )
 
 export const transferRequest$: RootEpic = (
   action$,

@@ -37,6 +37,7 @@ export interface TransferRequest {
   readonly targetPayee: string
   readonly amount: string
   readonly memo: string
+  readonly fee: string
 }
 
 export interface FormUpdate<T> {

@@ -44,7 +44,7 @@ const AccountDashboardPresentation: React.SFC<Props> = props => (
         <div className="level-item">
           <button
             className="button is-primary is-large"
-            // disabled={props.balance === 0}
+            disabled={props.balance === 0}
             onClick={props.goToSend}
           >
             <span className="icon is-large">

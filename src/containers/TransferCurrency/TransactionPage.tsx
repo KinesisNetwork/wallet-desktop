@@ -106,7 +106,7 @@ export class TransactionPagePresentation extends React.Component<Props> {
                 <p>Remaining balance</p>
               </div>
               <div className={`column has-text-right content ${addMetalColour(this.props.currency)}`}>
-                <p>0 {this.props.currency}</p>
+                <p>{this.props.amount && this.props.fee ? this.props.fee : 0} {this.props.currency}</p>
                 <p>41.1807 {this.props.currency}</p>
               </div>
             </section>
