@@ -1,7 +1,7 @@
-import { initialiseWallet, unlockWalletNew } from '@actions'
+import { initialiseWallet, unlockWalletNew, updateAccountName } from '@actions'
 import { createStorage } from '@services/storage'
 import { RootAction } from '@store'
-import { PersistedAccount, WalletLoggedInState } from '@types'
+import { BaseAccount, PersistedAccount, WalletAccount, WalletLoggedInState } from '@types'
 import { combineReducers } from 'redux'
 import { persistReducer } from 'redux-persist'
 import { getType } from 'typesafe-actions'
@@ -17,6 +17,10 @@ interface WalletState extends WalletLoggedInState {
   persisted: WalletPersistedState
 }
 
+function accountNameStateChange<T extends BaseAccount>(state: any[], {existingName, newName}: {existingName: string, newName: string}): T[] {
+  return state.map(a => a.name === existingName ? {...a, name: newName} : a)
+}
+
 const persisted = combineReducers<WalletPersistedState, RootAction>({
   activeAccount: (state = 0, action) => {
     switch (action.type) {
@@ -30,6 +34,8 @@ const persisted = combineReducers<WalletPersistedState, RootAction>({
     switch (action.type) {
       case getType(initialiseWallet):
         return [action.payload.createdAccount]
+      case getType(updateAccountName):
+        return accountNameStateChange<PersistedAccount>(state, action.payload)
       default:
         return state
     }
@@ -45,6 +51,8 @@ export const wallet = combineReducers<WalletState, RootAction>({
     switch (action.type) {
       case getType(unlockWalletNew):
         return action.payload.accounts
+      case getType(updateAccountName):
+        return accountNameStateChange<WalletAccount>(state, action.payload)
       default:
         return state
     }

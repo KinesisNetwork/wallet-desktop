@@ -55,3 +55,10 @@ export enum WalletCreationModals {
   passwordConfirm,
   encrypting,
 }
+
+export enum NotificationType {
+  info = 'info',
+  warning = 'warning',
+  error = 'danger',
+  success = 'success'
+}

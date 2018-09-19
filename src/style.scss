@@ -1,6 +1,7 @@
 @import "src/_variables.scss";
 
 @import "node_modules/bulma/bulma.sass";
+@import "node_modules/bulma-tooltip/dist/css/bulma-tooltip.sass";
 @import "node_modules/bulma-checkradio/dist/css/bulma-checkradio.sass";
 @import "node_modules/bulma-steps/dist/css/bulma-steps.sass";
 @import 'node_modules/bulma-divider/dist/bulma-divider.sass';
@@ -223,4 +224,25 @@ body {
     transform: perspective(140px) rotateY(180deg);
     opacity: 0;
   }
+}
+
+.expandable {
+  overflow: hidden;
+  transition: all .5s ease-in-out;
+  height: 0;
+}
+
+.inline-button {
+  box-shadow: 0px 0px 0px 0px;
+  border: 0;
+}
+
+.notifier {
+  border-radius: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  transition: visibility 0s linear 0.33s, opacity 0.33s linear;
 }
