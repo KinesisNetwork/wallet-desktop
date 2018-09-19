@@ -82,7 +82,7 @@ export const ConfirmationPagePresentation: React.SFC<Props> = ({
                 <section className="field is-grouped is-grouped-right">
                   <p className="control">
                     <button
-                      className="button is-primary is-outlined"
+                      className="button is-text"
                       onClick={goBackToTransformPage}
                     >Back</button>
                   </p>

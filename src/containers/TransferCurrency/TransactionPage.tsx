@@ -112,7 +112,7 @@ export class TransactionPagePresentation extends React.Component<Props> {
             </section>
             <section className="field is-grouped is-grouped-right">
               <p className="control">
-                <button className="button button is-primary is-outlined" onClick={this.props.goBackToDashboard}>Cancel</button>
+                <button className="button is-text" onClick={this.props.goBackToDashboard}>Cancel</button>
               </p>
               <p className="control">
                 <a className="button is-primary" onClick={this.props.goToConfirm}>
