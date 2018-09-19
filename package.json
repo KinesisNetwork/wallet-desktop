@@ -72,6 +72,7 @@
     }
   },
   "dependencies": {
+    "autotrack": "^2.4.1",
     "bip39": "^2.5.0",
     "bulma": "0.7.1",
     "bulma-checkradio": "^2.1.0",

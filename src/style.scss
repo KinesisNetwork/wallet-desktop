@@ -238,11 +238,9 @@ body {
 }
 
 .notifier {
-  border-radius: 0;
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
+  top: 20px;
+  // right: 20px;
   z-index: 100;
-  transition: visibility 0s linear 0.33s, opacity 0.33s linear;
+  transition: visibility 0s linear 0.33s, opacity 0.33s linear, right 0.33s linear;
 }

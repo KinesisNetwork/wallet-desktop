@@ -9,7 +9,7 @@ import {
 import { PersistedAccount, WalletAccount } from '@types'
 import { REHYDRATE } from 'redux-persist'
 import { merge } from 'rxjs'
-import { filter, map, withLatestFrom } from 'rxjs/operators'
+import { filter, map, mapTo, switchMap, withLatestFrom } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 import { RehydrateAction, RootAction } from '../root-action'
 import { RootEpic } from '../root-epic'
@@ -89,10 +89,18 @@ export const login$: RootEpic = (action$, state$, { decryptWithPassword, getKeyp
 // Is run as a helper when developing
 export const devHelper$: RootEpic = action$ =>
   action$.pipe(
-    filter(isDevRehydrate()),
+    filter(isRehydrate('dev')),
+    filter(action => action.payload && action.payload.passwords.currentInput !== ''),
+    // Wait until both rehydrates
+    switchMap(action =>
+      action$.pipe(
+        filter(isRehydrate('secure')),
+        mapTo(action),
+      ),
+    ),
     map(action => login({ password: action.payload.passwords.currentInput })),
   )
 
-function isDevRehydrate(): (action: RootAction) => action is RehydrateAction {
-  return (action): action is RehydrateAction => action.type === REHYDRATE && action.key === 'dev'
+function isRehydrate(key: string): (action: RootAction) => action is RehydrateAction {
+  return (action): action is RehydrateAction => action.type === REHYDRATE && action.key === key
 }

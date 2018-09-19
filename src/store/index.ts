@@ -20,17 +20,13 @@ export function configureStore(history: History) {
     dependencies: epicDependencies,
   })
 
-  let fullReducer = connectRouter(history)(rootReducer)
+  const fullReducer = connectRouter(history)(rootReducer)
   const storage = createStorage()
 
-  if (IS_DEV) {
-    fullReducer = persistReducer({ key: 'dev', storage }, fullReducer)
-  }
-  const reducerWhitelist = ['payees', 'connections', 'settings']
-  const persistedReducer = persistReducer(
-    { key: 'root', storage, whitelist: reducerWhitelist },
-    fullReducer,
-  )
+  const reducerWhitelist = ['payees', 'connections']
+  const persistedReducer = IS_DEV
+    ? persistReducer({ key: 'dev', storage, blacklist: ['transactions', 'wallet'] }, fullReducer)
+    : persistReducer({ key: 'root', storage, whitelist: reducerWhitelist }, fullReducer)
 
   const w = window as any
   const composeEnhancers = w.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
