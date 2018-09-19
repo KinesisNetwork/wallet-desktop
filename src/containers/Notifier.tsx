@@ -14,7 +14,7 @@ const NotifierComponent: React.SFC<Props> = props => (
     className={`notification notifier is-${props.type} has-text-centered`}
     style={{ opacity: props.visible ? 1 : 0, right: props.visible ? '20px' : '-500px' }}
   >
-    <button className="delete" onClick={props.clearNotification} />
+    <button className="delete" onClick={props.clearNotification} tabIndex={-1} />
     {props.message}
   </div>
 )

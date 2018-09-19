@@ -19,8 +19,9 @@ export class EditableText extends React.Component<EditableProps> {
           className={this.inputClasses() + (isLarge ? ' is-large' : '')}
           value={this.props.value}
           onChange={this.props.onChangeHandler}
-          onBlur={this.props.onStopEditing}
+          onBlur={this.onBlur}
           onClick={this.onClick}
+          onFocus={this.onClick}
         />
         {!this.props.isEditing && (
           <span className="icon is-right" style={isLarge ? { fontSize: '24px' } : {}}>
@@ -30,6 +31,8 @@ export class EditableText extends React.Component<EditableProps> {
       </div>
     )
   }
+
+  private onBlur = () => (this.props.isEditing ? this.props.onStopEditing() : null)
   private onClick = ev => (!this.props.isEditing ? this.props.onStartEditing(ev) : null)
   private inputClasses = () =>
     this.props.isEditing ? 'input has-text-centered' : 'button is-text is-fullwidth has-icons-right'
