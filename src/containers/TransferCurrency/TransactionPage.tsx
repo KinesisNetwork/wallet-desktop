@@ -47,12 +47,15 @@ export class TransactionPagePresentation extends React.Component<Props> {
   // }
   // }
 
-  calculateRemainingBalance() {
-    return Math.round((this.props.balance - (Number(this.props.amount) + Number(this.props.fee))) * 100000) / 100000
+  getRoundedTransactionFee() {
+    if (this.props.amount === '') {
+      return '0'
+    }
+    return this.props.amount && this.props.fee ? Math.round(Number(this.props.fee) * 100000) / 100000 : '0'
   }
 
-  getRoundedTransactionFee() {
-    return this.props.amount && this.props.fee ? Math.round(Number(this.props.fee) * 100000) / 100000 : '0'
+  calculateRemainingBalance() {
+    return Math.round((this.props.balance - (Number(this.props.amount) + Number(this.getRoundedTransactionFee()))) * 100000) / 100000
   }
 
   render() {
