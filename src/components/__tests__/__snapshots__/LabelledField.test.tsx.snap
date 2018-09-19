@@ -24,12 +24,7 @@ exports[`HorizontalLabelledField should render 1`] = `
         style={Object {}}
       >
         <p
-          className="input is-static is-small is-block is-clipped"
-          style={
-            Object {
-              "textOverflow": "ellipsis",
-            }
-          }
+          className="input is-static is-small is-block"
         >
           Test value
         </p>

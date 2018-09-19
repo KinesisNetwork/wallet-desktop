@@ -1,7 +1,7 @@
 import { Transaction } from 'js-kinesis-sdk'
 import { buildAction } from 'typesafe-actions'
 
-import { FormUpdate, TransactionOperationView, TransferRequest } from '@types'
+import { FormUpdate, TransactionLoader, TransferRequest } from '@types'
 
 export const transferRequest = buildAction('TRANSFER_REQUEST').payload<TransferRequest>()
 
@@ -10,7 +10,7 @@ export const updateTransferForm = buildAction('UPDATE_TRANSFER_FORM').payload<
 >()
 
 export const accountTransactionsLoaded = buildAction('ACCOUNT_TRANSACTIONS_LOADED').payload<
-  TransactionOperationView[]
+  TransactionLoader
 >()
 export const loadAccountTransactions = buildAction('LOAD_ACCOUNT_TRANSACTIONS').payload<string>()
 export const loadNextTransactionPage = buildAction('LOAD_NEXT_TRANSACTION_PAGE').empty()

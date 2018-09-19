@@ -1,7 +1,7 @@
 import { Network, Server, TransactionRecord } from 'js-kinesis-sdk'
 import { flatten, get } from 'lodash'
 
-import { Connection, TransactionOperationView } from '@types'
+import { Connection, TransactionLoader, TransactionOperationView } from '@types'
 const STROOPS_IN_ONE_KINESIS = 10000000
 
 export enum OperationErrors {
@@ -66,7 +66,7 @@ export async function getFeeInKinesis(
 export async function getTransactions(
   connection: Connection,
   accountKey: string,
-): Promise<TransactionOperationView[]> {
+): Promise<TransactionLoader> {
   const server = getServer(connection)
   try {
     const transactionPage = await server
@@ -77,9 +77,9 @@ export async function getTransactions(
     const nestedArray = await Promise.all(
       transactionPage.records.map(t => transactionWithOperations(t, accountKey)),
     )
-    return flatten(nestedArray)
+    return { operations: flatten(nestedArray), transactionPage }
   } catch (e) {
-    return []
+    return { operations: [], transactionPage: null }
   }
 }
 
@@ -93,7 +93,7 @@ async function transactionWithOperations(
       operation,
       date: new Date(transaction.created_at),
       fee: (Number(transaction.fee_paid) / STROOPS_IN_ONE_KINESIS).toFixed(5),
-      isIncoming: transaction.source_account === accountKey,
+      isIncoming: transaction.source_account !== accountKey,
       memo: transaction.memo,
       source: transaction.source_account,
     }),

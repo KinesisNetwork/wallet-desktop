@@ -4,20 +4,23 @@ import {
   accountLoadSuccess,
   accountTransactionsLoaded,
   selectConnectedCurrency,
+  unlockWalletNew,
 } from '@actions'
-import { getActiveAccount } from '@selectors'
-import { RootEpic } from '@store'
-import { AccountPage, RootRoutes } from '@types'
+import { getActiveAccount, getLoginState } from '@selectors'
+import { RootEpic, RootState } from '@store'
+import { RootRoutes } from '@types'
 import { from, interval, merge, of } from 'rxjs'
 import {
   catchError,
+  distinctUntilChanged,
   filter,
   map,
-  mergeMap,
+  pluck,
   skipWhile,
   startWith,
   switchMap,
   takeUntil,
+  takeWhile,
   withLatestFrom,
 } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
@@ -35,12 +38,13 @@ export const loadAccount$: RootEpic = (
   )
 
   const accountLoadPoll$ = accountLoadRequest$.pipe(
-    mergeMap(action =>
+    switchMap(action =>
       interval(20000).pipe(
+        takeUntil(invalidatePoll$),
         startWith(0),
         withLatestFrom(state$),
         // Want to skip while not focused on dashboard page
-        skipWhile(([_, state]) => state.accountPage.accountPage !== AccountPage.dashboard),
+        skipWhile(([_, state]) => state.router.location.pathname !== RootRoutes.dashboard),
         switchMap(([_, { connections }]) =>
           merge(
             from(loadAccount(action.payload, getCurrentConnection(connections))).pipe(
@@ -52,7 +56,6 @@ export const loadAccount$: RootEpic = (
             ),
           ),
         ),
-        takeUntil(invalidatePoll$),
       ),
     ),
   )
@@ -60,10 +63,21 @@ export const loadAccount$: RootEpic = (
   return accountLoadPoll$
 }
 
-export const initiateLoadRequest$: RootEpic = (action$, state$) =>
-  action$.pipe(
-    filter(isActionOf([selectConnectedCurrency])),
+export const initiateLoadRequest$: RootEpic = (action$, state$) => {
+  const initiateActions$ = action$.pipe(
+    filter(isActionOf([selectConnectedCurrency, unlockWalletNew])),
+  )
+
+  const stateStarter$ = state$.pipe(
+    takeWhile(state => getLoginState(state.wallet)),
+    pluck<RootState, string>('router', 'location', 'pathname'),
+    filter(path => path === RootRoutes.dashboard),
+    distinctUntilChanged(),
+  )
+
+  return merge(initiateActions$, stateStarter$).pipe(
     withLatestFrom(state$),
     map(([_, state]) => getActiveAccount(state.wallet)),
     map(({ keypair }) => accountLoadRequest(keypair.publicKey())),
   )
+}
