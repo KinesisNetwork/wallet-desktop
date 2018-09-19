@@ -1,7 +1,3 @@
-import { ActionsObservable } from 'redux-observable'
-import { of } from 'rxjs/observable/of'
-import { toArray } from 'rxjs/operators'
-
 import { accountLoadRequest } from '@actions'
 import { loadAccount$ } from '../accounts'
 import { epicTest } from './helpers'
@@ -12,10 +8,6 @@ describe('Accounts epic', () => {
     const connection = 'connection'
     const error = 'error'
     const publicKey = 'public key'
-    const connectionState = {}
-    const store$: any = of(connectionState)
-
-    const action$ = ActionsObservable.from([accountLoadRequest(publicKey)])
 
     it('success', async () => {
       const loadAccount = jest.fn(() => Promise.resolve(account))
