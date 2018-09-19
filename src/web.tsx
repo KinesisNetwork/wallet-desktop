@@ -1,7 +1,13 @@
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+import 'autotrack/lib/plugins/clean-url-tracker'
+import 'autotrack/lib/plugins/event-tracker'
+import 'autotrack/lib/plugins/media-query-tracker'
+import 'autotrack/lib/plugins/page-visibility-tracker'
+import 'autotrack/lib/plugins/url-change-tracker'
 import './fonts/fontawesome-all.min.js'
 import './style.scss'
+
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 
 import { App } from './app'
 
