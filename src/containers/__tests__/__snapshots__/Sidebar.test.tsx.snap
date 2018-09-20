@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SidebarDropdown should render correctly 1`] = `
+<div
+  className="sidebar-dropdown tile is-child"
+>
+  <div
+    className="dropdown "
+  >
+    <span>
+      Test
+    </span>
+  </div>
+</div>
+`;
+
+exports[`SidebarPresentation should render correctly 1`] = `
+<nav
+  className="sidebar tile is-ancestor vertical-spaced"
+>
+  <Component>
+    <div
+      className="sidebar-header tile is-parent is-vertical"
+    >
+      <div
+        className="tile is-child has-text-centered"
+      >
+        <img
+          alt="Logo alpha"
+          className="sidebar-logo"
+          src="./icons/png/64x64.png"
+        />
+        <p
+          className="has-text-primary"
+        >
+          100.00 KINESIS
+        </p>
+      </div>
+      <SidebarDropdown>
+        <Component />
+      </SidebarDropdown>
+    </div>
+    <div
+      className="sidebar-list tile is-parent is-vertical"
+    >
+      <Component
+        icon="wallet"
+        title="My Money"
+        to="/dashboard"
+      />
+      <Component
+        icon="address-book"
+        title="Contacts"
+        to="/address-book"
+      />
+      <Component
+        icon="chart-line"
+        title="Exchange"
+        to="/exchange"
+      />
+    </div>
+  </Component>
+  <Component>
+    <Component
+      hint="settings"
+      icon="sliders-v"
+      to="/settings"
+    />
+    <Component
+      hint="help"
+      icon="question-circle"
+      to="#"
+    />
+    <Component
+      hint="logout"
+      icon="sign-out-alt"
+      to="/dashboard"
+    />
+  </Component>
+</nav>
+`;
