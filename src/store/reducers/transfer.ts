@@ -1,12 +1,14 @@
 import {
   addPayee,
   changeWalletView,
+  insufficientFunds,
   selectWallet,
   transactionFailed,
   transactionRequest,
   transactionSuccess,
   transferRequest,
   updateFee,
+  updateRemainingBalance,
   updateTransferForm,
 } from '@actions'
 import { RootAction } from '@store'
@@ -14,18 +16,44 @@ import { TransferRequest } from '@types'
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 
-export interface TransferState {
-  readonly form: TransferRequest
-  readonly isTransferring: boolean
+type FormErrors = {
+  [key in keyof TransferRequest]?: string
 }
 
+interface FormMeta {
+  readonly remainingBalance: number
+  readonly errors: FormErrors
+}
+
+export interface TransferState {
+  readonly formData: TransferRequest
+  readonly isTransferring: boolean
+  readonly transactionFormText: string
+  readonly formMeta: FormMeta
+}
+
+const formMeta = combineReducers<FormMeta, RootAction>({
+  remainingBalance: (state = 0, action) => {
+    switch (action.type) {
+      case getType(updateRemainingBalance):
+        return action.payload
+      default:
+        return state
+    }
+  },
+  errors: () => {
+    return {}
+  }
+})
+
 export const transfer = combineReducers<TransferState, RootAction>({
-  form: combineReducers<TransferRequest, RootAction>({
+  formData: combineReducers<TransferRequest, RootAction>({
     amount: handleChange('amount'),
     targetPayee: handleChange('targetPayee'),
     memo: handleChange('memo'),
-    fee: handleChange('fee')
+    fee: handleChange('fee'),
   }),
+  formMeta,
   isTransferring: (state = false, action) => {
     switch (action.type) {
       case getType(transferRequest):
@@ -40,6 +68,14 @@ export const transfer = combineReducers<TransferState, RootAction>({
         return state
     }
   },
+  transactionFormText: (state = '', action) => {
+    switch (action.type) {
+      case getType(insufficientFunds):
+        return 'Insufficent funds'
+      default:
+        return state
+    }
+  }
 })
 
 function handleChange(name: keyof TransferRequest) {

@@ -30,7 +30,7 @@ describe('TransferForm', () => {
         payeesList: [payee],
       },
       transfer: {
-        form: { amount: 'formValue1' },
+        formData: { amount: 'formValue1' },
         isTransferring: true,
       },
       wallets: {

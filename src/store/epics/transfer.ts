@@ -1,4 +1,4 @@
-import { of } from 'rxjs'
+import { merge, of } from 'rxjs'
 import { fromPromise } from 'rxjs/observable/fromPromise'
 import {
   catchError,
@@ -18,6 +18,7 @@ import {
   transactionSuccess,
   transferRequest,
   updateFee,
+  updateRemainingBalance,
   updateTransferForm,
 } from '@actions'
 import { getActiveAccount } from '@selectors'
@@ -29,13 +30,20 @@ export const calculateFee$: RootEpic = (action$, state$, { getCurrentConnection 
     filter(isActionOf(updateTransferForm)),
     filter(({ payload }) => payload.field === 'amount'),
     withLatestFrom(state$),
-    mergeMap(([action, state]) =>
-      fromPromise(
-        getFeeInKinesis(getCurrentConnection(state.connections), Number(action.payload.newValue))
-      ).pipe(
-        map(updateFee),
-        catchError(err => of(transactionFailed(err))),
+    mergeMap(([action, state]) => {
+      const amount = Number(action.payload.newValue)
+      const fee$ = fromPromise(
+        getFeeInKinesis(getCurrentConnection(state.connections), amount)
       )
+      const updateFee$ = fee$.pipe(
+          map(updateFee)
+      )
+      const calculateRemainingBalance$ = fee$.pipe(
+        map((fee) => state.accounts.accountInfo.balance - (Number(fee) + amount) ),
+        map(updateRemainingBalance)
+      )
+      return merge(updateFee$, calculateRemainingBalance$)
+    }
     )
   )
 

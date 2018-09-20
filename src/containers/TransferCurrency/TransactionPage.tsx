@@ -2,7 +2,7 @@ import { goBack, push } from 'connected-react-router'
 import * as React from 'react'
 import { connect } from 'react-redux'
 
-import { updateTransferForm } from '@actions'
+import { insufficientFunds, updateRemainingBalance, updateTransferForm } from '@actions'
 
 import * as kagLogo from '@icons/kag-icon.svg'
 import * as kauLogo from '@icons/kau-icon.svg'
@@ -17,10 +17,12 @@ const mapStateToProps = (state: RootState) => {
   const { connections, transfer } = state
 
   return {
-    ...transfer.form,
+    ...transfer.formData,
+    ...transfer.formMeta,
     currency: state.connections.currentCurrency,
     balance: state.accounts.accountInfo.balance,
     connection: getCurrentConnection(connections).endpoint,
+    errorText: transfer.transactionFormText
   }
 }
 
@@ -28,6 +30,8 @@ const mapDispatchToProps = {
   goBackToDashboard: () => goBack(),
   goToConfirm: () => push(RootRoutes.dashboard + '/confirm'),
   updateTransferForm,
+  insufficientFunds,
+  updateRemainingBalance
 }
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
@@ -46,16 +50,8 @@ export class TransactionPagePresentation extends React.Component<Props> {
   //   throw new InputError('Amount is required', 'transfer-amount')
   // }
   // }
-
-  getRoundedTransactionFee() {
-    if (this.props.amount === '') {
-      return '0'
-    }
-    return this.props.amount && this.props.fee ? Math.round(Number(this.props.fee) * 100000) / 100000 : '0'
-  }
-
-  calculateRemainingBalance() {
-    return Math.round((this.props.balance - (Number(this.props.amount) + Number(this.getRoundedTransactionFee()))) * 100000) / 100000
+  componentDidMount() {
+    this.props.updateRemainingBalance(this.props.balance)
   }
 
   render() {
@@ -101,6 +97,7 @@ export class TransactionPagePresentation extends React.Component<Props> {
                 placeholder={`0 ${this.props.currency}`}
                 onChangeHandler={newValue => handleChange({ field: 'amount', newValue })}
                 label='Amount'
+                errorText={this.props.errorText}
               />
               <InputField
                 id='transfer-description'
@@ -117,8 +114,8 @@ export class TransactionPagePresentation extends React.Component<Props> {
                 <p>Remaining balance</p>
               </div>
               <div className={`column has-text-right content ${addMetalColour(this.props.currency)}`}>
-                <p>{this.getRoundedTransactionFee()} {this.props.currency}</p>
-                <p>{this.calculateRemainingBalance()} {this.props.currency}</p>
+                <p>{Number(this.props.fee).toFixed(5) || 0} {this.props.currency}</p>
+                <p>{this.props.remainingBalance.toFixed(5)} {this.props.currency}</p>
               </div>
             </section>
             <section className="field is-grouped is-grouped-right">
