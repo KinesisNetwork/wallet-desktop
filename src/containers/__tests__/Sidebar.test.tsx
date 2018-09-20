@@ -1,13 +1,13 @@
 import { shallow } from 'enzyme'
 import * as React from 'react'
 
-import { Sidebar } from '@containers/Sidebar'
+import { SidebarPresentation } from '@containers/Sidebar'
 import { SidebarDropdown } from '@containers/Sidebar/SidebarDropdown'
 import '../../setupTests'
 
-describe('Sidebar', () => {
+describe('SidebarPresentation', () => {
   it('should render correctly', () => {
-    const wrapper = shallow(<Sidebar />)
+    const wrapper = shallow(<SidebarPresentation />)
 
     expect(wrapper).toMatchSnapshot()
   })

@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 
 import { DropdownDivider } from '@containers/Sidebar/DropdownDivider'
 import { DropdownItem } from '@containers/Sidebar/DropdownItem'
@@ -15,7 +16,7 @@ if (process.env.IS_WEB) {
   logo = require('../../icons/png/64x64.png')
 }
 
-export const Sidebar: React.SFC = () => (
+export const SidebarPresentation: React.SFC = () => (
   <nav className="sidebar tile is-ancestor vertical-spaced">
     <SidebarUpper>
       <div className="sidebar-header tile is-parent is-vertical">
@@ -56,3 +57,5 @@ export const Sidebar: React.SFC = () => (
     </SidebarLower>
   </nav>
 )
+
+export const Sidebar = connect()(SidebarPresentation)

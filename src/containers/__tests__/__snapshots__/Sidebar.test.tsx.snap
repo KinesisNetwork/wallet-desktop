@@ -1,6 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Sidebar should render correctly 1`] = `
+exports[`SidebarDropdown should render correctly 1`] = `
+<div
+  className="sidebar-dropdown tile is-child"
+>
+  <div
+    className="dropdown "
+  >
+    <span>
+      Test
+    </span>
+  </div>
+</div>
+`;
+
+exports[`SidebarPresentation should render correctly 1`] = `
 <nav
   className="sidebar tile is-ancestor vertical-spaced"
 >
@@ -64,18 +78,4 @@ exports[`Sidebar should render correctly 1`] = `
     />
   </Component>
 </nav>
-`;
-
-exports[`SidebarDropdown should render correctly 1`] = `
-<div
-  className="sidebar-dropdown tile is-child"
->
-  <div
-    className="dropdown "
-  >
-    <span>
-      Test
-    </span>
-  </div>
-</div>
 `;
