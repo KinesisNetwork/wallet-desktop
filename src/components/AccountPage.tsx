@@ -15,7 +15,7 @@ const mapStateToProps = (state: RootState) => ({
 
 type Props = RouteComponentProps<any> & ReturnType<typeof mapStateToProps>
 
-const AccountPagePresentation: React.SFC<Props> = ({ match, hasOnBoarded }) =>
+const AccountPagePresentation: React.SFC<Props> = ({ match, hasOnBoarded }) => (
   <React.Fragment>
     {!hasOnBoarded && <Onboarding />}
     <AccountPanel />
@@ -26,6 +26,7 @@ const AccountPagePresentation: React.SFC<Props> = ({ match, hasOnBoarded }) =>
       <Route path={`${match.path}/confirm`} component={ConfirmationPage} />
     </Switch>
   </React.Fragment>
+)
 
 const AccountPage = withRouter(connect(mapStateToProps)(AccountPagePresentation))
 

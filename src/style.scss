@@ -6,6 +6,7 @@
 @import "node_modules/bulma-steps/dist/css/bulma-steps.sass";
 @import 'node_modules/bulma-divider/dist/bulma-divider.sass';
 @import 'node_modules/bulma-switch/dist/css/bulma-switch.sass';
+@import 'styles/sidebar.scss';
 
 @import "src/_overrides.scss";
 @import 'src/_utilities';
@@ -83,13 +84,6 @@ body {
   letter-spacing: 0.45em;
   color: #ffc800;
   padding: 30px 0;
-}
-
-.logo-sidebar {
-  display: block;
-  height: 86px;
-  margin-bottom: 1rem;
-  width: 100%;
 }
 
 .wallet-heading {
@@ -228,8 +222,14 @@ body {
 
 .expandable {
   overflow: hidden;
-  transition: all .5s ease-in-out;
-  height: 0;
+  transition: transform 0.25s ease-in-out;
+  height: auto;
+  transform-origin: top;
+  width: 100%;
+  box-shadow: none;
+  z-index: 100;
+  position: absolute;
+  left: 0;
 }
 
 .inline-button {
@@ -247,4 +247,14 @@ body {
 
 .payee-select.select::after {
   border-color: $grey-lighter !important;
+}
+
+.seedphrase {
+  padding: 0.625em 1em 0.5em 1em;
+  font-size: 24px;
+  font-weight: 400;
+  color: $grey-lighter;
+  min-height: 100px !important;
+  background-color: $grey-dark;
+  cursor: not-allowed;
 }
