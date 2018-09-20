@@ -26,7 +26,6 @@ const mapStateToProps = (state: RootState) => {
     currency: state.connections.currentCurrency,
     balance: state.accounts.accountInfo.balance,
     connection: getCurrentConnection(connections).endpoint,
-    // errorText: transfer.transactionFormText
   }
 }
 
@@ -41,6 +40,10 @@ const mapDispatchToProps = {
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
 export class TransactionPagePresentation extends React.Component<Props> {
+  hasFieldErrors() {
+    const { amount: amountError, memo: memoError } = this.props.errors
+    return this.props.amount === '' || !!amountError || !!memoError
+  }
 
   componentDidMount() {
     this.props.updateRemainingBalance(this.props.balance)
@@ -119,6 +122,7 @@ export class TransactionPagePresentation extends React.Component<Props> {
               <p className="control">
                 <button
                   className="button is-primary"
+                  disabled={this.hasFieldErrors()}
                 >
                   <span className="icon"><i className="fal fa-arrow-up" /></span>
                   <span>Send</span>
