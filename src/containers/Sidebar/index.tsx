@@ -13,7 +13,6 @@ import { SidebarUpper } from '@containers/Sidebar/SidebarUpper'
 import { getActiveAccount } from '@selectors'
 import { RootState } from '@store'
 import { RootRoutes, WalletAccount } from '@types'
-import { RootRoutes } from '@types'
 
 let logo
 if (process.env.IS_WEB) {
