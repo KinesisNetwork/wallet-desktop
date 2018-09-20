@@ -17,22 +17,40 @@ if (process.env.IS_WEB) {
 }
 
 export const SidebarPresentation: React.SFC = () => (
-  <nav className="sidebar tile is-ancestor vertical-spaced">
+  <nav className="sidebar tile is-ancestor is-vertical">
     <SidebarUpper>
       <div className="sidebar-header tile is-parent is-vertical">
         <div className="tile is-child has-text-centered">
-          <img src={logo ? logo : './icons/png/64x64.png'} className="sidebar-logo" alt="Logo alpha" />
+          <img
+            src={logo ? logo : './icons/png/64x64.png'}
+            className="sidebar-logo"
+            alt="Logo alpha"
+          />
           <p className="has-text-primary">100.00 KINESIS</p>
         </div>
-        
+
         <SidebarDropdown>
           {({ isExpanded, handleToggle }) => (
             <React.Fragment>
-              <DropdownTrigger key="trigger" isExpanded={isExpanded} onClick={handleToggle} title="Samuello B" />
+              <DropdownTrigger
+                key="trigger"
+                isExpanded={isExpanded}
+                onClick={handleToggle}
+                title="Samuello B"
+              />
               <DropdownMenu key="menu">
                 {/* Map the available accounts into DropdownItems */}
-                <DropdownItem titleClassName="has-text-weight-bold" title="Account 1" subtitle="$1.00 AUD" isActive={true} />
-                <DropdownItem titleClassName="has-text-weight-bold" title="Account 2" subtitle="$2.00 AUD" />
+                <DropdownItem
+                  titleClassName="has-text-weight-bold"
+                  title="Account 1"
+                  subtitle="$1.00 AUD"
+                  isActive={true}
+                />
+                <DropdownItem
+                  titleClassName="has-text-weight-bold"
+                  title="Account 2"
+                  subtitle="$2.00 AUD"
+                />
                 <DropdownItem titleClassName="has-text-weight-bold" title="Account 3" />
                 <DropdownDivider />
                 <DropdownItem title="Add Account" icon="plus-circle" />
@@ -41,7 +59,7 @@ export const SidebarPresentation: React.SFC = () => (
               </DropdownMenu>
             </React.Fragment>
           )}
-        </SidebarDropdown>            
+        </SidebarDropdown>
       </div>
 
       <div className="sidebar-list tile is-parent is-vertical">
