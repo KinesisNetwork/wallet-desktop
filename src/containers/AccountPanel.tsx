@@ -87,7 +87,7 @@ export class AccountPanelComponent extends React.Component<
               <button className="button is-primary is-outlined" onClick={this.copyPublicKey}>
                 {this.props.activeAccount.keypair.publicKey()}
                 &nbsp;
-                <i className="far fa-copy" />
+                <i className="fal fa-lg fa-copy" />
               </button>
             </div>
             <button
@@ -103,7 +103,7 @@ export class AccountPanelComponent extends React.Component<
                   transform: this.state.isToggled ? 'rotate(180deg)' : '',
                 }}
               >
-                <i className={`fa fa-angle-down`} />
+                <i className={`fal fa-lg fa-angle-down`} />
               </span>
             </button>
           </div>
