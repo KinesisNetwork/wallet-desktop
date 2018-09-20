@@ -48,13 +48,7 @@ const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
     <div className="field">
       <label className="label">Your paper key</label>
       <div className="control">
-        <textarea
-          className="textarea is-large has-text-centered"
-          readOnly={true}
-          value={passphrase}
-          style={{ resize: 'none' }}
-          disabled={true}
-        />
+        <div className="has-text-centered is-unselectable seedphrase">{passphrase}</div>
         <p className="help">Your paper key is not case sensitive</p>
       </div>
     </div>
