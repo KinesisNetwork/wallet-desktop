@@ -12,7 +12,7 @@ import * as kagLogo from '@icons/kag-icon.svg'
 import * as kauLogo from '@icons/kau-icon.svg'
 
 import { InputField } from '@components/InputField'
-import { PayeeField } from '@containers/TransferCurrency/PayeeField';
+import { DropdownField } from '@containers/TransferCurrency/DropdownField';
 import { addMetalColour } from '@helpers/walletUtils'
 import { getCurrentConnection } from '@selectors'
 import { RootState } from '@store'
@@ -40,7 +40,13 @@ const mapDispatchToProps = {
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
-export class TransactionPagePresentation extends React.Component<Props> {
+interface State {
+  isDropdownField: boolean
+}
+
+export class TransactionPagePresentation extends React.Component<Props, State> {
+  state = { isDropdownField: true }
+
   hasFieldErrors() {
     const { amount: amountError, memo: memoError } = this.props.errors
     return this.props.amount === '' || !!amountError || !!memoError
@@ -76,7 +82,7 @@ export class TransactionPagePresentation extends React.Component<Props> {
                 <div className={`level-item title is-size-3 has-text-weight-semibold ${
                   addMetalColour(this.props.currency)
                   }`}>
-                  {this.props.balance} Available
+                  {this.props.balance.toFixed(5)} Available
               </div>
               </div>
             </section>
@@ -88,7 +94,7 @@ export class TransactionPagePresentation extends React.Component<Props> {
                 onChangeHandler={() => null}
                 label='To'
               /> */}
-              <PayeeField isDropdown={true} />
+              <DropdownField isDropdownField={this.state.isDropdownField} />
               <InputField
                 id='transfer-amount'
                 value={this.props.amount}
@@ -114,7 +120,7 @@ export class TransactionPagePresentation extends React.Component<Props> {
               </div>
               <div className={`column has-text-right content ${addMetalColour(this.props.currency)}`}>
                 <p>{Number(this.props.fee).toFixed(5) || 0} {this.props.currency}</p>
-                <p>{this.props.remainingBalance.toFixed(5)} {this.props.currency}</p>
+                <p className={`${this.props.remainingBalance < 0 ? 'has-text-danger' : ''}`}>{this.props.remainingBalance.toFixed(5)} {this.props.currency}</p>
               </div>
             </section>
             <section className="field is-grouped is-grouped-right">
