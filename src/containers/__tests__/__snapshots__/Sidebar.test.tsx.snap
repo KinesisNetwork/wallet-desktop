@@ -16,7 +16,7 @@ exports[`SidebarDropdown should render correctly 1`] = `
 
 exports[`SidebarPresentation should render correctly 1`] = `
 <nav
-  className="sidebar tile is-ancestor vertical-spaced"
+  className="sidebar tile is-ancestor is-vertical"
 >
   <Component>
     <div
