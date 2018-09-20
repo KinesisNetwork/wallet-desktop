@@ -71,56 +71,58 @@ export class AccountPanelComponent extends React.Component<
 
   public render() {
     return (
-      <div className="section">
-        <div className="container">
-          <div className="card" style={{ borderRadius: '5px' }}>
-            <div className="card-content">
-              <div className="has-text-centered">
-                <div className="level">
-                  <div className="level-item">
-                    <EditableText
-                      isEditing={this.state.isEditing}
-                      value={this.state.name}
-                      onChangeHandler={this.onChange}
-                      onStartEditing={this.toggleIsEditing}
-                      onStopEditing={this.onStopEditing}
-                      opts={{ isLarge: true }}
-                    />
-                  </div>
-                </div>
-                <div style={{ position: 'relative' }}>
-                  <div
-                    className="tooltip is-tooltip-top"
-                    data-tooltip={this.state.copied ? 'Copied!' : 'Copy Public Address'}
-                  >
-                    <button className="button is-primary is-outlined" onClick={this.copyPublicKey}>
-                      {this.props.activeAccount.keypair.publicKey()}
-                      &nbsp;
-                      <i className="far fa-copy" />
-                    </button>
-                  </div>
-                  <button
-                    className="button inline-button"
-                    style={{ position: 'absolute', right: 0, bottom: 0 }}
-                    onClick={this.toggleAdvanced}
-                  >
-                    <span>Advanced</span>
-                    <span
-                      className={`icon is-small ${this.state.isToggled === false && 'is-hidden'}`}
-                    >
-                      <i className="fa fa-angle-up" />
-                    </span>
-                    <span className={`icon is-small ${this.state.isToggled && 'is-hidden'}`}>
-                      <i className="fa fa-angle-down" />
-                    </span>
-                  </button>
-                </div>
-              </div>
-              <div className="expandable" style={{ height: this.state.isToggled ? '400px' : '0' }}>
-                <Sign />
-              </div>
+      <div className="box has-background-grey" style={{ position: 'relative' }}>
+        <div className="has-text-centered">
+          <div className="level">
+            <div className="level-item">
+              <EditableText
+                isEditing={this.state.isEditing}
+                value={this.state.name}
+                onChangeHandler={this.onChange}
+                onStartEditing={this.toggleIsEditing}
+                onStopEditing={this.onStopEditing}
+                opts={{ isLarge: true }}
+              />
             </div>
           </div>
+          <div style={{ position: 'relative' }}>
+            <div
+              className="tooltip is-tooltip-top"
+              data-tooltip={this.state.copied ? 'Copied!' : 'Copy Public Address'}
+            >
+              <button
+                className="button is-primary is-outlined has-icons-right"
+                onClick={this.copyPublicKey}
+              >
+                <span>{this.props.activeAccount.keypair.publicKey()}</span>
+                <span className="icon is-right">
+                  <i className="fal  fa-copy" />
+                </span>
+              </button>
+            </div>
+            <button
+              className="button is-inline-flex is-text"
+              style={{ position: 'absolute', right: 0, bottom: 0 }}
+              onClick={this.toggleAdvanced}
+            >
+              <span>Advanced</span>
+              <span
+                className={`icon is-small`}
+                style={{
+                  transition: 'transform .25s ease-in-out',
+                  transform: this.state.isToggled ? 'rotate(180deg)' : '',
+                }}
+              >
+                <i className={`fal fa-lg fa-angle-down`} />
+              </span>
+            </button>
+          </div>
+        </div>
+        <div
+          className="expandable box has-background-grey"
+          style={{ transform: this.state.isToggled ? 'scaleY(1)' : 'scaleY(0)' }}
+        >
+          <Sign />
         </div>
       </div>
     )

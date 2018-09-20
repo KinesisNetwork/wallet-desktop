@@ -13,6 +13,7 @@ import { SidebarUpper } from '@containers/Sidebar/SidebarUpper'
 import { getActiveAccount } from '@selectors'
 import { RootState } from '@store'
 import { RootRoutes, WalletAccount } from '@types'
+import { RootRoutes } from '@types'
 
 let logo
 if (process.env.IS_WEB) {
@@ -47,7 +48,7 @@ export class SidebarPresentation extends React.Component<Props> {
 
   render() {
     return (
-      <nav className="sidebar tile is-ancestor vertical-spaced">
+      <nav className="sidebar tile is-ancestor is-vertical">
         <SidebarUpper>
           <div className="sidebar-header tile is-parent is-vertical">
             <div className="tile is-child has-text-centered">

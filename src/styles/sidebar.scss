@@ -1,4 +1,15 @@
+.sidebar-wrapper {
+  background-color: $grey-dark;
+  margin-top: 12;
+  min-width: 192px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  bottom: 0;
+}
+
 .sidebar {
+  height: 100%;
   .button {
     height: 3.5rem;
     text-transform: none;
@@ -41,7 +52,11 @@
       transform: rotate(180deg);
     }
   }
-  
+<<<<<<< HEAD
+
+=======
+
+>>>>>>> ad71084e68eeb36b413c0b9d8eddbc092a1da57f
   .dropdown-button.button {
     background: none;
     box-shadow: 0px 2px 4px 0 rgba(0,0,0,0.5);
@@ -49,7 +64,11 @@
     justify-content: space-between;
     z-index: 10;
   }
-  
+<<<<<<< HEAD
+
+=======
+
+>>>>>>> ad71084e68eeb36b413c0b9d8eddbc092a1da57f
   .dropdown-menu {
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16), 0 3px 4px 0 rgba(0,0,0,0.16), 0 1px 5px 0 rgba(0,0,0,0.16);
   }
@@ -57,7 +76,11 @@
   .dropdown-item {
     .button {
       justify-content: flex-start;
-      
+<<<<<<< HEAD
+
+=======
+
+>>>>>>> ad71084e68eeb36b413c0b9d8eddbc092a1da57f
       &:hover {
         color: $grey-lighter;
         background-color: $grey-darker;
@@ -87,7 +110,11 @@
 
 .sidebar-list {
   margin-top: -5px;
-  
+<<<<<<< HEAD
+
+=======
+
+>>>>>>> ad71084e68eeb36b413c0b9d8eddbc092a1da57f
   .sidebar-item {
     &:first-child .button {
       margin-top: -0.4rem;
@@ -127,4 +154,8 @@
   &:hover.button {
     background: none;
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ad71084e68eeb36b413c0b9d8eddbc092a1da57f

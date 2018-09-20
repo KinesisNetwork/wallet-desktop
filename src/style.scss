@@ -227,8 +227,14 @@ body {
 
 .expandable {
   overflow: hidden;
-  transition: all .5s ease-in-out;
-  height: 0;
+  transition: transform 0.25s ease-in-out;
+  height: auto;
+  transform-origin: top;
+  width: 100%;
+  box-shadow: none;
+  z-index: 100;
+  position: absolute;
+  left: 0;
 }
 
 .inline-button {
