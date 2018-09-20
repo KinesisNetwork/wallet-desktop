@@ -5,28 +5,27 @@ interface Props {
 }
 
 export const PayeeFieldPresentation: React.SFC<Props> = () => (
-  <div className="field is-grouped">
+  <React.Fragment>
     <label className="label is-small">To</label>
-    <div className="dropdown">
-      <div className="dropdown-trigger">
-        <button className="button" aria-haspopup="true" aria-controls="dropdown-menu">
-          <span>Dropdown</span>
-          <span className="icon is-small">
-            <i className="fal fa-angle-down" />
-          </span>
-        </button>
-      </div>
-      <div className="dropdown-menu" id="dropdown-menu" role="menu">
-        <div className="dropdown-context">
-          <a href="#" className="dropdown-item">Name 1</a>
-          <a href="#" className="dropdown-item">Name 2</a>
-          <a href="#" className="dropdown-item">Name 3</a>
+    <div className="field is-grouped">
+      <div className="control is-expanded">
+        <div className="select is-fullwidth payee-select">
+          <select className="has-text-grey">
+            <option>Select a contact</option>
+            <option>Name 1</option>
+            <option>Name 2</option>
+            <option>Name 3</option>
+          </select>
         </div>
       </div>
+      <div className="control is-flex">
+        <span className="is-uppercase is-size-7 has-text-grey-lighter" style={{ alignSelf: 'center' }}>or</span>
+      </div>
+      <div className="control">
+        <button className="button is-primary">Add new</button>
+      </div>
     </div>
-    <span className="is-uppercase is-size-7">or</span>
-    <button className="button">Add new</button>
-  </div>
+  </React.Fragment>
 
 )
 

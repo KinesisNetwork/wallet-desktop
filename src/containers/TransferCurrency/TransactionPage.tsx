@@ -12,6 +12,7 @@ import * as kagLogo from '@icons/kag-icon.svg'
 import * as kauLogo from '@icons/kau-icon.svg'
 
 import { InputField } from '@components/InputField'
+import { PayeeField } from '@containers/TransferCurrency/PayeeField';
 import { addMetalColour } from '@helpers/walletUtils'
 import { getCurrentConnection } from '@selectors'
 import { RootState } from '@store'
@@ -80,13 +81,14 @@ export class TransactionPagePresentation extends React.Component<Props> {
               </div>
             </section>
             <form className="field">
-              <InputField
+              {/* <InputField
                 id='transfer-to'
                 value=''
                 placeholder='Recipient Address'
                 onChangeHandler={() => null}
                 label='To'
-              />
+              /> */}
+              <PayeeField isDropdown={true} />
               <InputField
                 id='transfer-amount'
                 value={this.props.amount}
