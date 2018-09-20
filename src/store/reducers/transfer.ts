@@ -42,6 +42,7 @@ const formMeta = combineReducers<FormMeta, RootAction>({
   },
   errors: combineReducers<FormErrors, RootAction>({
     amount: handleError('amount'),
+    memo: handleError('memo')
   })
 })
 
@@ -50,6 +51,9 @@ function handleError(name: keyof FormErrors) {
     switch (action.type) {
       case getType(insufficientFunds):
         return name === 'amount' && action.payload ? 'Insufficient funds' : ''
+      case getType(updateTransferForm):
+        return name === 'memo' && action.payload.newValue.length > 25
+          ? `${action.payload.newValue.length} / 25` : ''
       default:
         return state
     }

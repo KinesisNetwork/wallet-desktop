@@ -2,7 +2,11 @@ import { goBack, push } from 'connected-react-router'
 import * as React from 'react'
 import { connect } from 'react-redux'
 
-import { insufficientFunds, updateRemainingBalance, updateTransferForm } from '@actions'
+import {
+  insufficientFunds,
+  updateRemainingBalance,
+  updateTransferForm
+} from '@actions'
 
 import * as kagLogo from '@icons/kag-icon.svg'
 import * as kauLogo from '@icons/kau-icon.svg'
@@ -31,7 +35,7 @@ const mapDispatchToProps = {
   goToConfirm: () => push(RootRoutes.dashboard + '/confirm'),
   updateTransferForm,
   insufficientFunds,
-  updateRemainingBalance
+  updateRemainingBalance,
 }
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
@@ -90,11 +94,12 @@ export class TransactionPagePresentation extends React.Component<Props> {
               />
               <InputField
                 id='transfer-description'
-                value=''
-                onChangeHandler={() => null}
+                value={this.props.memo}
+                onChangeHandler={newValue => handleChange({ field: 'memo', newValue })}
                 label='Description'
                 placeholder='Optional'
-                helpText='0 / 25'
+                helpText={`${this.props.memo.length || 0} / 25`}
+                errorText={this.props.errors.memo}
               />
             </form>
             <section className="columns">

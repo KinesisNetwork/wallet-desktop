@@ -26,10 +26,10 @@ import { getActiveAccount } from '@selectors'
 import { getFeeInKinesis } from '@services/kinesis'
 import { RootEpic } from '@store'
 
-export const calculateFee$: RootEpic = (action$, state$, { getCurrentConnection }) =>
+export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConnection }) =>
   action$.pipe(
     filter(isActionOf(updateTransferForm)),
-    filter(({ payload }) => payload.field === 'amount'),
+    filter(({ payload: {field} }) => field === 'amount'),
     withLatestFrom(state$),
     mergeMap(([action, state]) => {
       const amount = Number(action.payload.newValue)
