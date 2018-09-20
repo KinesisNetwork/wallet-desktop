@@ -20,5 +20,5 @@ export const transactionSuccess = buildAction('TRANSACTION_SUBMIT_SUCCESS').payl
 export const transactionFailed = buildAction('TRANSACTION_SUBMIT_FAILED').payload<Error>()
 
 export const updateFee = buildAction('UPDATE_FEE').payload<string>()
-export const insufficientFunds = buildAction('INSUFFICIENT_FUNDS').empty()
+export const insufficientFunds = buildAction('INSUFFICIENT_FUNDS').payload<boolean>()
 export const updateRemainingBalance = buildAction('UPDATE_REMAINING_BALANCE').payload<number>()

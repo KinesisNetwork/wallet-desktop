@@ -13,6 +13,7 @@ import { isActionOf } from 'typesafe-actions'
 
 import {
   accountLoadRequest,
+  insufficientFunds,
   transactionFailed,
   transactionRequest,
   transactionSuccess,
@@ -39,10 +40,20 @@ export const calculateFee$: RootEpic = (action$, state$, { getCurrentConnection 
           map(updateFee)
       )
       const calculateRemainingBalance$ = fee$.pipe(
-        map((fee) => state.accounts.accountInfo.balance - (Number(fee) + amount) ),
+        map((fee) => state.accounts.accountInfo.balance - (Number(fee) + amount) )
+      )
+      const updateRemainingBalance$ = calculateRemainingBalance$.pipe(
         map(updateRemainingBalance)
       )
-      return merge(updateFee$, calculateRemainingBalance$)
+      const insufficientFunds$ = calculateRemainingBalance$.pipe(
+        map((remainingBalance) => remainingBalance < 0),
+        map(insufficientFunds)
+      )
+      return merge(
+        updateFee$,
+        updateRemainingBalance$,
+        insufficientFunds$
+      )
     }
     )
   )

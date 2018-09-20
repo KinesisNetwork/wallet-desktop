@@ -28,7 +28,6 @@ interface FormMeta {
 export interface TransferState {
   readonly formData: TransferRequest
   readonly isTransferring: boolean
-  readonly transactionFormText: string
   readonly formMeta: FormMeta
 }
 
@@ -41,10 +40,21 @@ const formMeta = combineReducers<FormMeta, RootAction>({
         return state
     }
   },
-  errors: () => {
-    return {}
-  }
+  errors: combineReducers<FormErrors, RootAction>({
+    amount: handleError('amount'),
+  })
 })
+
+function handleError(name: keyof FormErrors) {
+  return (state = '', action: RootAction) => {
+    switch (action.type) {
+      case getType(insufficientFunds):
+        return name === 'amount' && action.payload ? 'Insufficient funds' : ''
+      default:
+        return state
+    }
+  }
+}
 
 export const transfer = combineReducers<TransferState, RootAction>({
   formData: combineReducers<TransferRequest, RootAction>({
@@ -68,14 +78,6 @@ export const transfer = combineReducers<TransferState, RootAction>({
         return state
     }
   },
-  transactionFormText: (state = '', action) => {
-    switch (action.type) {
-      case getType(insufficientFunds):
-        return 'Insufficent funds'
-      default:
-        return state
-    }
-  }
 })
 
 function handleChange(name: keyof TransferRequest) {

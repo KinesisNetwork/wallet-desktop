@@ -22,7 +22,7 @@ const mapStateToProps = (state: RootState) => {
     currency: state.connections.currentCurrency,
     balance: state.accounts.accountInfo.balance,
     connection: getCurrentConnection(connections).endpoint,
-    errorText: transfer.transactionFormText
+    // errorText: transfer.transactionFormText
   }
 }
 
@@ -37,21 +37,10 @@ const mapDispatchToProps = {
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
 export class TransactionPagePresentation extends React.Component<Props> {
-  // checkValidAmount = async () => {
 
-  // if (Number(fee) + Number(this.props.amount) > Number(this.props.balance)) {
-  //   throw new InputError(
-  //     `Transfer amount (including ${fee} fee) is higher than your account balance`,
-  //     'transfer-amount',
-  //   )
-  // } else if (Number(this.props.amount) <= 0) {
-  //   throw new InputError('Transfer amount must be greater than 0', 'transfer-amount')
-  // } else if (!this.props.amount) {
-  //   throw new InputError('Amount is required', 'transfer-amount')
-  // }
-  // }
   componentDidMount() {
     this.props.updateRemainingBalance(this.props.balance)
+    this.props.insufficientFunds(false)
   }
 
   render() {
@@ -97,7 +86,7 @@ export class TransactionPagePresentation extends React.Component<Props> {
                 placeholder={`0 ${this.props.currency}`}
                 onChangeHandler={newValue => handleChange({ field: 'amount', newValue })}
                 label='Amount'
-                errorText={this.props.errorText}
+                errorText={this.props.errors.amount}
               />
               <InputField
                 id='transfer-description'
