@@ -84,10 +84,14 @@ export class AccountPanelComponent extends React.Component<
               className="tooltip is-tooltip-top"
               data-tooltip={this.state.copied ? 'Copied!' : 'Copy Public Address'}
             >
-              <button className="button is-primary is-outlined" onClick={this.copyPublicKey}>
-                {this.props.activeAccount.keypair.publicKey()}
-                &nbsp;
-                <i className="fal fa-lg fa-copy" />
+              <button
+                className="button is-primary is-outlined has-icons-right"
+                onClick={this.copyPublicKey}
+              >
+                <span>{this.props.activeAccount.keypair.publicKey()}</span>
+                <span className="icon is-right">
+                  <i className="fal  fa-copy" />
+                </span>
               </button>
             </div>
             <button
