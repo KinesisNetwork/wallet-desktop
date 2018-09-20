@@ -56,7 +56,7 @@ export class TransactionPagePresentation extends React.Component<Props> {
       <React.Fragment>
         <div className="columns is-mobile is-centered">
           <div className="column is-one-third">
-            <section className="section has-text-centered">
+            <section className="section has-text-centered" style={{ letterSpacing: '3px' }}>
               <div className="level">
                 <div className="level-item">
                   <figure className="image is-128x128">
@@ -66,15 +66,15 @@ export class TransactionPagePresentation extends React.Component<Props> {
               </div>
               <div className="level">
                 <div className="level-item">
-                  <h1 className={`title has-text-weight-bold is-uppercase ${
-                    addMetalColour(this.props.currency)
-                    }`}>
+                  <h1 className={`title is-size-4 has-text-grey-lighter has-text-weight-bold is-uppercase`}>
                     Send {this.props.currency}
                   </h1>
                 </div>
               </div>
               <div className="level">
-                <div className="level-item has-text-grey-lighter">
+                <div className={`level-item title is-size-3 has-text-weight-semibold ${
+                  addMetalColour(this.props.currency)
+                  }`}>
                   {this.props.balance} Available
               </div>
               </div>
