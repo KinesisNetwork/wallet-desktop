@@ -244,3 +244,7 @@ body {
   z-index: 100;
   transition: visibility 0s linear 0.33s, opacity 0.33s linear, right 0.33s linear;
 }
+
+.payee-select.select::after {
+  border-color: $grey-lighter !important;
+}
