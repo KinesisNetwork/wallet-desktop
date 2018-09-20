@@ -52,7 +52,7 @@ export const initialiseWallet$: RootEpic = (
       const encryptedPassphrase = encryptWithPassword(passphrase, password)
       const walletName = state.createWallet.createForm.name
 
-      return initialiseWallet({ createdAccount, encryptedPassphrase, walletName })
+      return initialiseWallet({ createdAccount, encryptedPassphrase, walletName, password })
     }),
   )
 

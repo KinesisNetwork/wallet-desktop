@@ -1,5 +1,6 @@
 import {
   changeUnlockPasswordInput,
+  initialiseWallet,
   login,
   tooManyFailedAttempts,
   unlockWalletFailure,
@@ -28,6 +29,7 @@ export const passwords = combineReducers<PasswordsState, RootAction>({
   },
   lastSuccessfulInput: (state = '', action) => {
     switch (action.type) {
+      case getType(initialiseWallet):
       case getType(unlockWalletSuccess):
         return action.payload.password
       default:

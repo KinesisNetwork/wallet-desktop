@@ -15,12 +15,13 @@ export const DropdownItem: React.SFC<Props> = ({ icon, isActive = false, onClick
     onClick={onClick}
   >
     <a className="button is-radiusless is-fullwidth is-shadowless">
-      <span className="icon">
-        {isActive ?
-          <i className="fal fa-lg fa-check-circle" /> : icon ?
-          <i className={`fal fa-lg fa-${icon}`} /> : null
-        }
+      <span className={`icon ${!icon && 'is-hidden'}`}>
+        <i className={`fal fa-lg fa-${icon}`} />
       </span>
+      <span className={`icon ${!isActive && 'is-hidden'}`}>
+        <i className="fal fa-lg fa-check-circle" />
+      </span>
+      <span className={`icon ${(isActive || icon) && 'is-hidden'}`} />
       <div className="dropdown-item-text vertical-spaced">
         <p className={titleClassName}>
           {title}
