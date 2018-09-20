@@ -23,7 +23,7 @@ const mapDispatchToProps = {
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
 const AccountDashboardPresentation: React.SFC<Props> = props => (
-  <div className="container">
+  <div>
     <CurrencySelector />
     <section className="section has-text-centered">
       <div className="level">
@@ -57,7 +57,7 @@ const AccountDashboardPresentation: React.SFC<Props> = props => (
         </div>
       </div>
     </section>
-    <section className="section">
+    <section>
       <h1 className="subtitle">Transactions</h1>
       <hr />
       <Transactions />
