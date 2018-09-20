@@ -80,6 +80,7 @@ export interface BaseAccount {
 
 export interface PersistedAccount extends BaseAccount {
   encryptedSecret: string
+  imported: boolean
 }
 
 export interface WalletAccount extends BaseAccount {

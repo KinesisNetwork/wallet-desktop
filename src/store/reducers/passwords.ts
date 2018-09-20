@@ -11,6 +11,7 @@ import { getType } from 'typesafe-actions'
 
 export interface PasswordsState {
   currentInput: string
+  lastSuccessfulInput: string
   unlockFailureText: string
 }
 
@@ -21,6 +22,14 @@ export const passwords = combineReducers<PasswordsState, RootAction>({
         return action.payload
       case getType(unlockWalletSuccess):
         return ''
+      default:
+        return state
+    }
+  },
+  lastSuccessfulInput: (state = '', action) => {
+    switch (action.type) {
+      case getType(unlockWalletSuccess):
+        return action.payload.password
       default:
         return state
     }
