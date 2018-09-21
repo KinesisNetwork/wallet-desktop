@@ -63,9 +63,10 @@ function handleError(name: keyof FormErrors) {
 export const transfer = combineReducers<TransferState, RootAction>({
   formData: combineReducers<TransferRequest, RootAction>({
     amount: handleChange('amount'),
-    targetPayee: handleChange('targetPayee'),
+    payeePublicKey: handleChange('payeePublicKey'),
     memo: handleChange('memo'),
     fee: handleChange('fee'),
+    contactName: handleChange('contactName')
   }),
   formMeta,
   isTransferring: (state = false, action) => {
@@ -90,7 +91,7 @@ function handleChange(name: keyof TransferRequest) {
       case getType(updateTransferForm):
         return action.payload.field === name ? action.payload.newValue : state
       case getType(addPayee):
-        return name === 'targetPayee' ? action.payload.publicKey : state
+        return name === 'payeePublicKey' ? action.payload.publicKey : state
       case getType(updateFee):
         return name === 'fee' ? action.payload : state
 

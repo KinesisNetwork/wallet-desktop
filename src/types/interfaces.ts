@@ -34,10 +34,11 @@ export interface UnlockWallet {
 }
 
 export interface TransferRequest {
-  readonly targetPayee: string
+  readonly payeePublicKey: string
   readonly amount: string
   readonly memo: string
   readonly fee: string
+  readonly contactName: string
 }
 
 export interface FormUpdate<T> {

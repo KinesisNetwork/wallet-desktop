@@ -99,6 +99,9 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
                   onFieldChange={this.handlePayeeFieldToggle}
                 />
                 : <FilloutField
+                  contactName={this.props.contactName}
+                  publicKey={this.props.payeePublicKey}
+                  handleChange={handleChange}
                   onFieldChange={this.handlePayeeFieldToggle}
                 />
               }

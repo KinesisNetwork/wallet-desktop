@@ -4,7 +4,7 @@ import { changeTransferView as action } from '@actions'
 import { FormChangeHandler, Payee, TransferRequest, TransferView } from '@types'
 
 export interface Props {
-  targetPayee: TransferRequest['targetPayee']
+  targetPayee: TransferRequest['payeePublicKey']
   payees: Payee[]
   handleChange: FormChangeHandler<TransferRequest>
   changeTransferView: typeof action

@@ -48,7 +48,7 @@ export class TransferForm extends React.Component<TransferProps> {
   }
 
   checkValidTarget = () => {
-    if (!this.props.targetPayee) {
+    if (!this.props.payeePublicKey) {
       throw new InputError(`Payee is required`, `transfer-target-address`)
     }
   }
@@ -76,7 +76,7 @@ export class TransferForm extends React.Component<TransferProps> {
 
   isPayeeSelected = () => {
     return (
-      this.props.payees.findIndex(({ publicKey }) => publicKey === this.props.targetPayee) !== -1
+      this.props.payees.findIndex(({ publicKey }) => publicKey === this.props.payeePublicKey) !== -1
     )
   }
 
@@ -103,11 +103,11 @@ export class TransferForm extends React.Component<TransferProps> {
           <PayeeSelector
             handleChange={handleChange}
             payees={this.props.payees}
-            targetPayee={this.props.targetPayee}
+            targetPayee={this.props.payeePublicKey}
             changeTransferView={this.props.changeTransferView}
           />
           <InputField
-            value={this.props.targetPayee}
+            value={this.props.payeePublicKey}
             id="transfer-target-address"
             icon="fa-address-card"
             placeholder="Or input target address"
