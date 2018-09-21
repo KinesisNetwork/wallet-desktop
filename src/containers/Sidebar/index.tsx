@@ -12,7 +12,8 @@ import { SidebarLower, SidebarLowerItem } from '@containers/Sidebar/SidebarLower
 import { SidebarUpper } from '@containers/Sidebar/SidebarUpper'
 import { getActiveAccount } from '@selectors'
 import { RootState } from '@store'
-import { RootRoutes, WalletAccount } from '@types'
+import { PersistedAccount, RootRoutes } from '@types'
+import { push } from 'connected-react-router'
 
 let logo
 if (process.env.IS_WEB) {
@@ -21,29 +22,34 @@ if (process.env.IS_WEB) {
 
 export const mapStateToProps = ({ wallet }: RootState) => ({
   activeAccount: getActiveAccount(wallet),
-  accounts: wallet.accounts,
+  accounts: wallet.persisted.createdAccounts,
 })
 
-export const mapDispathToProps = { addNextAccountFromSeedphrase, setActiveAccount }
+export const mapDispathToProps = { addNextAccountFromSeedphrase, setActiveAccount, push }
 
 type Props = typeof mapDispathToProps & ReturnType<typeof mapStateToProps>
 
 export class SidebarPresentation extends React.Component<Props> {
   public dropDownAccounts
 
-  public dropdownAccounts = () => this.props.accounts.map(a => <DropdownItem
+  public dropdownAccounts = (handleToggle) => this.props.accounts.map(a => <DropdownItem
     key={a.name}
     titleClassName="has-text-weight-bold"
     title={a.name}
     isActive={this.props.activeAccount.name === a.name}
-    onClick={() => this.setAccount(a)}
+    isImport={a.imported}
+    onClick={() => {
+      this.setAccount(a)
+      handleToggle()
+    }}
   />)
 
-  public setAccount = (account: WalletAccount) => {
+  public setAccount = (account: PersistedAccount) => {
     this.props.setActiveAccount({targetAccount: account, accounts: this.props.accounts})
   }
 
   public addAccount = () => this.props.addNextAccountFromSeedphrase()
+  public importAccount = () => this.props.push(RootRoutes.import)
 
   render() {
     return (
@@ -60,11 +66,11 @@ export class SidebarPresentation extends React.Component<Props> {
                 <React.Fragment>
                   <DropdownTrigger key="trigger" isExpanded={isExpanded} onClick={handleToggle} title={this.props.activeAccount.name} />
                   <DropdownMenu key="menu">
-                    <React.Fragment>{this.dropdownAccounts()}</React.Fragment>
+                    <React.Fragment>{this.dropdownAccounts(handleToggle)}</React.Fragment>
                     <DropdownDivider />
                     <DropdownItem title="Add Account" icon="plus-circle" onClick={this.addAccount} />
                     <DropdownDivider />
-                    <DropdownItem title="Import Account" icon="download" />
+                    <DropdownItem title="Import Account" icon="download" onClick={this.importAccount}/>
                   </DropdownMenu>
                 </React.Fragment>
               )}

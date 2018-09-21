@@ -1,4 +1,4 @@
-import { WalletAccount } from '@types'
+import { PersistedAccount } from '@types'
 import { AccountResponse } from 'js-kinesis-sdk'
 import { buildAction } from 'typesafe-actions'
 
@@ -8,6 +8,6 @@ export const accountLoadFailure = buildAction('LOAD_ACCOUNT_FAILURE').payload<Er
 
 export const accountIsLoading = buildAction('ACCOUNT_IS_LOADING').empty()
 export const updateAccountName = buildAction('UPDATE_ACCOUNT_NAME').payload<{existingName: string, newName: string}>()
-export const setActiveAccount = buildAction('SET_ACTIVE_ACCOUNT').payload<{targetAccount: WalletAccount, accounts: WalletAccount[]}>()
+export const setActiveAccount = buildAction('SET_ACTIVE_ACCOUNT').payload<{targetAccount: PersistedAccount, accounts: PersistedAccount[]}>()
 
 export const lockAllAccounts = buildAction('LOCK_ALL_ACCOUNTS').empty()

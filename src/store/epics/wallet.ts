@@ -82,10 +82,10 @@ export const addAccountToWalletFromSeedphrase$: RootEpic = (
         passphrase,
       } = state.wallet
 
-      const existingAccountsCount = persisted.createdAccounts.filter(a => a.imported === false).length
+      const existingAccountsCount = persisted.createdAccounts.filter(a => !a.imported).length
 
       const keypair = getKeypairFromMnemonic(passphrase, existingAccountsCount)
-      const name = `Account ${persisted.createdAccounts.length + 1}`
+      const name = `Account ${existingAccountsCount + 1}`
       const persistedAccount: PersistedAccount = {
         name,
         encryptedSecret: encryptWithPassword(keypair.secret(), password),
@@ -110,8 +110,9 @@ export const importAccountFromSecret$: RootEpic = (
       const password = state.passwords.lastSuccessfulInput
       const { persisted } = state.wallet
 
+      const importedAccountsCount = persisted.createdAccounts.filter(a => a.imported).length
       const keypair = getKeypairFromSecret(payload.secret)
-      const name = `Account ${persisted.createdAccounts.length + 1}`
+      const name = `Imported ${importedAccountsCount + 1}`
       const persistedAccount: PersistedAccount = {
         name,
         encryptedSecret: encryptWithPassword(keypair.secret(), password),
