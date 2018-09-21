@@ -1,7 +1,11 @@
 import * as React from 'react'
 
-export const FilloutFieldPresentation: React.SFC = () => (
-  <div>Filloutcomponent</div>
+interface Props {
+  onFieldChange: () => void
+}
+
+export const FilloutFieldPresentation: React.SFC<Props> = (props) => (
+  <div onClick={props.onFieldChange}>Filloutcomponent</div>
 )
 
-export { FilloutFieldPresentation as FilloutComponent }
+export { FilloutFieldPresentation as FilloutField }

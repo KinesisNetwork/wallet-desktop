@@ -13,6 +13,7 @@ import * as kauLogo from '@icons/kau-icon.svg'
 
 import { InputField } from '@components/InputField'
 import { DropdownField } from '@containers/TransferCurrency/DropdownField';
+import { FilloutField } from '@containers/TransferCurrency/FilloutField';
 import { addMetalColour } from '@helpers/walletUtils'
 import { getCurrentConnection } from '@selectors'
 import { RootState } from '@store'
@@ -46,6 +47,10 @@ interface State {
 
 export class TransactionPagePresentation extends React.Component<Props, State> {
   state = { isDropdownField: true }
+
+  handlePayeeFieldToggle = () => {
+    this.setState(prevState => ({ isDropdownField: !prevState.isDropdownField }))
+  }
 
   hasFieldErrors() {
     const { amount: amountError, memo: memoError } = this.props.errors
@@ -86,15 +91,16 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
               </div>
               </div>
             </section>
-            <form className="field">
-              {/* <InputField
-                id='transfer-to'
-                value=''
-                placeholder='Recipient Address'
-                onChangeHandler={() => null}
-                label='To'
-              /> */}
-              <DropdownField isDropdownField={this.state.isDropdownField} />
+            <div className="field">
+              {this.state.isDropdownField
+                ? <DropdownField
+                  onFieldChange={this.handlePayeeFieldToggle}
+                />
+                : <FilloutField
+                  onFieldChange={this.handlePayeeFieldToggle}
+                />
+              }
+
               <InputField
                 id='transfer-amount'
                 value={this.props.amount}
@@ -112,31 +118,31 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
                 helpText={`${this.props.memo.length || 0} / 25`}
                 errorText={this.props.errors.memo}
               />
-            </form>
-            <section className="columns">
-              <div className="column content has-text-grey-lighter">
-                <p>Transaction fee</p>
-                <p>Remaining balance</p>
-              </div>
-              <div className={`column has-text-right content ${addMetalColour(this.props.currency)}`}>
-                <p>{Number(this.props.fee).toFixed(5) || 0} {this.props.currency}</p>
-                <p className={`${this.props.remainingBalance < 0 ? 'has-text-danger' : ''}`}>{this.props.remainingBalance.toFixed(5)} {this.props.currency}</p>
-              </div>
-            </section>
-            <section className="field is-grouped is-grouped-right">
-              <p className="control">
-                <button className="button is-text" onClick={this.props.goBackToDashboard}>Cancel</button>
-              </p>
-              <p className="control">
-                <button
-                  className="button is-primary"
-                  disabled={this.hasFieldErrors()}
-                >
-                  <span className="icon"><i className="fal fa-arrow-up" /></span>
-                  <span>Send</span>
-                </button>
-              </p>
-            </section>
+              <section className="columns">
+                <div className="column content has-text-grey-lighter">
+                  <p>Transaction fee</p>
+                  <p>Remaining balance</p>
+                </div>
+                <div className={`column has-text-right content ${addMetalColour(this.props.currency)}`}>
+                  <p>{Number(this.props.fee).toFixed(5) || 0} {this.props.currency}</p>
+                  <p className={`${this.props.remainingBalance < 0 ? 'has-text-danger' : ''}`}>{this.props.remainingBalance.toFixed(5)} {this.props.currency}</p>
+                </div>
+              </section>
+              <section className="field is-grouped is-grouped-right">
+                <p className="control">
+                  <button className="button is-text" onClick={this.props.goBackToDashboard}>Cancel</button>
+                </p>
+                <p className="control">
+                  <button
+                    className="button is-primary"
+                    disabled={this.hasFieldErrors()}
+                  >
+                    <span className="icon"><i className="fal fa-arrow-up" /></span>
+                    <span>Send</span>
+                  </button>
+                </p>
+              </section>
+            </div>
           </div>
         </div>
       </React.Fragment>

@@ -1,10 +1,10 @@
 import * as React from 'react'
 
 interface Props {
-  isDropdownField: boolean
+  onFieldChange: () => void
 }
 
-export const DropdownFieldPresentation: React.SFC<Props> = () => (
+export const DropdownFieldPresentation: React.SFC<Props> = (props) => (
   <React.Fragment>
     <label className="label is-small">To</label>
     <div className="field is-grouped">
@@ -22,7 +22,10 @@ export const DropdownFieldPresentation: React.SFC<Props> = () => (
         <span className="is-uppercase is-size-7 has-text-grey-lighter" style={{ alignSelf: 'center' }}>or</span>
       </div>
       <div className="control">
-        <button className="button is-primary">Add new</button>
+        <button
+          className="button is-primary"
+          onClick={props.onFieldChange}
+        >Add new</button>
       </div>
     </div>
   </React.Fragment>
