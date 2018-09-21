@@ -14,6 +14,7 @@ import { isActionOf } from 'typesafe-actions'
 import {
   accountLoadRequest,
   insufficientFunds,
+  publicKeyValidation,
   transactionFailed,
   transactionRequest,
   transactionSuccess,
@@ -29,7 +30,7 @@ import { RootEpic } from '@store'
 export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConnection }) =>
   action$.pipe(
     filter(isActionOf(updateTransferForm)),
-    filter(({ payload: {field} }) => field === 'amount'),
+    filter(({ payload: { field } }) => field === 'amount'),
     withLatestFrom(state$),
     mergeMap(([action, state]) => {
       const amount = Number(action.payload.newValue)
@@ -37,10 +38,10 @@ export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConne
         getFeeInKinesis(getCurrentConnection(state.connections), amount)
       )
       const updateFee$ = fee$.pipe(
-          map(updateFee)
+        map(updateFee)
       )
       const calculateRemainingBalance$ = fee$.pipe(
-        map((fee) => state.accounts.accountInfo.balance - (Number(fee) + amount) )
+        map((fee) => state.accounts.accountInfo.balance - (Number(fee) + amount))
       )
       const updateRemainingBalance$ = calculateRemainingBalance$.pipe(
         map(updateRemainingBalance)
@@ -56,6 +57,14 @@ export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConne
       )
     }
     )
+  )
+
+export const publicKeyValidation$: RootEpic = (action$, state$, { isValidPublicKey }) =>
+  action$.pipe(
+    filter(isActionOf(updateTransferForm)),
+    filter(({ payload: { field } }) => field === 'payeePublicKey'),
+    withLatestFrom(state$),
+    map(([_, state]) => publicKeyValidation(isValidPublicKey(state.transfer.formData.payeePublicKey)))
   )
 
 export const transferRequest$: RootEpic = (

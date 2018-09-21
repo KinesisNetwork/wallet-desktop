@@ -4,7 +4,7 @@ import { combineEpics, Epic } from 'redux-observable'
 import { formAlert, generalFailureAlert, generalSuccessAlert } from '@helpers/alert'
 import { loadAccount } from '@services/accounts'
 import { decryptWithPassword, encryptWithPassword } from '@services/encryption'
-import { getTransactionErrorMessage, getTransactions } from '@services/kinesis'
+import { getTransactionErrorMessage, getTransactions, isValidPublicKey } from '@services/kinesis'
 import { createKinesisTransfer, submitSignedTransaction } from '@services/transfer'
 
 import {
@@ -34,6 +34,7 @@ export const epicDependencies = {
   getKeypairFromMnemonic,
   getKeypairFromSecret,
   encryptWithPassword,
+  isValidPublicKey
 }
 
 export type EpicDependencies = typeof epicDependencies

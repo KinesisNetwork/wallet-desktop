@@ -1,5 +1,5 @@
 import { InputField } from '@components/InputField';
-import { FormUpdate, TransferRequest } from '@types';
+import { FormErrors, FormUpdate, TransferRequest } from '@types';
 import * as React from 'react'
 
 interface Props {
@@ -7,10 +7,10 @@ interface Props {
   handleChange: (formData: FormUpdate<TransferRequest>) => void
   contactName: string
   publicKey: string
+  errors: FormErrors
 }
 
 export class FilloutFieldPresentation extends React.Component<Props> {
-
 
   render() {
     return (
@@ -39,6 +39,7 @@ export class FilloutFieldPresentation extends React.Component<Props> {
             onChangeHandler={newValue => this.props.handleChange({ field: 'payeePublicKey', newValue })}
             id='public-address'
             icon='fa-qrcode'
+            errorText={this.props.errors.payeePublicKey}
           />
           <div className="level">
             <div className="level-left">

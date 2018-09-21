@@ -41,6 +41,10 @@ export interface TransferRequest {
   readonly contactName: string
 }
 
+export type FormErrors = {
+  [key in keyof TransferRequest]?: string
+}
+
 export interface FormUpdate<T> {
   field: keyof T
   newValue: string

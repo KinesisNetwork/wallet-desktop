@@ -1,4 +1,4 @@
-import { Network, Server, TransactionRecord } from 'js-kinesis-sdk'
+import { Keypair, Network, Server, TransactionRecord } from 'js-kinesis-sdk'
 import { flatten, get } from 'lodash'
 
 import { Connection, TransactionLoader, TransactionOperationView } from '@types'
@@ -98,4 +98,13 @@ async function transactionWithOperations(
       source: transaction.source_account,
     }),
   )
+}
+
+export function isValidPublicKey(publicKey: string): boolean {
+  try {
+    Keypair.fromPublicKey(publicKey)
+    return true
+  } catch (e) {
+    return false
+  }
 }

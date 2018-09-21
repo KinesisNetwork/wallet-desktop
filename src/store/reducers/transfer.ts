@@ -2,6 +2,7 @@ import {
   addPayee,
   changeWalletView,
   insufficientFunds,
+  publicKeyValidation,
   selectWallet,
   transactionFailed,
   transactionRequest,
@@ -12,13 +13,9 @@ import {
   updateTransferForm,
 } from '@actions'
 import { RootAction } from '@store'
-import { TransferRequest } from '@types'
+import { FormErrors, TransferRequest } from '@types'
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
-
-type FormErrors = {
-  [key in keyof TransferRequest]?: string
-}
 
 interface FormMeta {
   readonly remainingBalance: number
@@ -42,7 +39,8 @@ const formMeta = combineReducers<FormMeta, RootAction>({
   },
   errors: combineReducers<FormErrors, RootAction>({
     amount: handleError('amount'),
-    memo: handleError('memo')
+    memo: handleError('memo'),
+    payeePublicKey: handleError('payeePublicKey')
   })
 })
 
@@ -54,6 +52,8 @@ function handleError(name: keyof FormErrors) {
       case getType(updateTransferForm):
         return name === 'memo' && action.payload.newValue.length > 24
           ? `${action.payload.newValue.length} / 25` : ''
+      case getType(publicKeyValidation):
+        return name === 'payeePublicKey' && !action.payload ? 'Invalid public key' : ''
       default:
         return state
     }

@@ -37,7 +37,7 @@ const mapDispatchToProps = {
   goToConfirm: () => push(RootRoutes.dashboard + '/confirm'),
   updateTransferForm,
   insufficientFunds,
-  updateRemainingBalance,
+  updateRemainingBalance
 }
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
@@ -54,8 +54,12 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
   }
 
   hasFieldErrors() {
-    const { amount: amountError, memo: memoError } = this.props.errors
-    return this.props.amount === '' || !!amountError || !!memoError
+    const {
+      amount: amountError,
+      memo: memoError,
+      payeePublicKey: payeePublicKeyError
+    } = this.props.errors
+    return this.props.amount === '' || !!amountError || !!memoError || !!payeePublicKeyError
   }
 
   componentDidMount() {
@@ -101,11 +105,11 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
                 : <FilloutField
                   contactName={this.props.contactName}
                   publicKey={this.props.payeePublicKey}
+                  errors={this.props.errors}
                   handleChange={handleChange}
                   onFieldChange={this.handlePayeeFieldToggle}
                 />
               }
-
               <InputField
                 id='transfer-amount'
                 value={this.props.amount}
