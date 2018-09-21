@@ -20,7 +20,7 @@ import { RootState } from '@store'
 import { Currency, RootRoutes } from '@types'
 
 const mapStateToProps = (state: RootState) => {
-  const { connections, transfer } = state
+  const { connections, transfer, payees } = state
 
   return {
     ...transfer.formData,
@@ -28,6 +28,7 @@ const mapStateToProps = (state: RootState) => {
     currency: state.connections.currentCurrency,
     balance: state.accounts.accountInfo.balance,
     connection: getCurrentConnection(connections).endpoint,
+    savedContacts: payees.payeesList
   }
 }
 
@@ -94,6 +95,7 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
             <div className="field">
               {this.state.isDropdownField
                 ? <DropdownField
+                  savedContacts={this.props.savedContacts}
                   onFieldChange={this.handlePayeeFieldToggle}
                 />
                 : <FilloutField
