@@ -5,16 +5,18 @@ import { connect } from 'react-redux'
 import * as kagLogo from '@icons/kag-icon.svg'
 import * as kauLogo from '@icons/kau-icon.svg'
 
-import { AddToAddressBook } from '@containers/TransferCurrency/AddToAddressBook'
-import { FromAccountHolder } from '@containers/TransferCurrency/FromAccountHolder';
+import { AccountCard } from '@containers/TransferCurrency/AccountCard';
 import { TransferSummary } from '@containers/TransferCurrency/TransferSummary'
 import { addMetalColour } from '@helpers/walletUtils'
 import { Currency, RootRoutes } from '@types'
 import { goBack, replace } from 'connected-react-router';
 
+import { getInitials } from '@helpers/walletUtils'
+
 const mapStateToProps = (state: RootState) => ({
   currency: state.connections.currentCurrency,
   walletName: state.wallet.persisted.walletName,
+  contactName: state.transfer.formData.contactName
 })
 
 const mapDispatchToProps = {
@@ -28,7 +30,8 @@ export const ConfirmationPagePresentation: React.SFC<Props> = ({
   currency,
   walletName,
   goBackToTransformPage,
-  confirmAndGoToDashboard
+  confirmAndGoToDashboard,
+  contactName
 }) => (
     <React.Fragment>
       <div className="columns is-mobile is-centered">
@@ -47,13 +50,18 @@ export const ConfirmationPagePresentation: React.SFC<Props> = ({
               </div>
             </div>
           </section>
-          <section className="columns">
-            <div className="column is-7">
-              <FromAccountHolder walletName={walletName} />
+          <section className="columns is-vcentered">
+            <AccountCard inititals={getInitials(walletName)} accountName='Account 1' />
+            <div className="column is-narrow">
+              <div className="level">
+                <div className="level-item">
+                  <span className="has-text-grey-lighter is-size-2">
+                    <i className="fal fa-arrow-circle-right" />
+                  </span>
+                </div>
+              </div>
             </div>
-            <div className="column is-5">
-              <AddToAddressBook recipientPublicKey='GDJ5YLMOAVKTA74F5QHOMYISQYZFZQMDZD5RPYLUNE6VSHDFCB3GY7LD' />
-            </div>
+            <AccountCard payeeName={contactName} icon='fa-user-circle' />
           </section>
           <section className="section">
             <div className="columns is-centered">
