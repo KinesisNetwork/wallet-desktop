@@ -3,6 +3,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 
 import {
+  addPayee,
   insufficientFunds,
   updateRemainingBalance,
   updateTransferForm
@@ -37,29 +38,48 @@ const mapDispatchToProps = {
   goToConfirm: () => push(RootRoutes.dashboard + '/confirm'),
   updateTransferForm,
   insufficientFunds,
-  updateRemainingBalance
+  updateRemainingBalance,
+  addPayee
 }
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
 interface State {
   isDropdownField: boolean
+  saveToContacts: boolean
 }
 
 export class TransactionPagePresentation extends React.Component<Props, State> {
-  state = { isDropdownField: true }
+  state = {
+    isDropdownField: true,
+    saveToContacts: true
+  }
 
   handlePayeeFieldToggle = () => {
     this.setState(prevState => ({ isDropdownField: !prevState.isDropdownField }))
+  }
+
+  handleSaveToContact = () => {
+    this.setState(prevState => ({ saveToContacts: !prevState.saveToContacts }))
   }
 
   hasFieldErrors() {
     const {
       amount: amountError,
       memo: memoError,
-      payeePublicKey: payeePublicKeyError
+      payeePublicKey: payeePublicKeyError,
     } = this.props.errors
-    return this.props.amount === '' || !!amountError || !!memoError || !!payeePublicKeyError
+    return this.props.amount === '' || !this.props.contactName || !!amountError || !!memoError || !!payeePublicKeyError
+  }
+
+  goToConfirmPage = () => {
+    if (this.state.saveToContacts) {
+      this.props.addPayee({
+        name: this.props.contactName,
+        publicKey: this.props.payeePublicKey
+      })
+    }
+    // this.props.goToConfirm()
   }
 
   componentDidMount() {
@@ -108,6 +128,8 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
                   errors={this.props.errors}
                   handleChange={handleChange}
                   onFieldChange={this.handlePayeeFieldToggle}
+                  onSaveToContactsChange={this.handleSaveToContact}
+                  saveToContacts={this.state.saveToContacts}
                 />
               }
               <InputField
@@ -139,12 +161,15 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
               </section>
               <section className="field is-grouped is-grouped-right">
                 <p className="control">
-                  <button className="button is-text" onClick={this.props.goBackToDashboard}>Cancel</button>
+                  <button
+                    className="button is-text"
+                    onClick={this.props.goBackToDashboard}>Cancel</button>
                 </p>
                 <p className="control">
                   <button
                     className="button is-primary"
                     disabled={this.hasFieldErrors()}
+                    onClick={this.goToConfirmPage}
                   >
                     <span className="icon"><i className="fal fa-arrow-up" /></span>
                     <span>Send</span>

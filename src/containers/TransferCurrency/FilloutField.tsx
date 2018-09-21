@@ -8,9 +8,22 @@ interface Props {
   contactName: string
   publicKey: string
   errors: FormErrors
+  onSaveToContactsChange: () => void
+  saveToContacts: boolean
 }
 
+// interface State {
+//   saveToContacts: boolean
+// }
+
 export class FilloutFieldPresentation extends React.Component<Props> {
+  // state = {
+  //   saveToContacts: true
+  // }
+
+  // handleSaveToContact = () => {
+  //   this.setState(prevState => ({saveToContacts: !prevState.saveToContacts}))
+  // }
 
   render() {
     return (
@@ -49,10 +62,10 @@ export class FilloutFieldPresentation extends React.Component<Props> {
                   type="checkbox"
                   name="switchRoundedSuccess"
                   className="switch is-rounded is-success"
-                  checked={true}
-                  onChange={() => null}
+                  onChange={this.props.onSaveToContactsChange}
+                  checked={this.props.saveToContacts}
                 />
-                <label>Save to contacts</label>
+                <label htmlFor="switchRoundedSuccess">Save to contacts</label>
               </div>
             </div>
           </div>

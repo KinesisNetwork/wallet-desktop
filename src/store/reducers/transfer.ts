@@ -53,7 +53,7 @@ function handleError(name: keyof FormErrors) {
         return name === 'memo' && action.payload.newValue.length > 24
           ? `${action.payload.newValue.length} / 25` : ''
       case getType(publicKeyValidation):
-        return name === 'payeePublicKey' && !action.payload ? 'Invalid public key' : ''
+        return name === 'payeePublicKey' && !action.payload ? 'Invalid public address' : ''
       default:
         return state
     }

@@ -258,3 +258,10 @@ body {
   background-color: $grey-dark;
   cursor: not-allowed;
 }
+
+.switch[type="checkbox"]:focus + label::before,
+.switch[type="checkbox"]:focus + label:before,
+.switch[type="checkbox"]:focus + label::after,
+.switch[type="checkbox"]:focus + label:after {
+  outline: none;
+}
