@@ -79,7 +79,7 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
         publicKey: this.props.payeePublicKey
       })
     }
-    // this.props.goToConfirm()
+    this.props.goToConfirm()
   }
 
   componentDidMount() {

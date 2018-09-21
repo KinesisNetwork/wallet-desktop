@@ -13,11 +13,17 @@ import { goBack, replace } from 'connected-react-router';
 
 import { getInitials } from '@helpers/walletUtils'
 
-const mapStateToProps = (state: RootState) => ({
-  currency: state.connections.currentCurrency,
-  walletName: state.wallet.persisted.walletName,
-  contactName: state.transfer.formData.contactName
-})
+const mapStateToProps = (state: RootState) => {
+  const { transfer: { formData } } = state
+  return {
+    currency: state.connections.currentCurrency,
+    walletName: state.wallet.persisted.walletName,
+    contactName: formData.contactName,
+    memo: formData.memo,
+    fee: formData.fee,
+    amount: formData.amount
+  }
+}
 
 const mapDispatchToProps = {
   goBackToTransformPage: () => goBack(),
@@ -31,7 +37,10 @@ export const ConfirmationPagePresentation: React.SFC<Props> = ({
   walletName,
   goBackToTransformPage,
   confirmAndGoToDashboard,
-  contactName
+  contactName,
+  memo,
+  fee,
+  amount
 }) => (
     <React.Fragment>
       <div className="columns is-mobile is-centered">
@@ -68,23 +77,23 @@ export const ConfirmationPagePresentation: React.SFC<Props> = ({
               <div className="column is-two-thirds">
                 <div className="has-text-centered content">
                   <h1 className={`is-size-1 has-text-weight-bold ${addMetalColour(currency)}`}>
-                    4.50 {currency}
+                    {Number(amount).toFixed(5)} {currency}
                   </h1>
                   <p className="has-text-grey-lighter">
-                    <q>This is a description</q>
+                    {memo && <q>{memo}</q>}
                   </p>
                 </div>
                 <hr className="has-background-grey-lighter" />
                 <TransferSummary
                   currency={currency}
                   description="Transaction fee"
-                  amount='0.02025'
+                  amount={Number(fee)}
                 />
                 <hr className="has-background-grey-lighter" />
                 <TransferSummary
                   currency={currency}
                   description="TOTAL"
-                  amount='4.52025'
+                  amount={Number(amount) + Number(fee)}
                 />
                 <hr className="has-background-grey-lighter" />
                 <section className="field is-grouped is-grouped-right">
