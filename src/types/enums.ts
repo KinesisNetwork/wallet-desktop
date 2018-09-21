@@ -39,7 +39,7 @@ export enum ConnectionStage {
 
 export enum RootRoutes {
   dashboard = '/dashboard',
-  addressBook = '/address-book',
+  contacts = '/contacts',
   settings = '/settings',
   create = '/create',
 }
@@ -60,5 +60,5 @@ export enum NotificationType {
   info = 'info',
   warning = 'warning',
   error = 'danger',
-  success = 'success'
+  success = 'success',
 }

@@ -1,6 +1,6 @@
 import { mapStateToProps } from '@containers/TransferForm'
 import { RootState } from '@store'
-import { ConnectionStage, Currency, Payee } from '@types'
+import { ConnectionStage, Contact, Currency } from '@types'
 import { Keypair } from 'js-kinesis-sdk'
 import { DeepPartial } from 'redux'
 
@@ -17,7 +17,7 @@ describe('TransferForm', () => {
   }
   it('mapStateToProps with active wallet', () => {
     const keypair = Keypair.random()
-    const payee: Payee = { name: 'aPayee1', publicKey: 'asdf' }
+    const payee: Contact = { name: 'aPayee1', address: 'asdf' }
     const state: DeepPartial<RootState> = {
       accounts: {
         accountInfo: { balance: 0 },
@@ -26,8 +26,8 @@ describe('TransferForm', () => {
         currentInput: 'password-input',
       },
       connections,
-      payees: {
-        payeesList: [payee],
+      contacts: {
+        contactList: [payee],
       },
       transfer: {
         form: { amount: 'formValue1' },
