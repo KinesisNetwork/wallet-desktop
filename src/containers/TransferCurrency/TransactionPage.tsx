@@ -39,7 +39,7 @@ const mapDispatchToProps = {
   updateTransferForm,
   insufficientFunds,
   updateRemainingBalance,
-  addPayee
+  addPayee,
 }
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
@@ -121,6 +121,8 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
                 ? <DropdownField
                   savedContacts={this.props.savedContacts}
                   onFieldChange={this.handlePayeeFieldToggle}
+                  payeePublicKey={this.props.payeePublicKey}
+                  handleChange={handleChange}
                 />
                 : <FilloutField
                   contactName={this.props.contactName}

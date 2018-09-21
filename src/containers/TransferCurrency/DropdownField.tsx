@@ -1,13 +1,19 @@
-import { Payee } from '@types';
+import { FormChangeHandler, Payee, TransferRequest } from '@types';
 import * as React from 'react'
 
 interface Props {
   onFieldChange: () => void
   savedContacts: Payee[]
+  payeePublicKey: TransferRequest['payeePublicKey']
+  handleChange: FormChangeHandler<TransferRequest>
 }
 
 export const DropdownFieldPresentation: React.SFC<Props> = (props) => {
-  const contactNames = props.savedContacts.map(({ name }) => <option key={name}>{name}</option>)
+  const contactNames = props.savedContacts
+    .map(({ name, publicKey }) => <option key={name} value={publicKey}>{name}</option>)
+
+  const isSelected = props.savedContacts
+    .findIndex(({ publicKey }) => props.payeePublicKey === publicKey) !== -1
 
   return (
     <React.Fragment>
@@ -15,7 +21,11 @@ export const DropdownFieldPresentation: React.SFC<Props> = (props) => {
       <div className="field is-grouped">
         <div className="control is-expanded">
           <div className="select is-fullwidth payee-select">
-            <select className="has-text-grey">
+            <select
+              className={!isSelected ? 'has-text-grey' : ''}
+              onChange={({ target: { value: newValue } }) => props.handleChange({ field: 'payeePublicKey', newValue })}
+              value={props.payeePublicKey}
+            >
               <option>Select a contact</option>
               {contactNames}
             </select>
