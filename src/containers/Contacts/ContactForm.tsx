@@ -1,17 +1,26 @@
+import { addContact } from '@actions'
 import { InputField } from '@components/InputField'
 import { Contact } from '@types'
 import { Keypair } from 'js-kinesis-sdk'
 import * as React from 'react'
+import { connect } from 'react-redux'
 
 interface State extends Contact {
   errors: { [key in keyof Contact]?: string }
+  isValid: boolean
 }
 
-class ContractFormStateful extends React.Component<{ hideForm: () => any }, State> {
+const mapDispatchToProps = {
+  addContact,
+}
+
+type StateFulProps = { hideForm: () => any } & typeof mapDispatchToProps
+class ContractFormStateful extends React.Component<StateFulProps, State> {
   state: State = {
     name: '',
     address: '',
     errors: {},
+    isValid: false,
   }
 
   render() {
@@ -20,27 +29,38 @@ class ContractFormStateful extends React.Component<{ hideForm: () => any }, Stat
         {...this.state}
         handleChange={this.handleChange}
         cancel={this.props.hideForm}
+        addContact={this.handleAdd}
       />
     )
   }
 
+  private handleAdd = () => {
+    const { name, address } = this.state
+    this.props.addContact({ name, address })
+    this.props.hideForm()
+  }
+
   private handleChange = (key: string, value: string) => {
-    this.setState(
-      state => ({ ...state, [key]: value }),
-      () => (key === 'address' ? this.validateAddress() : null),
-    )
+    this.setState(state => ({ ...state, [key]: value }), () => this.validateForm())
+  }
+
+  private validateForm = () => {
+    const errors = {
+      address: this.state.address === '' || !this.validateAddress(),
+      name: this.state.name === '',
+    }
+
+    this.setState({ isValid: Object.values(errors).includes(false) })
   }
 
   private validateAddress = () => {
-    if (this.state.address === '') {
-      this.setState({ errors: { address: '' } })
-      return
-    }
     try {
       Keypair.fromPublicKey(this.state.address)
-      this.setState({ errors: { ...this.state.errors, address: '' } })
+      this.setState({ errors: { address: '' } })
+      return true
     } catch (e) {
-      this.setState({ errors: { ...this.state.errors, address: 'Invalid address' } })
+      this.setState({ errors: { address: 'Invalid address' } })
+      return false
     }
   }
 }
@@ -48,6 +68,7 @@ class ContractFormStateful extends React.Component<{ hideForm: () => any }, Stat
 interface Props extends State {
   handleChange: (key: keyof Contact, value: string) => any
   cancel: () => any
+  addContact: () => any
 }
 
 const ContactFormPresentation: React.SFC<Props> = props => (
@@ -81,7 +102,11 @@ const ContactFormPresentation: React.SFC<Props> = props => (
         <div className="field">
           <label className="label is-small">&nbsp;</label>
           <div className="control">
-            <button className="button is-success">
+            <button
+              className="button is-success"
+              onClick={props.addContact}
+              disabled={!props.isValid}
+            >
               <span className="icon">
                 <i className="fal fa-lg fa-check" />
               </span>
@@ -106,4 +131,9 @@ const ContactFormPresentation: React.SFC<Props> = props => (
   </React.Fragment>
 )
 
-export { ContractFormStateful as ContactForm }
+const ConnectedContactForm = connect(
+  null,
+  mapDispatchToProps,
+)(ContractFormStateful)
+
+export { ConnectedContactForm as ContactForm }
