@@ -103,7 +103,7 @@ export class TransferForm extends React.Component<TransferProps> {
           <PayeeSelector
             handleChange={handleChange}
             payees={this.props.payees}
-            targetPayee={this.props.payeePublicKey}
+            payeePublicKey={this.props.payeePublicKey}
             changeTransferView={this.props.changeTransferView}
           />
           <InputField
@@ -112,7 +112,7 @@ export class TransferForm extends React.Component<TransferProps> {
             icon="fa-address-card"
             placeholder="Or input target address"
             disabled={this.isPayeeSelected()}
-            onChangeHandler={newValue => handleChange({ field: 'targetPayee', newValue })}
+            onChangeHandler={newValue => handleChange({ field: 'payeePublicKey', newValue })}
           />
           <InputField
             value={this.props.amount}

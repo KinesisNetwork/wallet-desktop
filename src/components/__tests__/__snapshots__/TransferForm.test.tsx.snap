@@ -14,6 +14,7 @@ exports[`TransferForm renders correctly 1`] = `
     <PayeeSelector
       changeTransferView={[Function]}
       handleChange={[Function]}
+      payeePublicKey="asdf"
       payees={
         Array [
           Object {
@@ -22,7 +23,6 @@ exports[`TransferForm renders correctly 1`] = `
           },
         ]
       }
-      targetPayee="asdf"
     />
     <InputField
       disabled={false}

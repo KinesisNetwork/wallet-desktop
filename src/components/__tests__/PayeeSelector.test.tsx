@@ -10,7 +10,7 @@ describe('PayeeSelector', () => {
   beforeEach(() => {
     props = {
       payees: [],
-      targetPayee: '',
+      payeePublicKey: '',
       handleChange: () => null,
       changeTransferView: () => null
     }
@@ -85,7 +85,7 @@ describe('PayeeSelector', () => {
     it('calls the handleChange method on changing option', () => {
       const handleChangeMock = jest.fn()
       const handleChangeMockParam = {
-        field: 'targetPayee',
+        field: 'payeePublicKey',
         newValue: '123'
       }
       const wrapper = shallow(<PayeeSelector {...props} payees={newPayee} handleChange={handleChangeMock} />)

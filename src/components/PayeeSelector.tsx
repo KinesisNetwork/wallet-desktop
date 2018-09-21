@@ -4,14 +4,14 @@ import { changeTransferView as action } from '@actions'
 import { FormChangeHandler, Payee, TransferRequest, TransferView } from '@types'
 
 export interface Props {
-  targetPayee: TransferRequest['payeePublicKey']
+  payeePublicKey: TransferRequest['payeePublicKey']
   payees: Payee[]
   handleChange: FormChangeHandler<TransferRequest>
   changeTransferView: typeof action
 }
 
-export const PayeeSelector: React.SFC<Props> = ({ targetPayee, payees, handleChange, changeTransferView }) => {
-  const isSelected = payees.findIndex(({ publicKey }) => targetPayee === publicKey) !== -1
+export const PayeeSelector: React.SFC<Props> = ({ payeePublicKey, payees, handleChange, changeTransferView }) => {
+  const isSelected = payees.findIndex(({ publicKey }) => payeePublicKey === publicKey) !== -1
   const selector = payees.length === 0
     ? (
       <div className='control is-expanded'>
@@ -28,8 +28,8 @@ export const PayeeSelector: React.SFC<Props> = ({ targetPayee, payees, handleCha
           <div className='select is-fullwidth'>
             <select
               className={!isSelected ? 'has-text-grey' : ''}
-              onChange={({ target: { value: newValue } }) => handleChange({ field: 'targetPayee', newValue })}
-              value={targetPayee}
+              onChange={({ target: { value: newValue } }) => handleChange({ field: 'payeePublicKey', newValue })}
+              value={payeePublicKey}
             >
               <option value='' hidden={true}>Select a payee</option>
               <option value=''>None</option>
