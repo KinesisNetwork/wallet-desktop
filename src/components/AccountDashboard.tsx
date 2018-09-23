@@ -30,12 +30,12 @@ const AccountDashboardPresentation: React.SFC<Props> = props => (
   <div>
     <div className="level">
       <div className="level-item">
-        {true && <TransactionConfirmationMessage
+        {/* <TransactionConfirmationMessage
           amount={props.amount}
           currency={props.currency}
           payeeName={props.contactName}
           account='Account 1'
-        />}
+        /> */}
       </div>
     </div>
     <CurrencySelector />
