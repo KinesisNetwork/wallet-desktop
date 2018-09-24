@@ -8,7 +8,6 @@ import { Transactions } from '@containers/Transactions'
 import * as kagLogo from '@icons/kag-icon.svg'
 import * as kauLogo from '@icons/kau-icon.svg'
 
-import { TransactionConfirmationMessage } from '@containers/TransferCurrency/ConfirmationMessage';
 import { addMetalColour } from '@helpers/walletUtils';
 import { RootState } from '@store'
 import { Currency, RootRoutes } from '@types'
@@ -16,7 +15,6 @@ import { Currency, RootRoutes } from '@types'
 const mapStateToProps = (state: RootState) => ({
   currency: state.connections.currentCurrency,
   balance: state.accounts.accountInfo.balance,
-  contactName: state.transfer.formData.contactName,
   amount: state.transfer.formData.amount
 })
 
@@ -28,16 +26,6 @@ type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
 const AccountDashboardPresentation: React.SFC<Props> = props => (
   <div>
-    <div className="level">
-      <div className="level-item">
-        {/* <TransactionConfirmationMessage
-          amount={props.amount}
-          currency={props.currency}
-          payeeName={props.contactName}
-          account='Account 1'
-        /> */}
-      </div>
-    </div>
     <CurrencySelector />
     <section className="section has-text-centered">
       <div className="level">

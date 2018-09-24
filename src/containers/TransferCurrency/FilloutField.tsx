@@ -6,24 +6,13 @@ interface Props {
   onFieldChange: () => void
   handleChange: (formData: FormUpdate<TransferRequest>) => void
   contactName: string
-  publicKey: string
+  payeePublicKey: string
   errors: FormErrors
   onSaveToContactsChange: () => void
   saveToContacts: boolean
 }
 
-// interface State {
-//   saveToContacts: boolean
-// }
-
 export class FilloutFieldPresentation extends React.Component<Props> {
-  // state = {
-  //   saveToContacts: true
-  // }
-
-  // handleSaveToContact = () => {
-  //   this.setState(prevState => ({saveToContacts: !prevState.saveToContacts}))
-  // }
 
   render() {
     return (
@@ -47,7 +36,7 @@ export class FilloutFieldPresentation extends React.Component<Props> {
           />
           <InputField
             label='Public Address'
-            value={this.props.publicKey}
+            value={this.props.payeePublicKey}
             placeholder='example: "GDUL65KWQ4PJA7FLO6467...CM7G"'
             onChangeHandler={newValue => this.props.handleChange({ field: 'payeePublicKey', newValue })}
             id='public-address'

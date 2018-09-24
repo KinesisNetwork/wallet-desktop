@@ -3,7 +3,6 @@ import { fromPromise } from 'rxjs/observable/fromPromise'
 import {
   catchError,
   filter,
-  flatMap,
   ignoreElements,
   map,
   mergeMap,
@@ -107,10 +106,17 @@ export const transactionSubmission$: RootEpic = (
     ),
   )
 
+// export const transactionSuccess$: RootEpic = (action$, state$, { generalSuccessAlert }) =>
+//   action$.pipe(
+//     filter(isActionOf(transactionSuccess)),
+//     flatMap(() => generalSuccessAlert('The transfer was successful.')),
+//     map(() => accountLoadRequest(getActiveAccount(state$.value.wallet).keypair.publicKey())),
+//   )
+
 export const transactionSuccess$: RootEpic = (action$, state$, { generalSuccessAlert }) =>
   action$.pipe(
     filter(isActionOf(transactionSuccess)),
-    flatMap(() => generalSuccessAlert('The transfer was successful.')),
+    map(() => console.log('The transfer was successful.')),
     map(() => accountLoadRequest(getActiveAccount(state$.value.wallet).keypair.publicKey())),
   )
 

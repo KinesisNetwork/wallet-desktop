@@ -5,37 +5,47 @@ import { connect } from 'react-redux'
 import * as kagLogo from '@icons/kag-icon.svg'
 import * as kauLogo from '@icons/kau-icon.svg'
 
-import { transferRequest } from '@actions'
+import { showNotification, transferRequest } from '@actions'
+import { AddressView } from '@components/AddressView'
 import { AccountCard } from '@containers/TransferCurrency/AccountCard'
 import { TransferSummary } from '@containers/TransferCurrency/TransferSummary'
 import { addMetalColour } from '@helpers/walletUtils'
-import { Currency, RootRoutes } from '@types'
+import { AddressDisplay, Currency, NotificationType, RootRoutes } from '@types'
 import { goBack, replace } from 'connected-react-router';
 
 import { getInitials } from '@helpers/walletUtils'
 
+import { getActiveAccount } from '@selectors'
+
 const mapStateToProps = (state: RootState) => {
-  const { transfer: { formData } } = state
+  const { transfer: { formData }, wallet } = state
   return {
     currency: state.connections.currentCurrency,
     walletName: state.wallet.persisted.walletName,
-    contactName: formData.contactName,
     memo: formData.memo,
     fee: formData.fee,
-    amount: formData.amount
+    amount: formData.amount,
+    formData,
+    activeAccount: getActiveAccount(wallet)
   }
 }
 
 const mapDispatchToProps = {
   goBackToTransformPage: () => goBack(),
   transferRequest,
-  goToDashboard: () => replace(RootRoutes.dashboard)
+  goToDashboard: () => replace(RootRoutes.dashboard),
+  showNotification
 }
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
 export class ConfirmationPagePresentation extends React.Component<Props> {
   confirmAndGoToDashboard = () => {
+    this.props.transferRequest(this.props.formData)
+    this.props.showNotification({
+      type: NotificationType.success,
+      message: `Transaction confirmed! ${this.props.amount} has been sent to ${<AddressView address={this.props.formData.payeePublicKey} addressDisplay={AddressDisplay.payee} />} from ${this.props.activeAccount.name}`
+    })
     this.props.goToDashboard()
   }
 
@@ -59,7 +69,11 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
               </div>
             </section>
             <section className="columns is-vcentered">
-              <AccountCard inititals={getInitials(this.props.walletName)} accountName='Account 1' />
+              <AccountCard
+                inititals={getInitials(this.props.walletName)}
+                addressDisplay={AddressDisplay.account}
+                address={this.props.formData.payeePublicKey}
+              />
               <div className="column is-narrow">
                 <div className="level">
                   <div className="level-item">
@@ -69,7 +83,11 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
                   </div>
                 </div>
               </div>
-              <AccountCard payeeName={this.props.contactName} icon='fa-user-circle' />
+              <AccountCard
+                icon='fa-user-circle'
+                address={this.props.formData.payeePublicKey}
+                addressDisplay={AddressDisplay.payee}
+              />
             </section>
             <section className="section">
               <div className="columns is-centered">

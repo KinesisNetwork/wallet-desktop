@@ -66,7 +66,6 @@ export const transfer = combineReducers<TransferState, RootAction>({
     payeePublicKey: handleChange('payeePublicKey'),
     memo: handleChange('memo'),
     fee: handleChange('fee'),
-    contactName: handleChange('contactName')
   }),
   formMeta,
   isTransferring: (state = false, action) => {

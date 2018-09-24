@@ -38,7 +38,6 @@ export interface TransferRequest {
   readonly amount: string
   readonly memo: string
   readonly fee: string
-  readonly contactName: string
 }
 
 export type FormErrors = {

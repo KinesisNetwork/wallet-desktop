@@ -62,3 +62,8 @@ export enum NotificationType {
   error = 'danger',
   success = 'success'
 }
+
+export enum AddressDisplay {
+  account,
+  payee
+}

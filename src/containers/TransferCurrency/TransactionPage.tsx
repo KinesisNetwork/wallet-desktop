@@ -29,7 +29,7 @@ const mapStateToProps = (state: RootState) => {
     currency: state.connections.currentCurrency,
     balance: state.accounts.accountInfo.balance,
     connection: getCurrentConnection(connections).endpoint,
-    savedContacts: payees.payeesList
+    savedContacts: payees.payeesList,
   }
 }
 
@@ -52,7 +52,8 @@ interface State {
 export class TransactionPagePresentation extends React.Component<Props, State> {
   state = {
     isDropdownField: true,
-    saveToContacts: true
+    saveToContacts: true,
+    addressInStore: this.props.savedContacts.find(payee => payee.publicKey === this.props.payeePublicKey)
   }
 
   handlePayeeFieldToggle = () => {
@@ -69,16 +70,29 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
       memo: memoError,
       payeePublicKey: payeePublicKeyError,
     } = this.props.errors
-    return this.props.amount === '' || !this.props.contactName || !!amountError || !!memoError || !!payeePublicKeyError
+    return this.props.amount === '' || !!amountError || !!memoError || !!payeePublicKeyError
   }
 
   goToConfirmPage = () => {
-    if (this.state.saveToContacts) {
-      this.props.addPayee({
-        name: this.props.contactName,
-        publicKey: this.props.payeePublicKey
-      })
+    const newContact = {
+      // name: this.state.addressInStore!.name,
+      publicKey: this.props.payeePublicKey
     }
+    if (this.state.saveToContacts) {
+      const hasTheSamePublicAddress = this.props.savedContacts
+        .findIndex(({ publicKey }) => this.props.payeePublicKey === publicKey) !== -1
+
+      // const hasTheSameName = this.props.savedContacts
+      //   .findIndex(({ name }) => this.state.addressInStore!.name === name) !== -1
+
+      // if (!hasTheSamePublicAddress || !hasTheSameName) {
+      //   this.props.addPayee(newContact)
+      // }
+
+      this.props.addPayee(newContact)
+
+    }
+
     this.props.goToConfirm()
   }
 
@@ -125,8 +139,8 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
                   handleChange={handleChange}
                 />
                 : <FilloutField
-                  contactName={this.props.contactName}
-                  publicKey={this.props.payeePublicKey}
+                  contactName={this.state.addressInStore!.name}
+                  payeePublicKey={this.props.payeePublicKey}
                   errors={this.props.errors}
                   handleChange={handleChange}
                   onFieldChange={this.handlePayeeFieldToggle}

@@ -10,7 +10,7 @@ interface Props {
 
 export const DropdownFieldPresentation: React.SFC<Props> = (props) => {
   const contactNames = props.savedContacts
-    .map(({ name, publicKey }) => <option key={name} value={publicKey}>{name}</option>)
+    .map(({ name, publicKey }) => <option key={publicKey} value={publicKey}>{name}</option>)
 
   const isSelected = props.savedContacts
     .findIndex(({ publicKey }) => props.payeePublicKey === publicKey) !== -1
