@@ -33,7 +33,7 @@ export class AccountPanelComponent extends React.Component<
 
   public componentDidUpdate(prevProps) {
     if (this.props.activeAccount.name !== prevProps.activeAccount.name) {
-      this.setState({name: this.props.activeAccount.name})
+      this.setState({ name: this.props.activeAccount.name })
     }
   }
 

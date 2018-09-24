@@ -1,4 +1,10 @@
-import { addAccountToWallet, initialiseWallet, setActiveAccount, unlockWalletNew, updateAccountName } from '@actions'
+import {
+  addAccountToWallet,
+  initialiseWallet,
+  setActiveAccount,
+  unlockWalletNew,
+  updateAccountName,
+} from '@actions'
 import { createStorage } from '@services/storage'
 import { RootAction } from '@store'
 import { BaseAccount, PersistedAccount, WalletAccount, WalletLoggedInState } from '@types'
@@ -17,8 +23,11 @@ interface WalletState extends WalletLoggedInState {
   persisted: WalletPersistedState
 }
 
-function accountNameStateChange<T extends BaseAccount>(state: any[], {existingName, newName}: {existingName: string, newName: string}): T[] {
-  return state.map(a => a.name === existingName ? {...a, name: newName} : a)
+function accountNameStateChange<T extends BaseAccount>(
+  state: any[],
+  { existingName, newName }: { existingName: string; newName: string },
+): T[] {
+  return state.map(a => (a.name === existingName ? { ...a, name: newName } : a))
 }
 
 const persisted = combineReducers<WalletPersistedState, RootAction>({

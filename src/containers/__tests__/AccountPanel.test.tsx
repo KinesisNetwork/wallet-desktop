@@ -9,7 +9,7 @@ describe.only('AccountPanel', () => {
   const props = {
     activeAccount: {
       name: 'b',
-      keypair: Keypair.random()
+      keypair: Keypair.random(),
     },
     accountNames: ['a', 'b', 'c'],
   }
@@ -22,12 +22,15 @@ describe.only('AccountPanel', () => {
     const wrapper = shallow(<AccountPanelComponent {...localProps} />)
     const instance = wrapper.instance() as AccountPanelComponent
 
-    instance.onChange({target: {value: 'c'}})
+    instance.onChange({ target: { value: 'c' } })
     instance.onStopEditing()
 
     expect(showNotification).toHaveBeenCalled()
     expect(updateAccountName).not.toHaveBeenCalled()
-    expect(showNotification).toBeCalledWith({message: 'Account name must be unique', type: NotificationType.error})
+    expect(showNotification).toBeCalledWith({
+      message: 'Account name must be unique',
+      type: NotificationType.error,
+    })
   })
 
   it('nothing is dispatched if the name isnt changed', () => {
@@ -38,7 +41,7 @@ describe.only('AccountPanel', () => {
     const wrapper = shallow(<AccountPanelComponent {...localProps} />)
     const instance = wrapper.instance() as AccountPanelComponent
 
-    instance.onChange({target: {value: 'b'}})
+    instance.onChange({ target: { value: 'b' } })
     instance.onStopEditing()
 
     expect(showNotification).not.toHaveBeenCalled()
@@ -53,12 +56,14 @@ describe.only('AccountPanel', () => {
     const wrapper = shallow(<AccountPanelComponent {...localProps} />)
     const instance = wrapper.instance() as AccountPanelComponent
 
-    instance.onChange({target: {value: 'd'}})
+    instance.onChange({ target: { value: 'd' } })
     instance.onStopEditing()
 
     expect(showNotification).toHaveBeenCalled()
     expect(updateAccountName).toHaveBeenCalled()
-    expect(showNotification).toBeCalledWith({message: 'Account name successfully updated', type: NotificationType.success})
+    expect(showNotification).toBeCalledWith({
+      message: 'Account name successfully updated',
+      type: NotificationType.success,
+    })
   })
-
 })

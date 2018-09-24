@@ -65,7 +65,7 @@ export class SignForm extends React.Component<SignProps, State> {
     } catch (e) {
       this.props.formIsInvalid({
         message: e.message,
-        key: e.key
+        key: e.key,
       })
     }
   }
@@ -176,7 +176,7 @@ export class VerifyForm extends React.Component<SignProps> {
     } catch (e) {
       this.props.formIsInvalid({
         message: e.message,
-        key: e.key
+        key: e.key,
       })
       return false
     }

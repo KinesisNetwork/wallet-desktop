@@ -12,4 +12,7 @@ const mapDispatchToProps = {
   changeTransferView,
 }
 
-export const Transfer = connect(mapStateToProps, mapDispatchToProps)(TransferPresentation)
+export const Transfer = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TransferPresentation)

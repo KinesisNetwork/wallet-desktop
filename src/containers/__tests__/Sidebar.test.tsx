@@ -9,7 +9,7 @@ describe('SidebarPresentation', () => {
   let props
 
   beforeEach(() => {
-     props = {
+    props = {
       activeAccount: {},
       accounts: [],
       addNextAccountFromSeedphrase: () => null,

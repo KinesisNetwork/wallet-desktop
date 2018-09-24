@@ -1,10 +1,7 @@
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 
-import {
-  clearNotification,
-  showNotification
-} from '@actions'
+import { clearNotification, showNotification } from '@actions'
 
 import { RootAction } from '@store'
 import { NotificationType } from '@types'

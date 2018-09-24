@@ -5,8 +5,6 @@ interface Props {
 }
 export const DropdownMenu: React.SFC<Props> = ({ children }) => (
   <div className="dropdown-menu is-paddingless" id="dropdown-menu" role="menu">
-    <div className="dropdown-content is-paddingless">
-      {children}
-    </div>
+    <div className="dropdown-content is-paddingless">{children}</div>
   </div>
 )
