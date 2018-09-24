@@ -2,7 +2,6 @@ import { shallow } from 'enzyme'
 import * as React from 'react'
 
 import { LockedWallet, Password, UnlockedWallet } from '@components/Password'
-import '../../setupTests'
 
 describe('Password', () => {
   it('renders correctly', () => {

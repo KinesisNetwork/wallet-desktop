@@ -7,15 +7,16 @@
   "main": "src/index.ts",
   "scripts": {
     "lint-compile": "npm run sass-compile && npm run lint && npm run compile:tsc",
-    "test": "npm run lint && rm -rf ./out && tsc && jest",
-    "test:watch": "jest --watch",
+    "pretest": "npm run lint && npm run tsc:check && rm -rf out",
+    "test": "jest --changedSince=master",
+    "test:watch": "npm run test -- --watch",
     "predeploy:appveyor": "npm run sass-compile",
     "predeploy:travis": "npm run sass-compile && npm version $TRAVIS_TAG --no-git-tag-version",
     "deploy:electron": "electron-forge publish",
     "sass-compile": "node-sass src/style.scss src/style.css",
     "build:web": "IS_WEB=true parcel build src/index-web.html",
     "prestart": "npm run sass-compile",
-    "start": "electron-forge start",
+    "start": "npm run web",
     "web": "IS_WEB=true parcel src/index-web.html --cache-dir .web-cache",
     "tsc:check": "tsc --noEmit",
     "watch:tsc": "npm run tsc:check -- -w",
@@ -160,11 +161,11 @@
     "prettier": "^1.14.3",
     "react-test-renderer": "^16.4.2",
     "sinon": "^6.1.5",
-    "ts-jest": "23.0.1",
+    "ts-jest": "^23.10.1",
     "tsconfig-paths": "^3.3.1",
-    "tslint": "5.10.0",
+    "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.14.0",
     "tslint-react": "3.6.0",
-    "typescript": "^2.9.2"
+    "typescript": "^3.0.3"
   }
 }

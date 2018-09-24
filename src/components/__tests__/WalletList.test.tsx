@@ -2,7 +2,6 @@ import { shallow } from 'enzyme'
 import * as React from 'react'
 
 import { WalletList, WalletListItem } from '@components/WalletList'
-import '../../setupTests'
 
 describe('WalletList', () => {
   const props = {

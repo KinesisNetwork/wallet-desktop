@@ -2,7 +2,6 @@ import { shallow } from 'enzyme'
 import * as React from 'react'
 
 import { ConnectionSettings } from '@components/ConnectionSettings'
-import '../../setupTests'
 
 describe('ConnectionSettings', () => {
   it('renders correctly', () => {

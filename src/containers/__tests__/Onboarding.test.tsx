@@ -3,14 +3,13 @@ import { shallow } from 'enzyme'
 import * as React from 'react'
 
 import { OnboardingPresentation } from '@containers/Onboarding'
-import '../../setupTests'
 
 describe('Modal', () => {
   const props = {
     closeModal,
     completeOnBoarding,
     isModalActive: true,
-    hasOnBoarded: false
+    hasOnBoarded: false,
   }
 
   it('should render correctly', () => {
@@ -29,7 +28,13 @@ describe('Modal', () => {
   it('calls closeModal and completeOnBoarding methods on clicking the button', () => {
     const closeModalStub = jest.fn()
     const completeOnBoardingStub = jest.fn()
-    const wrapper = shallow(<OnboardingPresentation {...props} closeModal={closeModalStub} completeOnBoarding={completeOnBoardingStub} />)
+    const wrapper = shallow(
+      <OnboardingPresentation
+        {...props}
+        closeModal={closeModalStub}
+        completeOnBoarding={completeOnBoardingStub}
+      />,
+    )
 
     const button = wrapper.find('button')
     button.simulate('click')

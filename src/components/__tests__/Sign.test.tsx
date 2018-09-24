@@ -1,9 +1,8 @@
-import { shallow } from 'enzyme';
+import { shallow } from 'enzyme'
 import { Keypair } from 'js-kinesis-sdk'
 import * as React from 'react'
 
 import { Sign, SignForm, VerifyForm } from '@components/Sign'
-import '../../setupTests'
 
 describe('Sign', () => {
   let props
@@ -19,15 +18,15 @@ describe('Sign', () => {
       isWalletUnlocked: false,
       messageVerificationResult: () => null,
       signData: {
-        message: ''
+        message: '',
       },
       signMessage: () => null,
       signature: '',
       verifyData: {
         message: '',
         publicKey: '',
-        signature: ''
-      }
+        signature: '',
+      },
     }
   })
 
@@ -58,13 +57,13 @@ describe('Sign', () => {
     })
 
     it('renders VerifyForm', () => {
-      const wrapper = shallow(<Sign {...props} focus='Verify' />)
+      const wrapper = shallow(<Sign {...props} focus="Verify" />)
 
       expect(wrapper.find('VerifyForm')).toHaveLength(1)
     })
 
     it('renders SignTransactionForm', () => {
-      const wrapper = shallow(<Sign {...props} focus='Sign Transaction' />)
+      const wrapper = shallow(<Sign {...props} focus="Sign Transaction" />)
 
       expect(wrapper.find('Connect(SignTransactionForm)')).toHaveLength(1)
     })
@@ -86,15 +85,15 @@ describe('SignForm', () => {
       isWalletUnlocked: false,
       messageVerificationResult: () => null,
       signData: {
-        message: ''
+        message: '',
       },
       signMessage: () => null,
       signature: '',
       verifyData: {
         message: '',
         publicKey: '',
-        signature: ''
-      }
+        signature: '',
+      },
     }
   })
 
@@ -124,7 +123,7 @@ describe('SignForm', () => {
       const formIsInvalidMock = jest.fn()
       const formAlertParam = {
         key: 'wallet-unlock-password',
-        message: 'Wallet must be unlocked'
+        message: 'Wallet must be unlocked',
       }
       const wrapper = shallow(<SignForm {...props} formIsInvalid={formIsInvalidMock} />)
 
@@ -138,14 +137,10 @@ describe('SignForm', () => {
       const formIsInvalidMock = jest.fn()
       const formAlertParam = {
         key: 'signdata-message',
-        message: 'Message is required'
+        message: 'Message is required',
       }
       const wrapper = shallow(
-        <SignForm
-          {...props}
-          isWalletUnlocked={true}
-          formIsInvalid={formIsInvalidMock}
-        />
+        <SignForm {...props} isWalletUnlocked={true} formIsInvalid={formIsInvalidMock} />,
       )
 
       const form = wrapper.find('form')
@@ -162,15 +157,11 @@ describe('SignForm', () => {
         decryptedPrivateKey: '123',
         isWalletUnlocked: true,
         signData: {
-          message: 'My Message'
-        }
+          message: 'My Message',
+        },
       }
       const wrapper = shallow(
-        <SignForm
-          {...props}
-          {...modifiedProps}
-          signMessage={signMessageMock}
-        />
+        <SignForm {...props} {...modifiedProps} signMessage={signMessageMock} />,
       )
       const keypairSpy = jest
         .spyOn(Keypair, 'fromSecret')
@@ -185,12 +176,7 @@ describe('SignForm', () => {
     })
 
     it('displays the signature in the signature input field and enables the copy button', () => {
-      const wrapper = shallow(
-        <SignForm
-          {...props}
-          signature='asdf'
-        />
-      )
+      const wrapper = shallow(<SignForm {...props} signature="asdf" />)
 
       const signatureLabel = wrapper.find('.label.is-small')
       const signatureInput = wrapper.find('input')
@@ -222,15 +208,15 @@ describe('VerifyForm', () => {
       isWalletUnlocked: false,
       messageVerificationResult: () => null,
       signData: {
-        message: ''
+        message: '',
       },
       signMessage: () => null,
       signature: '',
       verifyData: {
         message: '',
         publicKey: '',
-        signature: ''
-      }
+        signature: '',
+      },
     }
   })
 
@@ -265,15 +251,10 @@ describe('VerifyForm', () => {
       verifyData: {
         message: 'qwe',
         signature: 'asd',
-        publicKey: '123'
-      }
+        publicKey: '123',
+      },
     }
-    const wrapper = shallow(
-      <VerifyForm
-        {...props}
-        {...modifiedProps}
-      />
-    )
+    const wrapper = shallow(<VerifyForm {...props} {...modifiedProps} />)
 
     const form = wrapper.find('form')
     form.simulate('submit', { preventDefault: () => null })
@@ -285,22 +266,17 @@ describe('VerifyForm', () => {
     const formIsInvalidMock = jest.fn()
     const formIsInvalidMockParam = {
       key: 'verify-signature',
-      message: 'Signature is required'
+      message: 'Signature is required',
     }
     const modifiedProps = {
       formIsInvalid: formIsInvalidMock,
       verifyData: {
         message: 'qwe',
         signature: '',
-        publicKey: '123'
-      }
+        publicKey: '123',
+      },
     }
-    const wrapper = shallow(
-      <VerifyForm
-        {...props}
-        {...modifiedProps}
-      />
-    )
+    const wrapper = shallow(<VerifyForm {...props} {...modifiedProps} />)
 
     const form = wrapper.find('form')
     form.simulate('submit', { preventDefault: () => null })

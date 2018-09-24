@@ -2,7 +2,6 @@ import { shallow } from 'enzyme'
 import * as React from 'react'
 
 import { TransferForm } from '@components/TransferForm'
-import '../../setupTests'
 
 describe('TransferForm', () => {
   let props

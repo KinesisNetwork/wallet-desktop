@@ -1,8 +1,7 @@
-import { shallow } from 'enzyme';
+import { shallow } from 'enzyme'
 import * as React from 'react'
 
 import { Loader } from '@components/Loader'
-import '../../setupTests'
 
 describe('Loader', () => {
   it('renders correctly', () => {

@@ -2,7 +2,6 @@ import { shallow } from 'enzyme'
 import * as React from 'react'
 
 import { InputField } from '@components/InputField'
-import '../../setupTests'
 
 describe('InputField', () => {
   it('should render correctly', () => {

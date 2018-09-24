@@ -1,8 +1,7 @@
-import { shallow } from 'enzyme';
+import { shallow } from 'enzyme'
 import * as React from 'react'
 
 import { DeleteWallet } from '@components/DeleteWallet'
-import '../../setupTests'
 
 describe('DeleteWallet', () => {
   let props
@@ -12,9 +11,9 @@ describe('DeleteWallet', () => {
       activeWallet: {
         accountName: 'hello',
         encryptedPrivateKey: 'uhgn',
-        publicKey: 'qwe'
+        publicKey: 'qwe',
       },
-      deleteWallet: () => null
+      deleteWallet: () => null,
     }
   })
   it('should render correctly', () => {
@@ -28,7 +27,17 @@ describe('DeleteWallet', () => {
 
     expect(wrapper.find('button')).toHaveLength(1)
     expect(wrapper.find('button').text()).toEqual('Delete Account from Wallet')
-    expect(wrapper.find('.icon').children().hasClass('fa-trash-alt')).toBe(true)
-    expect(wrapper.find('.icon').children().hasClass('fa-lg')).toBe(true)
+    expect(
+      wrapper
+        .find('.icon')
+        .children()
+        .hasClass('fa-trash-alt'),
+    ).toBe(true)
+    expect(
+      wrapper
+        .find('.icon')
+        .children()
+        .hasClass('fa-lg'),
+    ).toBe(true)
   })
 })

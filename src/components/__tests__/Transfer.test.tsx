@@ -3,7 +3,6 @@ import * as React from 'react'
 
 import { Transfer } from '@components/Transfer'
 import { TransferView } from '@types'
-import '../../setupTests'
 
 describe('Transfer', () => {
   it('renders correctly', () => {

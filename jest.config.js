@@ -1,3 +1,11 @@
+const { pathsToModuleNameMapper } = require('ts-jest')
+const { compilerOptions } = require('./tsconfig.json')
+
+const moduleNameMapper = {
+  ...pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>' }),
+  '^@images/(.*)$': '<rootDir>/test/__mocks__/imageMock.js',
+}
+
 module.exports = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
@@ -5,18 +13,9 @@ module.exports = {
   testEnvironment: 'node', // This may need to change if we test any window dependencies
   testRegex: '/__tests__/.*.(test|spec)\\.(tsx|ts)$',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node', 'svg', 'png', 'jpg'],
-  moduleNameMapper: {
-    '@services(.*)': '<rootDir>/src/services$1',
-    '@components(.*)': '<rootDir>/src/components$1',
-    '@containers(.*)': '<rootDir>/src/containers$1',
-    '@helpers(.*)': '<rootDir>/src/helpers$1',
-    '@types(.*)': '<rootDir>/src/types$1',
-    '@store(.*)': '<rootDir>/src/store$1',
-    '@actions(.*)': '<rootDir>/src/store/actions$1',
-    '@selectors(.*)': '<rootDir>/src/store/selectors$1',
-    '@images(.*)': '<rootDir>/src/test/__mocks__/imageMock.js',
-    '@icons(.*)': '<rootDir>/src/icons$1',
-  },
+  moduleNameMapper,
   snapshotSerializers: ['enzyme-to-json/serializer'],
-  setupTestFrameworkScriptFile: '<rootDir>/src/setupTests.ts',
+  setupTestFrameworkScriptFile: '<rootDir>/setupTests.ts',
+  collectCoverage: true,
+  rootDir: 'src',
 }

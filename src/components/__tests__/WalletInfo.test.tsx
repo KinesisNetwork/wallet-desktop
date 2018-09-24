@@ -3,7 +3,6 @@ import * as React from 'react'
 
 import { LabelledField } from '@components/LabelledField'
 import { WalletInfo } from '@components/WalletInfo'
-import '../../setupTests'
 
 describe('WalletInfo', () => {
   it('renders correctly', () => {
