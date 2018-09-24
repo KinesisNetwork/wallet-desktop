@@ -77,10 +77,7 @@ export const addAccountToWalletFromSeedphrase$: RootEpic = (
     withLatestFrom(state$),
     map(([_, state]) => {
       const password = state.passwords.lastSuccessfulInput
-      const {
-        persisted,
-        passphrase,
-      } = state.wallet
+      const { persisted, passphrase } = state.wallet
 
       const existingAccountsCount = persisted.createdAccounts.filter(a => !a.imported).length
 
@@ -94,7 +91,7 @@ export const addAccountToWalletFromSeedphrase$: RootEpic = (
 
       const walletAccount: WalletAccount = { name, keypair }
 
-      return addAccountToWallet({persistedAccount, walletAccount})
+      return addAccountToWallet({ persistedAccount, walletAccount })
     }),
   )
 
@@ -106,7 +103,7 @@ export const importAccountFromSecret$: RootEpic = (
   action$.pipe(
     filter(isActionOf(importAccountFromSecret)),
     withLatestFrom(state$),
-    map(([{payload}, state]) => {
+    map(([{ payload }, state]) => {
       const password = state.passwords.lastSuccessfulInput
       const { persisted } = state.wallet
 
@@ -121,7 +118,7 @@ export const importAccountFromSecret$: RootEpic = (
 
       const walletAccount: WalletAccount = { name, keypair }
 
-      return addAccountToWallet({persistedAccount, walletAccount})
+      return addAccountToWallet({ persistedAccount, walletAccount })
     }),
   )
 

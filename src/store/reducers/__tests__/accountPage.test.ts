@@ -1,11 +1,11 @@
-import { selectWallet, setAccountPage } from '@actions';
+import { selectWallet, setAccountPage } from '@actions'
 import { RootAction } from '@store'
-import { AccountPage } from '@types';
+import { AccountPage } from '@types'
 import { accountPage, AccountPageState } from '../accountPage'
 
-const state = <AccountPageState><any>{
-  accountPage: 'default'
-}
+const state = <AccountPageState>(<any>{
+  accountPage: 'default',
+})
 
 describe('AccountPage reducer', () => {
   it('default state', () => {
@@ -20,11 +20,14 @@ describe('AccountPage reducer', () => {
   })
 
   it('selectWallet', () => {
-    const nextState = accountPage(state, selectWallet({
-      publicKey: 'publicKey',
-      encryptedPrivateKey: 'encryptedPrivateKey',
-      accountName: 'accountName'
-    }))
+    const nextState = accountPage(
+      state,
+      selectWallet({
+        publicKey: 'publicKey',
+        encryptedPrivateKey: 'encryptedPrivateKey',
+        accountName: 'accountName',
+      }),
+    )
 
     expect(nextState).toEqual({ accountPage: AccountPage.dashboard })
   })

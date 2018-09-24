@@ -12,9 +12,13 @@ const mapStateToProps = ({ payees, view }: RootState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   addPayee: (payee: Payee) => dispatch(addPayee(payee)),
-  handleChange: (field: keyof Payee, newValue: string) => dispatch(updatePayeeForm({ field, newValue })),
+  handleChange: (field: keyof Payee, newValue: string) =>
+    dispatch(updatePayeeForm({ field, newValue })),
   cancelForm: () => dispatch(changeTransferView(TransferView.transfer)),
-  formIsInvalid: (error: FormAlert) => dispatch(invalidForm(error))
+  formIsInvalid: (error: FormAlert) => dispatch(invalidForm(error)),
 })
 
-export const PayeeForm = connect(mapStateToProps, mapDispatchToProps)(PayeeFormPresentation)
+export const PayeeForm = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(PayeeFormPresentation)

@@ -1,7 +1,7 @@
 import { completeOnBoarding } from '@actions'
 import { RootAction } from '@store'
-import { combineReducers } from 'redux';
-import { getType } from 'typesafe-actions';
+import { combineReducers } from 'redux'
+import { getType } from 'typesafe-actions'
 
 export interface SettingsState {
   readonly onBoarding: boolean
@@ -15,5 +15,5 @@ export const settings = combineReducers<SettingsState, RootAction>({
       default:
         return state
     }
-  }
+  },
 })

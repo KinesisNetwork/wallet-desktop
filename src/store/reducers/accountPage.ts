@@ -11,9 +11,12 @@ export interface AccountPageState {
 export const accountPage = combineReducers<AccountPageState, RootAction>({
   accountPage: (state = AccountPage.dashboard, action) => {
     switch (action.type) {
-      case getType(setAccountPage): return action.payload
-      case getType(selectWallet): return AccountPage.dashboard
-      default: return state
+      case getType(setAccountPage):
+        return action.payload
+      case getType(selectWallet):
+        return AccountPage.dashboard
+      default:
+        return state
     }
   },
 })

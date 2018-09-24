@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { shallow } from 'enzyme'
 import * as React from 'react'
 
 import { SignTransactionForm } from '@components/SignTransactionForm'
@@ -12,13 +12,13 @@ describe('SignedTransactionForm', () => {
       connection: {
         horizonURL: 'https://kau-testnet.kinesisgroup.io',
         name: 'Kinesis KAU Testnet',
-        networkPassphrase: 'Kinesis UAT'
+        networkPassphrase: 'Kinesis UAT',
       },
       decryptedPrivateKey: () => null,
       message: '',
       submissionPending: false,
       transactionRequest: () => null,
-      updateSignTransactionForm: () => null
+      updateSignTransactionForm: () => null,
     }
   })
 

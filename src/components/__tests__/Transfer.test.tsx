@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { shallow } from 'enzyme'
 import * as React from 'react'
 
 import { Transfer } from '@components/Transfer'
@@ -17,8 +17,18 @@ describe('Transfer', () => {
 
     const heading = wrapper.find('h1')
 
-    expect(heading.find('span').at(0).text()).toEqual('Transfer')
-    expect(heading.find('span').at(1).text()).toEqual('KAU')
+    expect(
+      heading
+        .find('span')
+        .at(0)
+        .text(),
+    ).toEqual('Transfer')
+    expect(
+      heading
+        .find('span')
+        .at(1)
+        .text(),
+    ).toEqual('KAU')
   })
 
   it('displays a TransferForm if transfer view indicates', () => {

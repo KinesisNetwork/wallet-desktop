@@ -36,8 +36,8 @@ const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
     <h1 className="title has-text-primary has-text-centered">Record your recovery phrase</h1>
     <div className="content">
       <p>
-        Your recovery phrase is the only way to regain access to your wallet if you
-        forget the password or lose access to this device.
+        Your recovery phrase is the only way to regain access to your wallet if you forget the
+        password or lose access to this device.
       </p>
       <p>
         <strong>Anyone with your recovery phrase will have complete access to your wallet.</strong>

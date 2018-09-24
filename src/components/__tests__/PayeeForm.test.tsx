@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { shallow } from 'enzyme'
 import * as React from 'react'
 
 import { PayeeForm } from '@components/PayeeForm'
@@ -12,12 +12,12 @@ describe('PayeeForm', () => {
       activeWalletView: 3,
       payee: {
         name: '',
-        publicKey: ''
+        publicKey: '',
       },
       addPayee: () => null,
       cancelForm: () => null,
       handleChange: () => null,
-      callFormAlert: () => null
+      callFormAlert: () => null,
     }
   })
 
@@ -38,17 +38,15 @@ describe('PayeeForm', () => {
     expect(form.find('button').text()).toEqual('Set Payee')
   })
 
-  it('assigns the values of payee to InputField component\'s value', () => {
+  it("assigns the values of payee to InputField component's value", () => {
     const wrapper = shallow(
       <PayeeForm
         {...props}
-        payee={
-          {
-            name: 'Fred',
-            publicKey: '123'
-          }
-        }
-      />
+        payee={{
+          name: 'Fred',
+          publicKey: '123',
+        }}
+      />,
     )
 
     const inputFields = wrapper.find('InputField')
@@ -60,16 +58,10 @@ describe('PayeeForm', () => {
   it('calls the createNewPayee method on submitting the form', () => {
     const newPayee = {
       name: 'Fred',
-      publicKey: '123'
+      publicKey: '123',
     }
     const createNewPayeeMock = jest.fn()
-    const wrapper = shallow(
-      <PayeeForm
-        {...props}
-        payee={newPayee}
-        addPayee={createNewPayeeMock}
-      />
-    )
+    const wrapper = shallow(<PayeeForm {...props} payee={newPayee} addPayee={createNewPayeeMock} />)
 
     const form = wrapper.find('form')
 
@@ -80,15 +72,10 @@ describe('PayeeForm', () => {
   it('calls formAlert if validation is unsuccessful', () => {
     const messageAndKey = {
       message: 'Name is required',
-      key: 'input-payee-name'
+      key: 'input-payee-name',
     }
     const formAlertMock = jest.fn()
-    const wrapper = shallow(
-      <PayeeForm
-        {...props}
-        formIsInvalid={formAlertMock}
-      />
-    )
+    const wrapper = shallow(<PayeeForm {...props} formIsInvalid={formAlertMock} />)
 
     const form = wrapper.find('form')
 
@@ -113,11 +100,7 @@ describe('PayeeForm', () => {
     it('and calls cancelForm button on click', () => {
       const cancelFormMock = jest.fn()
       const wrapper = shallow(
-        <PayeeForm
-          {...props}
-          activeWalletView={2}
-          cancelForm={cancelFormMock}
-        />
+        <PayeeForm {...props} activeWalletView={2} cancelForm={cancelFormMock} />,
       )
 
       const cancelButton = wrapper.find('.is-danger')

@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { shallow } from 'enzyme'
 import * as React from 'react'
 
 import { TransferForm } from '@components/TransferForm'
@@ -23,12 +23,12 @@ describe('TransferForm', () => {
       payees: [
         {
           name: 'Fred',
-          publicKey: '123'
-        }
+          publicKey: '123',
+        },
       ],
       targetPayee: 'asdf',
       transferRequest: () => null,
-      updateTransferForm: () => null
+      updateTransferForm: () => null,
     }
   })
 
@@ -53,7 +53,12 @@ describe('TransferForm', () => {
     expect(wrapper.find('InputField')).toHaveLength(3)
     expect(button).toHaveLength(2)
     expect(button.at(0).text()).toBe('Transfer')
-    expect(button.at(1).find('i').hasClass('fa-copy')).toBe(true)
+    expect(
+      button
+        .at(1)
+        .find('i')
+        .hasClass('fa-copy'),
+    ).toBe(true)
     expect(button.at(1).prop('title')).toEqual('Copy Transaction')
   })
 })

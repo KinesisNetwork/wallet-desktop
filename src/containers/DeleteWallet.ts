@@ -8,4 +8,7 @@ const mapStateToProps = ({ wallets: { activeWallet } }: RootState) => ({
   activeWallet,
 })
 
-export const DeleteWallet = connect(mapStateToProps, { deleteWallet })(DeleteWalletPresentation)
+export const DeleteWallet = connect(
+  mapStateToProps,
+  { deleteWallet },
+)(DeleteWalletPresentation)

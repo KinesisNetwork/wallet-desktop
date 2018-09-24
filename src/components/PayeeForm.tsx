@@ -27,7 +27,7 @@ export class PayeeForm extends React.Component<Props> {
     } catch (e) {
       this.props.formIsInvalid({
         message: e.message,
-        key: e.key
+        key: e.key,
       })
     }
   }
@@ -45,34 +45,38 @@ export class PayeeForm extends React.Component<Props> {
 
   renderCancelButton = () => {
     return (
-      <div className='control'>
-        <button className='button is-danger' type='button' onClick={this.props.cancelForm}>Back</button>
-      </div >
+      <div className="control">
+        <button className="button is-danger" type="button" onClick={this.props.cancelForm}>
+          Back
+        </button>
+      </div>
     )
   }
 
   render() {
     const { payee, handleChange } = this.props
     return (
-      <div className='is-centered'>
+      <div className="is-centered">
         <form onSubmit={this.createNewPayee}>
           <InputField
-            label='Payee Name'
+            label="Payee Name"
             value={payee.name}
-            id='payee-name'
-            helpText='Name your payee'
-            onChangeHandler={(newValue) => handleChange('name', newValue)}
+            id="payee-name"
+            helpText="Name your payee"
+            onChangeHandler={newValue => handleChange('name', newValue)}
           />
           <InputField
-            label='Payee Public Key'
+            label="Payee Public Key"
             value={payee.publicKey}
-            id='payee-public-key'
-            helpText='Set the public key of your payee'
-            onChangeHandler={(newValue) => handleChange('publicKey', newValue)}
+            id="payee-public-key"
+            helpText="Set the public key of your payee"
+            onChangeHandler={newValue => handleChange('publicKey', newValue)}
           />
-          <div className='field is-grouped'>
-            <div className='control is-expanded'>
-              <button className='button is-fullwidth' type='submit'>Set Payee</button>
+          <div className="field is-grouped">
+            <div className="control is-expanded">
+              <button className="button is-fullwidth" type="submit">
+                Set Payee
+              </button>
             </div>
             {this.props.activeWalletView !== WalletView.payees && this.renderCancelButton()}
           </div>

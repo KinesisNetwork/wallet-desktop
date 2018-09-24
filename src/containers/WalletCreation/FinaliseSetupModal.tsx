@@ -58,8 +58,8 @@ class FinaliseSetupModal extends React.Component<Props> {
                     onChange={() => this.setState({ recovery: !this.state.recovery })}
                   />
                   <label htmlFor="recovery">
-                    I understand if this application is deleted or moved to another device, my recovery
-                    phrase is the only way I can recover my wallet.
+                    I understand if this application is deleted or moved to another device, my
+                    recovery phrase is the only way I can recover my wallet.
                   </label>
                 </div>
               </div>

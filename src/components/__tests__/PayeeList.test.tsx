@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { shallow } from 'enzyme'
 import * as React from 'react'
 
 import { DeletePayeeLink, PayeeList } from '@components/PayeeList'
@@ -12,14 +12,14 @@ describe('PayeeList', () => {
       payees: [
         {
           name: 'Fred',
-          publicKey: '123'
+          publicKey: '123',
         },
         {
           name: 'Mark',
-          publicKey: '456'
-        }
+          publicKey: '456',
+        },
       ],
-      removePayee: () => null
+      removePayee: () => null,
     }
   })
 
@@ -58,7 +58,7 @@ describe('DeletePayeeLink', () => {
   beforeEach(() => {
     props = {
       name: 'Fred',
-      removePayee: () => null
+      removePayee: () => null,
     }
   })
 
@@ -87,4 +87,3 @@ describe('DeletePayeeLink', () => {
     expect(removePayeeMock).toHaveBeenCalledWith('Fred')
   })
 })
-

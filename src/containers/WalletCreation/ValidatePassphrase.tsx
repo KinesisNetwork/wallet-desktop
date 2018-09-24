@@ -132,8 +132,8 @@ class ValidatePassphrasePresentation extends React.Component<Props, any> {
         <h1 className="title has-text-centered has-text-primary">Verify your recovery phrase</h1>
         <div className="content">
           <p>
-            To make sure your recovery phrase was recorded correctly, please verify the missing words
-            below.
+            To make sure your recovery phrase was recorded correctly, please verify the missing
+            words below.
           </p>
         </div>
         <div className="tile is-ancestor is-vertical">

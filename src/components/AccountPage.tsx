@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
 
 const mapStateToProps = (state: RootState) => ({
-  hasOnBoarded: state.settings.onBoarding
+  hasOnBoarded: state.settings.onBoarding,
 })
 
 type Props = RouteComponentProps<any> & ReturnType<typeof mapStateToProps>

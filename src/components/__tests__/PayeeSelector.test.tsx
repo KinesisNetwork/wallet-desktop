@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { shallow } from 'enzyme'
 import * as React from 'react'
 
 import { PayeeSelector } from '@components/PayeeSelector'
@@ -12,7 +12,7 @@ describe('PayeeSelector', () => {
       payees: [],
       targetPayee: '',
       handleChange: () => null,
-      changeTransferView: () => null
+      changeTransferView: () => null,
     }
   })
 
@@ -35,7 +35,9 @@ describe('PayeeSelector', () => {
 
     it('calls changeTransferView on clicking the button', () => {
       const changeTransferViewMock = jest.fn()
-      const wrapper = shallow(<PayeeSelector {...props} changeTransferView={changeTransferViewMock} />)
+      const wrapper = shallow(
+        <PayeeSelector {...props} changeTransferView={changeTransferViewMock} />,
+      )
 
       const button = wrapper.find('a')
       button.simulate('click')
@@ -51,8 +53,8 @@ describe('PayeeSelector', () => {
       newPayee = [
         {
           name: 'My account',
-          publicKey: '123'
-        }
+          publicKey: '123',
+        },
       ]
     })
 
@@ -86,9 +88,11 @@ describe('PayeeSelector', () => {
       const handleChangeMock = jest.fn()
       const handleChangeMockParam = {
         field: 'targetPayee',
-        newValue: '123'
+        newValue: '123',
       }
-      const wrapper = shallow(<PayeeSelector {...props} payees={newPayee} handleChange={handleChangeMock} />)
+      const wrapper = shallow(
+        <PayeeSelector {...props} payees={newPayee} handleChange={handleChangeMock} />,
+      )
 
       const select = wrapper.find('select')
       select.simulate('change', { target: { value: '123' } })

@@ -1,4 +1,3 @@
-
 import { filter, ignoreElements, map } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 
@@ -13,8 +12,9 @@ const FAILURE_MESSAGE =
 export const verificationNotification$: RootEpic = action$ =>
   action$.pipe(
     filter(isActionOf(messageVerificationResult)),
-    map(({ payload: isValid }) =>
-      isValid ? generalSuccessAlert(SUCCESS_MESSAGE) : generalFailureAlert(FAILURE_MESSAGE),
+    map(
+      ({ payload: isValid }) =>
+        isValid ? generalSuccessAlert(SUCCESS_MESSAGE) : generalFailureAlert(FAILURE_MESSAGE),
     ),
     ignoreElements(),
   )
