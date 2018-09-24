@@ -106,17 +106,9 @@ export const transactionSubmission$: RootEpic = (
     ),
   )
 
-// export const transactionSuccess$: RootEpic = (action$, state$, { generalSuccessAlert }) =>
-//   action$.pipe(
-//     filter(isActionOf(transactionSuccess)),
-//     flatMap(() => generalSuccessAlert('The transfer was successful.')),
-//     map(() => accountLoadRequest(getActiveAccount(state$.value.wallet).keypair.publicKey())),
-//   )
-
-export const transactionSuccess$: RootEpic = (action$, state$, { generalSuccessAlert }) =>
+export const transactionSuccess$: RootEpic = (action$, state$) =>
   action$.pipe(
     filter(isActionOf(transactionSuccess)),
-    map(() => console.log('The transfer was successful.')),
     map(() => accountLoadRequest(getActiveAccount(state$.value.wallet).keypair.publicKey())),
   )
 

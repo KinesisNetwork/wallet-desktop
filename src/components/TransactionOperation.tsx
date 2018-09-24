@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import { AddressView } from '@components/AddressView'
 import { HorizontalLabelledField } from '@components/LabelledField'
-import { Currency, TransactionOperationView } from '@types'
+import { Currency, TransactionOperationView, AddressDisplay } from '@types'
 
 export interface Props {
   transactionWithOperation: TransactionOperationView
@@ -52,15 +52,15 @@ const TransactionIcon: React.SFC<{ t: TransactionOperationView }> = ({ t }) =>
         <i className="fal fa-lg fa-arrow-down" />
       </span>
     ) : (
-      <span className="icon is-large has-text-danger">
-        <i className="fal fa-lg fa-arrow-up" />
+        <span className="icon is-large has-text-danger">
+          <i className="fal fa-lg fa-arrow-up" />
+        </span>
+      )
+  ) : (
+      <span className="icon is-large has-text-grey-light">
+        <i className="fal fa-lg fa-dash" />
       </span>
     )
-  ) : (
-    <span className="icon is-large has-text-grey-light">
-      <i className="fal fa-lg fa-dash" />
-    </span>
-  )
 
 interface StateProps {
   moreInfoIsHidden: boolean
@@ -72,63 +72,63 @@ const TransactionCard: React.SFC<Props & StateProps> = ({
   moreInfoIsHidden,
   toggleMoreInfo,
 }) => (
-  <article className="level">
-    <div
-      className="columns box level-item is-gapless has-text-grey-lighter is-multiline"
-      style={{ width: '100%' }}
-    >
-      <div className="column is-4">
-        <div className="is-flex" style={{ alignItems: 'center' }}>
-          <TransactionIcon t={t} />
-          <span className="has-text-weight-bold">
-            <AddressView address={getAddress(t)} />
+    <article className="level">
+      <div
+        className="columns box level-item is-gapless has-text-grey-lighter is-multiline"
+        style={{ width: '100%' }}
+      >
+        <div className="column is-4">
+          <div className="is-flex" style={{ alignItems: 'center' }}>
+            <TransactionIcon t={t} />
+            <span className="has-text-weight-bold">
+              <AddressView address={getAddress(t)} addressDisplay={AddressDisplay.payee} />
+            </span>
+          </div>
+        </div>
+        <div className="column is-3">
+          <p>{t.memo || '(no description)'}</p>
+        </div>
+        <div className="column is-2">
+          <span className="icon is-small has-text-success">
+            <i className="fal fa-xs fa-check-circle" />
+          </span>
+          <span>{t.date.toTimeString().slice(0, 8)}</span>
+        </div>
+        <div className="column is-2 has-text-weight-bold has-text-right">
+          <span className={`has-text-${t.isIncoming ? 'success' : 'danger'}`}>
+            {getAmount(t)} {currency}
           </span>
         </div>
+        <div className="column is-1 has-text-right">
+          <button className="button is-text" onClick={toggleMoreInfo}>
+            {moreInfoIsHidden && (
+              <span className="icon">
+                <i className="fal fa-lg fa-angle-down" />
+              </span>
+            )}
+            {!moreInfoIsHidden && (
+              <span className="icon">
+                <i className="fal fa-lg fa-angle-up" />
+              </span>
+            )}
+          </button>
+        </div>
+        <div className={`column is-12 ${moreInfoIsHidden ? 'is-hidden' : ''}`}>
+          <HorizontalLabelledField
+            label={t.isIncoming ? "Sender's Address:" : "Recipient's Address:"}
+            value={getAddress(t)}
+            isCompact={true}
+          />
+          <HorizontalLabelledField
+            label="Transaction Hash:"
+            value={t.operation.transaction_hash}
+            isCompact={true}
+          />
+          <HorizontalLabelledField label="Fee:" value={`${t.fee} ${currency}`} isCompact={true} />
+        </div>
       </div>
-      <div className="column is-3">
-        <p>{t.memo || '(no description)'}</p>
-      </div>
-      <div className="column is-2">
-        <span className="icon is-small has-text-success">
-          <i className="fal fa-xs fa-check-circle" />
-        </span>
-        <span>{t.date.toTimeString().slice(0, 8)}</span>
-      </div>
-      <div className="column is-2 has-text-weight-bold has-text-right">
-        <span className={`has-text-${t.isIncoming ? 'success' : 'danger'}`}>
-          {getAmount(t)} {currency}
-        </span>
-      </div>
-      <div className="column is-1 has-text-right">
-        <button className="button is-text" onClick={toggleMoreInfo}>
-          {moreInfoIsHidden && (
-            <span className="icon">
-              <i className="fal fa-lg fa-angle-down" />
-            </span>
-          )}
-          {!moreInfoIsHidden && (
-            <span className="icon">
-              <i className="fal fa-lg fa-angle-up" />
-            </span>
-          )}
-        </button>
-      </div>
-      <div className={`column is-12 ${moreInfoIsHidden ? 'is-hidden' : ''}`}>
-        <HorizontalLabelledField
-          label={t.isIncoming ? "Sender's Address:" : "Recipient's Address:"}
-          value={getAddress(t)}
-          isCompact={true}
-        />
-        <HorizontalLabelledField
-          label="Transaction Hash:"
-          value={t.operation.transaction_hash}
-          isCompact={true}
-        />
-        <HorizontalLabelledField label="Fee:" value={`${t.fee} ${currency}`} isCompact={true} />
-      </div>
-    </div>
-  </article>
-)
+    </article>
+  )
 
 interface State {
   moreInfoIsHidden: boolean
