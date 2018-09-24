@@ -30,8 +30,6 @@ export const mapDispathToProps = { addNextAccountFromSeedphrase, setActiveAccoun
 type Props = typeof mapDispathToProps & ReturnType<typeof mapStateToProps>
 
 export class SidebarPresentation extends React.Component<Props> {
-  public dropDownAccounts
-
   public dropdownAccounts = (handleToggle) => this.props.accounts.map(a => <DropdownItem
     key={a.name}
     titleClassName="has-text-weight-bold"
@@ -49,7 +47,7 @@ export class SidebarPresentation extends React.Component<Props> {
   }
 
   public addAccount = () => this.props.addNextAccountFromSeedphrase()
-  public importAccount = () => this.props.push(RootRoutes.import)
+  public importAccount = () => this.props.push(RootRoutes.importAccount)
 
   render() {
     return (

@@ -42,7 +42,7 @@ export enum RootRoutes {
   addressBook = '/address-book',
   settings = '/settings',
   create = '/create',
-  import = '/import',
+  importAccount = '/import-account',
 }
 
 export enum WalletCreationRoutes {
