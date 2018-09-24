@@ -20,13 +20,13 @@ class FinaliseSetupModal extends React.Component<Props> {
               <span className="icon is-medium has-text-danger">
                 <i className="fal fa-2x fa-exclamation-circle" />
               </span>
-              <span className="title is-marginless">Do not lose your paper key</span>
+              <span className="title is-marginless">Do not lose your recovery phrase</span>
               <button className="delete" aria-label="close" onClick={this.props.closeModal} />
             </div>
             <div className="message-body">
               <div className="content">
                 <p>
-                  <strong>The paper key is your last line of defense.</strong>
+                  <strong>Your recovery phrase is your last line of defense.</strong>
                 </p>
                 <p>
                   <a>Learn more</a>
@@ -58,8 +58,8 @@ class FinaliseSetupModal extends React.Component<Props> {
                     onChange={() => this.setState({ recovery: !this.state.recovery })}
                   />
                   <label htmlFor="recovery">
-                    I understand if this application is deleted or moved to another device, my paper
-                    key is the only way I can recover my wallet.
+                    I understand if this application is deleted or moved to another device, my recovery
+                    phrase is the only way I can recover my wallet.
                   </label>
                 </div>
               </div>
