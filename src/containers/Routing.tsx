@@ -1,6 +1,7 @@
 import { AccountPage } from '@components/AccountPage'
 import { ConnectionSettings } from '@components/ConnectionSettings'
 import { Contacts } from '@containers/Contacts'
+import { ImportAccount } from '@containers/ImportAccount'
 import { Sidebar } from '@containers/Sidebar'
 import { WalletCreationScreens } from '@containers/WalletCreation'
 import { WelcomeScreen } from '@containers/WelcomeScreen'
@@ -29,6 +30,7 @@ const RoutingPresentation: React.SFC<Props> = props =>
                 <Route path={RootRoutes.dashboard} component={AccountPage} />
                 <Route path={RootRoutes.contacts} component={Contacts} />
                 <Route path={RootRoutes.settings} component={ConnectionSettings} />
+                <Route path={RootRoutes.importAccount} component={ImportAccount} />
                 <Redirect to={RootRoutes.dashboard} />
               </Switch>
             </div>
