@@ -6,9 +6,20 @@ import { SidebarDropdown } from '@containers/Sidebar/SidebarDropdown'
 import '../../setupTests'
 
 describe('SidebarPresentation', () => {
-  it('should render correctly', () => {
-    const wrapper = shallow(<SidebarPresentation />)
+  let props
 
+  beforeEach(() => {
+     props = {
+      activeAccount: {},
+      accounts: [],
+      addNextAccountFromSeedphrase: () => null,
+      setActiveAccount: () => null,
+      push: () => null,
+    }
+  })
+
+  it('should render correctly', () => {
+    const wrapper = shallow(<SidebarPresentation {...props} />)
     expect(wrapper).toMatchSnapshot()
   })
 })
