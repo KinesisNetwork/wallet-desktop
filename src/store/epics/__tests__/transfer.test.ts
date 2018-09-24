@@ -1,10 +1,8 @@
 import { Keypair, Transaction } from 'js-kinesis-sdk'
 
 import {
-  accountLoadRequest,
   transactionFailed,
   transactionRequest,
-  transactionSuccess,
   transferRequest,
 } from '@actions'
 import { Connection, ConnectionStage, Currency } from '@types'
@@ -13,7 +11,6 @@ import { ConnectionsState } from '../../reducers'
 import {
   transactionFailed$,
   transactionSubmission$,
-  transactionSuccess$,
   transferRequest$,
 } from '../transfer'
 import { epicTest } from './helpers'
@@ -150,30 +147,6 @@ describe('Transfer epic', () => {
       })
       expect(getCurrentConnection).toHaveBeenCalledWith(connections)
       expect(submitSignedTransaction).toHaveBeenCalledWith(connection, transaction)
-    })
-  })
-
-  describe('transactionSuccess$', () => {
-    it('success', async () => {
-      const generalSuccessAlert = jest.fn(() => Promise.resolve())
-      const keypair = Keypair.random()
-
-      await epicTest({
-        epic: transactionSuccess$,
-        inputActions: [transactionSuccess()],
-        state: {
-          wallet: {
-            accounts: [{ keypair }],
-            persisted: {
-              activeAccount: 0,
-            },
-          },
-        },
-        dependencies: { generalSuccessAlert },
-        expectedActions: [accountLoadRequest(keypair.publicKey())],
-      })
-
-      expect(generalSuccessAlert).toHaveBeenCalledWith('The transfer was successful.')
     })
   })
 

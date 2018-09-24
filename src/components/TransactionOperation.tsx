@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import { AddressView } from '@components/AddressView'
 import { HorizontalLabelledField } from '@components/LabelledField'
-import { Currency, TransactionOperationView, AddressDisplay } from '@types'
+import { AddressDisplay, Currency, TransactionOperationView } from '@types'
 
 export interface Props {
   transactionWithOperation: TransactionOperationView
