@@ -1,4 +1,4 @@
-import { Network, Server, TransactionRecord } from 'js-kinesis-sdk'
+import { Keypair, Network, Server, TransactionRecord } from 'js-kinesis-sdk'
 import { flatten, get } from 'lodash'
 
 import { Connection, TransactionLoader, TransactionOperationView } from '@types'
@@ -98,4 +98,13 @@ async function transactionWithOperations(
       source: transaction.source_account,
     }),
   )
+}
+
+export function isValidSecret(secret: string) {
+  try {
+    Keypair.fromSecret(secret)
+    return true
+  } catch (e) {
+    return false
+  }
 }

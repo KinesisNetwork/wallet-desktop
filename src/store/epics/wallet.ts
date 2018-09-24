@@ -1,6 +1,9 @@
 import {
+  addAccountToWallet,
+  addNextAccountFromSeedphrase,
   createPassphrase,
   finaliseWalletCreation,
+  importAccountFromSecret,
   initialiseWallet,
   login,
   startWalletCreation,
@@ -43,12 +46,13 @@ export const initialiseWallet$: RootEpic = (
       const createdAccount: PersistedAccount = {
         encryptedSecret: encryptWithPassword(keypair.secret(), password),
         name: 'Account 1',
+        imported: false,
       }
 
       const encryptedPassphrase = encryptWithPassword(passphrase, password)
       const walletName = state.createWallet.createForm.name
 
-      return initialiseWallet({ createdAccount, encryptedPassphrase, walletName })
+      return initialiseWallet({ createdAccount, encryptedPassphrase, walletName, password })
     }),
   )
 
@@ -62,6 +66,64 @@ export const initialiseWallet$: RootEpic = (
 
   return merge(setupWallet$, loginToWallet$)
 }
+
+export const addAccountToWalletFromSeedphrase$: RootEpic = (
+  action$,
+  state$,
+  { getKeypairFromMnemonic, encryptWithPassword },
+) =>
+  action$.pipe(
+    filter(isActionOf(addNextAccountFromSeedphrase)),
+    withLatestFrom(state$),
+    map(([_, state]) => {
+      const password = state.passwords.lastSuccessfulInput
+      const {
+        persisted,
+        passphrase,
+      } = state.wallet
+
+      const existingAccountsCount = persisted.createdAccounts.filter(a => !a.imported).length
+
+      const keypair = getKeypairFromMnemonic(passphrase, existingAccountsCount)
+      const name = `Account ${existingAccountsCount + 1}`
+      const persistedAccount: PersistedAccount = {
+        name,
+        encryptedSecret: encryptWithPassword(keypair.secret(), password),
+        imported: false,
+      }
+
+      const walletAccount: WalletAccount = { name, keypair }
+
+      return addAccountToWallet({persistedAccount, walletAccount})
+    }),
+  )
+
+export const importAccountFromSecret$: RootEpic = (
+  action$,
+  state$,
+  { getKeypairFromSecret, encryptWithPassword },
+) =>
+  action$.pipe(
+    filter(isActionOf(importAccountFromSecret)),
+    withLatestFrom(state$),
+    map(([{payload}, state]) => {
+      const password = state.passwords.lastSuccessfulInput
+      const { persisted } = state.wallet
+
+      const importedAccountsCount = persisted.createdAccounts.filter(a => a.imported).length
+      const keypair = getKeypairFromSecret(payload.secret)
+      const name = `Imported ${importedAccountsCount + 1}`
+      const persistedAccount: PersistedAccount = {
+        name,
+        encryptedSecret: encryptWithPassword(keypair.secret(), password),
+        imported: true,
+      }
+
+      const walletAccount: WalletAccount = { name, keypair }
+
+      return addAccountToWallet({persistedAccount, walletAccount})
+    }),
+  )
 
 // This assumes that the password has already been validated
 // And that the there is a wallet unlock success
