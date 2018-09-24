@@ -6,6 +6,7 @@ import {
   addPayee,
   insufficientFunds,
   showNotification,
+  updatePayeeForm,
   updateRemainingBalance,
   updateTransferForm
 } from '@actions'
@@ -31,6 +32,7 @@ const mapStateToProps = (state: RootState) => {
     balance: state.accounts.accountInfo.balance,
     connection: getCurrentConnection(connections).endpoint,
     savedContacts: payees.payeesList,
+    newContact: payees.form
   }
 }
 
@@ -41,7 +43,8 @@ const mapDispatchToProps = {
   insufficientFunds,
   updateRemainingBalance,
   addPayee,
-  showNotification
+  showNotification,
+  updatePayeeForm
 }
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
@@ -49,10 +52,6 @@ type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 interface State {
   isDropdownField: boolean
   saveToContacts: boolean
-  newContact: {
-    name: string
-    publicKey: string
-  }
 }
 
 export class TransactionPagePresentation extends React.Component<Props, State> {
@@ -60,7 +59,6 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
     isDropdownField: true,
     saveToContacts: true,
     addressInStore: this.props.savedContacts.find(payee => payee.publicKey === this.props.payeePublicKey),
-    newContact: { name: '', publicKey: '' }
   }
 
   handlePayeeFieldToggle = () => {
@@ -72,24 +70,15 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
   handleSaveToContact = () => {
     this.setState(prevState => ({
       saveToContacts: !prevState.saveToContacts,
-      newContact: {
-        ...this.state.newContact,
-        name: prevState.saveToContacts ? '' : this.state.newContact.name,
-      }
     }))
   }
 
-  // TODO: This form can and likely should live in the store
   handleNewContactChange = (field: 'name' | 'publicKey', value: string) => {
-    this.setState({
-      newContact: {
-        ...this.state.newContact,
-        [field]: value
-      }
-    }, () => {
-      this.props.updateTransferForm({ field: 'payeePublicKey', newValue: this.state.newContact.publicKey })
+    this.props.updateTransferForm({ field: 'payeePublicKey', newValue: value })
+    this.props.updatePayeeForm({
+      field,
+      newValue: value
     })
-
   }
 
   hasFieldErrors() {
@@ -103,13 +92,13 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
 
   goToConfirmPage = () => {
     if (this.state.saveToContacts && !this.state.isDropdownField) {
-      const isMissingField = !this.state.newContact.publicKey || !this.state.newContact.name
+      const isMissingField = !this.props.newContact.publicKey || !this.props.newContact.name
 
       const hasTheSamePublicAddress = this.props.savedContacts
-        .findIndex(({ publicKey }) => this.state.newContact.publicKey === publicKey) !== -1
+        .findIndex(({ publicKey }) => this.props.newContact.publicKey === publicKey) !== -1
 
       const hasTheSameName = this.props.savedContacts
-        .findIndex(({ name }) => this.state.newContact.name === name) !== -1
+        .findIndex(({ name }) => this.props.newContact.name === name) !== -1
 
       if (isMissingField || hasTheSamePublicAddress || hasTheSameName) {
         this.props.showNotification({
@@ -119,7 +108,7 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
         return
       }
 
-      this.props.addPayee(this.state.newContact)
+      this.props.addPayee(this.props.newContact)
     }
 
     this.props.goToConfirm()
@@ -173,8 +162,8 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
                   onFieldChange={this.handlePayeeFieldToggle}
                   onSaveToContactsChange={this.handleSaveToContact}
                   saveToContacts={this.state.saveToContacts}
-                  name={this.state.newContact.name}
-                  publicKey={this.state.newContact.publicKey}
+                  name={this.props.newContact.name}
+                  publicKey={this.props.newContact.publicKey}
                 />
               }
               <InputField
