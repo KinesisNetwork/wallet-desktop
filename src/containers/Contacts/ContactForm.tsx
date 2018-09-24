@@ -1,10 +1,11 @@
-import { addContact } from '@actions'
-import { InputField } from '@components/InputField'
-import { RootState } from '@store'
-import { Contact } from '@types'
-import { Keypair } from 'js-kinesis-sdk'
 import * as React from 'react'
 import { connect } from 'react-redux'
+
+import { addContact } from '@actions'
+import { InputField } from '@components/InputField'
+import { isValidPublicKey } from '@services/kinesis'
+import { RootState } from '@store'
+import { Contact } from '@types'
 
 interface State extends Contact {
   errors: { [key in keyof Contact]?: string }
@@ -61,24 +62,15 @@ class ContractFormStateful extends React.Component<StateFulProps, State> {
   private validateForm = () => {
     const errors = {
       address:
-        (this.validateAddress() ? '' : 'Invalid address') ||
+        (isValidPublicKey(this.state.address) ? '' : 'Invalid address') ||
         (this.props.currentContacts.every(({ address }) => this.state.address !== address)
           ? ''
           : 'Address already in contacts'),
-      name: this.props.currentContacts.some(({ name }) => name === this.state.name)
-        ? 'Name alrady in contacts'
-        : '',
+      name: this.props.currentContacts.every(({ name }) => name !== this.state.name)
+        ? ''
+        : 'Name already in contacts',
     }
     return errors
-  }
-
-  private validateAddress = () => {
-    try {
-      Keypair.fromPublicKey(this.state.address)
-      return true
-    } catch (e) {
-      return false
-    }
   }
 }
 

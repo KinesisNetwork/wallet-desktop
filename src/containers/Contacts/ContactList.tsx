@@ -32,7 +32,7 @@ const ContactCard: React.SFC<Contact & typeof mapDispatchToProps> = props => (
 )
 
 const mapStateToProps = (state: RootState) => ({
-  contacts: state.contacts.contactList,
+  contactList: state.contacts.contactList,
 })
 
 const mapDispatchToProps = {
@@ -42,7 +42,7 @@ const mapDispatchToProps = {
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 const ContactListPresentation: React.SFC<Props> = props => (
   <React.Fragment>
-    {props.contacts.map(c => (
+    {props.contactList.map(c => (
       <ContactCard {...c} removeContact={props.removeContact} key={c.name} />
     ))}
   </React.Fragment>

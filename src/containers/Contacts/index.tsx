@@ -1,8 +1,8 @@
 import * as React from 'react'
+import { RouteComponentProps } from 'react-router'
 
 import { ContactForm } from '@containers/Contacts/ContactForm'
 import { ContactList } from '@containers/Contacts/ContactList'
-import { RouteComponentProps } from 'react-router'
 
 interface State {
   formIsVisible: boolean
