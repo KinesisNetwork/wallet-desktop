@@ -7,7 +7,7 @@ interface OwnProps {
 }
 
 const mapStateToProps = (state: RootState, ownProps: OwnProps) => ({
-  addressInBook: state.payees.payeesList.find(payee => payee.publicKey === ownProps.address),
+  addressInBook: state.contacts.contactList.find(contact => contact.address === ownProps.address),
 })
 
 type Props = OwnProps & ReturnType<typeof mapStateToProps>

@@ -53,9 +53,9 @@ export interface TransactionOperationView {
   readonly date: Date
 }
 
-export interface Payee {
+export interface Contact {
   readonly name: string
-  readonly publicKey: string
+  readonly address: string
 }
 
 export type FormChangeHandler<T> = (change: FormUpdate<T>) => any

@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
 
 import { addNextAccountFromSeedphrase, setActiveAccount } from '@actions'
 import { DropdownDivider } from '@containers/Sidebar/DropdownDivider'
@@ -14,6 +13,7 @@ import { getActiveAccount } from '@selectors'
 import { RootState } from '@store'
 import { PersistedAccount, RootRoutes } from '@types'
 import { push } from 'connected-react-router'
+import { connect } from 'react-redux'
 
 let logo
 if (process.env.IS_WEB) {
@@ -30,20 +30,23 @@ export const mapDispathToProps = { addNextAccountFromSeedphrase, setActiveAccoun
 type Props = typeof mapDispathToProps & ReturnType<typeof mapStateToProps>
 
 export class SidebarPresentation extends React.Component<Props> {
-  public dropdownAccounts = (handleToggle) => this.props.accounts.map(a => <DropdownItem
-    key={a.name}
-    titleClassName="has-text-weight-bold"
-    title={a.name}
-    isActive={this.props.activeAccount.name === a.name}
-    isImport={a.imported}
-    onClick={() => {
-      this.setAccount(a)
-      handleToggle()
-    }}
-  />)
+  public dropdownAccounts = handleToggle =>
+    this.props.accounts.map(a => (
+      <DropdownItem
+        key={a.name}
+        titleClassName="has-text-weight-bold"
+        title={a.name}
+        isActive={this.props.activeAccount.name === a.name}
+        isImport={a.imported}
+        onClick={() => {
+          this.setAccount(a)
+          handleToggle()
+        }}
+      />
+    ))
 
   public setAccount = (account: PersistedAccount) => {
-    this.props.setActiveAccount({targetAccount: account, accounts: this.props.accounts})
+    this.props.setActiveAccount({ targetAccount: account, accounts: this.props.accounts })
   }
 
   public addAccount = () => this.props.addNextAccountFromSeedphrase()
@@ -55,20 +58,37 @@ export class SidebarPresentation extends React.Component<Props> {
         <SidebarUpper>
           <div className="sidebar-header tile is-parent is-vertical">
             <div className="tile is-child has-text-centered">
-              <img src={logo ? logo : './icons/png/64x64.png'} className="sidebar-logo" alt="Logo alpha" />
+              <img
+                src={logo ? logo : './icons/png/64x64.png'}
+                className="sidebar-logo"
+                alt="Logo alpha"
+              />
               <p className="has-text-primary">100.00 KINESIS</p>
             </div>
 
             <SidebarDropdown>
               {({ isExpanded, handleToggle }) => (
                 <React.Fragment>
-                  <DropdownTrigger key="trigger" isExpanded={isExpanded} onClick={handleToggle} title={this.props.activeAccount.name} />
+                  <DropdownTrigger
+                    key="trigger"
+                    isExpanded={isExpanded}
+                    onClick={handleToggle}
+                    title={this.props.activeAccount.name}
+                  />
                   <DropdownMenu key="menu">
                     <React.Fragment>{this.dropdownAccounts(handleToggle)}</React.Fragment>
                     <DropdownDivider />
-                    <DropdownItem title="Add Account" icon="plus-circle" onClick={this.addAccount} />
+                    <DropdownItem
+                      title="Add Account"
+                      icon="plus-circle"
+                      onClick={this.addAccount}
+                    />
                     <DropdownDivider />
-                    <DropdownItem title="Import Account" icon="download" onClick={this.importAccount}/>
+                    <DropdownItem
+                      title="Import Account"
+                      icon="download"
+                      onClick={this.importAccount}
+                    />
                   </DropdownMenu>
                 </React.Fragment>
               )}
@@ -77,7 +97,7 @@ export class SidebarPresentation extends React.Component<Props> {
 
           <div className="sidebar-list tile is-parent is-vertical">
             <SidebarItem title="My Money" to={RootRoutes.dashboard} icon="wallet" />
-            <SidebarItem title="Contacts" to={RootRoutes.addressBook} icon="address-book" />
+            <SidebarItem title="Contacts" to={RootRoutes.contacts} icon="address-book" />
             <SidebarItem title="Exchange" to="/exchange" icon="chart-line" />
           </div>
         </SidebarUpper>
@@ -91,4 +111,7 @@ export class SidebarPresentation extends React.Component<Props> {
   }
 }
 
-export const Sidebar = connect(mapStateToProps, mapDispathToProps)(SidebarPresentation)
+export const Sidebar = connect(
+  mapStateToProps,
+  mapDispathToProps,
+)(SidebarPresentation)

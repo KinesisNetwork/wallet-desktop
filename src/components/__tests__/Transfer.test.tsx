@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme';
+import { shallow } from 'enzyme'
 import * as React from 'react'
 
 import { Transfer } from '@components/Transfer'
@@ -17,19 +17,23 @@ describe('Transfer', () => {
 
     const heading = wrapper.find('h1')
 
-    expect(heading.find('span').at(0).text()).toEqual('Transfer')
-    expect(heading.find('span').at(1).text()).toEqual('KAU')
+    expect(
+      heading
+        .find('span')
+        .at(0)
+        .text(),
+    ).toEqual('Transfer')
+    expect(
+      heading
+        .find('span')
+        .at(1)
+        .text(),
+    ).toEqual('KAU')
   })
 
   it('displays a TransferForm if transfer view indicates', () => {
     const wrapper = shallow(<Transfer transferView={TransferView.transfer} />)
 
     expect(wrapper.find('Connect(TransferForm)')).toHaveLength(1)
-  })
-
-  it('renders a PayeeForm if transfer view refers to it', () => {
-    const wrapper = shallow(<Transfer transferView={TransferView.addPayee} />)
-
-    expect(wrapper.find('Connect(PayeeForm)')).toHaveLength(1)
   })
 })
