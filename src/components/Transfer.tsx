@@ -1,6 +1,5 @@
 import * as React from 'react'
 
-import { PayeeForm } from '@containers/PayeeForm'
 import { TransferForm } from '@containers/TransferForm'
 import { TransferView } from '@types'
 
@@ -15,7 +14,6 @@ export const Transfer: React.SFC<Props> = ({ transferView }) => {
         <span className="has-text-primary">KAU</span>
       </h1>
       {transferView === TransferView.transfer && <TransferForm />}
-      {transferView === TransferView.addPayee && <PayeeForm />}
       <div
         className="is-divider is-hidden-tablet"
         style={{ marginBottom: 0, borderTopWidth: '0.01rem' }}

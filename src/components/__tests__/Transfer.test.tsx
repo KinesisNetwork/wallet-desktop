@@ -36,10 +36,4 @@ describe('Transfer', () => {
 
     expect(wrapper.find('Connect(TransferForm)')).toHaveLength(1)
   })
-
-  it('renders a PayeeForm if transfer view refers to it', () => {
-    const wrapper = shallow(<Transfer transferView={TransferView.addPayee} />)
-
-    expect(wrapper.find('Connect(PayeeForm)')).toHaveLength(1)
-  })
 })

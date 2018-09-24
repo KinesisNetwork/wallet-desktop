@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
 
 import { addNextAccountFromSeedphrase, setActiveAccount } from '@actions'
 import { DropdownDivider } from '@containers/Sidebar/DropdownDivider'
@@ -14,6 +13,7 @@ import { getActiveAccount } from '@selectors'
 import { RootState } from '@store'
 import { PersistedAccount, RootRoutes } from '@types'
 import { push } from 'connected-react-router'
+import { connect } from 'react-redux'
 
 let logo
 if (process.env.IS_WEB) {
@@ -97,7 +97,7 @@ export class SidebarPresentation extends React.Component<Props> {
 
           <div className="sidebar-list tile is-parent is-vertical">
             <SidebarItem title="My Money" to={RootRoutes.dashboard} icon="wallet" />
-            <SidebarItem title="Contacts" to={RootRoutes.addressBook} icon="address-book" />
+            <SidebarItem title="Contacts" to={RootRoutes.contacts} icon="address-book" />
             <SidebarItem title="Exchange" to="/exchange" icon="chart-line" />
           </div>
         </SidebarUpper>

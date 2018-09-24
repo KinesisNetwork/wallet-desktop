@@ -108,3 +108,12 @@ export function isValidSecret(secret: string) {
     return false
   }
 }
+
+export function isValidPublicKey(publicKey: string) {
+  try {
+    Keypair.fromPublicKey(publicKey)
+    return true
+  } catch (e) {
+    return false
+  }
+}

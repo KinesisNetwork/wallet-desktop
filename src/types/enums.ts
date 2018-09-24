@@ -39,7 +39,7 @@ export enum ConnectionStage {
 
 export enum RootRoutes {
   dashboard = '/dashboard',
-  addressBook = '/address-book',
+  contacts = '/contacts',
   settings = '/settings',
   create = '/create',
   importAccount = '/import-account',

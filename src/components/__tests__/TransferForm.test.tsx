@@ -49,7 +49,6 @@ describe('TransferForm', () => {
 
     const button = wrapper.find('button')
 
-    expect(wrapper.find('PayeeSelector')).toHaveLength(1)
     expect(wrapper.find('InputField')).toHaveLength(3)
     expect(button).toHaveLength(2)
     expect(button.at(0).text()).toBe('Transfer')
