@@ -52,7 +52,7 @@ describe('TransferForm', () => {
       isTransferring: true,
       isWalletUnlocked: true,
       accountBalance: 0,
-      payees: [payee, { name: 'another', publicKey: 'another-public-key' }],
+      payees: [payee, { name: 'another', address: 'another-public-key' }],
       publicKey: keypair.publicKey(),
       connection,
     })
@@ -60,7 +60,7 @@ describe('TransferForm', () => {
 
   it('mapStateToProps with locked account', () => {
     const keypair = Keypair.random()
-    const state: DeepPartial<RootState> = <any>{
+    const state: DeepPartial<RootState> = {
       wallets: {
         activeWallet: {
           publicKey: 'wallet-public-key',
@@ -71,8 +71,7 @@ describe('TransferForm', () => {
       accounts: {
         accountInfo: { balance: 0 },
       },
-      passwords: { livePasswords: {} },
-      payees: { payeesList: [] },
+      contacts: { contactList: [] },
       transfer: { form: {}, isTransferring: true },
       wallet: {
         accounts: [{ keypair, name: 'x' }],
@@ -90,7 +89,7 @@ describe('TransferForm', () => {
       connection,
       isTransferring: true,
       isWalletUnlocked: true,
-      payees: [{ name: 'another', publicKey: 'another-public-key' }],
+      payees: [{ name: 'another', address: 'another-public-key' }],
     })
   })
 })

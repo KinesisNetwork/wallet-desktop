@@ -11,19 +11,6 @@ exports[`TransferForm renders correctly 1`] = `
   <div
     style={Object {}}
   >
-    <PayeeSelector
-      changeTransferView={[Function]}
-      handleChange={[Function]}
-      payees={
-        Array [
-          Object {
-            "name": "Fred",
-            "publicKey": "123",
-          },
-        ]
-      }
-      targetPayee="asdf"
-    />
     <InputField
       disabled={false}
       icon="fa-address-card"
