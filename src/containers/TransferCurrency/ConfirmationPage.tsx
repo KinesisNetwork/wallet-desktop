@@ -72,7 +72,7 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
               <AccountCard
                 inititals={getInitials(this.props.walletName)}
                 addressDisplay={AddressDisplay.account}
-                address={this.props.formData.payeePublicKey}
+                address={this.props.activeAccount.keypair.publicKey()}
               />
               <div className="column is-narrow">
                 <div className="level">

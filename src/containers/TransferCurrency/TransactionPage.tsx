@@ -47,21 +47,47 @@ type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 interface State {
   isDropdownField: boolean
   saveToContacts: boolean
+  newContact: {
+    name: string
+    publicKey: string
+  }
 }
 
 export class TransactionPagePresentation extends React.Component<Props, State> {
   state = {
     isDropdownField: true,
     saveToContacts: true,
-    addressInStore: this.props.savedContacts.find(payee => payee.publicKey === this.props.payeePublicKey)
+    addressInStore: this.props.savedContacts.find(payee => payee.publicKey === this.props.payeePublicKey),
+    newContact: { name: '', publicKey: ''}
   }
 
   handlePayeeFieldToggle = () => {
-    this.setState(prevState => ({ isDropdownField: !prevState.isDropdownField }))
+    this.setState(prevState => ({ isDropdownField: !prevState.isDropdownField }), () => {
+      this.props.updateTransferForm({ field: 'payeePublicKey', newValue: '' })
+    })
   }
 
   handleSaveToContact = () => {
-    this.setState(prevState => ({ saveToContacts: !prevState.saveToContacts }))
+    this.setState(prevState => ({
+      saveToContacts: !prevState.saveToContacts,
+      newContact: {
+        ...this.state.newContact,
+        name: prevState.saveToContacts ? '' : this.state.newContact.name,
+      }
+    }))
+  }
+
+  // TODO: This form can and likely should live in the store
+  handleNewContactChange = (field: 'name' | 'publicKey', value: string) => {
+    this.setState({
+      newContact: {
+        ...this.state.newContact,
+        [field]: value
+      }
+    }, () => {
+      this.props.updateTransferForm({ field: 'payeePublicKey', newValue: this.state.newContact.publicKey })
+    })
+
   }
 
   hasFieldErrors() {
@@ -74,23 +100,21 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
   }
 
   goToConfirmPage = () => {
-    const newContact = {
-      // name: this.state.addressInStore!.name,
-      publicKey: this.props.payeePublicKey
-    }
-    if (this.state.saveToContacts) {
+    if (this.state.saveToContacts && !this.state.isDropdownField) {
+      const isMissingField = !this.state.newContact.publicKey || !this.state.newContact.name
+
       const hasTheSamePublicAddress = this.props.savedContacts
-        .findIndex(({ publicKey }) => this.props.payeePublicKey === publicKey) !== -1
+        .findIndex(({ publicKey }) => this.state.newContact.publicKey === publicKey) !== -1
 
-      // const hasTheSameName = this.props.savedContacts
-      //   .findIndex(({ name }) => this.state.addressInStore!.name === name) !== -1
+      const hasTheSameName = this.props.savedContacts
+        .findIndex(({ name }) => this.state.newContact.name === name) !== -1
 
-      // if (!hasTheSamePublicAddress || !hasTheSameName) {
-      //   this.props.addPayee(newContact)
-      // }
+      if (isMissingField || hasTheSamePublicAddress || hasTheSameName) {
+        // TODO: Hande error
+        return
+      }
 
-      this.props.addPayee(newContact)
-
+      this.props.addPayee(this.state.newContact)
     }
 
     this.props.goToConfirm()
@@ -139,13 +163,13 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
                   handleChange={handleChange}
                 />
                 : <FilloutField
-                  contactName={this.state.addressInStore!.name}
-                  payeePublicKey={this.props.payeePublicKey}
                   errors={this.props.errors}
-                  handleChange={handleChange}
+                  handleChange={this.handleNewContactChange}
                   onFieldChange={this.handlePayeeFieldToggle}
                   onSaveToContactsChange={this.handleSaveToContact}
                   saveToContacts={this.state.saveToContacts}
+                  name={this.state.newContact.name}
+                  publicKey={this.state.newContact.publicKey}
                 />
               }
               <InputField
