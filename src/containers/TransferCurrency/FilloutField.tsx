@@ -1,19 +1,18 @@
-import { InputField } from '@components/InputField';
-import { FormErrors, FormUpdate, TransferRequest } from '@types';
+import { InputField } from '@components/InputField'
+import { FormErrors } from '@types'
 import * as React from 'react'
 
 interface Props {
   onFieldChange: () => void
-  handleChange: (formData: FormUpdate<TransferRequest>) => void
-  contactName: string
-  payeePublicKey: string
+  handleChange: (field: 'name' | 'publicKey', value: string) => void
   errors: FormErrors
   onSaveToContactsChange: () => void
   saveToContacts: boolean
+  name: string
+  publicKey: string
 }
 
 export class FilloutFieldPresentation extends React.Component<Props> {
-
   render() {
     return (
       <React.Fragment>
@@ -29,16 +28,18 @@ export class FilloutFieldPresentation extends React.Component<Props> {
           </button>
           <InputField
             label='Contact name'
-            value={this.props.contactName}
-            onChangeHandler={newValue => this.props.handleChange({ field: 'contactName', newValue })}
+            value={this.props.name}
+            onChangeHandler={(value) => this.props.handleChange('name', value)}
             id='contact-name'
             icon='fa-user-circle'
+            name='name'
+            disabled={!this.props.saveToContacts}
           />
           <InputField
             label='Public Address'
-            value={this.props.payeePublicKey}
+            value={this.props.publicKey}
             placeholder='example: "GDUL65KWQ4PJA7FLO6467...CM7G"'
-            onChangeHandler={newValue => this.props.handleChange({ field: 'payeePublicKey', newValue })}
+            onChangeHandler={(value) => this.props.handleChange('publicKey', value)}
             id='public-address'
             icon='fa-qrcode'
             errorText={this.props.errors.payeePublicKey}
