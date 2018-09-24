@@ -14,7 +14,7 @@ export const contacts = combineReducers<ContactState, RootAction>({
       case getType(addContact):
         return [...state, action.payload]
       case getType(removeContact):
-        return state.filter(contact => contact.name !== action.payload)
+        return state.filter(contact => contact.address !== action.payload.address)
       default:
         return state
     }

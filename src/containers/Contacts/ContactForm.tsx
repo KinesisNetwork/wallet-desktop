@@ -1,5 +1,6 @@
 import { addContact } from '@actions'
 import { InputField } from '@components/InputField'
+import { RootState } from '@store'
 import { Contact } from '@types'
 import { Keypair } from 'js-kinesis-sdk'
 import * as React from 'react'
@@ -10,11 +11,16 @@ interface State extends Contact {
   isValid: boolean
 }
 
+const mapStateToProps = (state: RootState) => ({
+  currentContacts: state.contacts.contactList,
+})
+
 const mapDispatchToProps = {
   addContact,
 }
 
-type StateFulProps = { hideForm: () => any } & typeof mapDispatchToProps
+type StateFulProps = { hideForm: () => any } & typeof mapDispatchToProps &
+  ReturnType<typeof mapStateToProps>
 class ContractFormStateful extends React.Component<StateFulProps, State> {
   state: State = {
     name: '',
@@ -35,31 +41,42 @@ class ContractFormStateful extends React.Component<StateFulProps, State> {
   }
 
   private handleAdd = () => {
+    const possibleErrors = this.validateForm()
+    this.setState({ errors: possibleErrors })
+
+    const isValid = Object.values(possibleErrors).every(error => error === '')
+    if (!isValid) {
+      return
+    }
+
     const { name, address } = this.state
     this.props.addContact({ name, address })
     this.props.hideForm()
   }
 
   private handleChange = (key: string, value: string) => {
-    this.setState(state => ({ ...state, [key]: value }), () => this.validateForm())
+    this.setState(state => ({ ...state, [key]: value }))
   }
 
   private validateForm = () => {
     const errors = {
-      address: this.state.address === '' || !this.validateAddress(),
-      name: this.state.name === '',
+      address:
+        (this.validateAddress() ? '' : 'Invalid address') ||
+        (this.props.currentContacts.every(({ address }) => this.state.address !== address)
+          ? ''
+          : 'Address already in contacts'),
+      name: this.props.currentContacts.some(({ name }) => name === this.state.name)
+        ? 'Name alrady in contacts'
+        : '',
     }
-
-    this.setState({ isValid: Object.values(errors).includes(false) })
+    return errors
   }
 
   private validateAddress = () => {
     try {
       Keypair.fromPublicKey(this.state.address)
-      this.setState({ errors: { address: '' } })
       return true
     } catch (e) {
-      this.setState({ errors: { address: 'Invalid address' } })
       return false
     }
   }
@@ -84,6 +101,7 @@ const ContactFormPresentation: React.SFC<Props> = props => (
           icon="fa-user"
           maxLength={20}
           helpText={`Characters: ${props.name.length}/20`}
+          errorText={props.errors.name}
         />
       </div>
       <div className="control is-expanded">
@@ -105,7 +123,7 @@ const ContactFormPresentation: React.SFC<Props> = props => (
             <button
               className="button is-success"
               onClick={props.addContact}
-              disabled={!props.isValid}
+              disabled={!props.address || !props.name}
             >
               <span className="icon">
                 <i className="fal fa-lg fa-check" />
@@ -132,7 +150,7 @@ const ContactFormPresentation: React.SFC<Props> = props => (
 )
 
 const ConnectedContactForm = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(ContractFormStateful)
 

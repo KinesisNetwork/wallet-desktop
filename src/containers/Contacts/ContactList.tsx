@@ -1,12 +1,18 @@
 import * as React from 'react'
 
+import { removeContact } from '@actions'
 import { InitialsAvatar } from '@components/InitialsAvatar'
 import { RootState } from '@store'
 import { Contact } from '@types'
 import { connect } from 'react-redux'
 
-const ContactCard: React.SFC<Contact> = props => (
-  <div className="box">
+const ContactCard: React.SFC<Contact & typeof mapDispatchToProps> = props => (
+  <div className="box" style={{ position: 'relative' }}>
+    <button
+      className="delete"
+      onClick={() => props.removeContact({ address: props.address })}
+      style={{ position: 'absolute', top: '10px', right: '10px' }}
+    />
     <div className="level">
       <div className="level-left">
         <div className="level-item">
@@ -29,11 +35,22 @@ const mapStateToProps = (state: RootState) => ({
   contacts: state.contacts.contactList,
 })
 
-type Props = ReturnType<typeof mapStateToProps>
+const mapDispatchToProps = {
+  removeContact,
+}
+
+type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 const ContactListPresentation: React.SFC<Props> = props => (
-  <React.Fragment>{props.contacts.map(c => <ContactCard {...c} key={c.name} />)}</React.Fragment>
+  <React.Fragment>
+    {props.contacts.map(c => (
+      <ContactCard {...c} removeContact={props.removeContact} key={c.name} />
+    ))}
+  </React.Fragment>
 )
 
-const ConnectedContactList = connect(mapStateToProps)(ContactListPresentation)
+const ConnectedContactList = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ContactListPresentation)
 
 export { ConnectedContactList as ContactList }
