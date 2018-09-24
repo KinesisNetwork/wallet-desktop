@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import { ContactForm } from '@containers/Contacts/ContactForm'
+import { ContactList } from '@containers/Contacts/ContactList'
 import { RouteComponentProps } from 'react-router'
 
 interface State {
@@ -40,6 +41,7 @@ const Contacts: React.SFC<Props> = props => (
     </div>
     <hr className="has-background-grey-lighter" />
     {props.formIsVisible && <ContactForm hideForm={props.hideForm} />}
+    <ContactList />
   </React.Fragment>
 )
 
