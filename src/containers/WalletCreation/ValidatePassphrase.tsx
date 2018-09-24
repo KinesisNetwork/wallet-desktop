@@ -129,10 +129,10 @@ class ValidatePassphrasePresentation extends React.Component<Props, any> {
   render() {
     return (
       <React.Fragment>
-        <h1 className="title has-text-centered has-text-primary">Verify your paper key</h1>
+        <h1 className="title has-text-centered has-text-primary">Verify your recovery phrase</h1>
         <div className="content">
           <p>
-            To make sure your paper key was recorded correctly, please verify the missing words
+            To make sure your recovery phrase was recorded correctly, please verify the missing words
             below.
           </p>
         </div>
