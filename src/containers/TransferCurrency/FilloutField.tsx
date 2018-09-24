@@ -4,7 +4,7 @@ import * as React from 'react'
 
 interface Props {
   onFieldChange: () => void
-  handleChange: (field: 'name' | 'publicKey', value: string) => void
+  handleChange: (field: 'name' | 'address', value: string) => void
   errors: FormErrors
   onSaveToContactsChange: () => void
   saveToContacts: boolean
@@ -27,22 +27,22 @@ export class FilloutFieldPresentation extends React.Component<Props> {
             </span>
           </button>
           <InputField
-            label='Contact name'
+            label="Contact name"
             value={this.props.name}
-            onChangeHandler={(value) => this.props.handleChange('name', value)}
-            id='contact-name'
-            icon='fa-user-circle'
-            name='name'
+            onChangeHandler={value => this.props.handleChange('name', value)}
+            id="contact-name"
+            icon="fa-user-circle"
+            name="name"
             disabled={!this.props.saveToContacts}
           />
           <InputField
-            label='Public Address'
+            label="Public Address"
             value={this.props.publicKey}
-            placeholder='example: "GDUL65KWQ4PJA7FLO6467...CM7G"'
-            onChangeHandler={(value) => this.props.handleChange('publicKey', value)}
-            id='public-address'
-            icon='fa-qrcode'
-            errorText={this.props.errors.payeePublicKey}
+            placeholder="example: &quot;GDUL65KWQ4PJA7FLO6467...CM7G&quot;"
+            onChangeHandler={value => this.props.handleChange('address', value)}
+            id="public-address"
+            icon="fa-qrcode"
+            errorText={this.props.errors.targetPayee}
           />
           <div className="level">
             <div className="level-left">
@@ -60,7 +60,7 @@ export class FilloutFieldPresentation extends React.Component<Props> {
             </div>
           </div>
         </div>
-      </React.Fragment >
+      </React.Fragment>
     )
   }
 }

@@ -11,14 +11,17 @@ import { AccountCard } from '@containers/TransferCurrency/AccountCard'
 import { TransferSummary } from '@containers/TransferCurrency/TransferSummary'
 import { addMetalColour } from '@helpers/walletUtils'
 import { AddressDisplay, Currency, NotificationType, RootRoutes } from '@types'
-import { goBack, replace } from 'connected-react-router';
+import { goBack, replace } from 'connected-react-router'
 
 import { getInitials } from '@helpers/walletUtils'
 
 import { getActiveAccount } from '@selectors'
 
 const mapStateToProps = (state: RootState) => {
-  const { transfer: { formData }, wallet } = state
+  const {
+    transfer: { formData },
+    wallet,
+  } = state
   return {
     currency: state.connections.currentCurrency,
     walletName: state.wallet.persisted.walletName,
@@ -26,7 +29,7 @@ const mapStateToProps = (state: RootState) => {
     fee: formData.fee,
     amount: formData.amount,
     formData,
-    activeAccount: getActiveAccount(wallet)
+    activeAccount: getActiveAccount(wallet),
   }
 }
 
@@ -34,7 +37,7 @@ const mapDispatchToProps = {
   goBackToTransformPage: () => goBack(),
   transferRequest,
   goToDashboard: () => replace(RootRoutes.dashboard),
-  showNotification
+  showNotification,
 }
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
@@ -44,7 +47,12 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
     this.props.transferRequest(this.props.formData)
     this.props.showNotification({
       type: NotificationType.success,
-      message: `Transaction confirmed! ${this.props.amount} has been sent to ${<AddressView address={this.props.formData.payeePublicKey} addressDisplay={AddressDisplay.payee} />} from ${this.props.activeAccount.name}`
+      message: `Transaction confirmed! ${this.props.amount} has been sent to ${(
+        <AddressView
+          address={this.props.formData.targetPayee}
+          addressDisplay={AddressDisplay.payee}
+        />
+      )} from ${this.props.activeAccount.name}`,
     })
     this.props.goToDashboard()
   }
@@ -58,7 +66,10 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
               <div className="level">
                 <div className="level-item">
                   <figure className="image is-64x64">
-                    <img src={this.props.currency === Currency.KAU ? kauLogo : kagLogo} className="is-rounded" />
+                    <img
+                      src={this.props.currency === Currency.KAU ? kauLogo : kagLogo}
+                      className="is-rounded"
+                    />
                   </figure>
                 </div>
               </div>
@@ -84,8 +95,8 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
                 </div>
               </div>
               <AccountCard
-                icon='fa-user-circle'
-                address={this.props.formData.payeePublicKey}
+                icon="fa-user-circle"
+                address={this.props.formData.targetPayee}
                 addressDisplay={AddressDisplay.payee}
               />
             </section>
@@ -93,7 +104,11 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
               <div className="columns is-centered">
                 <div className="column is-two-thirds">
                   <div className="has-text-centered content">
-                    <h1 className={`is-size-1 has-text-weight-bold ${addMetalColour(this.props.currency)}`}>
+                    <h1
+                      className={`is-size-1 has-text-weight-bold ${addMetalColour(
+                        this.props.currency,
+                      )}`}
+                    >
                       {Number(this.props.amount).toFixed(5)} {this.props.currency}
                     </h1>
                     <p className="has-text-grey-lighter">
@@ -115,14 +130,15 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
                   <hr className="has-background-grey-lighter" />
                   <section className="field is-grouped is-grouped-right">
                     <p className="control">
-                      <button
-                        className="button is-text"
-                        onClick={this.props.goBackToTransformPage}
-                      >Back</button>
+                      <button className="button is-text" onClick={this.props.goBackToTransformPage}>
+                        Back
+                      </button>
                     </p>
                     <p className="control">
                       <button className="button is-primary" onClick={this.confirmAndGoToDashboard}>
-                        <span className="icon"><i className="fal fa-arrow-up" /></span>
+                        <span className="icon">
+                          <i className="fal fa-arrow-up" />
+                        </span>
                         <span>Confirm</span>
                       </button>
                     </p>
@@ -132,14 +148,14 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
             </section>
           </div>
         </div>
-      </React.Fragment >
+      </React.Fragment>
     )
   }
 }
 
 const ConnectedConfirmationPage = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ConfirmationPagePresentation)
 
 export { ConnectedConfirmationPage as ConfirmationPage }

@@ -1,4 +1,10 @@
-import { initialiseWallet, unlockWalletNew, updateAccountName } from '@actions'
+import {
+  addAccountToWallet,
+  initialiseWallet,
+  setActiveAccount,
+  unlockWalletNew,
+  updateAccountName,
+} from '@actions'
 import { createStorage } from '@services/storage'
 import { RootAction } from '@store'
 import { BaseAccount, PersistedAccount, WalletAccount, WalletLoggedInState } from '@types'
@@ -17,8 +23,11 @@ interface WalletState extends WalletLoggedInState {
   persisted: WalletPersistedState
 }
 
-function accountNameStateChange<T extends BaseAccount>(state: any[], {existingName, newName}: {existingName: string, newName: string}): T[] {
-  return state.map(a => a.name === existingName ? {...a, name: newName} : a)
+function accountNameStateChange<T extends BaseAccount>(
+  state: any[],
+  { existingName, newName }: { existingName: string; newName: string },
+): T[] {
+  return state.map(a => (a.name === existingName ? { ...a, name: newName } : a))
 }
 
 const persisted = combineReducers<WalletPersistedState, RootAction>({
@@ -26,6 +35,8 @@ const persisted = combineReducers<WalletPersistedState, RootAction>({
     switch (action.type) {
       case getType(initialiseWallet):
         return 0
+      case getType(setActiveAccount):
+        return action.payload.accounts.findIndex(a => a === action.payload.targetAccount)
       default:
         return state
     }
@@ -36,6 +47,8 @@ const persisted = combineReducers<WalletPersistedState, RootAction>({
         return [action.payload.createdAccount]
       case getType(updateAccountName):
         return accountNameStateChange<PersistedAccount>(state, action.payload)
+      case getType(addAccountToWallet):
+        return [...state, action.payload.persistedAccount]
       default:
         return state
     }
@@ -53,6 +66,8 @@ export const wallet = combineReducers<WalletState, RootAction>({
         return action.payload.accounts
       case getType(updateAccountName):
         return accountNameStateChange<WalletAccount>(state, action.payload)
+      case getType(addAccountToWallet):
+        return [...state, action.payload.walletAccount]
       default:
         return state
     }

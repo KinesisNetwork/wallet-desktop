@@ -51,7 +51,7 @@ exports[`SidebarPresentation should render correctly 1`] = `
       <Component
         icon="address-book"
         title="Contacts"
-        to="/address-book"
+        to="/contacts"
       />
       <Component
         icon="chart-line"

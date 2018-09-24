@@ -34,15 +34,13 @@ export interface UnlockWallet {
 }
 
 export interface TransferRequest {
-  readonly payeePublicKey: string
+  readonly targetPayee: string
   readonly amount: string
   readonly memo: string
   readonly fee: string
 }
 
-export type FormErrors = {
-  [key in keyof TransferRequest]?: string
-}
+export type FormErrors = { [key in keyof TransferRequest]?: string }
 
 export interface FormUpdate<T> {
   field: keyof T
@@ -58,9 +56,9 @@ export interface TransactionOperationView {
   readonly date: Date
 }
 
-export interface Payee {
+export interface Contact {
   readonly name: string
-  readonly publicKey: string
+  readonly address: string
 }
 
 export type FormChangeHandler<T> = (change: FormUpdate<T>) => any
@@ -85,6 +83,7 @@ export interface BaseAccount {
 
 export interface PersistedAccount extends BaseAccount {
   encryptedSecret: string
+  imported: boolean
 }
 
 export interface WalletAccount extends BaseAccount {

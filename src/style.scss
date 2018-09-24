@@ -1,36 +1,40 @@
-@import "src/_variables.scss";
+@import 'src/_variables.scss';
 
-@import "node_modules/bulma/bulma.sass";
-@import "node_modules/bulma-tooltip/dist/css/bulma-tooltip.sass";
-@import "node_modules/bulma-checkradio/dist/css/bulma-checkradio.sass";
-@import "node_modules/bulma-steps/dist/css/bulma-steps.sass";
+@import 'node_modules/bulma/bulma.sass';
+@import 'node_modules/bulma-tooltip/dist/css/bulma-tooltip.sass';
+@import 'node_modules/bulma-checkradio/dist/css/bulma-checkradio.sass';
+@import 'node_modules/bulma-steps/dist/css/bulma-steps.sass';
 @import 'node_modules/bulma-divider/dist/bulma-divider.sass';
 @import 'node_modules/bulma-switch/dist/css/bulma-switch.sass';
 @import 'styles/sidebar.scss';
 
-@import "src/_overrides.scss";
+@import 'src/_overrides.scss';
 @import 'src/_utilities';
 @font-face {
   font-family: 'Fira Mono';
-  src: url("./fonts/FiraMono-Regular.ttf") format('truetype');
+  src: url('./fonts/FiraMono-Regular.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Open Sans';
-  src: url("./fonts/OpenSans-Regular.ttf") format('truetype');
+  src: url('./fonts/OpenSans-Regular.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Roboto';
-  src: url("./fonts/Roboto-Regular.ttf") format('truetype');
+  src: url('./fonts/Roboto-Regular.ttf') format('truetype');
 }
 
 ::-webkit-scrollbar {
   display: none;
 }
 
-a, button, select, input, label {
+a,
+button,
+select,
+input,
+label {
   &::-moz-focus-inner {
     border: 0;
-    outline: 0
+    outline: 0;
   }
 }
 
@@ -56,7 +60,7 @@ body {
 
 .is-disabled {
   cursor: not-allowed;
-  opacity: .65;
+  opacity: 0.65;
 
   &:hover {
     border-bottom-color: $grey !important;
@@ -87,7 +91,7 @@ body {
 }
 
 .wallet-heading {
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 17px;
   text-transform: uppercase;
   letter-spacing: 0.2em;
@@ -106,11 +110,11 @@ body {
 }
 
 .scrollable::-webkit-scrollbar-track {
-  background: rgba(0,0,0,0);
+  background: rgba(0, 0, 0, 0);
 }
 
 .scrollable::-webkit-scrollbar-thumb {
-  background: #4E5D6C;
+  background: #4e5d6c;
 }
 
 .sk-folding-cube {
@@ -240,7 +244,6 @@ body {
 .notifier {
   position: absolute;
   top: 20px;
-  // right: 20px;
   z-index: 100;
   transition: visibility 0s linear 0.33s, opacity 0.33s linear, right 0.33s linear;
 }
@@ -259,9 +262,9 @@ body {
   cursor: not-allowed;
 }
 
-.switch[type="checkbox"]:focus + label::before,
-.switch[type="checkbox"]:focus + label:before,
-.switch[type="checkbox"]:focus + label::after,
-.switch[type="checkbox"]:focus + label:after {
+.switch[type='checkbox']:focus + label::before,
+.switch[type='checkbox']:focus + label:before,
+.switch[type='checkbox']:focus + label::after,
+.switch[type='checkbox']:focus + label:after {
   outline: none;
 }

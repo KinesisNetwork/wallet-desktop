@@ -28,4 +28,3 @@ export class SidebarDropdown extends React.PureComponent<Props, State> {
     )
   }
 }
-

@@ -7,7 +7,6 @@ import { InputError, WalletLockError } from '@helpers/errors'
 import { generateTransferTransaction } from '@services/transfer'
 import { InputField } from './InputField'
 import { Loader } from './Loader'
-import { PayeeSelector } from './PayeeSelector'
 
 export class TransferForm extends React.Component<TransferProps> {
   initTransfer = async (ev: React.MouseEvent<HTMLButtonElement>) => {
@@ -48,7 +47,7 @@ export class TransferForm extends React.Component<TransferProps> {
   }
 
   checkValidTarget = () => {
-    if (!this.props.payeePublicKey) {
+    if (!this.props.targetPayee) {
       throw new InputError(`Payee is required`, `transfer-target-address`)
     }
   }
@@ -75,9 +74,7 @@ export class TransferForm extends React.Component<TransferProps> {
   }
 
   isPayeeSelected = () => {
-    return (
-      this.props.payees.findIndex(({ publicKey }) => publicKey === this.props.payeePublicKey) !== -1
-    )
+    return this.props.payees.findIndex(({ address }) => address === this.props.targetPayee) !== -1
   }
 
   copyTransferTransaction = async () => {
@@ -100,19 +97,13 @@ export class TransferForm extends React.Component<TransferProps> {
       <div style={{ position: 'relative' }}>
         {this.props.isTransferring && <Loader />}
         <div style={this.props.isTransferring ? { filter: 'blur(2px)' } : {}}>
-          <PayeeSelector
-            handleChange={handleChange}
-            payees={this.props.payees}
-            payeePublicKey={this.props.payeePublicKey}
-            changeTransferView={this.props.changeTransferView}
-          />
           <InputField
-            value={this.props.payeePublicKey}
+            value={this.props.targetPayee}
             id="transfer-target-address"
             icon="fa-address-card"
             placeholder="Or input target address"
             disabled={this.isPayeeSelected()}
-            onChangeHandler={newValue => handleChange({ field: 'payeePublicKey', newValue })}
+            onChangeHandler={newValue => handleChange({ field: 'targetPayee', newValue })}
           />
           <InputField
             value={this.props.amount}

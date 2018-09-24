@@ -33,23 +33,23 @@ const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
   nextPage,
 }) => (
   <React.Fragment>
-    <h1 className="title has-text-primary has-text-centered">Record your paper key</h1>
+    <h1 className="title has-text-primary has-text-centered">Record your recovery phrase</h1>
     <div className="content">
       <p>
-        Your paper key (seed phrase/mnemonic) is the only way to regain access to your wallet if you
-        forget the password or lose access to this device.
+        Your recovery phrase is the only way to regain access to your wallet if you forget the
+        password or lose access to this device.
       </p>
       <p>
-        <strong>Anyone with your paper key will have complete access to your wallet.</strong>
+        <strong>Anyone with your recovery phrase will have complete access to your wallet.</strong>
         <br />
-        <strong>Write down and save these 12 words:</strong>
+        <strong>Write down and securely store these 12 words:</strong>
       </p>
     </div>
     <div className="field">
-      <label className="label">Your paper key</label>
+      <label className="label">Your recovery phrase</label>
       <div className="control">
         <div className="has-text-centered is-unselectable seedphrase">{passphrase}</div>
-        <p className="help">Your paper key is not case sensitive</p>
+        <p className="help">Your recovery phrase is not case sensitive</p>
       </div>
     </div>
     <div className="field">
@@ -63,7 +63,7 @@ const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
           onChange={onRecordedChange}
         />
         <label htmlFor="has-copied">
-          I confirm I have recorded my paper key and stored it in a safe place
+          I confirm I have recorded my recovery phrase and stored it in a safe place
         </label>
       </div>
     </div>
@@ -80,7 +80,7 @@ const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
           disabled={!hasRecorded || !hasConfirmedTC}
           onClick={nextPage}
         >
-          I have saved my passphrase
+          I have saved my recovery phrase
         </button>
       </div>
     </div>

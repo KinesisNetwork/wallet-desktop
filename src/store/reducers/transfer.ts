@@ -1,5 +1,5 @@
 import {
-  addPayee,
+  addContact,
   changeWalletView,
   insufficientFunds,
   publicKeyValidation,
@@ -40,8 +40,8 @@ const formMeta = combineReducers<FormMeta, RootAction>({
   errors: combineReducers<FormErrors, RootAction>({
     amount: handleError('amount'),
     memo: handleError('memo'),
-    payeePublicKey: handleError('payeePublicKey')
-  })
+    targetPayee: handleError('targetPayee'),
+  }),
 })
 
 function handleError(name: keyof FormErrors) {
@@ -51,9 +51,10 @@ function handleError(name: keyof FormErrors) {
         return name === 'amount' && action.payload ? 'Insufficient funds' : ''
       case getType(updateTransferForm):
         return name === 'memo' && action.payload.newValue.length > 24
-          ? `${action.payload.newValue.length} / 25` : ''
+          ? `${action.payload.newValue.length} / 25`
+          : ''
       case getType(publicKeyValidation):
-        return name === 'payeePublicKey' && !action.payload ? 'Invalid public address' : ''
+        return name === 'targetPayee' && !action.payload ? 'Invalid public address' : ''
       default:
         return state
     }
@@ -63,7 +64,7 @@ function handleError(name: keyof FormErrors) {
 export const transfer = combineReducers<TransferState, RootAction>({
   formData: combineReducers<TransferRequest, RootAction>({
     amount: handleChange('amount'),
-    payeePublicKey: handleChange('payeePublicKey'),
+    targetPayee: handleChange('targetPayee'),
     memo: handleChange('memo'),
     fee: handleChange('fee'),
   }),
@@ -89,10 +90,10 @@ function handleChange(name: keyof TransferRequest) {
     switch (action.type) {
       case getType(updateTransferForm):
         return action.payload.field === name ? action.payload.newValue : state
-      case getType(addPayee):
-        return name === 'payeePublicKey' ? action.payload.publicKey : state
       case getType(updateFee):
         return name === 'fee' ? action.payload : state
+      case getType(addContact):
+        return name === 'targetPayee' ? action.payload.address : state
 
       case getType(changeWalletView):
       case getType(selectWallet):

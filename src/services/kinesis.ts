@@ -100,7 +100,16 @@ async function transactionWithOperations(
   )
 }
 
-export function isValidPublicKey(publicKey: string): boolean {
+export function isValidSecret(secret: string) {
+  try {
+    Keypair.fromSecret(secret)
+    return true
+  } catch (e) {
+    return false
+  }
+}
+
+export function isValidPublicKey(publicKey: string) {
   try {
     Keypair.fromPublicKey(publicKey)
     return true

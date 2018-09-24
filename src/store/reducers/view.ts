@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 
 import {
-  addPayee,
+  addContact,
   addWallet,
   changeTransferView,
   changeWalletView,
@@ -38,7 +38,7 @@ export const view = combineReducers<ViewState, RootAction>({
       case getType(changeTransferView):
         return action.payload
 
-      case getType(addPayee):
+      case getType(addContact):
       case getType(changeWalletView):
         return TransferView.transfer
       default:

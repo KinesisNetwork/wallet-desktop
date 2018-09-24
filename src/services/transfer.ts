@@ -54,7 +54,7 @@ async function newTransferTransaction(
   request: TransferRequest,
 ): Promise<Transaction> {
   try {
-    await getAccountIfExists(server, request.payeePublicKey)
+    await getAccountIfExists(server, request.targetPayee)
     return newPaymentTransferTransaction(server, source, request)
   } catch (e) {
     return newCreateAccountTransaction(server, source, request)
@@ -64,7 +64,7 @@ async function newTransferTransaction(
 async function newPaymentTransferTransaction(
   server: Server,
   source: Account,
-  { amount, payeePublicKey: destination, memo }: TransferRequest,
+  { amount, targetPayee: destination, memo }: TransferRequest,
 ): Promise<Transaction> {
   const fee = await getFeeInStroops(server, Number(amount))
   const paymentTransaction = new TransactionBuilder(source, { fee })
@@ -74,7 +74,7 @@ async function newPaymentTransferTransaction(
         destination,
         asset: Asset.native(),
       }),
-  )
+    )
     .addMemo(Memo.text(memo || ''))
     .build()
 
@@ -84,7 +84,7 @@ async function newPaymentTransferTransaction(
 async function newCreateAccountTransaction(
   server: Server,
   source: Account,
-  { amount: startingBalance, payeePublicKey: destination, memo }: TransferRequest,
+  { amount: startingBalance, targetPayee: destination, memo }: TransferRequest,
 ): Promise<Transaction> {
   const fee = await getFeeInStroops(server, Number(startingBalance))
   const createAccountTransaction = new TransactionBuilder(source, { fee })
@@ -93,7 +93,7 @@ async function newCreateAccountTransaction(
         destination,
         startingBalance,
       }),
-  )
+    )
     .addMemo(Memo.text(memo || ''))
     .build()
 

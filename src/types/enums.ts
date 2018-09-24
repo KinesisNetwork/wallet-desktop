@@ -39,9 +39,10 @@ export enum ConnectionStage {
 
 export enum RootRoutes {
   dashboard = '/dashboard',
-  addressBook = '/address-book',
+  contacts = '/contacts',
   settings = '/settings',
   create = '/create',
+  importAccount = '/import-account',
 }
 
 export enum WalletCreationRoutes {
@@ -60,10 +61,10 @@ export enum NotificationType {
   info = 'info',
   warning = 'warning',
   error = 'danger',
-  success = 'success'
+  success = 'success',
 }
 
 export enum AddressDisplay {
   account,
-  payee
+  payee,
 }

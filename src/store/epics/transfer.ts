@@ -1,13 +1,6 @@
 import { merge, of } from 'rxjs'
 import { fromPromise } from 'rxjs/observable/fromPromise'
-import {
-  catchError,
-  filter,
-  ignoreElements,
-  map,
-  mergeMap,
-  withLatestFrom,
-} from 'rxjs/operators'
+import { catchError, filter, ignoreElements, map, mergeMap, withLatestFrom } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 
 import {
@@ -33,37 +26,26 @@ export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConne
     withLatestFrom(state$),
     mergeMap(([action, state]) => {
       const amount = Number(action.payload.newValue)
-      const fee$ = fromPromise(
-        getFeeInKinesis(getCurrentConnection(state.connections), amount)
-      )
-      const updateFee$ = fee$.pipe(
-        map(updateFee)
-      )
+      const fee$ = fromPromise(getFeeInKinesis(getCurrentConnection(state.connections), amount))
+      const updateFee$ = fee$.pipe(map(updateFee))
       const calculateRemainingBalance$ = fee$.pipe(
-        map((fee) => state.accounts.accountInfo.balance - (Number(fee) + amount))
+        map(fee => state.accounts.accountInfo.balance - (Number(fee) + amount)),
       )
-      const updateRemainingBalance$ = calculateRemainingBalance$.pipe(
-        map(updateRemainingBalance)
-      )
+      const updateRemainingBalance$ = calculateRemainingBalance$.pipe(map(updateRemainingBalance))
       const insufficientFunds$ = calculateRemainingBalance$.pipe(
-        map((remainingBalance) => remainingBalance < 0),
-        map(insufficientFunds)
+        map(remainingBalance => remainingBalance < 0),
+        map(insufficientFunds),
       )
-      return merge(
-        updateFee$,
-        updateRemainingBalance$,
-        insufficientFunds$
-      )
-    }
-    )
+      return merge(updateFee$, updateRemainingBalance$, insufficientFunds$)
+    }),
   )
 
 export const publicKeyValidation$: RootEpic = (action$, state$, { isValidPublicKey }) =>
   action$.pipe(
     filter(isActionOf(updateTransferForm)),
-    filter(({ payload: { field } }) => field === 'payeePublicKey'),
+    filter(({ payload: { field } }) => field === 'targetPayee'),
     withLatestFrom(state$),
-    map(([_, state]) => publicKeyValidation(isValidPublicKey(state.transfer.formData.payeePublicKey)))
+    map(([_, state]) => publicKeyValidation(isValidPublicKey(state.transfer.formData.targetPayee))),
   )
 
 export const transferRequest$: RootEpic = (

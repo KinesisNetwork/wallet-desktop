@@ -25,7 +25,8 @@
 
   .sidebar-header {
     background: linear-gradient(135deg, $grey 0%, $grey-dark 100%);
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16), 0 3px 4px 0 rgba(0,0,0,0.16), 0 1px 5px 0 rgba(0,0,0,0.16);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 3px 4px 0 rgba(0, 0, 0, 0.16),
+      0 1px 5px 0 rgba(0, 0, 0, 0.16);
     margin: 0px 12px 0px 12px;
     padding: 24px 0px 0px 0px;
   }
@@ -37,13 +38,15 @@
 }
 
 .sidebar-dropdown {
-  .dropdown, .dropdown-trigger, .dropdown-menu {
+  .dropdown,
+  .dropdown-trigger,
+  .dropdown-menu {
     width: 100%;
   }
 
   .dropdown-trigger {
     .icon:last-of-type {
-      transition: transform .25s ease-in-out;
+      transition: transform 0.25s ease-in-out;
     }
   }
 
@@ -55,14 +58,15 @@
 
   .dropdown-button.button {
     background: none;
-    box-shadow: 0px 2px 4px 0 rgba(0,0,0,0.5);
+    box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.5);
     color: $grey-lighter;
     justify-content: space-between;
     z-index: 10;
   }
 
   .dropdown-menu {
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16), 0 3px 4px 0 rgba(0,0,0,0.16), 0 1px 5px 0 rgba(0,0,0,0.16);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 3px 4px 0 rgba(0, 0, 0, 0.16),
+      0 1px 5px 0 rgba(0, 0, 0, 0.16);
   }
 
   .dropdown-item {
@@ -98,7 +102,6 @@
 
 .sidebar-list {
   margin-top: -5px;
-
   .sidebar-item {
     &:first-child .button {
       margin-top: -0.4rem;
