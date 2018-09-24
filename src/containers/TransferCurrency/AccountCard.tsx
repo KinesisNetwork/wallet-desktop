@@ -30,4 +30,4 @@ export const AccountCard: React.SFC<TransferFromAccount> = (props: TransferFromA
       </div>
     </div>
   )
-)
+}

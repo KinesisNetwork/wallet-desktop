@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import {
   addPayee,
   insufficientFunds,
+  showNotification,
   updateRemainingBalance,
   updateTransferForm
 } from '@actions'
@@ -18,7 +19,7 @@ import { FilloutField } from '@containers/TransferCurrency/FilloutField';
 import { addMetalColour } from '@helpers/walletUtils'
 import { getCurrentConnection } from '@selectors'
 import { RootState } from '@store'
-import { Currency, RootRoutes } from '@types'
+import { Currency, NotificationType, RootRoutes } from '@types'
 
 const mapStateToProps = (state: RootState) => {
   const { connections, transfer, payees } = state
@@ -40,6 +41,7 @@ const mapDispatchToProps = {
   insufficientFunds,
   updateRemainingBalance,
   addPayee,
+  showNotification
 }
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
@@ -58,7 +60,7 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
     isDropdownField: true,
     saveToContacts: true,
     addressInStore: this.props.savedContacts.find(payee => payee.publicKey === this.props.payeePublicKey),
-    newContact: { name: '', publicKey: ''}
+    newContact: { name: '', publicKey: '' }
   }
 
   handlePayeeFieldToggle = () => {
@@ -110,7 +112,10 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
         .findIndex(({ name }) => this.state.newContact.name === name) !== -1
 
       if (isMissingField || hasTheSamePublicAddress || hasTheSameName) {
-        // TODO: Hande error
+        this.props.showNotification({
+          type: NotificationType.error,
+          message: 'An error occured while completing the form.'
+        })
         return
       }
 
