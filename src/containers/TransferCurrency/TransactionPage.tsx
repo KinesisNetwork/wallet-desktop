@@ -92,7 +92,8 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
       memo: memoError,
       targetPayee: payeePublicKeyError,
     } = this.props.errors
-    const invalidAmount = this.props.amount === '' || !Number(this.props.amount)
+    const invalidAmount =
+      this.props.amount === '' || !Number(this.props.amount) || Number(this.props.amount) < 0
     return invalidAmount || !!amountError || !!memoError || !!payeePublicKeyError
   }
 
@@ -189,6 +190,8 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
                 onChangeHandler={newValue => handleChange({ field: 'amount', newValue })}
                 label="Amount"
                 errorText={this.props.errors.amount}
+                type="number"
+                min="0"
               />
               <InputField
                 id="transfer-description"

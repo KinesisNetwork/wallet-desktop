@@ -4,7 +4,6 @@ import { catchError, filter, map, mapTo, mergeMap, withLatestFrom } from 'rxjs/o
 import { isActionOf } from 'typesafe-actions'
 
 import {
-  accountLoadRequest,
   insufficientFunds,
   publicKeyValidation,
   showNotification,
@@ -91,11 +90,15 @@ export const transactionSubmission$: RootEpic = (
     ),
   )
 
-export const transactionSuccess$: RootEpic = (action$, state$) =>
+export const transactionSuccess$: RootEpic = action$ =>
   action$.pipe(
     filter(isActionOf(transactionSuccess)),
-    withLatestFrom(state$),
-    map(([_, state]) => accountLoadRequest(getActiveAccount(state.wallet).keypair.publicKey())),
+    map(() =>
+      showNotification({
+        type: NotificationType.success,
+        message: 'Transaction submitted successfully!',
+      }),
+    ),
   )
 
 export const transactionFailed$: RootEpic = action$ =>

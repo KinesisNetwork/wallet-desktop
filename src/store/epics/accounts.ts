@@ -5,6 +5,7 @@ import {
   accountTransactionsLoaded,
   selectConnectedCurrency,
   setActiveAccount,
+  transactionSuccess,
   unlockWalletNew,
 } from '@actions'
 import { getActiveAccount, getLoginState } from '@selectors'
@@ -60,7 +61,9 @@ export const loadAccount$: RootEpic = (
 
 export const initiateLoadRequest$: RootEpic = (action$, state$) => {
   const initiateActions$ = action$.pipe(
-    filter(isActionOf([selectConnectedCurrency, unlockWalletNew, setActiveAccount])),
+    filter(
+      isActionOf([selectConnectedCurrency, unlockWalletNew, setActiveAccount, transactionSuccess]),
+    ),
   )
 
   const stateStarter$ = state$.pipe(

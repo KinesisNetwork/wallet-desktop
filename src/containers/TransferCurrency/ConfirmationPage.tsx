@@ -9,7 +9,7 @@ import { showNotification, transferRequest } from '@actions'
 import { AccountCard } from '@containers/TransferCurrency/AccountCard'
 import { TransferSummary } from '@containers/TransferCurrency/TransferSummary'
 import { addMetalColour } from '@helpers/walletUtils'
-import { AddressDisplay, Currency, NotificationType, RootRoutes } from '@types'
+import { AddressDisplay, Currency, RootRoutes } from '@types'
 import { goBack, replace } from 'connected-react-router'
 
 import { getInitials } from '@helpers/walletUtils'
@@ -44,10 +44,6 @@ type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 export class ConfirmationPagePresentation extends React.Component<Props> {
   confirmAndGoToDashboard = () => {
     this.props.transferRequest(this.props.formData)
-    // this.props.showNotification({
-    //   type: NotificationType.success,
-    //   message: `Transaction confirmed! ${this.props.amount} has been sent to ${this.props.formData.targetPayee} from ${this.props.activeAccount.name}`,
-    // })
     this.props.goToDashboard()
   }
 

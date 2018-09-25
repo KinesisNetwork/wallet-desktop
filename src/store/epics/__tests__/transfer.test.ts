@@ -4,7 +4,7 @@ import { transactionFailed, transactionRequest, transferRequest } from '@actions
 import { Connection, ConnectionStage, Currency } from '@types'
 import { DeepPartial } from 'redux'
 import { ConnectionsState } from '../../reducers'
-import { transactionFailed$, transactionSubmission$, transferRequest$ } from '../transfer'
+import { transactionSubmission$, transferRequest$ } from '../transfer'
 import { epicTest } from './helpers'
 
 describe('Transfer epic', () => {
@@ -137,25 +137,6 @@ describe('Transfer epic', () => {
       })
       expect(getCurrentConnection).toHaveBeenCalledWith(connections)
       expect(submitSignedTransaction).toHaveBeenCalledWith(connection, transaction)
-    })
-  })
-
-  describe('transactionFailed$', () => {
-    const errorMessage = 'errorMessage'
-    const error = <Error>(<any>'error')
-
-    it('failure', async () => {
-      const getTransactionErrorMessage = jest.fn(() => errorMessage)
-      const generalFailureAlert = jest.fn(() => Promise.resolve())
-
-      await epicTest({
-        epic: transactionFailed$,
-        inputActions: [transactionFailed(error)],
-        dependencies: { generalFailureAlert, getTransactionErrorMessage },
-      })
-
-      expect(getTransactionErrorMessage).toHaveBeenCalledWith(error)
-      expect(generalFailureAlert).toHaveBeenCalledWith(errorMessage)
     })
   })
 })
