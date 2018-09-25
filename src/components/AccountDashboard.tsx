@@ -8,14 +8,14 @@ import { Transactions } from '@containers/Transactions'
 import * as kagLogo from '@icons/kag-icon.svg'
 import * as kauLogo from '@icons/kau-icon.svg'
 
-import { addMetalColour } from '@helpers/walletUtils';
+import { addMetalColour } from '@helpers/walletUtils'
 import { RootState } from '@store'
 import { Currency, RootRoutes } from '@types'
 
 const mapStateToProps = (state: RootState) => ({
   currency: state.connections.currentCurrency,
   balance: state.accounts.accountInfo.balance,
-  amount: state.transfer.formData.amount
+  amount: state.transfer.formData.amount,
 })
 
 const mapDispatchToProps = {
@@ -39,7 +39,7 @@ const AccountDashboardPresentation: React.SFC<Props> = props => (
         <div className="level-item">
           <h1
             className={`title is-size-2 has-text-weight-bold ${addMetalColour(props.currency)}`}
-          >{`${props.balance} ${props.currency}`}</h1>
+          >{`${props.balance.toFixed(5)} ${props.currency}`}</h1>
         </div>
       </div>
       <div className="level">
