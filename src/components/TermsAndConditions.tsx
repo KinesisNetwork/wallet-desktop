@@ -16,10 +16,9 @@ const TermsAndConditionsPresentation: React.SFC<Props> = props => (
         checked={props.hasConfirmed}
         onChange={props.onConfirmChange}
       />
-      <label htmlFor="tcs">I agree with the</label>
-      <a href="https://kinesis.money/en/terms-of-use/" target="_blank">
-        Terms of Service
-      </a>
+      <label htmlFor="tcs">
+        I agree with the <a href="https://kinesis.money/en/terms-of-use/" target="_blank"> Terms of Service</a>
+      </label>
     </div>
   </div>
 )

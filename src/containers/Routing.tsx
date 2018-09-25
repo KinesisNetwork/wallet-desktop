@@ -4,6 +4,7 @@ import { Contacts } from '@containers/Contacts'
 import { ImportAccount } from '@containers/ImportAccount'
 import { Sidebar } from '@containers/Sidebar'
 import { WalletCreationScreens } from '@containers/WalletCreation'
+import { WalletRecoverScreens } from '@containers/WalletRecovery'
 import { WelcomeScreen } from '@containers/WelcomeScreen'
 import { RootState } from '@store'
 import { RootRoutes } from '@types'
@@ -31,6 +32,7 @@ const RoutingPresentation: React.SFC<Props> = props =>
                 <Route path={RootRoutes.contacts} component={Contacts} />
                 <Route path={RootRoutes.settings} component={ConnectionSettings} />
                 <Route path={RootRoutes.importAccount} component={ImportAccount} />
+                <Route path={RootRoutes.recover} component={WalletRecoverScreens} />
                 <Redirect to={RootRoutes.dashboard} />
               </Switch>
             </div>
@@ -42,6 +44,7 @@ const RoutingPresentation: React.SFC<Props> = props =>
     <Switch>
       <Route exact={true} path="/" component={WelcomeScreen} />
       <Route path={RootRoutes.create} component={WalletCreationScreens} />
+      <Route path={RootRoutes.recover} component={WalletRecoverScreens} />
       <Redirect to="/" />
     </Switch>
   )

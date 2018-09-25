@@ -1,28 +1,28 @@
+import { push } from 'connected-react-router'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { Dispatch } from 'redux'
 
-import { startWalletCreation, updateFormField } from '@actions'
+import { finaliseWalletCreation, updateFormField } from '@actions'
 import { InputField } from '@components/InputField'
-import { Dispatch, RootState } from '@store'
-import { WALLET_CREATE_FORM_NAME } from '@types'
+import { RootState } from '@store'
+import { RootRoutes, WALLET_CREATE_FORM_NAME } from '@types'
 
 const isValidWalletName = (name: string) => name.length > 0 && name.length <= 50
 const isValidPassword = (password: string) => password.length >= 12 && password.length <= 30
 
 interface OwnProps {
   submitButtonText: string
-  onSubmitButtonClick(ev: React.MouseEvent): void
-} 
+}
 
 function validCreateWalletState(state: RootState): boolean {
   const { name, password, confirmPassword } = state.createWallet.createForm
   return isValidWalletName(name) && isValidPassword(password) && password === confirmPassword
 }
-const mapStateToProps = (state: RootState, { onSubmitButtonClick, submitButtonText }: OwnProps) => ({
+const mapStateToProps = (state: RootState, { submitButtonText }: OwnProps) => ({
   ...state.createWallet.createForm,
   canSubmit: validCreateWalletState(state),
-  onSubmitButtonClick,
   submitButtonText,
 })
 
@@ -31,7 +31,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch(updateFormField({ fieldValue, formField, formName: WALLET_CREATE_FORM_NAME })),
   onSubmit: (ev: React.FormEvent) => {
     ev.preventDefault()
-    dispatch(startWalletCreation())
+    dispatch(finaliseWalletCreation())
+    dispatch(push(RootRoutes.dashboard))
   },
 })
 
@@ -89,12 +90,7 @@ const NameWalletFormPresentation: React.SFC<NameWalletProps> = props => (
         </Link>
       </div>
       <div className="control">
-        <button
-          type="submit"
-          className="button is-primary"
-          onClick={props.onSubmitButtonClick}
-          disabled={!props.canSubmit}
-        >
+        <button type="submit" className="button is-primary" disabled={!props.canSubmit}>
           {props.submitButtonText}
         </button>
       </div>
