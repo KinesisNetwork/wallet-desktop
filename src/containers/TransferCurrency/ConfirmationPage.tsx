@@ -6,7 +6,6 @@ import * as kagLogo from '@icons/kag-icon.svg'
 import * as kauLogo from '@icons/kau-icon.svg'
 
 import { showNotification, transferRequest } from '@actions'
-import { AddressView } from '@components/AddressView'
 import { AccountCard } from '@containers/TransferCurrency/AccountCard'
 import { TransferSummary } from '@containers/TransferCurrency/TransferSummary'
 import { addMetalColour } from '@helpers/walletUtils'
@@ -45,15 +44,10 @@ type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 export class ConfirmationPagePresentation extends React.Component<Props> {
   confirmAndGoToDashboard = () => {
     this.props.transferRequest(this.props.formData)
-    this.props.showNotification({
-      type: NotificationType.success,
-      message: `Transaction confirmed! ${this.props.amount} has been sent to ${(
-        <AddressView
-          address={this.props.formData.targetPayee}
-          addressDisplay={AddressDisplay.payee}
-        />
-      )} from ${this.props.activeAccount.name}`,
-    })
+    // this.props.showNotification({
+    //   type: NotificationType.success,
+    //   message: `Transaction confirmed! ${this.props.amount} has been sent to ${this.props.formData.targetPayee} from ${this.props.activeAccount.name}`,
+    // })
     this.props.goToDashboard()
   }
 
