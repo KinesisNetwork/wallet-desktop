@@ -1,4 +1,4 @@
-import { addContact, removeContact } from '@actions'
+import { addContact, removeContact, updateContactForm } from '@actions'
 import { RootAction } from '@store'
 import { Contact } from '@types'
 import { combineReducers } from 'redux'
@@ -20,10 +20,21 @@ export const contacts = combineReducers<ContactState, RootAction>({
         return state
     }
   },
-  newContact: (state = { name: '', address: '' }, action) => {
+  newContact: combineReducers<Contact, RootAction>({
+    name: handleChange('name'),
+    address: handleChange('address'),
+  }),
+})
+
+function handleChange(name: keyof Contact) {
+  return (state = '', action: RootAction) => {
     switch (action.type) {
+      case getType(updateContactForm):
+        return action.payload.field === name ? action.payload.newValue : state
+      case getType(addContact):
+        return ''
       default:
         return state
     }
-  },
-})
+  }
+}

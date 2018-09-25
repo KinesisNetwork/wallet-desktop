@@ -1,22 +1,22 @@
-import { FormChangeHandler, Payee, TransferRequest } from '@types'
+import { Contact, FormChangeHandler, TransferRequest } from '@types'
 import * as React from 'react'
 
 interface Props {
   onFieldChange: () => void
-  savedContacts: Payee[]
+  savedContacts: Contact[]
   payeePublicKey: TransferRequest['targetPayee']
   handleChange: FormChangeHandler<TransferRequest>
 }
 
 export const DropdownFieldPresentation: React.SFC<Props> = props => {
-  const contactNames = props.savedContacts.map(({ name, publicKey }) => (
-    <option key={publicKey} value={publicKey}>
+  const contactNames = props.savedContacts.map(({ name, address }) => (
+    <option key={address} value={address}>
       {name}
     </option>
   ))
 
   const isSelected =
-    props.savedContacts.findIndex(({ publicKey }) => props.payeePublicKey === publicKey) !== -1
+    props.savedContacts.findIndex(({ address }) => props.payeePublicKey === address) !== -1
 
   return (
     <React.Fragment>
@@ -27,7 +27,7 @@ export const DropdownFieldPresentation: React.SFC<Props> = props => {
             <select
               className={!isSelected ? 'has-text-grey' : ''}
               onChange={({ target: { value: newValue } }) =>
-                props.handleChange({ field: 'payeePublicKey', newValue })
+                props.handleChange({ field: 'targetPayee', newValue })
               }
               value={props.payeePublicKey}
             >

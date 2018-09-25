@@ -1,18 +1,10 @@
 import { Keypair, Transaction } from 'js-kinesis-sdk'
 
-import {
-  transactionFailed,
-  transactionRequest,
-  transferRequest,
-} from '@actions'
+import { transactionFailed, transactionRequest, transferRequest } from '@actions'
 import { Connection, ConnectionStage, Currency } from '@types'
 import { DeepPartial } from 'redux'
 import { ConnectionsState } from '../../reducers'
-import {
-  transactionFailed$,
-  transactionSubmission$,
-  transferRequest$,
-} from '../transfer'
+import { transactionFailed$, transactionSubmission$, transferRequest$ } from '../transfer'
 import { epicTest } from './helpers'
 
 describe('Transfer epic', () => {
@@ -35,13 +27,11 @@ describe('Transfer epic', () => {
   const publicKey = 'public key'
   const privateKey = 'private key'
   const fee = 'fee'
-  const contactName = 'contact name'
   const transferPayload = {
     amount,
     memo,
-    payeePublicKey: payee,
+    targetPayee: payee,
     fee,
-    contactName
   }
   const wallet = {
     publicKey,
