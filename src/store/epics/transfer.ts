@@ -7,6 +7,7 @@ import {
   accountLoadRequest,
   insufficientFunds,
   publicKeyValidation,
+  showNotification,
   transactionFailed,
   transactionRequest,
   transactionSuccess,
@@ -18,6 +19,7 @@ import {
 import { getActiveAccount } from '@selectors'
 import { getFeeInKinesis } from '@services/kinesis'
 import { RootEpic } from '@store'
+import { NotificationType } from '@types'
 
 export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConnection }) =>
   action$.pipe(
@@ -94,13 +96,14 @@ export const transactionSuccess$: RootEpic = (action$, state$) =>
     map(() => accountLoadRequest(getActiveAccount(state$.value.wallet).keypair.publicKey())),
   )
 
-export const transactionFailed$: RootEpic = (
-  action$,
-  _,
-  { generalFailureAlert, getTransactionErrorMessage },
-) =>
+export const transactionFailed$: RootEpic = action$ =>
   action$.pipe(
     filter(isActionOf(transactionFailed)),
-    map(({ payload }) => generalFailureAlert(getTransactionErrorMessage(payload))),
+    map(() =>
+      showNotification({
+        type: NotificationType.error,
+        message: 'Transaction error.',
+      }),
+    ),
     ignoreElements(),
   )
