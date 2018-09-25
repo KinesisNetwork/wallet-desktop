@@ -40,7 +40,6 @@ export const loadAccount$: RootEpic = (
         takeUntil(invalidatePoll$),
         startWith(0),
         withLatestFrom(state$),
-        // Want to skip while not focused on dashboard page
         switchMap(([_, { connections }]) =>
           merge(
             from(loadAccount(action.payload, getCurrentConnection(connections))).pipe(

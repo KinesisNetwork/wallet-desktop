@@ -92,7 +92,8 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
       memo: memoError,
       targetPayee: payeePublicKeyError,
     } = this.props.errors
-    return this.props.amount === '' || !!amountError || !!memoError || !!payeePublicKeyError
+    const invalidAmount = this.props.amount === '' || !Number(this.props.amount)
+    return invalidAmount || !!amountError || !!memoError || !!payeePublicKeyError
   }
 
   goToConfirmPage = () => {
