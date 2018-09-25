@@ -23,7 +23,7 @@ export function configureStore(history: History) {
   const fullReducer = connectRouter(history)(rootReducer)
   const storage = createStorage()
 
-  const reducerWhitelist = ['contacts', 'connections']
+  const reducerWhitelist = ['contacts', 'connections', 'settings']
   const persistedReducer = IS_DEV
     ? persistReducer({ key: 'dev', storage, blacklist: ['transactions', 'wallet'] }, fullReducer)
     : persistReducer({ key: 'root', storage, whitelist: reducerWhitelist }, fullReducer)
