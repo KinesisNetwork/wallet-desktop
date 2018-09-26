@@ -31,6 +31,7 @@ export const passwords = combineReducers<PasswordsState, RootAction>({
     switch (action.type) {
       case getType(initialiseWallet):
       case getType(unlockWalletSuccess):
+      case getType(login):
         return action.payload.password
       default:
         return state
