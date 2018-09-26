@@ -12,8 +12,6 @@ import { addMetalColour } from '@helpers/walletUtils'
 import { AddressDisplay, Currency, RootRoutes } from '@types'
 import { goBack, replace } from 'connected-react-router'
 
-import { getInitials } from '@services/accounts'
-
 import { getActiveAccount } from '@selectors'
 
 const mapStateToProps = (state: RootState) => {
@@ -71,7 +69,7 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
             </section>
             <section className="columns is-vcentered">
               <AccountCard
-                inititals={getInitials(this.props.walletName)}
+                name={this.props.walletName}
                 addressDisplay={AddressDisplay.account}
                 address={this.props.activeAccount.keypair.publicKey()}
               />

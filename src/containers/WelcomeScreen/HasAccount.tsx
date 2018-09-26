@@ -2,8 +2,8 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 
 import { changeUnlockPasswordInput, unlockWalletRequest } from '@actions'
+import { InitialsAvatar } from '@components/InitialsAvatar'
 import { InputField } from '@components/InputField'
-import { getInitials } from '@services/accounts'
 import { RootState } from '@store'
 import { RootRoutes } from '@types'
 import { Link } from 'react-router-dom'
@@ -28,14 +28,7 @@ class HasAccountPresentation extends React.Component<Props> {
         <section className="level is-mobile">
           <div className="level-left">
             <div className="level-item">
-              <div
-                className="image is-64x64 has-background-grey level-item"
-                style={{ borderRadius: '100px' }}
-              >
-                <span className="is-size-3 has-text-grey-light">
-                  {getInitials(this.props.walletName)}
-                </span>
-              </div>
+              <InitialsAvatar name={this.props.walletName} size="64" fontSize="3" />
             </div>
             <div className="level-item">
               <div className="is-size-3-mobile is-size-2-tablet is-size-1-desktop has-text-weight-bold has-text-grey-lighter">

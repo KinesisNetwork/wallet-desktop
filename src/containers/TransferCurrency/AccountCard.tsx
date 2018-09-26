@@ -1,9 +1,10 @@
 import { AddressView } from '@components/AddressView'
+import { InitialsAvatar } from '@components/InitialsAvatar'
 import { AddressDisplay } from '@types'
 import * as React from 'react'
 
 interface TransferFromAccount {
-  inititals?: string
+  name?: string
   icon?: string
   address: string
   addressDisplay: AddressDisplay
@@ -15,10 +16,8 @@ export const AccountCard: React.SFC<TransferFromAccount> = (props: TransferFromA
       <div className="box">
         <div className="level">
           <div className="level-left">
-            <div className="image is-32x32 has-background-grey level-item" style={{ borderRadius: '100px' }}>
-              <span className="has-text-grey-light">{props.inititals ||
-                (props.icon && <i className={`fal ${props.icon}`} />)
-              }</span>
+            <div className="level-item">
+              <InitialsAvatar name={props.name} icon={props.icon} size="32" fontSize="6" />
             </div>
             <div className="level-item">
               <p className="has-text-grey-lighter">
