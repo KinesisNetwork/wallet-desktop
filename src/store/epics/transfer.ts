@@ -11,6 +11,7 @@ import {
   transactionRequest,
   transactionSuccess,
   transferRequest,
+  updateContactForm,
   updateFee,
   updateRemainingBalance,
   updateTransferForm,
@@ -24,6 +25,9 @@ export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConne
   action$.pipe(
     filter(isActionOf(updateTransferForm)),
     filter(({ payload: { field } }) => field === 'amount'),
+    filter(
+      ({ payload: { newValue } }) => newValue === '' || /^[0-9]+(\.)?([0-9]{1,5})?$/.test(newValue),
+    ),
     withLatestFrom(state$),
     mergeMap(([action, state]) => {
       const amount = Number(action.payload.newValue)
@@ -44,10 +48,9 @@ export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConne
 
 export const publicKeyValidation$: RootEpic = (action$, state$, { isValidPublicKey }) =>
   action$.pipe(
-    filter(isActionOf(updateTransferForm)),
-    filter(({ payload: { field } }) => field === 'targetPayee'),
-    withLatestFrom(state$),
-    map(([_, state]) => publicKeyValidation(isValidPublicKey(state.transfer.formData.targetPayee))),
+    filter(isActionOf(updateContactForm)),
+    filter(({ payload: { field } }) => field === 'address'),
+    map(action => publicKeyValidation(isValidPublicKey(action.payload.newValue))),
   )
 
 export const transferRequest$: RootEpic = (

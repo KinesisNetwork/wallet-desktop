@@ -90,11 +90,13 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
     const {
       amount: amountError,
       memo: memoError,
-      targetPayee: payeePublicKeyError,
+      targetPayee: targetPayeeError,
     } = this.props.errors
-    const invalidAmount =
-      this.props.amount === '' || !Number(this.props.amount) || Number(this.props.amount) < 0
-    return invalidAmount || !!amountError || !!memoError || !!payeePublicKeyError
+    const invalidAmount = this.props.amount === '' || !Number(this.props.amount)
+    const hasInputFieldErrors = !this.props.newContact.name || !this.props.newContact.address
+    return (
+      invalidAmount || !!amountError || !!memoError || !!targetPayeeError || hasInputFieldErrors
+    )
   }
 
   goToConfirmPage = () => {
@@ -190,8 +192,6 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
                 onChangeHandler={newValue => handleChange({ field: 'amount', newValue })}
                 label="Amount"
                 errorText={this.props.errors.amount}
-                type="number"
-                min="0"
               />
               <InputField
                 id="transfer-description"

@@ -89,7 +89,17 @@ function handleChange(name: keyof TransferRequest) {
   return (state = '', action: RootAction) => {
     switch (action.type) {
       case getType(updateTransferForm):
-        return action.payload.field === name ? action.payload.newValue : state
+        if (action.payload.field === name) {
+          if (
+            name === 'amount' &&
+            action.payload.newValue &&
+            !/^[0-9]+(\.)?([0-9]{1,5})?$/.test(action.payload.newValue)
+          ) {
+            return state
+          }
+          return action.payload.newValue
+        }
+        return state
       case getType(updateFee):
         return name === 'fee' ? action.payload : state
       case getType(addContact):
