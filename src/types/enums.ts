@@ -59,10 +59,9 @@ export enum WalletCreationModals {
 }
 
 export enum WalletRecoverRoutes {
-  first = '/confirm',
-  second = '/passphrase',
-  third = '/validate',
-  fourth = '/naming',
+  first = '/passphrase',
+  second = '/validate',
+  third = '/naming',
 }
 
 export enum NotificationType {

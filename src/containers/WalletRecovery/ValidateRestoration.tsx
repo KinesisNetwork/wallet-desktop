@@ -7,23 +7,23 @@ import { RootRoutes, WalletRecoverRoutes } from '@types'
 
 const mapStateToProps = () => ({})
 const mapDispatchToProps = {
-  nextPage: () => replace(RootRoutes.recover.concat(WalletRecoverRoutes.fourth))
+  nextPage: () => replace(RootRoutes.recover.concat(WalletRecoverRoutes.third)),
 }
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 interface State {
-  progress: number,
+  progress: number
   progressText: string
 }
 
-const progressAnimation = tween({ to: 100, duration: 5000, ease: easing.anticipate }) 
+const progressAnimation = tween({ to: 100, duration: 2500, ease: easing.anticipate })
 
 class ValidateRestorationPresentation extends React.Component<Props, State> {
   state = {
     progress: 0,
     progressText: 'Restoring wallet...',
   }
-  
+
   timeout: NodeJS.Timer
 
   componentDidMount() {
@@ -39,11 +39,11 @@ class ValidateRestorationPresentation extends React.Component<Props, State> {
 
   completeProgress = (): void => {
     this.setState({ progressText: 'Wallet restored!' })
-    this.timeout = setTimeout(() => this.props.nextPage(), 500)
+    this.timeout = setTimeout(() => this.props.nextPage(), 750)
   }
 
   componentWillUnmount() {
-    clearInterval(this.timeout) 
+    clearInterval(this.timeout)
   }
 
   render() {
@@ -53,7 +53,7 @@ class ValidateRestorationPresentation extends React.Component<Props, State> {
         <div className="modal is-active">
           <div className="modal-background" />
           <div className="modal-content">
-            <progress className="progress is-success" value={progress} max={100}>{progress}%</progress>
+            <progress className="progress is-success" value={progress} max={100} />
             <article className="message is-success">
               <div className="message-body has-text-centered">
                 <div className="content">
@@ -68,6 +68,9 @@ class ValidateRestorationPresentation extends React.Component<Props, State> {
   }
 }
 
-const ValidateRestoration = connect(mapStateToProps, mapDispatchToProps)(ValidateRestorationPresentation)
+const ValidateRestoration = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ValidateRestorationPresentation)
 
 export { ValidateRestoration }

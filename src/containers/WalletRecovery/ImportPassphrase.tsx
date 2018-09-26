@@ -13,8 +13,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   goBack: () => dispatch(replace(RootRoutes.dashboard)),
   onSubmitPassphrase: (passphrase: string) => {
     dispatch(createPassphrase({ passphrase }))
-    dispatch(push(RootRoutes.recover + WalletRecoverRoutes.third))
-  }
+    dispatch(push(RootRoutes.recover.concat(WalletRecoverRoutes.second)))
+  },
 })
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>
@@ -30,12 +30,12 @@ export class ImportPassphrasePresentation extends React.Component<Props, State> 
     isValidPassphrase: false,
     recoveryPhrase: '',
   }
-  
-  handleConfirmTC: React.ChangeEventHandler<HTMLInputElement> = (ev) => {
+
+  handleConfirmTC: React.ChangeEventHandler<HTMLInputElement> = ev => {
     this.setState({ hasConfirmedTC: ev.target.checked })
   }
 
-  handlePhraseChange: React.ChangeEventHandler<HTMLInputElement> = (ev) => {
+  handlePhraseChange: React.ChangeEventHandler<HTMLInputElement> = ev => {
     const { value } = ev.target
     const isValidPassphrase = validateMnemonic(value)
 
@@ -49,21 +49,26 @@ export class ImportPassphrasePresentation extends React.Component<Props, State> 
   render() {
     const { goBack } = this.props
     const { hasConfirmedTC, isValidPassphrase, recoveryPhrase } = this.state
-    
+
     return (
       <React.Fragment>
         <h1 className="title has-text-primary has-text-centered">Restore your wallet</h1>
         <div className="content">
           <p>
-            Your recovery phrase is the 12 word phrase you recorded when the wallet was created. <a>Learn More</a>.
+            Your recovery phrase is the 12 word phrase you recorded when the wallet was created.{' '}
+            <a>Learn More</a>.
           </p>
         </div>
         <div className="field">
-          <label className="label" htmlFor="recovery-phrase">Your recovery phrase</label>
+          <label className="label" htmlFor="recovery-phrase">
+            Your recovery phrase
+          </label>
           <div className="control">
             <input
               type="textarea"
-              className={`textarea seedphrase has-text-centered is-radiusless ${ isValidPassphrase ? 'is-success' : 'is-danger' }`}
+              className={`textarea seedphrase has-text-centered is-radiusless ${
+                isValidPassphrase ? 'is-success' : 'is-danger'
+              }`}
               id="recovery-phrase"
               name="recovery-phrase"
               onChange={this.handlePhraseChange}
@@ -73,10 +78,7 @@ export class ImportPassphrasePresentation extends React.Component<Props, State> 
             <p className="help">Your recovery phrase is not case sensitive</p>
           </div>
         </div>
-        <TermsAndConditions
-          hasConfirmed={hasConfirmedTC}
-          onConfirmChange={this.handleConfirmTC}
-        />
+        <TermsAndConditions hasConfirmed={hasConfirmedTC} onConfirmChange={this.handleConfirmTC} />
         <div className="field is-grouped is-grouped-right">
           <div className="control">
             <button type="button" className="button is-text" onClick={goBack}>
@@ -98,6 +100,9 @@ export class ImportPassphrasePresentation extends React.Component<Props, State> 
   }
 }
 
-const ImportPassphrase = connect(mapStateToProps, mapDispatchToProps)(ImportPassphrasePresentation)
+const ImportPassphrase = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ImportPassphrasePresentation)
 
 export { ImportPassphrase }
