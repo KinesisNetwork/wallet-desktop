@@ -75,11 +75,18 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
   handleSaveToContact = () => {
     this.setState(prevState => ({
       saveToContacts: !prevState.saveToContacts,
-    }))
+    }), () => {
+      if (!this.state.saveToContacts) {
+        this.props.updateContactForm({ field: 'name', newValue: '' })
+      }
+    })
   }
 
   handleNewContactChange = (field: 'name' | 'address', value: string) => {
-    this.props.updateTransferForm({ field: 'targetPayee', newValue: value })
+    if (field === 'address') {
+      this.props.updateTransferForm({ field: 'targetPayee', newValue: value })
+    }
+
     this.props.updateContactForm({
       field,
       newValue: value,
@@ -96,7 +103,7 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
     const hasInputFieldErrors = () => {
       return this.state.isDropdownField
         ? !this.props.targetPayee || this.props.targetPayee === 'Select a contact'
-        : !this.props.newContact.name || !this.props.newContact.address
+        : !this.props.newContact.address
     }
 
     return (
