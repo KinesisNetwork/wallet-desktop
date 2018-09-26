@@ -1,25 +1,57 @@
-import { of } from 'rxjs'
+import { merge, of } from 'rxjs'
 import { fromPromise } from 'rxjs/observable/fromPromise'
-import {
-  catchError,
-  filter,
-  flatMap,
-  ignoreElements,
-  map,
-  mergeMap,
-  withLatestFrom,
-} from 'rxjs/operators'
+import { catchError, filter, map, mapTo, mergeMap, withLatestFrom } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 
 import {
-  accountLoadRequest,
+  insufficientFunds,
+  publicKeyValidation,
+  showNotification,
   transactionFailed,
   transactionRequest,
   transactionSuccess,
   transferRequest,
+  updateContactForm,
+  updateFee,
+  updateRemainingBalance,
+  updateTransferForm,
 } from '@actions'
 import { getActiveAccount } from '@selectors'
+import { getFeeInKinesis } from '@services/kinesis'
 import { RootEpic } from '@store'
+import { NotificationType } from '@types'
+
+export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConnection }) =>
+  action$.pipe(
+    filter(isActionOf(updateTransferForm)),
+    filter(({ payload: { field } }) => field === 'amount'),
+    filter(
+      ({ payload: { newValue } }) => newValue === '' || /^[0-9]+(\.)?([0-9]{1,5})?$/.test(newValue),
+    ),
+    withLatestFrom(state$),
+    mergeMap(([action, state]) => {
+      const amount = Number(action.payload.newValue)
+      const fee$ = fromPromise(getFeeInKinesis(getCurrentConnection(state.connections), amount))
+      const updateFee$ = fee$.pipe(map(updateFee))
+
+      const calculateRemainingBalance$ = fee$.pipe(
+        map(fee => state.accounts.accountInfo.balance - (Number(fee) + amount)),
+      )
+      const updateRemainingBalance$ = calculateRemainingBalance$.pipe(map(updateRemainingBalance))
+      const insufficientFunds$ = calculateRemainingBalance$.pipe(
+        map(remainingBalance => remainingBalance < 0),
+        map(insufficientFunds),
+      )
+      return merge(updateFee$, updateRemainingBalance$, insufficientFunds$)
+    }),
+  )
+
+export const publicKeyValidation$: RootEpic = (action$, _, { isValidPublicKey }) =>
+  action$.pipe(
+    filter(isActionOf(updateContactForm)),
+    filter(({ payload: { field } }) => field === 'address'),
+    map(action => publicKeyValidation(isValidPublicKey(action.payload.newValue))),
+  )
 
 export const transferRequest$: RootEpic = (
   action$,
@@ -55,26 +87,30 @@ export const transactionSubmission$: RootEpic = (
       fromPromise(
         submitSignedTransaction(getCurrentConnection(state$.value.connections), payload),
       ).pipe(
-        map(transactionSuccess),
+        mapTo(transactionSuccess()),
         catchError(err => of(transactionFailed(err))),
       ),
     ),
   )
 
-export const transactionSuccess$: RootEpic = (action$, state$, { generalSuccessAlert }) =>
+export const transactionSuccess$: RootEpic = action$ =>
   action$.pipe(
     filter(isActionOf(transactionSuccess)),
-    flatMap(() => generalSuccessAlert('The transfer was successful.')),
-    map(() => accountLoadRequest(getActiveAccount(state$.value.wallet).keypair.publicKey())),
+    map(() =>
+      showNotification({
+        type: NotificationType.success,
+        message: 'Transaction submitted successfully!',
+      }),
+    ),
   )
 
-export const transactionFailed$: RootEpic = (
-  action$,
-  _,
-  { generalFailureAlert, getTransactionErrorMessage },
-) =>
+export const transactionFailed$: RootEpic = action$ =>
   action$.pipe(
     filter(isActionOf(transactionFailed)),
-    map(({ payload }) => generalFailureAlert(getTransactionErrorMessage(payload))),
-    ignoreElements(),
+    map(() =>
+      showNotification({
+        type: NotificationType.error,
+        message: 'Transaction error.',
+      }),
+    ),
   )

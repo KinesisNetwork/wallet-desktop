@@ -1,21 +1,10 @@
 import { Keypair, Transaction } from 'js-kinesis-sdk'
 
-import {
-  accountLoadRequest,
-  transactionFailed,
-  transactionRequest,
-  transactionSuccess,
-  transferRequest,
-} from '@actions'
+import { transactionFailed, transactionRequest, transferRequest } from '@actions'
 import { Connection, ConnectionStage, Currency } from '@types'
 import { DeepPartial } from 'redux'
 import { ConnectionsState } from '../../reducers'
-import {
-  transactionFailed$,
-  transactionSubmission$,
-  transactionSuccess$,
-  transferRequest$,
-} from '../transfer'
+import { transactionSubmission$, transferRequest$ } from '../transfer'
 import { epicTest } from './helpers'
 
 describe('Transfer epic', () => {
@@ -37,10 +26,12 @@ describe('Transfer epic', () => {
   const memo = 'memo'
   const publicKey = 'public key'
   const privateKey = 'private key'
+  const fee = 'fee'
   const transferPayload = {
     amount,
     memo,
     targetPayee: payee,
+    fee,
   }
   const wallet = {
     publicKey,
@@ -146,49 +137,6 @@ describe('Transfer epic', () => {
       })
       expect(getCurrentConnection).toHaveBeenCalledWith(connections)
       expect(submitSignedTransaction).toHaveBeenCalledWith(connection, transaction)
-    })
-  })
-
-  describe('transactionSuccess$', () => {
-    it('success', async () => {
-      const generalSuccessAlert = jest.fn(() => Promise.resolve())
-      const keypair = Keypair.random()
-
-      await epicTest({
-        epic: transactionSuccess$,
-        inputActions: [transactionSuccess()],
-        state: {
-          wallet: {
-            accounts: [{ keypair }],
-            persisted: {
-              activeAccount: 0,
-            },
-          },
-        },
-        dependencies: { generalSuccessAlert },
-        expectedActions: [accountLoadRequest(keypair.publicKey())],
-      })
-
-      expect(generalSuccessAlert).toHaveBeenCalledWith('The transfer was successful.')
-    })
-  })
-
-  describe('transactionFailed$', () => {
-    const errorMessage = 'errorMessage'
-    const error = <Error>(<any>'error')
-
-    it('failure', async () => {
-      const getTransactionErrorMessage = jest.fn(() => errorMessage)
-      const generalFailureAlert = jest.fn(() => Promise.resolve())
-
-      await epicTest({
-        epic: transactionFailed$,
-        inputActions: [transactionFailed(error)],
-        dependencies: { generalFailureAlert, getTransactionErrorMessage },
-      })
-
-      expect(getTransactionErrorMessage).toHaveBeenCalledWith(error)
-      expect(generalFailureAlert).toHaveBeenCalledWith(errorMessage)
     })
   })
 })

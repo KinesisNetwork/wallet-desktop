@@ -37,7 +37,10 @@ export interface TransferRequest {
   readonly targetPayee: string
   readonly amount: string
   readonly memo: string
+  readonly fee: string
 }
+
+export type FormErrors = { [key in keyof TransferRequest]?: string }
 
 export interface FormUpdate<T> {
   field: keyof T

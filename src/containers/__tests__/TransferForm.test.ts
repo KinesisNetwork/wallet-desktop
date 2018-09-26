@@ -30,7 +30,7 @@ describe('TransferForm', () => {
         contactList: [payee],
       },
       transfer: {
-        form: { amount: 'formValue1' },
+        formData: { amount: 'formValue1' },
         isTransferring: true,
       },
       wallets: {
@@ -72,7 +72,7 @@ describe('TransferForm', () => {
         accountInfo: { balance: 0 },
       },
       contacts: { contactList: [] },
-      transfer: { form: {}, isTransferring: true },
+      transfer: { isTransferring: true },
       wallet: {
         accounts: [{ keypair, name: 'x' }],
         persisted: {

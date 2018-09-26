@@ -12,12 +12,11 @@ exports[`TransferForm renders correctly 1`] = `
     style={Object {}}
   >
     <InputField
-      disabled={false}
+      disabled={true}
       icon="fa-address-card"
       id="transfer-target-address"
       onChangeHandler={[Function]}
       placeholder="Or input target address"
-      value="asdf"
     />
     <InputField
       icon="fa-coins"

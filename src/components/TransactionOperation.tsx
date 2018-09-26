@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import { AddressView } from '@components/AddressView'
 import { HorizontalLabelledField } from '@components/LabelledField'
-import { Currency, TransactionOperationView } from '@types'
+import { AddressDisplay, Currency, TransactionOperationView } from '@types'
 
 export interface Props {
   transactionWithOperation: TransactionOperationView
@@ -42,7 +42,7 @@ const getAmount = (t: TransactionOperationView) => {
     default:
       return 'Other'
   }
-  return t.isIncoming ? amount : amount + Number(t.fee)
+  return t.isIncoming ? amount.toFixed(5) : (amount + Number(t.fee)).toFixed(5)
 }
 
 const TransactionIcon: React.SFC<{ t: TransactionOperationView }> = ({ t }) =>
@@ -81,7 +81,7 @@ const TransactionCard: React.SFC<Props & StateProps> = ({
         <div className="is-flex" style={{ alignItems: 'center' }}>
           <TransactionIcon t={t} />
           <span className="has-text-weight-bold">
-            <AddressView address={getAddress(t)} />
+            <AddressView address={getAddress(t)} addressDisplay={AddressDisplay.payee} />
           </span>
         </div>
       </div>
@@ -96,7 +96,7 @@ const TransactionCard: React.SFC<Props & StateProps> = ({
       </div>
       <div className="column is-2 has-text-weight-bold has-text-right">
         <span className={`has-text-${t.isIncoming ? 'success' : 'danger'}`}>
-          {getAmount(t)} {currency}
+          {getAmount(t) === 'Other' ? getAmount(t) : `${getAmount(t)} ${currency}`}
         </span>
       </div>
       <div className="column is-1 has-text-right">

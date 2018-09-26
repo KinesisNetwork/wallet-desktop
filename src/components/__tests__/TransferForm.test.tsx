@@ -26,7 +26,7 @@ describe('TransferForm', () => {
           publicKey: '123',
         },
       ],
-      targetPayee: 'asdf',
+      payeePublicKey: 'asdf',
       transferRequest: () => null,
       updateTransferForm: () => null,
     }

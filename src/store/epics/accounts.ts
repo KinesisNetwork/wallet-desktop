@@ -5,6 +5,7 @@ import {
   accountTransactionsLoaded,
   selectConnectedCurrency,
   setActiveAccount,
+  transactionSuccess,
   unlockWalletNew,
 } from '@actions'
 import { getActiveAccount, getLoginState } from '@selectors'
@@ -17,7 +18,6 @@ import {
   filter,
   map,
   pluck,
-  skipWhile,
   startWith,
   switchMap,
   takeUntil,
@@ -33,10 +33,7 @@ export const loadAccount$: RootEpic = (
 ) => {
   const accountLoadRequest$ = action$.pipe(filter(isActionOf(accountLoadRequest)))
   // If there are other things that would invalidate the polling, should add to here
-  const invalidatePoll$ = merge(
-    accountLoadRequest$,
-    state$.pipe(filter(({ router }) => !router.location.pathname.startsWith(RootRoutes.dashboard))),
-  )
+  const invalidatePoll$ = merge(accountLoadRequest$)
 
   const accountLoadPoll$ = accountLoadRequest$.pipe(
     switchMap(action =>
@@ -44,8 +41,6 @@ export const loadAccount$: RootEpic = (
         takeUntil(invalidatePoll$),
         startWith(0),
         withLatestFrom(state$),
-        // Want to skip while not focused on dashboard page
-        skipWhile(([_, state]) => state.router.location.pathname !== RootRoutes.dashboard),
         switchMap(([_, { connections }]) =>
           merge(
             from(loadAccount(action.payload, getCurrentConnection(connections))).pipe(
@@ -66,7 +61,9 @@ export const loadAccount$: RootEpic = (
 
 export const initiateLoadRequest$: RootEpic = (action$, state$) => {
   const initiateActions$ = action$.pipe(
-    filter(isActionOf([selectConnectedCurrency, unlockWalletNew, setActiveAccount])),
+    filter(
+      isActionOf([selectConnectedCurrency, unlockWalletNew, setActiveAccount, transactionSuccess]),
+    ),
   )
 
   const stateStarter$ = state$.pipe(

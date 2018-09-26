@@ -18,7 +18,7 @@ export const mapStateToProps = (state: RootState) => {
     .filter(wallet => wallet.publicKey !== publicKey)
     .map((wallet): Contact => ({ name: wallet.accountName, address: wallet.publicKey }))
   return {
-    ...transfer.form,
+    ...transfer.formData,
     getFee: (amount: number) => getFeeInKinesis(getCurrentConnection(connections), amount),
     isTransferring: transfer.isTransferring,
     isWalletUnlocked: !!privateKey,

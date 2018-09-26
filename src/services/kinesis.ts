@@ -59,7 +59,7 @@ export async function getFeeInKinesis(
   connection: Connection,
   amountInKinesis: number,
 ): Promise<string> {
-  const feeInStroops = await getFeeInStroops(getServer(connection), amountInKinesis)
+  const feeInStroops = await getFeeInStroops(getServer(connection), amountInKinesis).catch(_ => '0')
   return String(Number(feeInStroops) / STROOPS_IN_ONE_KINESIS)
 }
 
