@@ -50,7 +50,9 @@ function handleError(name: keyof FormErrors) {
       case getType(insufficientFunds):
         return name === 'amount' && action.payload ? 'Insufficient funds' : ''
       case getType(updateTransferForm):
-        return name === 'memo' && action.payload.newValue.length > 24
+        return name === 'memo' &&
+          action.payload.field === 'memo' &&
+          action.payload.newValue.length > 24
           ? `${action.payload.newValue.length} / 25`
           : ''
       case getType(publicKeyValidation):

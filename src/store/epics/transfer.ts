@@ -46,7 +46,7 @@ export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConne
     }),
   )
 
-export const publicKeyValidation$: RootEpic = (action$, state$, { isValidPublicKey }) =>
+export const publicKeyValidation$: RootEpic = (action$, _, { isValidPublicKey }) =>
   action$.pipe(
     filter(isActionOf(updateContactForm)),
     filter(({ payload: { field } }) => field === 'address'),
