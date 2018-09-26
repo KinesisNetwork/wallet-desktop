@@ -42,3 +42,12 @@ export async function getTransactionSigners(server: Server, transaction: Transac
 
   return signers.filter(kp => transactionSignatures.some(sig => kp.verify(transaction.hash(), sig)))
 }
+
+export const getInitials = name =>
+  name
+    .split(' ')
+    .map(word => word.substring(0, 1))
+    .reduce(
+      (initials, curr, i, names) =>
+        i === names.length - 1 && i !== 0 ? initials + curr : initials,
+    )

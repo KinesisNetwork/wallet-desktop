@@ -12,7 +12,7 @@ import { addMetalColour } from '@helpers/walletUtils'
 import { AddressDisplay, Currency, RootRoutes } from '@types'
 import { goBack, replace } from 'connected-react-router'
 
-import { getInitials } from '@helpers/walletUtils'
+import { getInitials } from '@services/accounts'
 
 import { getActiveAccount } from '@selectors'
 
