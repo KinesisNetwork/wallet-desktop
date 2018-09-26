@@ -14,7 +14,7 @@ import { RootState } from '@store'
 import { PersistedAccount, RootRoutes } from '@types'
 import { push } from 'connected-react-router'
 import { connect } from 'react-redux'
-import { withRouter, RouteComponentProps } from 'react-router'
+import { RouteComponentProps, withRouter } from 'react-router'
 
 let logo
 if (process.env.IS_WEB) {
@@ -28,7 +28,9 @@ export const mapStateToProps = ({ wallet }: RootState) => ({
 
 export const mapDispathToProps = { addNextAccountFromSeedphrase, setActiveAccount, push }
 
-type Props = typeof mapDispathToProps & ReturnType<typeof mapStateToProps> & RouteComponentProps<any>
+type Props = typeof mapDispathToProps &
+  ReturnType<typeof mapStateToProps> &
+  RouteComponentProps<any>
 
 export class SidebarPresentation extends React.Component<Props> {
   public dropdownAccounts = handleToggle =>
@@ -112,7 +114,9 @@ export class SidebarPresentation extends React.Component<Props> {
   }
 }
 
-export const Sidebar = withRouter(connect(
-  mapStateToProps,
-  mapDispathToProps,
-)(SidebarPresentation))
+export const Sidebar = withRouter(
+  connect(
+    mapStateToProps,
+    mapDispathToProps,
+  )(SidebarPresentation),
+)
