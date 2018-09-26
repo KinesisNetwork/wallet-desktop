@@ -66,11 +66,17 @@
   }
 }
 
-.is-checkradio + label {
-  display: block;
-
-  &:before {
-    top: 50%;
-    transform: transitionY(-50%);
+.is-checkradio {
+  &[type="radio"], &[type="checkbox"] {
+    & + label {
+      display: inline-block;
+      &::before {
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      &::after {
+        top: calc(50% - 0.405rem);
+      }
+    }
   }
 }
