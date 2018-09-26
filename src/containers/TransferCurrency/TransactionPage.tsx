@@ -95,18 +95,12 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
     const invalidAmount = this.props.amount === '' || !Number(this.props.amount)
     const hasInputFieldErrors = () => {
       return this.state.isDropdownField
-        ? false
+        ? !this.props.targetPayee || this.props.targetPayee === 'Select a contact'
         : !this.props.newContact.name || !this.props.newContact.address
     }
-    const hasDropDownError = this.props.targetPayee === 'Select a contact'
 
     return (
-      invalidAmount ||
-      !!amountError ||
-      !!memoError ||
-      !!targetPayeeError ||
-      hasInputFieldErrors() ||
-      hasDropDownError
+      invalidAmount || !!amountError || !!memoError || !!targetPayeeError || hasInputFieldErrors()
     )
   }
 
