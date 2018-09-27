@@ -68,3 +68,8 @@ export enum AddressDisplay {
   account,
   payee,
 }
+
+export enum AvatarSize {
+  small = 'small',
+  large = 'large',
+}

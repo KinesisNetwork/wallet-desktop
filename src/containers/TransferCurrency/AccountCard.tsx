@@ -4,8 +4,7 @@ import { AddressDisplay } from '@types'
 import * as React from 'react'
 
 interface TransferFromAccount {
-  name?: string
-  icon?: string
+  name: string
   address: string
   addressDisplay: AddressDisplay
 }
@@ -17,7 +16,7 @@ export const AccountCard: React.SFC<TransferFromAccount> = (props: TransferFromA
         <div className="level">
           <div className="level-left">
             <div className="level-item">
-              <InitialsAvatar name={props.name} icon={props.icon} size="32" fontSize="6" />
+              <InitialsAvatar name={props.name} size="small" />
             </div>
             <div className="level-item">
               <p className="has-text-grey-lighter">

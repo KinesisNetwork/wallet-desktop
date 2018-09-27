@@ -28,7 +28,7 @@ class HasAccountPresentation extends React.Component<Props> {
         <section className="level is-mobile">
           <div className="level-left">
             <div className="level-item">
-              <InitialsAvatar name={this.props.walletName} size="64" fontSize="3" />
+              <InitialsAvatar name={this.props.walletName} size="large" />
             </div>
             <div className="level-item">
               <div className="is-size-3-mobile is-size-2-tablet is-size-1-desktop has-text-weight-bold has-text-grey-lighter">

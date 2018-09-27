@@ -29,6 +29,7 @@ const mapStateToProps = (state: RootState) => {
     formData,
     activeAccount: getActiveAccount(wallet),
     isTransferring: state.transfer.isTransferring,
+    contactList: state.contacts.contactList,
   }
 }
 
@@ -44,6 +45,12 @@ type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 export class ConfirmationPagePresentation extends React.Component<Props> {
   confirmAndGoToDashboard = () => {
     this.props.transferRequest(this.props.formData)
+  }
+
+  getPayeeNameForAvatar = () => {
+    const payeeAddress = this.props.formData.targetPayee
+    const payee = this.props.contactList.find(contact => contact.address === payeeAddress)
+    return payee ? payee.name : payeeAddress
   }
 
   render() {
@@ -88,7 +95,7 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
                 </div>
               </div>
               <AccountCard
-                icon="fa-user-circle"
+                name={this.getPayeeNameForAvatar()}
                 address={this.props.formData.targetPayee}
                 addressDisplay={AddressDisplay.payee}
               />
