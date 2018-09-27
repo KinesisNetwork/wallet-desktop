@@ -12,6 +12,7 @@ import { addMetalColour } from '@helpers/walletUtils'
 import { AddressDisplay, Currency, RootRoutes } from '@types'
 import { goBack, replace } from 'connected-react-router'
 
+import { Loader } from '@components/Loader'
 import { getActiveAccount } from '@selectors'
 
 const mapStateToProps = (state: RootState) => {
@@ -27,6 +28,7 @@ const mapStateToProps = (state: RootState) => {
     amount: formData.amount,
     formData,
     activeAccount: getActiveAccount(wallet),
+    isTransferring: state.transfer.isTransferring,
   }
 }
 
@@ -46,8 +48,12 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
 
   render() {
     return (
-      <React.Fragment>
-        <div className="columns is-mobile is-centered">
+      <div style={{ position: 'relative' }}>
+        {this.props.isTransferring && <Loader />}
+        <div
+          className="columns is-mobile is-centered"
+          style={this.props.isTransferring ? { filter: 'blur(2px)' } : {}}
+        >
           <div className="column is-three-fifths">
             <section className="section has-centered">
               <div className="level">
@@ -135,7 +141,7 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
             </section>
           </div>
         </div>
-      </React.Fragment>
+      </div>
     )
   }
 }
