@@ -4,10 +4,10 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Dispatch } from 'redux'
 
-import { finaliseWalletCreation, updateFormField } from '@actions'
+import { finaliseWalletCreation, showNotification, updateFormField } from '@actions'
 import { InputField } from '@components/InputField'
 import { RootState } from '@store'
-import { RootRoutes, WALLET_CREATE_FORM_NAME } from '@types'
+import { NotificationType, RootRoutes, WALLET_CREATE_FORM_NAME } from '@types'
 
 const isValidWalletName = (name: string) => name.length > 0 && name.length <= 50
 const isValidPassword = (password: string) => password.length >= 12 && password.length <= 30
@@ -33,6 +33,13 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     ev.preventDefault()
     dispatch(finaliseWalletCreation())
     dispatch(push(RootRoutes.dashboard))
+    dispatch(
+      showNotification({
+        type: NotificationType.info,
+        message:
+          'Welcome back! Please retain your original recovery phrase. You will need this if you ever have to restore your wallet again.',
+      }),
+    )
   },
 })
 
