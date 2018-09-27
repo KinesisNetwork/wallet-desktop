@@ -7,7 +7,7 @@
   "main": "src/index.ts",
   "scripts": {
     "lint-compile": "npm run sass-compile && npm run lint && npm run compile:tsc",
-    "test": "rm -rf ./out && tsc && jest",
+    "test": "tsc --noEmit && jest",
     "test:watch": "jest --watch",
     "predeploy:appveyor": "npm run sass-compile",
     "predeploy:travis": "npm run sass-compile && npm version $TRAVIS_TAG --no-git-tag-version",
