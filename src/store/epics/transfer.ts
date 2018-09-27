@@ -1,6 +1,6 @@
 import { merge, of } from 'rxjs'
 import { fromPromise } from 'rxjs/observable/fromPromise'
-import { catchError, filter, map, mapTo, mergeMap, withLatestFrom } from 'rxjs/operators'
+import { catchError, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 
 import {
@@ -19,7 +19,8 @@ import {
 import { getActiveAccount } from '@selectors'
 import { getFeeInKinesis } from '@services/kinesis'
 import { RootEpic } from '@store'
-import { NotificationType } from '@types'
+import { NotificationType, RootRoutes } from '@types'
+import { replace } from 'connected-react-router'
 
 export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConnection }) =>
   action$.pipe(
@@ -87,7 +88,7 @@ export const transactionSubmission$: RootEpic = (
       fromPromise(
         submitSignedTransaction(getCurrentConnection(state$.value.connections), payload),
       ).pipe(
-        mapTo(transactionSuccess()),
+        map(transactionSuccess),
         catchError(err => of(transactionFailed(err))),
       ),
     ),
@@ -96,11 +97,16 @@ export const transactionSubmission$: RootEpic = (
 export const transactionSuccess$: RootEpic = action$ =>
   action$.pipe(
     filter(isActionOf(transactionSuccess)),
-    map(() =>
-      showNotification({
-        type: NotificationType.success,
-        message: 'Transaction submitted successfully!',
-      }),
+    mergeMap(() =>
+      merge(
+        of(replace(RootRoutes.dashboard) as any),
+        of(
+          showNotification({
+            type: NotificationType.success,
+            message: 'Transaction submitted successfully!',
+          }),
+        ),
+      ),
     ),
   )
 

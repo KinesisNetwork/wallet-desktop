@@ -42,7 +42,6 @@ type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 export class ConfirmationPagePresentation extends React.Component<Props> {
   confirmAndGoToDashboard = () => {
     this.props.transferRequest(this.props.formData)
-    this.props.goToDashboard()
   }
 
   render() {
