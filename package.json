@@ -120,7 +120,6 @@
     "redux-persist": "5.10.0",
     "redux-persist-electron-storage": "1.1.2",
     "rxjs": "6.1.0",
-    "rxjs-compat": "6.1.0",
     "sweetalert": "2.1.0"
   },
   "devDependencies": {
