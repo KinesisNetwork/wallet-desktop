@@ -43,6 +43,7 @@ export enum RootRoutes {
   settings = '/settings',
   create = '/create',
   importAccount = '/import-account',
+  recover = '/recover',
 }
 
 export enum WalletCreationRoutes {
@@ -55,6 +56,12 @@ export enum WalletCreationModals {
   none,
   passwordConfirm,
   encrypting,
+}
+
+export enum WalletRecoverRoutes {
+  first = '/passphrase',
+  second = '/validate',
+  third = '/naming',
 }
 
 export enum NotificationType {
