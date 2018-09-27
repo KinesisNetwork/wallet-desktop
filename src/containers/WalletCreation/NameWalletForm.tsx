@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import { startWalletCreation, updateFormField } from '@actions'
 import { InputField } from '@components/InputField'
-import { Dispatch, RootState } from '@store'
+import { RootState } from '@store'
 import { WALLET_CREATE_FORM_NAME } from '@types'
 
 const isValidWalletName = (name: string) => name.length > 0 && name.length <= 50
@@ -13,29 +13,32 @@ const isValidPassword = (password: string) => password.length >= 12 && password.
 interface OwnProps {
   submitButtonText: string
   onSubmitButtonClick(ev: React.MouseEvent): void
-} 
+}
 
 function validCreateWalletState(state: RootState): boolean {
   const { name, password, confirmPassword } = state.createWallet.createForm
   return isValidWalletName(name) && isValidPassword(password) && password === confirmPassword
 }
-const mapStateToProps = (state: RootState, { onSubmitButtonClick, submitButtonText }: OwnProps) => ({
+const mapStateToProps = (
+  state: RootState,
+  { onSubmitButtonClick, submitButtonText }: OwnProps,
+) => ({
   ...state.createWallet.createForm,
   canSubmit: validCreateWalletState(state),
   onSubmitButtonClick,
   submitButtonText,
 })
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = {
   updateFormField: (formField: keyof RootState['createWallet']['createForm'], fieldValue: string) =>
-    dispatch(updateFormField({ fieldValue, formField, formName: WALLET_CREATE_FORM_NAME })),
+    updateFormField({ fieldValue, formField, formName: WALLET_CREATE_FORM_NAME }),
   onSubmit: (ev: React.FormEvent) => {
     ev.preventDefault()
-    dispatch(startWalletCreation())
+    return startWalletCreation()
   },
-})
+}
 
-type NameWalletProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>
+type NameWalletProps = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
 const NameWalletFormPresentation: React.SFC<NameWalletProps> = props => (
   <form onSubmit={props.onSubmit}>
