@@ -1,4 +1,4 @@
 import { AccountPage } from '@types'
-import { buildAction } from 'typesafe-actions'
+import { createStandardAction } from 'typesafe-actions'
 
-export const setAccountPage = buildAction('SET_ACCOUNT_PAGE').payload<AccountPage>()
+export const setAccountPage = createStandardAction('SET_ACCOUNT_PAGE')<AccountPage>()

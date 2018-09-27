@@ -1,4 +1,3 @@
-import { values } from 'lodash'
 import { combineEpics, Epic } from 'redux-observable'
 
 import { formAlert, generalFailureAlert, generalSuccessAlert } from '@helpers/alert'
@@ -13,7 +12,6 @@ import {
   getKeypairFromSecret,
 } from '@services/passphrase'
 import * as epics from './epics'
-import { withPolling } from './epics/utils'
 import { RootAction } from './root-action'
 import { RootState } from './root-reducer'
 import { getCurrentConnection } from './selectors'
@@ -28,16 +26,15 @@ export const epicDependencies = {
   getTransactions,
   loadAccount,
   submitSignedTransaction,
-  withPolling,
   decryptWithPassword,
   generateMnemonic,
   getKeypairFromMnemonic,
   getKeypairFromSecret,
   encryptWithPassword,
-  isValidPublicKey
+  isValidPublicKey,
 }
 
 export type EpicDependencies = typeof epicDependencies
 
 export type RootEpic = Epic<RootAction, RootAction, RootState, EpicDependencies>
-export const rootEpic = combineEpics<RootEpic>(...values(epics))
+export const rootEpic = combineEpics<RootEpic>(...Object.values(epics))

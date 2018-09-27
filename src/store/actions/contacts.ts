@@ -1,6 +1,6 @@
 import { Contact, FormUpdate } from '@types'
-import { buildAction } from 'typesafe-actions'
+import { createStandardAction } from 'typesafe-actions'
 
-export const addContact = buildAction('ADD_CONTACT').payload<Contact>()
-export const removeContact = buildAction('REMOVE_CONTACT').payload<Pick<Contact, 'address'>>()
-export const updateContactForm = buildAction('UPDATE_CONTACT_FORM').payload<FormUpdate<Contact>>()
+export const addContact = createStandardAction('ADD_CONTACT')<Contact>()
+export const removeContact = createStandardAction('REMOVE_CONTACT')<Pick<Contact, 'address'>>()
+export const updateContactForm = createStandardAction('UPDATE_CONTACT_FORM')<FormUpdate<Contact>>()

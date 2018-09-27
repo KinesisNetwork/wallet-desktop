@@ -1,19 +1,19 @@
 import { PersistedAccount } from '@types'
 import { AccountResponse } from 'js-kinesis-sdk'
-import { buildAction } from 'typesafe-actions'
+import { createAction, createStandardAction } from 'typesafe-actions'
 
-export const accountLoadRequest = buildAction('LOAD_ACCOUNT_REQUEST').payload<string>()
-export const accountLoadSuccess = buildAction('LOAD_ACCOUNT_SUCCESS').payload<AccountResponse>()
-export const accountLoadFailure = buildAction('LOAD_ACCOUNT_FAILURE').payload<Error>()
+export const accountLoadRequest = createStandardAction('LOAD_ACCOUNT_REQUEST')<string>()
+export const accountLoadSuccess = createStandardAction('LOAD_ACCOUNT_SUCCESS')<AccountResponse>()
+export const accountLoadFailure = createStandardAction('LOAD_ACCOUNT_FAILURE')<Error>()
 
-export const accountIsLoading = buildAction('ACCOUNT_IS_LOADING').empty()
-export const updateAccountName = buildAction('UPDATE_ACCOUNT_NAME').payload<{
+export const accountIsLoading = createAction('ACCOUNT_IS_LOADING')
+export const updateAccountName = createStandardAction('UPDATE_ACCOUNT_NAME')<{
   existingName: string
   newName: string
 }>()
-export const setActiveAccount = buildAction('SET_ACTIVE_ACCOUNT').payload<{
+export const setActiveAccount = createStandardAction('SET_ACTIVE_ACCOUNT')<{
   targetAccount: PersistedAccount
   accounts: PersistedAccount[]
 }>()
 
-export const lockAllAccounts = buildAction('LOCK_ALL_ACCOUNTS').empty()
+export const lockAllAccounts = createAction('LOCK_ALL_ACCOUNTS')

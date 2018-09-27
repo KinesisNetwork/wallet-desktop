@@ -47,6 +47,12 @@ export interface FormUpdate<T> {
   newValue: string
 }
 
+export interface UpdateFormField {
+  formName: string
+  formField: string
+  fieldValue: string
+}
+
 export interface TransactionOperationView {
   readonly source: string
   readonly isIncoming: boolean
@@ -84,6 +90,13 @@ export interface BaseAccount {
 export interface PersistedAccount extends BaseAccount {
   encryptedSecret: string
   imported: boolean
+}
+
+export interface InitialiseWallet {
+  encryptedPassphrase: string
+  createdAccount: PersistedAccount
+  walletName: string
+  password: string
 }
 
 export interface WalletAccount extends BaseAccount {

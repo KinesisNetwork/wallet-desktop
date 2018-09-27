@@ -1,17 +1,19 @@
 import { Connection, ConnectionStage, Currency, FormUpdate } from '@types'
-import { buildAction } from 'typesafe-actions'
+import { createAction, createStandardAction } from 'typesafe-actions'
 
-export const selectConnectedCurrency = buildAction('SELECT_CONNECTION_CURRENCY').payload<Currency>()
-export const selectConnectedStage = buildAction('SELECT_CONNECTION_STAGE').payload<
-  ConnectionStage
->()
-export const selectUpdatingCurrency = buildAction('SELECT_CONNECTION_CURRENCY_FOR_UPDATE').payload<
+export const selectConnectedCurrency = createStandardAction('SELECT_CONNECTION_CURRENCY')<
   Currency
 >()
-export const handleConnectionFormChange = buildAction('UPDATE_CONNECTION_FORM').payload<
+export const selectConnectedStage = createStandardAction('SELECT_CONNECTION_STAGE')<
+  ConnectionStage
+>()
+export const selectUpdatingCurrency = createStandardAction('SELECT_CONNECTION_CURRENCY_FOR_UPDATE')<
+  Currency
+>()
+export const handleConnectionFormChange = createStandardAction('UPDATE_CONNECTION_FORM')<
   FormUpdate<Connection> & { currentStage: ConnectionStage; currentCurrency: Currency }
 >()
-export const selectForEditConnection = buildAction('SELECT_FOR_EDIT_CONNECTION').payload<
+export const selectForEditConnection = createStandardAction('SELECT_FOR_EDIT_CONNECTION')<
   'endpoint' | 'passphrase'
 >()
-export const stopEditingConnection = buildAction('STOP_EDITING_CONNECTION').empty()
+export const stopEditingConnection = createAction('STOP_EDITING_CONNECTION')

@@ -1,12 +1,5 @@
-import { FormAlert } from '@types'
-import { buildAction } from 'typesafe-actions'
+import { FormAlert, UpdateFormField } from '@types'
+import { createStandardAction } from 'typesafe-actions'
 
-export const invalidForm = buildAction('INVALID_FORM').payload<FormAlert>()
-
-interface UpdateFormField {
-  formName: string
-  formField: string
-  fieldValue: string
-}
-
-export const updateFormField = buildAction('UPDATE_FORM_FIELD').payload<UpdateFormField>()
+export const invalidForm = createStandardAction('INVALID_FORM')<FormAlert>()
+export const updateFormField = createStandardAction('UPDATE_FORM_FIELD')<UpdateFormField>()

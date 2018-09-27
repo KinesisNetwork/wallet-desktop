@@ -1,5 +1,5 @@
 import { TransferView, WalletView } from '@types'
-import { buildAction } from 'typesafe-actions'
+import { createStandardAction } from 'typesafe-actions'
 
-export const changeWalletView = buildAction('CHANGE_WALLET_VIEW').payload<WalletView>()
-export const changeTransferView = buildAction('CHANGE_TRANFER_VIEW').payload<TransferView>()
+export const changeWalletView = createStandardAction('CHANGE_WALLET_VIEW')<WalletView>()
+export const changeTransferView = createStandardAction('CHANGE_TRANFER_VIEW')<TransferView>()
