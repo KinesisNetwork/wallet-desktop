@@ -40,9 +40,13 @@ const getAmount = (t: TransactionOperationView) => {
       amount = Number(t.operation.amount)
       break
     default:
-      return 'Other'
+      return amount
   }
   return t.isIncoming ? amount.toFixed(5) : (amount + Number(t.fee)).toFixed(5)
+}
+
+const isCurrencyOperation = (amount: number | string, currency: Currency) => {
+  return amount && `${amount} ${currency}`
 }
 
 const TransactionIcon: React.SFC<{ t: TransactionOperationView }> = ({ t }) =>
@@ -96,7 +100,7 @@ const TransactionCard: React.SFC<Props & StateProps> = ({
       </div>
       <div className="column is-2 has-text-weight-bold has-text-right">
         <span className={`has-text-${t.isIncoming ? 'success' : 'danger'}`}>
-          {getAmount(t) === 'Other' ? getAmount(t) : `${getAmount(t)} ${currency}`}
+          {isCurrencyOperation(getAmount(t), currency)}
         </span>
       </div>
       <div className="column is-1 has-text-right">
