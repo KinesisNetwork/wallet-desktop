@@ -12,7 +12,7 @@ interface Props {
   publicKey: string
 }
 
-export class FilloutFieldPresentation extends React.Component<Props> {
+export class NewContactTransferPresentation extends React.Component<Props> {
   render() {
     return (
       <React.Fragment>
@@ -65,4 +65,4 @@ export class FilloutFieldPresentation extends React.Component<Props> {
   }
 }
 
-export { FilloutFieldPresentation as FilloutField }
+export { NewContactTransferPresentation as NewContactTransfer }

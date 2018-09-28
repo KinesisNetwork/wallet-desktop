@@ -16,7 +16,7 @@ import * as kauLogo from '@icons/kau-icon.svg'
 
 import { InputField } from '@components/InputField'
 import { DropdownField } from '@containers/TransferCurrency/DropdownField'
-import { FilloutField } from '@containers/TransferCurrency/FilloutField'
+import { NewContactTransfer } from '@containers/TransferCurrency/NewContactTransfer'
 import { addMetalColour } from '@helpers/walletUtils'
 import { getCurrentConnection } from '@selectors'
 import { RootState } from '@store'
@@ -73,13 +73,16 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
   }
 
   handleSaveToContact = () => {
-    this.setState(prevState => ({
-      saveToContacts: !prevState.saveToContacts,
-    }), () => {
-      if (!this.state.saveToContacts) {
-        this.props.updateContactForm({ field: 'name', newValue: '' })
-      }
-    })
+    this.setState(
+      prevState => ({
+        saveToContacts: !prevState.saveToContacts,
+      }),
+      () => {
+        if (!this.state.saveToContacts) {
+          this.props.updateContactForm({ field: 'name', newValue: '' })
+        }
+      },
+    )
   }
 
   handleNewContactChange = (field: 'name' | 'address', value: string) => {
@@ -187,7 +190,7 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
                   handleChange={handleChange}
                 />
               ) : (
-                <FilloutField
+                <NewContactTransfer
                   errors={this.props.errors}
                   handleChange={this.handleNewContactChange}
                   onFieldChange={this.handlePayeeFieldToggle}
