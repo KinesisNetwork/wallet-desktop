@@ -5,11 +5,11 @@ import { connect } from 'react-redux'
 import { showNotification, transferRequest } from '@actions'
 import { CurrencyLogo } from '@containers/TransferCurrency/CurrencyLogo'
 import { TransferSummary } from '@containers/TransferCurrency/TransferSummary'
-import { RootRoutes } from '@types'
-import { goBack, replace } from 'connected-react-router'
+import { goBack } from 'connected-react-router'
 
 import { Loader } from '@components/Loader'
 import { TransactionAccounts } from '@containers/TransferCurrency/TransactionAccounts'
+import { TransactionButtons } from '@containers/TransferCurrency/TransactionButtons'
 
 const mapStateToProps = (state: RootState) => {
   const {
@@ -25,7 +25,6 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = {
   goBackToTransformPage: () => goBack(),
   transferRequest,
-  goToDashboard: () => replace(RootRoutes.dashboard),
   showNotification,
 }
 
@@ -59,21 +58,12 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
               <div className="columns is-centered">
                 <div className="column is-two-thirds">
                   <TransferSummary />
-                  <section className="field is-grouped is-grouped-right">
-                    <p className="control">
-                      <button className="button is-text" onClick={this.props.goBackToTransformPage}>
-                        Back
-                      </button>
-                    </p>
-                    <p className="control">
-                      <button className="button is-primary" onClick={this.confirmAndGoToDashboard}>
-                        <span className="icon">
-                          <i className="fal fa-arrow-up" />
-                        </span>
-                        <span>Confirm</span>
-                      </button>
-                    </p>
-                  </section>
+                  <TransactionButtons
+                    cancelText="Back"
+                    nextStepText="Confirm"
+                    cancelButtonClick={this.props.goBackToTransformPage}
+                    nextStepButtonClick={this.confirmAndGoToDashboard}
+                  />
                 </div>
               </div>
             </section>

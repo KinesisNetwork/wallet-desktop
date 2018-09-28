@@ -15,6 +15,7 @@ import { InputField } from '@components/InputField'
 import { CurrencyLogo } from '@containers/TransferCurrency/CurrencyLogo'
 import { DropdownField } from '@containers/TransferCurrency/DropdownField'
 import { NewContactTransfer } from '@containers/TransferCurrency/NewContactTransfer'
+import { TransactionButtons } from '@containers/TransferCurrency/TransactionButtons'
 import { addMetalColour } from '@helpers/walletUtils'
 import { getCurrentConnection } from '@selectors'
 import { RootState } from '@store'
@@ -217,25 +218,13 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
                   </p>
                 </div>
               </section>
-              <section className="field is-grouped is-grouped-right">
-                <p className="control">
-                  <button className="button is-text" onClick={this.props.goBackToDashboard}>
-                    Cancel
-                  </button>
-                </p>
-                <p className="control">
-                  <button
-                    className="button is-primary"
-                    disabled={this.hasFieldErrors()}
-                    onClick={this.goToConfirmPage}
-                  >
-                    <span className="icon">
-                      <i className="fal fa-arrow-up" />
-                    </span>
-                    <span>Send</span>
-                  </button>
-                </p>
-              </section>
+              <TransactionButtons
+                cancelText="Cancel"
+                nextStepText="Send"
+                cancelButtonClick={this.props.goBackToDashboard}
+                nextStepButtonClick={this.goToConfirmPage}
+                isDisabled={this.hasFieldErrors()}
+              />
             </div>
           </div>
         </div>
