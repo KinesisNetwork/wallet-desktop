@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { showNotification, transferRequest } from '@actions'
 import { CurrencyLogo } from '@containers/TransferCurrency/CurrencyLogo'
 import { TransferSummary } from '@containers/TransferCurrency/TransferSummary'
-import { addMetalColour } from '@helpers/walletUtils'
 import { RootRoutes } from '@types'
 import { goBack, replace } from 'connected-react-router'
 
@@ -18,9 +17,6 @@ const mapStateToProps = (state: RootState) => {
   } = state
   return {
     currency: state.connections.currentCurrency,
-    memo: formData.memo,
-    fee: formData.fee,
-    amount: formData.amount,
     formData,
     isTransferring: state.transfer.isTransferring,
   }
@@ -62,31 +58,7 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
             <section className="section">
               <div className="columns is-centered">
                 <div className="column is-two-thirds">
-                  <div className="has-text-centered content">
-                    <h1
-                      className={`is-size-1 has-text-weight-bold ${addMetalColour(
-                        this.props.currency,
-                      )}`}
-                    >
-                      {Number(this.props.amount).toFixed(5)} {this.props.currency}
-                    </h1>
-                    <p className="has-text-grey-lighter">
-                      {this.props.memo && <q>{this.props.memo}</q>}
-                    </p>
-                  </div>
-                  <hr className="has-background-grey-lighter" />
-                  <TransferSummary
-                    currency={this.props.currency}
-                    description="Transaction fee"
-                    amount={Number(this.props.fee)}
-                  />
-                  <hr className="has-background-grey-lighter" />
-                  <TransferSummary
-                    currency={this.props.currency}
-                    description="TOTAL"
-                    amount={Number(this.props.amount) + Number(this.props.fee)}
-                  />
-                  <hr className="has-background-grey-lighter" />
+                  <TransferSummary />
                   <section className="field is-grouped is-grouped-right">
                     <p className="control">
                       <button className="button is-text" onClick={this.props.goBackToTransformPage}>
