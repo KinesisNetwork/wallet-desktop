@@ -53,7 +53,7 @@ interface State {
   saveToContacts: boolean
 }
 
-export class TransactionPagePresentation extends React.Component<Props, State> {
+export class TransferPagePresentation extends React.Component<Props, State> {
   state = {
     isDropdownField: true,
     saveToContacts: true,
@@ -217,9 +217,9 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
   }
 }
 
-const ConnectedTransactionPage = connect(
+const ConnectedTransferPage = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(TransactionPagePresentation)
+)(TransferPagePresentation)
 
-export { ConnectedTransactionPage as TransactionPage }
+export { ConnectedTransferPage as TransferPage }
