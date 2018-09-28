@@ -3,31 +3,26 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 
 import { showNotification, transferRequest } from '@actions'
-import { AccountCard } from '@containers/TransferCurrency/AccountCard'
 import { CurrencyLogo } from '@containers/TransferCurrency/CurrencyLogo'
 import { TransferSummary } from '@containers/TransferCurrency/TransferSummary'
 import { addMetalColour } from '@helpers/walletUtils'
-import { AddressDisplay, RootRoutes } from '@types'
+import { RootRoutes } from '@types'
 import { goBack, replace } from 'connected-react-router'
 
 import { Loader } from '@components/Loader'
-import { getActiveAccount } from '@selectors'
+import { TransactionAccounts } from '@containers/TransferCurrency/TransactionAccounts'
 
 const mapStateToProps = (state: RootState) => {
   const {
     transfer: { formData },
-    wallet,
   } = state
   return {
     currency: state.connections.currentCurrency,
-    walletName: state.wallet.persisted.walletName,
     memo: formData.memo,
     fee: formData.fee,
     amount: formData.amount,
     formData,
-    activeAccount: getActiveAccount(wallet),
     isTransferring: state.transfer.isTransferring,
-    contactList: state.contacts.contactList,
   }
 }
 
@@ -43,12 +38,6 @@ type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 export class ConfirmationPagePresentation extends React.Component<Props> {
   confirmAndGoToDashboard = () => {
     this.props.transferRequest(this.props.formData)
-  }
-
-  getPayeeNameForAvatar = () => {
-    const payeeAddress = this.props.formData.targetPayee
-    const payee = this.props.contactList.find(contact => contact.address === payeeAddress)
-    return payee ? payee.name : payeeAddress
   }
 
   render() {
@@ -68,25 +57,7 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
               />
             </section>
             <section className="columns is-vcentered">
-              <AccountCard
-                name={this.props.walletName}
-                addressDisplay={AddressDisplay.account}
-                address={this.props.activeAccount.keypair.publicKey()}
-              />
-              <div className="column is-narrow">
-                <div className="level">
-                  <div className="level-item">
-                    <span className="has-text-grey-lighter is-size-2">
-                      <i className="fal fa-arrow-circle-right" />
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <AccountCard
-                name={this.getPayeeNameForAvatar()}
-                address={this.props.formData.targetPayee}
-                addressDisplay={AddressDisplay.payee}
-              />
+              <TransactionAccounts />
             </section>
             <section className="section">
               <div className="columns is-centered">
