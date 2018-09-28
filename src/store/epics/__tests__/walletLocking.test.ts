@@ -17,18 +17,16 @@ describe('unlock wallet request', () => {
       expectedActions: [login({ password })],
       dependencies: { decryptWithPassword },
       state: {
-        wallets: {
-          failureAttemptTimestamps: [],
-          setAccountLocked: {},
-        },
         wallet: {
+          passwords: {
+            currentInput: password,
+          },
           persisted: {
             activeAccount: 0,
             encryptedPassphrase: 'jumble',
+            failureAttemptTimestamps: [],
+            setAccountLocked: {},
           },
-        },
-        passwords: {
-          currentInput: password,
         },
       },
     })
@@ -46,16 +44,14 @@ describe('unlock wallet request', () => {
       dependencies: { decryptWithPassword },
       expectedActions: [unlockWalletFailure({ now, maxAttempts: 10 })],
       state: {
-        wallets: {
-          failureAttemptTimestamps: [],
-          setAccountLocked: {},
-        },
-        passwords: {
-          currentInput: 'password',
-        },
         wallet: {
+          passwords: {
+            currentInput: 'password',
+          },
           persisted: {
             encryptedPassphrase: 'jumble',
+            failureAttemptTimestamps: [],
+            setAccountLocked: {},
           },
         },
       },
@@ -71,22 +67,17 @@ describe('unlock wallet request', () => {
       dependencies: {},
       expectedActions: [tooManyFailedAttempts(now)],
       state: {
-        wallets: {
-          activeWallet: {
-            encryptedPrivateKey: 'jumble',
-          },
-          failureAttemptTimestamps: [],
-          setAccountLocked: {
-            unlockTimestamp: now.valueOf() + 150000,
-          },
-        },
         wallet: {
+          passwords: {
+            currentInput: 'password',
+          },
           persisted: {
             encryptedPassphrase: 'jumble',
+            failureAttemptTimestamps: [],
+            setAccountLocked: {
+              unlockTimestamp: now.valueOf() + 150000,
+            },
           },
-        },
-        passwords: {
-          currentInput: 'password',
         },
       },
     })
@@ -105,8 +96,10 @@ describe('walletLockFailure$', () => {
       dependencies: {},
       expectedActions: [tooManyFailedAttempts(now)],
       state: {
-        wallets: {
-          failureAttemptTimestamps: [1, 2, 3, 4, 5, now],
+        wallet: {
+          persisted: {
+            failureAttemptTimestamps: [1, 2, 3, 4, 5, now],
+          },
         },
       },
     })

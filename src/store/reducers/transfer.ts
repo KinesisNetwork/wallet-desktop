@@ -1,9 +1,7 @@
 import {
   addContact,
-  changeWalletView,
   insufficientFunds,
   publicKeyValidation,
-  selectWallet,
   transactionFailed,
   transactionRequest,
   transactionSuccess,
@@ -106,9 +104,6 @@ function handleChange(name: keyof TransferRequest) {
         return name === 'fee' ? action.payload : state
       case getType(addContact):
         return name === 'targetPayee' ? action.payload.address : state
-
-      case getType(changeWalletView):
-      case getType(selectWallet):
       case getType(transactionSuccess):
         return ''
       default:

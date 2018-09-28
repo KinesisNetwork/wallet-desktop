@@ -1,13 +1,11 @@
-import { combineReducers } from 'redux'
-
 import { RouterState } from 'connected-react-router'
+import { combineReducers } from 'redux'
+import { StateType } from 'typesafe-actions'
+
 import * as reducers from './reducers'
+import { RootAction } from './root-action'
 
-import { GetAction, RootAction } from './root-action'
+type ReducersState = StateType<typeof reducers>
 
-export type CreateReducerMap = {
-  readonly [T in RootAction['type']]: (state, action: GetAction<T>) => typeof state
-}
-type ReducersState = { [P in keyof typeof reducers]: ReturnType<typeof reducers[P]> }
 export const rootReducer = combineReducers<ReducersState, RootAction>(reducers)
 export type RootState = ReducersState & { router: RouterState }

@@ -11,10 +11,6 @@ export interface Connection {
   passphrase: string
 }
 
-export interface ViewParams {
-  walletIndex: number
-}
-
 export interface CreateWalletForm {
   readonly accountName: string
   readonly privateKey: string
