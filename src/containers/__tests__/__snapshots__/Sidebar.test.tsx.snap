@@ -74,7 +74,8 @@ exports[`SidebarPresentation should render correctly 1`] = `
     <Component
       hint="logout"
       icon="sign-out-alt"
-      to="/dashboard"
+      onClick={[Function]}
+      to="#"
     />
   </Component>
 </nav>
