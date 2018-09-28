@@ -69,7 +69,8 @@ export enum AddressDisplay {
   payee,
 }
 
-export enum AvatarSize {
+export enum ImageSize {
   small = 'small',
+  medium = 'medium',
   large = 'large',
 }

@@ -5,12 +5,10 @@ import { connect } from 'react-redux'
 import { CurrencySelector } from '@containers/CurrencySelector'
 import { Transactions } from '@containers/Transactions'
 
-import * as kagLogo from '@icons/kag-icon.svg'
-import * as kauLogo from '@icons/kau-icon.svg'
-
+import { CurrencyLogo } from '@containers/TransferCurrency/CurrencyLogo'
 import { addMetalColour } from '@helpers/walletUtils'
 import { RootState } from '@store'
-import { Currency, RootRoutes } from '@types'
+import { RootRoutes } from '@types'
 
 const mapStateToProps = (state: RootState) => ({
   currency: state.connections.currentCurrency,
@@ -28,13 +26,7 @@ const AccountDashboardPresentation: React.SFC<Props> = props => (
   <div>
     <CurrencySelector />
     <section className="section has-text-centered">
-      <div className="level">
-        <div className="level-item">
-          <figure className="image is-128x128">
-            <img src={props.currency === Currency.KAU ? kauLogo : kagLogo} className="is-rounded" />
-          </figure>
-        </div>
-      </div>
+      <CurrencyLogo currency={props.currency} size="large" />
       <div className="level">
         <div className="level-item">
           <h1

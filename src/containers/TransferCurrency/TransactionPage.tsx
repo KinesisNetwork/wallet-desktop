@@ -11,16 +11,14 @@ import {
   updateTransferForm,
 } from '@actions'
 
-import * as kagLogo from '@icons/kag-icon.svg'
-import * as kauLogo from '@icons/kau-icon.svg'
-
 import { InputField } from '@components/InputField'
+import { CurrencyLogo } from '@containers/TransferCurrency/CurrencyLogo'
 import { DropdownField } from '@containers/TransferCurrency/DropdownField'
 import { NewContactTransfer } from '@containers/TransferCurrency/NewContactTransfer'
 import { addMetalColour } from '@helpers/walletUtils'
 import { getCurrentConnection } from '@selectors'
 import { RootState } from '@store'
-import { Currency, NotificationType, RootRoutes } from '@types'
+import { NotificationType, RootRoutes } from '@types'
 
 const mapStateToProps = (state: RootState) => {
   const { connections, transfer, contacts } = state
@@ -151,36 +149,22 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
       <React.Fragment>
         <div className="columns is-mobile is-centered">
           <div className="column is-one-third">
-            <section className="section has-text-centered" style={{ letterSpacing: '3px' }}>
-              <div className="level">
-                <div className="level-item">
-                  <figure className="image is-128x128">
-                    <img
-                      src={this.props.currency === Currency.KAU ? kauLogo : kagLogo}
-                      className="is-rounded"
-                    />
-                  </figure>
-                </div>
-              </div>
-              <div className="level">
-                <div className="level-item">
-                  <h1
-                    className={`title is-size-4 has-text-grey-lighter has-text-weight-bold is-uppercase`}
-                  >
-                    Send {this.props.currency}
-                  </h1>
-                </div>
-              </div>
-              <div className="level">
-                <div
-                  className={`level-item title is-size-3 has-text-weight-semibold ${addMetalColour(
-                    this.props.currency,
-                  )}`}
-                >
-                  {this.props.balance.toFixed(5)} Available
-                </div>
-              </div>
+            <section className="section has-text-centered">
+              <CurrencyLogo
+                currency={this.props.currency}
+                size="large"
+                title={`Send ${this.props.currency}`}
+              />
             </section>
+            <div className="level">
+              <div
+                className={`level-item title is-size-3 has-text-weight-semibold ${addMetalColour(
+                  this.props.currency,
+                )}`}
+              >
+                {this.props.balance.toFixed(5)} Available
+              </div>
+            </div>
             <div className="field">
               {this.state.isDropdownField ? (
                 <DropdownField

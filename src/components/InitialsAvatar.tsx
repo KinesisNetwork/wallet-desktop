@@ -1,5 +1,6 @@
-import { AvatarSize } from '@types'
 import * as React from 'react'
+
+import { setImageSize } from '@services/transfer'
 
 interface Props {
   name: string
@@ -10,27 +11,14 @@ class InitialsAvatar extends React.Component<Props> {
   render() {
     return (
       <div
-        className={`image ${this.avatarSize(this.props.size).image} has-background-grey is-flex`}
+        className={`image ${setImageSize(this.props.size).image} has-background-grey is-flex`}
         style={{ justifyContent: 'center', alignItems: 'center', borderRadius: '100px' }}
       >
-        <span
-          className={`has-text-grey-light ${this.avatarSize(this.props.size).font} is-uppercase`}
-        >
+        <span className={`has-text-grey-light ${setImageSize(this.props.size).font} is-uppercase`}>
           {this.getInitials()}
         </span>
       </div>
     )
-  }
-
-  private avatarSize = (size: string) => {
-    switch (size) {
-      case AvatarSize.small:
-        return { image: 'is-32x32', font: 'is-size-6' }
-        break
-      case AvatarSize.large:
-      default:
-        return { image: 'is-64x64', font: 'is-size-3' }
-    }
   }
 
   private getInitials = () =>

@@ -16,7 +16,7 @@ const ContactCard: React.SFC<Contact & typeof mapDispatchToProps> = props => (
     <div className="level">
       <div className="level-left">
         <div className="level-item">
-          <InitialsAvatar name={props.name} size="large" />
+          <InitialsAvatar name={props.name} size="medium" />
         </div>
         <div className="level-item">
           <h3 className="subtitle">{props.name}</h3>

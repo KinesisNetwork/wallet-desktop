@@ -2,14 +2,12 @@ import { RootState } from '@store'
 import * as React from 'react'
 import { connect } from 'react-redux'
 
-import * as kagLogo from '@icons/kag-icon.svg'
-import * as kauLogo from '@icons/kau-icon.svg'
-
 import { showNotification, transferRequest } from '@actions'
 import { AccountCard } from '@containers/TransferCurrency/AccountCard'
+import { CurrencyLogo } from '@containers/TransferCurrency/CurrencyLogo'
 import { TransferSummary } from '@containers/TransferCurrency/TransferSummary'
 import { addMetalColour } from '@helpers/walletUtils'
-import { AddressDisplay, Currency, RootRoutes } from '@types'
+import { AddressDisplay, RootRoutes } from '@types'
 import { goBack, replace } from 'connected-react-router'
 
 import { Loader } from '@components/Loader'
@@ -62,22 +60,12 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
           style={this.props.isTransferring ? { filter: 'blur(2px)' } : {}}
         >
           <div className="column is-three-fifths">
-            <section className="section has-centered">
-              <div className="level">
-                <div className="level-item">
-                  <figure className="image is-64x64">
-                    <img
-                      src={this.props.currency === Currency.KAU ? kauLogo : kagLogo}
-                      className="is-rounded"
-                    />
-                  </figure>
-                </div>
-              </div>
-              <div className="level">
-                <div className="level-item">
-                  <h1 className="title has-text-weight-bold is-uppercase">Confirm transfer</h1>
-                </div>
-              </div>
+            <section className="section has-text-centered">
+              <CurrencyLogo
+                currency={this.props.currency}
+                size="medium"
+                title="Confirm transaction"
+              />
             </section>
             <section className="columns is-vcentered">
               <AccountCard
