@@ -71,14 +71,11 @@
 
   .dropdown-item {
     .button {
-      justify-content: flex-start;
+      justify-content: space-between;
 
       &:hover {
         color: $grey-lighter;
         background-color: $grey-darker;
-      }
-      .icon {
-        margin-right: 1.188rem;
       }
     }
 
