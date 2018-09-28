@@ -43,21 +43,4 @@ describe('TransferForm', () => {
 
     expect(wrapper.find('Loader')).toHaveLength(1)
   })
-
-  it('renders a PayeeSelector, three InputField components and two buttons', () => {
-    const wrapper = shallow(<TransferForm {...props} />)
-
-    const button = wrapper.find('button')
-
-    expect(wrapper.find('InputField')).toHaveLength(3)
-    expect(button).toHaveLength(2)
-    expect(button.at(0).text()).toBe('Transfer')
-    expect(
-      button
-        .at(1)
-        .find('i')
-        .hasClass('fa-copy'),
-    ).toBe(true)
-    expect(button.at(1).prop('title')).toEqual('Copy Transaction')
-  })
 })
