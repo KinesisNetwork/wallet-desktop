@@ -2,6 +2,7 @@ import * as React from 'react'
 
 import { addMetalColour } from '@helpers/walletUtils'
 import { RootState } from '@store'
+import { Currency } from '@types'
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state: RootState) => {
@@ -21,6 +22,7 @@ const mapStateToProps = (state: RootState) => {
 interface TransferTableRow {
   description: string
   amount: string
+  currency: Currency
 }
 
 type Props = TransferTableRow & ReturnType<typeof mapStateToProps>
@@ -37,10 +39,15 @@ export const TransferSummaryPresentation: React.SFC = (props: Props) => {
       <hr className="has-background-grey-lighter" style={{ marginBottom: '0' }} />
       <table className="table is-fullwidth is-marginless">
         <tbody>
-          <TransferTableRow description="Transaction fee" amount={Number(props.fee).toFixed(5)} />
+          <TransferTableRow
+            description="Transaction fee"
+            amount={Number(props.fee).toFixed(5)}
+            currency={props.currency}
+          />
           <TransferTableRow
             description="TOTAL"
             amount={(Number(props.amount) + Number(props.fee)).toFixed(5)}
+            currency={props.currency}
           />
         </tbody>
       </table>
@@ -52,7 +59,9 @@ export const TransferSummaryPresentation: React.SFC = (props: Props) => {
 const TransferTableRow: React.SFC<TransferTableRow> = (props: TransferTableRow) => (
   <tr>
     <td>{props.description}</td>
-    <td className="has-text-right">{Number(props.amount)}</td>
+    <td className="has-text-right">
+      {Number(props.amount)} {props.currency}
+    </td>
   </tr>
 )
 

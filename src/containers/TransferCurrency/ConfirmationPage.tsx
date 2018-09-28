@@ -8,8 +8,8 @@ import { TransferSummary } from '@containers/TransferCurrency/TransferSummary'
 import { goBack } from 'connected-react-router'
 
 import { Loader } from '@components/Loader'
-import { TransactionAccounts } from '@containers/TransferCurrency/TransactionAccounts'
-import { TransactionButtons } from '@containers/TransferCurrency/TransactionButtons'
+import { AccountsInTransfer } from '@containers/TransferCurrency/AccountsInTransfer'
+import { TransferButtons } from '@containers/TransferCurrency/TransferButtons'
 
 const mapStateToProps = (state: RootState) => {
   const {
@@ -52,13 +52,13 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
               />
             </section>
             <section className="columns is-vcentered">
-              <TransactionAccounts />
+              <AccountsInTransfer />
             </section>
             <section className="section">
               <div className="columns is-centered">
                 <div className="column is-two-thirds">
                   <TransferSummary />
-                  <TransactionButtons
+                  <TransferButtons
                     cancelText="Back"
                     nextStepText="Confirm"
                     cancelButtonClick={this.props.goBackToTransformPage}

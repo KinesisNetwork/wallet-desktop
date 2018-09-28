@@ -11,11 +11,11 @@ import {
   updateTransferForm,
 } from '@actions'
 
-import { InputField } from '@components/InputField'
 import { CurrencyLogo } from '@containers/TransferCurrency/CurrencyLogo'
 import { DropdownField } from '@containers/TransferCurrency/DropdownField'
 import { NewContactTransfer } from '@containers/TransferCurrency/NewContactTransfer'
-import { TransactionButtons } from '@containers/TransferCurrency/TransactionButtons'
+import { TransferButtons } from '@containers/TransferCurrency/TransferButtons'
+import { TransferFormDetails } from '@containers/TransferCurrency/TransferDetails'
 import { addMetalColour } from '@helpers/walletUtils'
 import { getCurrentConnection } from '@selectors'
 import { RootState } from '@store'
@@ -185,23 +185,7 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
                   publicKey={this.props.newContact.address}
                 />
               )}
-              <InputField
-                id="transfer-amount"
-                value={this.props.amount}
-                placeholder={`0 ${this.props.currency}`}
-                onChangeHandler={newValue => handleChange({ field: 'amount', newValue })}
-                label="Amount"
-                errorText={this.props.errors.amount}
-              />
-              <InputField
-                id="transfer-description"
-                value={this.props.memo}
-                onChangeHandler={newValue => handleChange({ field: 'memo', newValue })}
-                label="Description"
-                placeholder="Optional"
-                helpText={`${this.props.memo.length || 0} / 25`}
-                errorText={this.props.errors.memo}
-              />
+              <TransferFormDetails />
               <section className="columns">
                 <div className="column content has-text-grey-lighter">
                   <p>Transaction fee</p>
@@ -218,7 +202,7 @@ export class TransactionPagePresentation extends React.Component<Props, State> {
                   </p>
                 </div>
               </section>
-              <TransactionButtons
+              <TransferButtons
                 cancelText="Cancel"
                 nextStepText="Send"
                 cancelButtonClick={this.props.goBackToDashboard}

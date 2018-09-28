@@ -9,7 +9,7 @@ interface ButtonGroups {
   isDisabled?: boolean
 }
 
-export const TransactionButtons: React.SFC<ButtonGroups> = (props: ButtonGroups) => (
+export const TransferButtons: React.SFC<ButtonGroups> = (props: ButtonGroups) => (
   <section className="field is-grouped is-grouped-right">
     <p className="control">
       <button className="button is-text" onClick={props.cancelButtonClick}>

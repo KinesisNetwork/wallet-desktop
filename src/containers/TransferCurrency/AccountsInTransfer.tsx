@@ -17,7 +17,7 @@ const mapStateToProps = (state: RootState) => {
 
 type Props = ReturnType<typeof mapStateToProps>
 
-export const TransactionAccountsPresentation: React.SFC<Props> = props => {
+export const AccountsInTransferPresentation: React.SFC<Props> = props => {
   const getPayeeNameForAvatar = () => {
     const payeeAddress = props.formData.targetPayee
     const payee = props.contactList.find(contact => contact.address === payeeAddress)
@@ -49,6 +49,6 @@ export const TransactionAccountsPresentation: React.SFC<Props> = props => {
   )
 }
 
-const ConnectedTransactionAccounts = connect(mapStateToProps)(TransactionAccountsPresentation)
+const ConnectedAccountsInTransfer = connect(mapStateToProps)(AccountsInTransferPresentation)
 
-export { ConnectedTransactionAccounts as TransactionAccounts }
+export { ConnectedAccountsInTransfer as AccountsInTransfer }
