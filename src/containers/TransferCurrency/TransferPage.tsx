@@ -11,6 +11,7 @@ import {
   updateTransferForm,
 } from '@actions'
 
+import { AmountPresentation } from '@containers/TransferCurrency/AmountPresentation'
 import { CurrencyLogo } from '@containers/TransferCurrency/CurrencyLogo'
 import { DropdownField } from '@containers/TransferCurrency/DropdownField'
 import { NewContactTransfer } from '@containers/TransferCurrency/NewContactTransfer'
@@ -157,15 +158,11 @@ export class TransferPagePresentation extends React.Component<Props, State> {
                 title={`Send ${this.props.currency}`}
               />
             </section>
-            <div className="level">
-              <div
-                className={`level-item title is-size-3 has-text-weight-semibold ${addMetalColour(
-                  this.props.currency,
-                )}`}
-              >
-                {this.props.balance.toFixed(5)} Available
-              </div>
-            </div>
+            <AmountPresentation
+              amount={this.props.balance}
+              text="Available"
+              currency={this.props.currency}
+            />
             <div className="field">
               {this.state.isDropdownField ? (
                 <DropdownField

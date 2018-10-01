@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { addMetalColour } from '@helpers/walletUtils'
+import { AmountPresentation } from '@containers/TransferCurrency/AmountPresentation'
 import { RootState } from '@store'
 import { Currency } from '@types'
 import { connect } from 'react-redux'
@@ -31,9 +31,7 @@ export const TransferSummaryPresentation: React.SFC = (props: Props) => {
   return (
     <React.Fragment>
       <div className="has-text-centered content">
-        <h1 className={`is-size-1 has-text-weight-bold ${addMetalColour(props.currency)}`}>
-          {Number(props.amount).toFixed(5)} {props.currency}
-        </h1>
+        <AmountPresentation amount={props.amount} text={props.currency} currency={props.currency} />
         <p className="has-text-grey-lighter">{props.memo && <q>{props.memo}</q>}</p>
       </div>
       <hr className="has-background-grey-lighter" style={{ marginBottom: '0' }} />

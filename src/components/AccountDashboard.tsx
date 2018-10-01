@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 import { CurrencySelector } from '@containers/CurrencySelector'
 import { Transactions } from '@containers/Transactions'
 
+import { AmountPresentation } from '@containers/TransferCurrency/AmountPresentation'
 import { CurrencyLogo } from '@containers/TransferCurrency/CurrencyLogo'
-import { addMetalColour } from '@helpers/walletUtils'
 import { RootState } from '@store'
 import { RootRoutes } from '@types'
 
@@ -27,13 +27,7 @@ const AccountDashboardPresentation: React.SFC<Props> = props => (
     <CurrencySelector />
     <section className="section has-text-centered">
       <CurrencyLogo currency={props.currency} size="large" />
-      <div className="level">
-        <div className="level-item">
-          <h1
-            className={`title is-size-2 has-text-weight-bold ${addMetalColour(props.currency)}`}
-          >{`${props.balance.toFixed(5)} ${props.currency}`}</h1>
-        </div>
-      </div>
+      <AmountPresentation amount={props.balance} text={props.currency} currency={props.currency} />
       <div className="level">
         <div className="level-item">
           <button
