@@ -1,3 +1,3 @@
-import { buildAction } from 'typesafe-actions'
+import { createAction } from 'typesafe-actions'
 
-export const completeOnBoarding = buildAction('COMPLETE_ONBOARDING').empty()
+export const completeOnBoarding = createAction('COMPLETE_ONBOARDING')

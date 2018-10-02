@@ -1,5 +1,5 @@
 import { ActionsObservable, StateObservable } from 'redux-observable'
-import { of } from 'rxjs/observable/of'
+import { of } from 'rxjs'
 import { toArray } from 'rxjs/operators'
 
 import { invalidForm } from '@actions'

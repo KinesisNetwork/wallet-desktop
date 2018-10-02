@@ -73,7 +73,7 @@ const NameWalletFormPresentation: React.SFC<NameWalletProps> = props => (
       id="wallet-create-confirm-password"
       label="Confirm Password"
       value={props.confirmPassword}
-      icon="fa-unlock"
+      icon="fa-unlock-alt"
       onChangeHandler={newValue => props.updateFormField('confirmPassword', newValue)}
       type="password"
       placeholder="Retype password"

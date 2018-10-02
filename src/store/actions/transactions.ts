@@ -1,26 +1,26 @@
 import { Transaction } from 'js-kinesis-sdk'
-import { buildAction } from 'typesafe-actions'
+import { createAction, createStandardAction } from 'typesafe-actions'
 
 import { FormUpdate, TransactionLoader, TransferRequest } from '@types'
 
-export const transferRequest = buildAction('TRANSFER_REQUEST').payload<TransferRequest>()
+export const transferRequest = createStandardAction('TRANSFER_REQUEST')<TransferRequest>()
 
-export const updateTransferForm = buildAction('UPDATE_TRANSFER_FORM').payload<
+export const updateTransferForm = createStandardAction('UPDATE_TRANSFER_FORM')<
   FormUpdate<TransferRequest>
 >()
 
-export const accountTransactionsLoaded = buildAction('ACCOUNT_TRANSACTIONS_LOADED').payload<
+export const accountTransactionsLoaded = createStandardAction('ACCOUNT_TRANSACTIONS_LOADED')<
   TransactionLoader
 >()
-export const loadAccountTransactions = buildAction('LOAD_ACCOUNT_TRANSACTIONS').payload<string>()
-export const loadNextTransactionPage = buildAction('LOAD_NEXT_TRANSACTION_PAGE').empty()
+export const loadAccountTransactions = createStandardAction('LOAD_ACCOUNT_TRANSACTIONS')<string>()
+export const loadNextTransactionPage = createAction('LOAD_NEXT_TRANSACTION_PAGE')
 
-export const transactionRequest = buildAction('TRANSACTION_SUBMIT_REQUEST').payload<Transaction>()
-export const transactionSuccess = buildAction('TRANSACTION_SUBMIT_SUCCESS').empty()
-export const transactionFailed = buildAction('TRANSACTION_SUBMIT_FAILED').payload<Error>()
+export const transactionRequest = createStandardAction('TRANSACTION_SUBMIT_REQUEST')<Transaction>()
+export const transactionSuccess = createAction('TRANSACTION_SUBMIT_SUCCESS')
+export const transactionFailed = createStandardAction('TRANSACTION_SUBMIT_FAILED')<Error>()
 
-export const updateFee = buildAction('UPDATE_FEE').payload<string>()
-export const insufficientFunds = buildAction('INSUFFICIENT_FUNDS').payload<boolean>()
-export const updateRemainingBalance = buildAction('UPDATE_REMAINING_BALANCE').payload<number>()
-export const publicKeyValidation = buildAction('PUBLIC_KEY_VALIDATION').payload<boolean>()
-export const saveToContact = buildAction('SAVE_TO_CONTACT').empty()
+export const updateFee = createStandardAction('UPDATE_FEE')<string>()
+export const insufficientFunds = createStandardAction('INSUFFICIENT_FUNDS')<boolean>()
+export const updateRemainingBalance = createStandardAction('UPDATE_REMAINING_BALANCE')<number>()
+export const publicKeyValidation = createStandardAction('PUBLIC_KEY_VALIDATION')<boolean>()
+export const saveToContact = createAction('SAVE_TO_CONTACT')

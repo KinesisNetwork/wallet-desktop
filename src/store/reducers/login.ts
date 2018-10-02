@@ -1,22 +1,29 @@
+import { combineReducers } from 'redux'
+import { persistReducer } from 'redux-persist'
+import { getType } from 'typesafe-actions'
+
 import {
   changeUnlockPasswordInput,
   initialiseWallet,
-  login,
+  login as loginAction,
   tooManyFailedAttempts,
   unlockWalletFailure,
   unlockWalletSuccess,
 } from '@actions'
-import { RootAction } from '@store'
-import { combineReducers } from 'redux'
-import { getType } from 'typesafe-actions'
+import { createStorage } from '@services/storage'
+import { IS_DEV, RootAction } from '@store'
 
-export interface PasswordsState {
+interface LoginState {
+  input: LoginInputState
+}
+
+interface LoginInputState {
   currentInput: string
   lastSuccessfulInput: string
   unlockFailureText: string
 }
 
-export const passwords = combineReducers<PasswordsState, RootAction>({
+const input = combineReducers<LoginInputState, RootAction>({
   currentInput: (state = '', action) => {
     switch (action.type) {
       case getType(changeUnlockPasswordInput):
@@ -31,7 +38,7 @@ export const passwords = combineReducers<PasswordsState, RootAction>({
     switch (action.type) {
       case getType(initialiseWallet):
       case getType(unlockWalletSuccess):
-      case getType(login):
+      case getType(loginAction):
         return action.payload.password
       default:
         return state
@@ -43,10 +50,16 @@ export const passwords = combineReducers<PasswordsState, RootAction>({
         return 'Password is incorrect'
       case getType(tooManyFailedAttempts):
         return 'You have made too many failed attempts. You can try to unlock your account in 5 minutes.'
-      case getType(login):
+      case getType(loginAction):
         return ''
       default:
         return state
     }
   },
+})
+
+export const login = combineReducers<LoginState, RootAction>({
+  input: IS_DEV
+    ? persistReducer({ key: 'devWalletUnlock', storage: createStorage() }, input)
+    : input,
 })

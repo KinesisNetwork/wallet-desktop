@@ -11,10 +11,6 @@ export interface Connection {
   passphrase: string
 }
 
-export interface ViewParams {
-  walletIndex: number
-}
-
 export interface CreateWalletForm {
   readonly accountName: string
   readonly privateKey: string
@@ -45,6 +41,12 @@ export type FormErrors = { [key in keyof TransferRequest]?: string }
 export interface FormUpdate<T> {
   field: keyof T
   newValue: string
+}
+
+export interface UpdateFormField {
+  formName: string
+  formField: string
+  fieldValue: string
 }
 
 export interface TransactionOperationView {
@@ -84,6 +86,13 @@ export interface BaseAccount {
 export interface PersistedAccount extends BaseAccount {
   encryptedSecret: string
   imported: boolean
+}
+
+export interface InitialiseWallet {
+  encryptedPassphrase: string
+  createdAccount: PersistedAccount
+  walletName: string
+  password: string
 }
 
 export interface WalletAccount extends BaseAccount {

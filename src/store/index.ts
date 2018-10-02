@@ -13,7 +13,7 @@ export type Dispatch = Dispatch<RootAction>
 
 export { RootAction, RootEpic, RootState }
 
-const IS_DEV = true && process.env.NODE_ENV !== 'production'
+export const IS_DEV = true && process.env.NODE_ENV !== 'production'
 
 export function configureStore(history: History) {
   const epicMiddleware = createEpicMiddleware<RootAction, RootAction, RootState, EpicDependencies>({

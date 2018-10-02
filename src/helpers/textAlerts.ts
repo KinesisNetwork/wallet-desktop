@@ -1,4 +1,5 @@
 import { clipboard } from 'electron'
+import swal from 'sweetalert'
 
 export async function showCopyAlert(text: string, content: string): Promise<any> {
   await swal({

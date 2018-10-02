@@ -1,5 +1,9 @@
 import { CreateWalletForm, CreateWalletFormView, FormUpdate } from '@types'
-import { buildAction } from 'typesafe-actions'
+import { createStandardAction } from 'typesafe-actions'
 
-export const updateCreateWalletForm = buildAction('UPDATE_CREATE_WALLET_FORM').payload<FormUpdate<CreateWalletForm>>()
-export const changeCreateWalletView = buildAction('CHANGE_CREATE_WALLET_VIEW').payload<CreateWalletFormView>()
+export const updateCreateWalletForm = createStandardAction('UPDATE_CREATE_WALLET_FORM')<
+  FormUpdate<CreateWalletForm>
+>()
+export const changeCreateWalletView = createStandardAction('CHANGE_CREATE_WALLET_VIEW')<
+  CreateWalletFormView
+>()
