@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NewContactTransfer should render correctly 1`] = `
+<Fragment>
+  <div
+    className="field"
+    style={
+      Object {
+        "position": "relative",
+      }
+    }
+  >
+    <button
+      className="button is-outlined is-light"
+      onClick={[Function]}
+      style={
+        Object {
+          "left": "-15%",
+          "position": "absolute",
+          "top": "1.47rem",
+        }
+      }
+    >
+      <span
+        className="icon"
+      >
+        <i
+          className="fal fa-lg fa-angle-left"
+        />
+      </span>
+    </button>
+    <InputField
+      disabled={false}
+      icon="fa-user-circle"
+      id="contact-name"
+      label="Contact name"
+      name="name"
+      onChangeHandler={[Function]}
+      value="John"
+    />
+    <InputField
+      errorText="error"
+      icon="fa-qrcode"
+      id="public-address"
+      label="Public Address"
+      onChangeHandler={[Function]}
+      placeholder="example: \\"GDUL65KWQ4PJA7FLO6467...CM7G\\""
+      value="123qwe"
+    />
+    <div
+      className="level"
+    >
+      <div
+        className="level-left"
+      >
+        <div
+          className="field"
+        >
+          <input
+            checked={true}
+            className="switch is-rounded is-success"
+            id="switchRoundedSuccess"
+            name="switchRoundedSuccess"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          <label
+            htmlFor="switchRoundedSuccess"
+          >
+            Save to contacts
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</Fragment>
+`;
