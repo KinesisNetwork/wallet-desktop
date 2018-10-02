@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AccountCard should render correctly 1`] = `
+<div
+  className="column"
+>
+  <div
+    className="box"
+  >
+    <div
+      className="level"
+    >
+      <div
+        className="level-left"
+      >
+        <div
+          className="level-item"
+        >
+          <InitialsAvatar
+            name="hi"
+            size="small"
+          />
+        </div>
+        <div
+          className="level-item"
+        >
+          <p
+            className="has-text-grey-lighter"
+          >
+            <Connect(AddressPresentation)
+              address="123qwe"
+              addressDisplay={0}
+            />
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
