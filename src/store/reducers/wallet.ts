@@ -4,9 +4,7 @@ import { getType } from 'typesafe-actions'
 
 import {
   addAccountToWallet,
-  changeUnlockPasswordInput,
   initialiseWallet,
-  login,
   setActiveAccount,
   tooManyFailedAttempts,
   unlockWalletFailure,
@@ -34,14 +32,7 @@ interface WalletPersistedState {
   walletName: string
 }
 
-interface PasswordsState {
-  currentInput: string
-  lastSuccessfulInput: string
-  unlockFailureText: string
-}
-
 interface WalletState extends WalletLoggedInState {
-  passwords: PasswordsState
   persisted: WalletPersistedState
 }
 
@@ -104,41 +95,6 @@ const persisted = combineReducers<WalletPersistedState, RootAction>({
     action.type === getType(initialiseWallet) ? action.payload.walletName : state,
 })
 
-const passwords = combineReducers<PasswordsState, RootAction>({
-  currentInput: (state = '', action) => {
-    switch (action.type) {
-      case getType(changeUnlockPasswordInput):
-        return action.payload
-      case getType(unlockWalletSuccess):
-        return ''
-      default:
-        return state
-    }
-  },
-  lastSuccessfulInput: (state = '', action) => {
-    switch (action.type) {
-      case getType(initialiseWallet):
-      case getType(unlockWalletSuccess):
-      case getType(login):
-        return action.payload.password
-      default:
-        return state
-    }
-  },
-  unlockFailureText: (state = '', action) => {
-    switch (action.type) {
-      case getType(unlockWalletFailure):
-        return 'Password is incorrect'
-      case getType(tooManyFailedAttempts):
-        return 'You have made too many failed attempts. You can try to unlock your account in 5 minutes.'
-      case getType(login):
-        return ''
-      default:
-        return state
-    }
-  },
-})
-
 export const wallet = combineReducers<WalletState, RootAction>({
   accounts: (state = [], action) => {
     switch (action.type) {
@@ -160,6 +116,5 @@ export const wallet = combineReducers<WalletState, RootAction>({
         return state
     }
   },
-  passwords,
   persisted: persistReducer({ key: 'secure', storage: createStorage() }, persisted),
 })

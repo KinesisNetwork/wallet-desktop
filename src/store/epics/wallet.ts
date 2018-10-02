@@ -76,7 +76,7 @@ export const addAccountToWalletFromSeedphrase$: RootEpic = (
     filter(isActionOf(addNextAccountFromSeedphrase)),
     withLatestFrom(state$),
     map(([_, state]) => {
-      const password = state.wallet.passwords.lastSuccessfulInput
+      const password = state.login.input.lastSuccessfulInput
       const { persisted, passphrase } = state.wallet
 
       const existingAccountsCount = persisted.createdAccounts.filter(a => !a.imported).length
@@ -104,7 +104,7 @@ export const importAccountFromSecret$: RootEpic = (
     filter(isActionOf(importAccountFromSecret)),
     withLatestFrom(state$),
     map(([{ payload }, state]) => {
-      const password = state.wallet.passwords.lastSuccessfulInput
+      const password = state.login.input.lastSuccessfulInput
       const { persisted } = state.wallet
 
       const importedAccountsCount = persisted.createdAccounts.filter(a => a.imported).length
@@ -149,7 +149,7 @@ export const login$: RootEpic = (action$, state$, { decryptWithPassword, getKeyp
 export const devHelper$: RootEpic = action$ =>
   action$.pipe(
     filter(isRehydrate('dev')),
-    filter(action => action.payload && action.payload.wallet.passwords.currentInput !== ''),
+    filter(action => action.payload && action.payload.login.input.currentInput !== ''),
     // Wait until both rehydrates
     switchMap(action =>
       action$.pipe(
@@ -157,7 +157,7 @@ export const devHelper$: RootEpic = action$ =>
         mapTo(action),
       ),
     ),
-    map(action => login({ password: action.payload.wallet.passwords.currentInput })),
+    map(action => login({ password: action.payload.login.input.currentInput })),
   )
 
 function isRehydrate(key: string): (action: RootAction) => action is RehydrateAction {

@@ -8,10 +8,10 @@ import { RootState } from '@store'
 import { RootRoutes } from '@types'
 import { Link } from 'react-router-dom'
 
-const mapStateToProps = (state: RootState) => ({
-  walletName: state.wallet.persisted.walletName,
-  passwordError: state.wallet.passwords.unlockFailureText,
-  currentPasswordInput: state.wallet.passwords.currentInput,
+const mapStateToProps = ({ login, wallet }: RootState) => ({
+  walletName: wallet.persisted.walletName,
+  passwordError: login.input.unlockFailureText,
+  currentPasswordInput: login.input.currentInput,
 })
 
 const mapDispatchToProps = {

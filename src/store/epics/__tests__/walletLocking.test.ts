@@ -17,10 +17,12 @@ describe('unlock wallet request', () => {
       expectedActions: [login({ password })],
       dependencies: { decryptWithPassword },
       state: {
-        wallet: {
-          passwords: {
+        login: {
+          input: {
             currentInput: password,
           },
+        },
+        wallet: {
           persisted: {
             activeAccount: 0,
             encryptedPassphrase: 'jumble',
@@ -44,10 +46,12 @@ describe('unlock wallet request', () => {
       dependencies: { decryptWithPassword },
       expectedActions: [unlockWalletFailure({ now, maxAttempts: 10 })],
       state: {
-        wallet: {
-          passwords: {
+        login: {
+          input: {
             currentInput: 'password',
           },
+        },
+        wallet: {
           persisted: {
             encryptedPassphrase: 'jumble',
             failureAttemptTimestamps: [],
@@ -67,10 +71,12 @@ describe('unlock wallet request', () => {
       dependencies: {},
       expectedActions: [tooManyFailedAttempts(now)],
       state: {
-        wallet: {
-          passwords: {
+        login: {
+          input: {
             currentInput: 'password',
           },
+        },
+        wallet: {
           persisted: {
             encryptedPassphrase: 'jumble',
             failureAttemptTimestamps: [],

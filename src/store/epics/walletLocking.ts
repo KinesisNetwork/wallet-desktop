@@ -9,7 +9,7 @@ export const unlockWallet$: RootEpic = (action$, state$, { decryptWithPassword }
     filter(isActionOf(unlockWalletRequest)),
     withLatestFrom(state$),
     map(([{ payload: now }, state]) => {
-      const password = state.wallet.passwords.currentInput
+      const password = state.login.input.currentInput
       const didLogin = decryptWithPassword(state.wallet.persisted.encryptedPassphrase, password)
 
       return state.wallet.persisted.setAccountLocked.unlockTimestamp > now.valueOf()
