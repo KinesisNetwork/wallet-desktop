@@ -37,7 +37,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
       showNotification({
         type: NotificationType.info,
         message:
-          'Welcome back! Please retain your original recovery phrase. You will need this if you ever have to restore your wallet again.',
+          'Welcome back! Please retain your original recovery phrase. You will need this if you ever have to import your wallet again.',
       }),
     )
   },
