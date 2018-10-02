@@ -1,6 +1,6 @@
 import { merge, of } from 'rxjs'
 import { fromPromise } from 'rxjs/observable/fromPromise'
-import { catchError, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators'
+import { catchError, exhaustMap, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 
 import {
@@ -23,13 +23,16 @@ import { RootEpic } from '@store'
 import { NotificationType, RootRoutes } from '@types'
 import { replace } from 'connected-react-router'
 
-export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConnection }) =>
-  action$.pipe(
+export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConnection }) => {
+  const amountUpdate$ = action$.pipe(
     filter(isActionOf(updateTransferForm)),
     filter(({ payload: { field } }) => field === 'amount'),
     filter(({ payload: { newValue } }) => newValue === '' || validateAmount(newValue)),
     withLatestFrom(state$),
-    mergeMap(([action, state]) => {
+  )
+
+  return amountUpdate$.pipe(
+    exhaustMap(([action, state]) => {
       const amount = Number(action.payload.newValue)
       const fee$ = fromPromise(getFeeInKinesis(getCurrentConnection(state.connections), amount))
       const updateFee$ = fee$.pipe(map(updateFee))
@@ -45,6 +48,7 @@ export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConne
       return merge(updateFee$, updateRemainingBalance$, insufficientFunds$)
     }),
   )
+}
 
 export const publicKeyValidation$: RootEpic = (action$, _, { isValidPublicKey }) =>
   action$.pipe(
