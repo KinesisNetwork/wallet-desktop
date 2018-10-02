@@ -105,7 +105,7 @@ export class TransferPagePresentation extends React.Component<Props, State> {
     } = this.props.formMeta.errors
     const hasInputFieldErrors = !!amountError || !!memoError || !!targetPayeeError
 
-    const invalidAmount = this.props.formData.amount === ''
+    const invalidAmount = this.props.formData.amount === '' || !Number(this.props.formData.amount)
 
     const hasFormErrors = this.state.isDropdownField
       ? !this.props.formData.targetPayee || this.props.formData.targetPayee === 'Select a contact'
