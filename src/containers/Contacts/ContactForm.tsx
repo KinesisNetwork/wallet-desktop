@@ -110,7 +110,9 @@ const ContactFormPresentation: React.SFC<Props> = props => (
       </div>
       <div className="control">
         <div className="field">
-          <label className="label is-small">&nbsp;</label>
+          <label className="label is-small">
+            <br />
+          </label>
           <div className="control">
             <button
               className="button is-success"
@@ -126,7 +128,9 @@ const ContactFormPresentation: React.SFC<Props> = props => (
       </div>
       <div className="control">
         <div className="field">
-          <label className="label is-small">&nbsp;</label>
+          <label className="label is-small">
+            <br />
+          </label>
           <div className="control">
             <button className="button is-danger" onClick={props.cancel}>
               <span className="icon">
