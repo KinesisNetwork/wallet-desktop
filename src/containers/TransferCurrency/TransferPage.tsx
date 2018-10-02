@@ -13,28 +13,29 @@ import {
 
 import { AmountPresentation } from '@containers/TransferCurrency/AmountPresentation'
 import { CurrencyLogo } from '@containers/TransferCurrency/CurrencyLogo'
-import { DropdownField } from '@containers/TransferCurrency/DropdownField'
+import { DropdownForm } from '@containers/TransferCurrency/DropdownForm'
 import { NewContactTransfer } from '@containers/TransferCurrency/NewContactTransfer'
 import { TransferButtons } from '@containers/TransferCurrency/TransferButtons'
 import { TransferFormDetails } from '@containers/TransferCurrency/TransferDetails'
 import { addMetalColour } from '@helpers/walletUtils'
 import { getCurrentConnection } from '@selectors'
 import { RootState } from '@store'
-import { NotificationType, RootRoutes } from '@types'
+import { Contact, NotificationType, RootRoutes } from '@types'
 
-const mapStateToProps = (state: RootState) => {
-  const { connections, transfer, contacts } = state
-
-  return {
-    ...transfer.formData,
-    ...transfer.formMeta,
-    currency: state.connections.currentCurrency,
-    balance: state.accounts.accountInfo.balance,
-    connection: getCurrentConnection(connections).endpoint,
-    savedContacts: contacts.contactList,
-    newContact: contacts.newContact,
-  }
-}
+const mapStateToProps = ({
+  connections,
+  transfer: { formData, formMeta },
+  contacts: { contactList, newContact },
+  accounts,
+}: RootState) => ({
+  formData,
+  formMeta,
+  currency: connections.currentCurrency,
+  balance: accounts.accountInfo.balance,
+  connection: getCurrentConnection(connections).endpoint,
+  savedContacts: contactList,
+  newContact,
+})
 
 const mapDispatchToProps = {
   goBackToDashboard: () => goBack(),
@@ -59,7 +60,7 @@ export class TransferPagePresentation extends React.Component<Props, State> {
     isDropdownField: true,
     saveToContacts: true,
     addressInStore: this.props.savedContacts.find(
-      payee => payee.address === this.props.targetPayee,
+      payee => payee.address === this.props.formData.targetPayee,
     ),
   }
 
@@ -85,7 +86,7 @@ export class TransferPagePresentation extends React.Component<Props, State> {
     )
   }
 
-  handleNewContactChange = (field: 'name' | 'address', value: string) => {
+  handleNewContactChange = (field: keyof Contact, value: string) => {
     if (field === 'address') {
       this.props.updateTransferForm({ field: 'targetPayee', newValue: value })
     }
@@ -101,32 +102,27 @@ export class TransferPagePresentation extends React.Component<Props, State> {
       amount: amountError,
       memo: memoError,
       targetPayee: targetPayeeError,
-    } = this.props.errors
-    const invalidAmount = this.props.amount === '' || !Number(this.props.amount)
-    const hasInputFieldErrors = () => {
-      return this.state.isDropdownField
-        ? !this.props.targetPayee || this.props.targetPayee === 'Select a contact'
-        : !this.props.newContact.address
-    }
+    } = this.props.formMeta.errors
+    const hasInputFieldErrors = !!amountError || !!memoError || !!targetPayeeError
 
-    return (
-      invalidAmount || !!amountError || !!memoError || !!targetPayeeError || hasInputFieldErrors()
-    )
+    const invalidAmount = this.props.formData.amount === ''
+
+    const hasFormErrors = this.state.isDropdownField
+      ? !this.props.formData.targetPayee || this.props.formData.targetPayee === 'Select a contact'
+      : !this.props.newContact.address
+
+    return invalidAmount || hasInputFieldErrors || hasFormErrors
   }
 
   goToConfirmPage = () => {
     if (this.state.saveToContacts && !this.state.isDropdownField) {
       const isMissingField = !this.props.newContact.address || !this.props.newContact.name
 
-      const hasTheSamePublicAddress =
-        this.props.savedContacts.findIndex(
-          ({ address }) => this.props.newContact.address === address,
-        ) !== -1
-
-      const hasTheSameName =
-        this.props.savedContacts.findIndex(({ name }) => this.props.newContact.name === name) !== -1
-
-      if (isMissingField || hasTheSamePublicAddress || hasTheSameName) {
+      if (
+        isMissingField ||
+        this.checkForSameContactDetails('address') ||
+        this.checkForSameContactDetails('name')
+      ) {
         this.props.showNotification({
           type: NotificationType.error,
           message: 'An error occured while completing the form.',
@@ -139,6 +135,11 @@ export class TransferPagePresentation extends React.Component<Props, State> {
 
     this.props.goToConfirm()
   }
+
+  checkForSameContactDetails = (contactProperty: keyof Contact) =>
+    this.props.savedContacts.find(
+      contact => this.props.newContact[contactProperty] === contact[contactProperty],
+    )
 
   componentDidMount() {
     this.props.updateRemainingBalance(this.props.balance)
@@ -165,15 +166,15 @@ export class TransferPagePresentation extends React.Component<Props, State> {
             />
             <div className="field">
               {this.state.isDropdownField ? (
-                <DropdownField
+                <DropdownForm
                   savedContacts={this.props.savedContacts}
                   onFieldChange={this.handlePayeeFieldToggle}
-                  payeePublicKey={this.props.targetPayee}
+                  payeePublicKey={this.props.formData.targetPayee}
                   handleChange={handleChange}
                 />
               ) : (
                 <NewContactTransfer
-                  errors={this.props.errors}
+                  errors={this.props.formMeta.errors}
                   handleChange={this.handleNewContactChange}
                   onFieldChange={this.handlePayeeFieldToggle}
                   onSaveToContactsChange={this.handleSaveToContact}
@@ -192,10 +193,14 @@ export class TransferPagePresentation extends React.Component<Props, State> {
                   className={`column has-text-right content ${addMetalColour(this.props.currency)}`}
                 >
                   <p>
-                    {Number(this.props.fee).toFixed(5) || 0} {this.props.currency}
+                    {Number(this.props.formData.fee).toFixed(5) || 0} {this.props.currency}
                   </p>
-                  <p className={`${this.props.remainingBalance < 0 ? 'has-text-danger' : ''}`}>
-                    {this.props.remainingBalance.toFixed(5)} {this.props.currency}
+                  <p
+                    className={`${
+                      this.props.formMeta.remainingBalance < 0 ? 'has-text-danger' : ''
+                    }`}
+                  >
+                    {this.props.formMeta.remainingBalance.toFixed(5)} {this.props.currency}
                   </p>
                 </div>
               </section>

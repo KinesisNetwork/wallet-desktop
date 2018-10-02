@@ -8,15 +8,16 @@ interface Props {
   handleChange: FormChangeHandler<TransferRequest>
 }
 
-export const DropdownFieldPresentation: React.SFC<Props> = props => {
+export const DropdownFormPresentation: React.SFC<Props> = props => {
   const contactNames = props.savedContacts.map(({ name, address }) => (
     <option key={address} value={address}>
       {name}
     </option>
   ))
 
-  const isSelected =
-    props.savedContacts.findIndex(({ address }) => props.payeePublicKey === address) !== -1
+  const isOnContactList = props.savedContacts.find(
+    ({ address }) => props.payeePublicKey === address,
+  )
 
   return (
     <React.Fragment>
@@ -25,7 +26,7 @@ export const DropdownFieldPresentation: React.SFC<Props> = props => {
         <div className="control is-expanded">
           <div className="select is-fullwidth payee-select">
             <select
-              className={!isSelected ? 'has-text-grey' : ''}
+              className={!isOnContactList ? 'has-text-grey' : ''}
               onChange={({ target: { value: newValue } }) =>
                 props.handleChange({ field: 'targetPayee', newValue })
               }
@@ -54,4 +55,4 @@ export const DropdownFieldPresentation: React.SFC<Props> = props => {
   )
 }
 
-export { DropdownFieldPresentation as DropdownField }
+export { DropdownFormPresentation as DropdownForm }
