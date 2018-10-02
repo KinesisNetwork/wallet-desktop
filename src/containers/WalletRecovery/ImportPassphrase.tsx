@@ -35,8 +35,8 @@ export class ImportPassphrasePresentation extends React.Component<Props, State> 
     this.setState({ hasConfirmedTC: ev.target.checked })
   }
 
-  handlePhraseChange: React.ChangeEventHandler<HTMLInputElement> = ev => {
-    const { value } = ev.target
+  handlePhraseChange: React.ChangeEventHandler<HTMLTextAreaElement> = ev => {
+    const value = ev.target.value.toLocaleLowerCase()
     const isValidPassphrase = validateMnemonic(value)
 
     this.setState({ recoveryPhrase: value, isValidPassphrase })
@@ -64,11 +64,11 @@ export class ImportPassphrasePresentation extends React.Component<Props, State> 
             Your recovery phrase
           </label>
           <div className="control">
-            <input
-              type="textarea"
+            <textarea
               className={`textarea seedphrase has-text-centered is-radiusless ${
                 isValidPassphrase ? 'is-success' : 'is-danger'
               }`}
+              rows={2}
               id="recovery-phrase"
               name="recovery-phrase"
               onChange={this.handlePhraseChange}
