@@ -18,7 +18,7 @@ import {
 } from '@actions'
 import { getActiveAccount } from '@selectors'
 import { getFeeInKinesis } from '@services/kinesis'
-import { validateAmount } from '@services/transfer'
+import { validateAmount } from '@services/util'
 import { RootEpic } from '@store'
 import { NotificationType, RootRoutes } from '@types'
 import { replace } from 'connected-react-router'

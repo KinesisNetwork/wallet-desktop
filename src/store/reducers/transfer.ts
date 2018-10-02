@@ -12,7 +12,7 @@ import {
   updateRemainingBalance,
   updateTransferForm,
 } from '@actions'
-import { validateAmount } from '@services/transfer'
+import { validateAmount } from '@services/util'
 import { RootAction } from '@store'
 import { FormErrors, TransferRequest } from '@types'
 import { combineReducers } from 'redux'

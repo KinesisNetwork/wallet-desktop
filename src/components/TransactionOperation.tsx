@@ -45,7 +45,7 @@ const getAmount = (t: TransactionOperationView) => {
   return t.isIncoming ? amount.toFixed(5) : (amount + Number(t.fee)).toFixed(5)
 }
 
-const isCurrencyOperation = (amount: number | string, currency: Currency) => {
+const amountWithCurrency = (amount: number | string, currency: Currency) => {
   return amount && `${amount} ${currency}`
 }
 
@@ -100,7 +100,7 @@ const TransactionCard: React.SFC<Props & StateProps> = ({
       </div>
       <div className="column is-2 has-text-weight-bold has-text-right">
         <span className={`has-text-${t.isIncoming ? 'success' : 'danger'}`}>
-          {isCurrencyOperation(getAmount(t), currency)}
+          {amountWithCurrency(getAmount(t), currency)}
         </span>
       </div>
       <div className="column is-1 has-text-right">

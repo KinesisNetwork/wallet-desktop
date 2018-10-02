@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { setImageSize } from '@services/transfer'
+import { setImageSize } from '@services/util'
 import { ImageSize } from '@types'
 
 interface Props {

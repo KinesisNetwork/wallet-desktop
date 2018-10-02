@@ -10,7 +10,7 @@ import {
 } from 'js-kinesis-sdk'
 
 import { WalletLockError } from '@helpers/errors'
-import { Connection, ImageSize, TransferRequest } from '@types'
+import { Connection, TransferRequest } from '@types'
 import { getAccountIfExists } from './accounts'
 import { getFeeInStroops, getServer } from './kinesis'
 
@@ -98,22 +98,4 @@ async function newCreateAccountTransaction(
     .build()
 
   return createAccountTransaction
-}
-
-export function setImageSize(size: ImageSize) {
-  switch (size) {
-    case ImageSize.small:
-      return { image: 'is-32x32', font: 'is-size-6' }
-      break
-    case ImageSize.large:
-      return { image: 'is-128x128', font: 'is-size-1' }
-      break
-    case ImageSize.medium:
-    default:
-      return { image: 'is-64x64', font: 'is-size-3' }
-  }
-}
-
-export function validateAmount(amount: string) {
-  return /^[0-9]+(\.)?([0-9]{1,5})?$/.test(amount)
 }

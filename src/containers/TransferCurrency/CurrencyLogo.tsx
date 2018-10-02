@@ -3,7 +3,7 @@ import * as React from 'react'
 
 import * as kagLogo from '@icons/kag-icon.svg'
 import * as kauLogo from '@icons/kau-icon.svg'
-import { setImageSize } from '@services/transfer'
+import { setImageSize } from '@services/util'
 
 interface Props {
   currency: string
