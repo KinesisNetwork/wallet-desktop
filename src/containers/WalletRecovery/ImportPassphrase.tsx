@@ -52,7 +52,7 @@ export class ImportPassphrasePresentation extends React.Component<Props, State> 
 
     return (
       <React.Fragment>
-        <h1 className="title has-text-primary has-text-centered">Restore your wallet</h1>
+        <h1 className="title has-text-primary has-text-centered">Import your wallet</h1>
         <div className="content">
           <p>
             Your recovery phrase is the 12 word phrase you recorded when the wallet was created.{' '}
@@ -91,7 +91,7 @@ export class ImportPassphrasePresentation extends React.Component<Props, State> 
               disabled={!(hasConfirmedTC && isValidPassphrase)}
               onClick={this.handlePhraseSubmit}
             >
-              Restore
+              Import
             </button>
           </div>
         </div>

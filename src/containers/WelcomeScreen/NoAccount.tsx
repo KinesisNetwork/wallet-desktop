@@ -11,7 +11,9 @@ export const NoAccount: React.SFC<any> = () => (
     </div>
     <section className="u-margin-bottom-sm-2">
       <span className="has-text-grey-lighter">Already have Kinesis?</span>
-      <Link to={RootRoutes.recover} className="is-link u-margin-left-sm-1">Restore an existing wallet</Link>
+      <Link to={RootRoutes.recover} className="is-link u-margin-left-sm-1">
+        Import an existing wallet
+      </Link>
     </section>
     <section className="is-size-7">
       <span className="has-text-grey-lighter">Why choose Kinesis?</span>
