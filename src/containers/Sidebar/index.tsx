@@ -66,7 +66,7 @@ export class SidebarPresentation extends React.Component<Props> {
                 className="sidebar-logo"
                 alt="Logo alpha"
               />
-              <p className="has-text-primary">100.00 KINESIS</p>
+              <p className="has-text-primary" />
             </div>
 
             <SidebarDropdown>
