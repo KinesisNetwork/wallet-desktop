@@ -107,7 +107,12 @@ export class SidebarPresentation extends React.Component<Props> {
         <SidebarLower>
           <SidebarLowerItem icon="sliders-v" hint="settings" to={RootRoutes.settings} />
           <SidebarLowerItem icon="question-circle" hint="help" to="#" />
-          <SidebarLowerItem icon="sign-out-alt" hint="logout" to={RootRoutes.dashboard} />
+          <SidebarLowerItem
+            icon="sign-out-alt"
+            hint="logout"
+            to="#"
+            onClick={() => location.reload()}
+          />
         </SidebarLower>
       </nav>
     )

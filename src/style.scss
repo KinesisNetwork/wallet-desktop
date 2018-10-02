@@ -257,9 +257,13 @@ body {
   font-size: 24px;
   font-weight: 400;
   color: $grey-lighter;
-  min-height: 100px !important;
+  min-height: 100px;
   background-color: $grey-dark;
-  cursor: not-allowed;
+  word-wrap: break-word;
+
+  &.is-unselectable {
+    cursor: not-allowed;
+  }
 }
 
 .switch[type='checkbox']:focus + label::before,

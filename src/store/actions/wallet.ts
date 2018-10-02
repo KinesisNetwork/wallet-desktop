@@ -1,16 +1,16 @@
 import { PersistedAccount, WalletAccount, WalletLoggedInState } from '@types'
 import { buildAction } from 'typesafe-actions'
 
-export const startWalletCreation = buildAction('START_CREATE_WALLET').empty()
-export const finaliseWalletCreation = buildAction('FINALISE_CREATE_WALLET').empty()
-export const createPassphrase = buildAction('CREATE_PASSPHRASE').payload<{ passphrase: string }>()
-
 interface InitialiseWallet {
   encryptedPassphrase: string
   createdAccount: PersistedAccount
   walletName: string
   password: string
 }
+
+export const startWalletCreation = buildAction('START_CREATE_WALLET').empty()
+export const finaliseWalletCreation = buildAction('FINALISE_CREATE_WALLET').empty()
+export const createPassphrase = buildAction('CREATE_PASSPHRASE').payload<{ passphrase: string }>()
 export const initialiseWallet = buildAction('INITIALISE_WALLET').payload<InitialiseWallet>()
 
 export const addNextAccountFromSeedphrase = buildAction('ADD_NEXT_ACCOUNT_FROM_SEEDPHRASE').empty()

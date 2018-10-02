@@ -66,7 +66,7 @@ class HasAccountPresentation extends React.Component<Props> {
               <p>Forgot your password?</p>
             </div>
             <div className="column">
-              <Link to={RootRoutes.create}>Restore your wallet</Link>
+              <Link to={RootRoutes.recover}>Restore your wallet</Link>
             </div>
           </div>
         </section>

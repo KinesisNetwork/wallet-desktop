@@ -21,8 +21,7 @@ export const PasswordConfirmModal: React.SFC<ModalProps> = props => (
         <div className="message-body">
           <div className="content">
             <p>
-              For security reasons, we do not store your password anywhere. This means, if you
-              forget your password, we cannot reset it for you.
+              For security reasons we do not store your password anywhere. This means that if you forget your password we cannot reset it for you.
             </p>
             <p>
               <a>Learn more</a>
