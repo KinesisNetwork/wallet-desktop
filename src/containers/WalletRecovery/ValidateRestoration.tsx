@@ -3,6 +3,7 @@ import { easing, tween } from 'popmotion'
 import * as React from 'react'
 import { connect } from 'react-redux'
 
+import { Modal } from '@components/Modal'
 import { RootRoutes, WalletRecoverRoutes } from '@types'
 
 const mapStateToProps = () => ({})
@@ -49,21 +50,16 @@ class ValidateRestorationPresentation extends React.Component<Props, State> {
   render() {
     const { progress, progressText } = this.state
     return (
-      <div className="section">
-        <div className="modal is-active">
-          <div className="modal-background" />
-          <div className="modal-content">
-            <progress className="progress is-success" value={progress} max={100} />
-            <article className="message is-success">
-              <div className="message-body has-text-centered">
-                <div className="content">
-                  <span className="title has-text-grey-darker">{progressText}</span>
-                </div>
-              </div>
-            </article>
+      <Modal hasBackground={true} isActive={true}>
+        <progress className="progress is-success is-radiusless" value={progress} max={100} />
+        <article className="message is-success is-radiusless">
+          <div className="message-body has-text-centered is-radiusless">
+            <div className="content">
+              <span className="title has-text-grey-darker">{progressText}</span>
+            </div>
           </div>
-        </div>
-      </div>
+        </article>
+      </Modal>
     )
   }
 }

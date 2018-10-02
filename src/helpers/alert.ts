@@ -1,14 +1,15 @@
+import swal from 'sweetalert'
 import { focus } from './focus'
 
 export async function formAlert(message: string, key: string) {
-  await sweetAlert('Oops!', message, 'error')
+  await swal('Oops!', message, 'error')
   focus(key)
 }
 
 export async function generalFailureAlert(message: string) {
-  return sweetAlert('Oops!', message, 'error')
+  return swal('Oops!', message, 'error')
 }
 
 export async function generalSuccessAlert(message: string) {
-  return sweetAlert('Success', message, 'success')
+  return swal('Success', message, 'success')
 }

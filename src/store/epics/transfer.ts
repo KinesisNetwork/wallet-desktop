@@ -1,6 +1,13 @@
-import { merge, of } from 'rxjs'
-import { fromPromise } from 'rxjs/observable/fromPromise'
-import { catchError, exhaustMap, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators'
+import { from, merge, of } from 'rxjs'
+import {
+  catchError,
+  exhaustMap,
+  filter,
+  map,
+  mapTo,
+  mergeMap,
+  withLatestFrom,
+} from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 
 import {
@@ -34,7 +41,7 @@ export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConne
   return amountUpdate$.pipe(
     exhaustMap(([action, state]) => {
       const amount = Number(action.payload.newValue)
-      const fee$ = fromPromise(getFeeInKinesis(getCurrentConnection(state.connections), amount))
+      const fee$ = from(getFeeInKinesis(getCurrentConnection(state.connections), amount))
       const updateFee$ = fee$.pipe(map(updateFee))
 
       const calculateRemainingBalance$ = fee$.pipe(
@@ -67,7 +74,7 @@ export const transferRequest$: RootEpic = (
     map(({ payload }) => payload),
     withLatestFrom(state$),
     mergeMap(([request, state]) =>
-      fromPromise(
+      from(
         createKinesisTransfer(
           getActiveAccount(state.wallet).keypair.secret(),
           getCurrentConnection(state.connections),
@@ -88,10 +95,8 @@ export const transactionSubmission$: RootEpic = (
   action$.pipe(
     filter(isActionOf(transactionRequest)),
     mergeMap(({ payload }) =>
-      fromPromise(
-        submitSignedTransaction(getCurrentConnection(state$.value.connections), payload),
-      ).pipe(
-        map(transactionSuccess),
+      from(submitSignedTransaction(getCurrentConnection(state$.value.connections), payload)).pipe(
+        mapTo(transactionSuccess()),
         catchError(err => of(transactionFailed(err))),
       ),
     ),

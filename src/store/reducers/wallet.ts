@@ -1,21 +1,34 @@
+import { combineReducers } from 'redux'
+import { persistReducer } from 'redux-persist'
+import { getType } from 'typesafe-actions'
+
 import {
   addAccountToWallet,
   initialiseWallet,
   setActiveAccount,
+  tooManyFailedAttempts,
+  unlockWalletFailure,
   unlockWalletNew,
+  unlockWalletSuccess,
   updateAccountName,
 } from '@actions'
 import { createStorage } from '@services/storage'
 import { RootAction } from '@store'
-import { BaseAccount, PersistedAccount, WalletAccount, WalletLoggedInState } from '@types'
-import { combineReducers } from 'redux'
-import { persistReducer } from 'redux-persist'
-import { getType } from 'typesafe-actions'
+import {
+  BaseAccount,
+  FailedAttemptsToUnlockWallet,
+  PersistedAccount,
+  WalletAccount,
+  WalletLoggedInState,
+} from '@types'
+import { calculateUnlockTime } from './helpers'
 
 interface WalletPersistedState {
   encryptedPassphrase: string
   activeAccount: number
   createdAccounts: PersistedAccount[]
+  failureAttemptTimestamps: Date[]
+  setAccountLocked: FailedAttemptsToUnlockWallet
   walletName: string
 }
 
@@ -55,6 +68,29 @@ const persisted = combineReducers<WalletPersistedState, RootAction>({
   },
   encryptedPassphrase: (state = '', action) =>
     action.type === getType(initialiseWallet) ? action.payload.encryptedPassphrase : state,
+  failureAttemptTimestamps: (state = [], action) => {
+    switch (action.type) {
+      case getType(unlockWalletSuccess):
+        return []
+      case getType(unlockWalletFailure):
+        return [...state, action.payload.now].filter(timestamp => {
+          return calculateUnlockTime(timestamp) >= action.payload.now.valueOf()
+        })
+      default:
+        return state
+    }
+  },
+  setAccountLocked: (state = { unlockTimestamp: 0 }, action) => {
+    switch (action.type) {
+      case getType(tooManyFailedAttempts):
+        return {
+          ...state,
+          unlockTimestamp: calculateUnlockTime(action.payload),
+        }
+      default:
+        return state
+    }
+  },
   walletName: (state = '', action) =>
     action.type === getType(initialiseWallet) ? action.payload.walletName : state,
 })

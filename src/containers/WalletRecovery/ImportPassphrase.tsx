@@ -35,8 +35,8 @@ export class ImportPassphrasePresentation extends React.Component<Props, State> 
     this.setState({ hasConfirmedTC: ev.target.checked })
   }
 
-  handlePhraseChange: React.ChangeEventHandler<HTMLInputElement> = ev => {
-    const { value } = ev.target
+  handlePhraseChange: React.ChangeEventHandler<HTMLTextAreaElement> = ev => {
+    const value = ev.target.value.toLocaleLowerCase()
     const isValidPassphrase = validateMnemonic(value)
 
     this.setState({ recoveryPhrase: value, isValidPassphrase })
@@ -52,7 +52,7 @@ export class ImportPassphrasePresentation extends React.Component<Props, State> 
 
     return (
       <React.Fragment>
-        <h1 className="title has-text-primary has-text-centered">Restore your wallet</h1>
+        <h1 className="title has-text-primary has-text-centered">Import your wallet</h1>
         <div className="content">
           <p>
             Your recovery phrase is the 12 word phrase you recorded when the wallet was created.{' '}
@@ -64,11 +64,11 @@ export class ImportPassphrasePresentation extends React.Component<Props, State> 
             Your recovery phrase
           </label>
           <div className="control">
-            <input
-              type="textarea"
+            <textarea
               className={`textarea seedphrase has-text-centered is-radiusless ${
                 isValidPassphrase ? 'is-success' : 'is-danger'
               }`}
+              rows={2}
               id="recovery-phrase"
               name="recovery-phrase"
               onChange={this.handlePhraseChange}
@@ -91,7 +91,7 @@ export class ImportPassphrasePresentation extends React.Component<Props, State> 
               disabled={!(hasConfirmedTC && isValidPassphrase)}
               onClick={this.handlePhraseSubmit}
             >
-              Restore
+              Import
             </button>
           </div>
         </div>

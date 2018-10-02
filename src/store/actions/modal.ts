@@ -1,3 +1,3 @@
-import { buildAction } from 'typesafe-actions'
+import { createAction } from 'typesafe-actions'
 
-export const closeModal = buildAction('CLOSE_MODAL').empty()
+export const closeModal = createAction('CLOSE_MODAL')
