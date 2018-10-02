@@ -46,12 +46,12 @@ export class ImportAccountPresentation extends React.Component<
         <h1 className="title has-text-centered is-uppercase">Import Account</h1>
         <div className="content">
           <p>
-            Imported accounts are not associated with your wallet's paper key. If you restore the
-            wallet, you will need to re-import this account.
+            Imported accounts are not associated with your wallet's recovery phrase. If you import
+            the wallet, you will need to re-import this account.
           </p>
           <p>
             Instead, we recommend that you transfer the funds to an existing account in this wallet.
-            That way all of your funds are associated with your paper key.
+            That way all of your funds are associated with your recovery phrase.
           </p>
         </div>
         <form
