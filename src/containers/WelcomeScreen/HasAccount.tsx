@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import { changeUnlockPasswordInput, unlockWalletRequest } from '@actions'
 import { InitialsAvatar } from '@components/InitialsAvatar'
 import { InputField } from '@components/InputField'
 import { RootState } from '@store'
 import { RootRoutes } from '@types'
-import { Link } from 'react-router-dom'
 
 const mapStateToProps = ({ login, wallet }: RootState) => ({
   walletName: wallet.persisted.walletName,
@@ -66,7 +66,7 @@ class HasAccountPresentation extends React.Component<Props> {
               <p>Forgot your password?</p>
             </div>
             <div className="column">
-              <Link to={RootRoutes.recover}>Restore your wallet</Link>
+              <Link to={RootRoutes.recover}>Import your wallet</Link>
             </div>
           </div>
         </section>
