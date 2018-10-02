@@ -18,6 +18,7 @@ import {
 } from '@actions'
 import { getActiveAccount } from '@selectors'
 import { getFeeInKinesis } from '@services/kinesis'
+import { validateAmount } from '@services/transfer'
 import { RootEpic } from '@store'
 import { NotificationType, RootRoutes } from '@types'
 import { replace } from 'connected-react-router'
@@ -26,9 +27,7 @@ export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConne
   action$.pipe(
     filter(isActionOf(updateTransferForm)),
     filter(({ payload: { field } }) => field === 'amount'),
-    filter(
-      ({ payload: { newValue } }) => newValue === '' || /^[0-9]+(\.)?([0-9]{1,5})?$/.test(newValue),
-    ),
+    filter(({ payload: { newValue } }) => newValue === '' || validateAmount(newValue)),
     withLatestFrom(state$),
     mergeMap(([action, state]) => {
       const amount = Number(action.payload.newValue)

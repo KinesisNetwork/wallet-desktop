@@ -113,3 +113,7 @@ export const setImageSize = size => {
       return { image: 'is-64x64', font: 'is-size-3' }
   }
 }
+
+export const validateAmount = (amount: string) => {
+  return /^[0-9]+(\.)?([0-9]{1,5})?$/.test(amount)
+}
