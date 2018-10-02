@@ -10,12 +10,13 @@ interface Props {
 
 class InitialsAvatar extends React.Component<Props> {
   render() {
+    const setAvatarClasses = setImageSize(this.props.size)
     return (
       <div
-        className={`image ${setImageSize(this.props.size).image} has-background-grey is-flex`}
+        className={`image ${setAvatarClasses.image} has-background-grey is-flex`}
         style={{ justifyContent: 'center', alignItems: 'center', borderRadius: '100px' }}
       >
-        <span className={`has-text-grey-light ${setImageSize(this.props.size).font} is-uppercase`}>
+        <span className={`has-text-grey-light ${setAvatarClasses.font} is-uppercase`}>
           {this.getInitials()}
         </span>
       </div>
