@@ -218,9 +218,9 @@ export class TransferPagePresentation extends React.Component<Props, State> {
   }
 }
 
-const ConnectedTransferPage = connect(
+const TransferPage = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(TransferPagePresentation)
 
-export { ConnectedTransferPage as TransferPage }
+export { TransferPage }

@@ -43,9 +43,9 @@ const TransferFormDetailsPresentation: React.SFC = (props: Props) => {
   )
 }
 
-const ConnectedTransferDetails = connect(
+const TransferFormDetails = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(TransferFormDetailsPresentation)
 
-export { ConnectedTransferDetails as TransferFormDetails }
+export { TransferFormDetails }

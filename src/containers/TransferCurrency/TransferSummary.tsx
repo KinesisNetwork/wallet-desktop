@@ -61,6 +61,6 @@ const TransferTableRow: React.SFC<TransferTableRow> = (props: TransferTableRow) 
   </tr>
 )
 
-const ConnectedTransferSummary = connect(mapStateToProps)(TransferSummaryPresentation)
+const TransferSummary = connect(mapStateToProps)(TransferSummaryPresentation)
 
-export { ConnectedTransferSummary as TransferSummary }
+export { TransferSummary }

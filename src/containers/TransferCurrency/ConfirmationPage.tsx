@@ -73,9 +73,9 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
   }
 }
 
-const ConnectedConfirmationPage = connect(
+const ConfirmationPage = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(ConfirmationPagePresentation)
 
-export { ConnectedConfirmationPage as ConfirmationPage }
+export { ConfirmationPage }

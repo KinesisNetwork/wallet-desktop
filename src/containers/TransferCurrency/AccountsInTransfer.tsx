@@ -46,6 +46,6 @@ export const AccountsInTransferPresentation: React.SFC<Props> = props => {
   )
 }
 
-const ConnectedAccountsInTransfer = connect(mapStateToProps)(AccountsInTransferPresentation)
+const AccountsInTransfer = connect(mapStateToProps)(AccountsInTransferPresentation)
 
-export { ConnectedAccountsInTransfer as AccountsInTransfer }
+export { AccountsInTransfer }
