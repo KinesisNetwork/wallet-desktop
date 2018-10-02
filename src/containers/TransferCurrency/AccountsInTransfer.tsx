@@ -5,15 +5,12 @@ import { AddressDisplay } from '@types'
 import * as React from 'react'
 import { connect } from 'react-redux'
 
-const mapStateToProps = (state: RootState) => {
-  const { wallet } = state
-  return {
-    formData: state.transfer.formData,
-    walletName: wallet.persisted.walletName,
-    contactList: state.contacts.contactList,
-    activeAccount: getActiveAccount(wallet),
-  }
-}
+const mapStateToProps = ({ wallet, transfer, contacts }: RootState) => ({
+  formData: transfer.formData,
+  walletName: wallet.persisted.walletName,
+  contactList: contacts.contactList,
+  activeAccount: getActiveAccount(wallet),
+})
 
 type Props = ReturnType<typeof mapStateToProps>
 

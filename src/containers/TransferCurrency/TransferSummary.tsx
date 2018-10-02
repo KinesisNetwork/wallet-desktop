@@ -5,19 +5,17 @@ import { RootState } from '@store'
 import { Currency } from '@types'
 import { connect } from 'react-redux'
 
-const mapStateToProps = (state: RootState) => {
-  const {
-    transfer: {
-      formData: { memo, fee, amount },
-    },
-  } = state
-  return {
-    currency: state.connections.currentCurrency,
-    memo,
-    fee,
-    amount,
-  }
-}
+const mapStateToProps = ({
+  transfer: {
+    formData: { memo, fee, amount },
+  },
+  connections,
+}: RootState) => ({
+  currency: connections.currentCurrency,
+  memo,
+  fee,
+  amount,
+})
 
 interface TransferTableRow {
   description: string

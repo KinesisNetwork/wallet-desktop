@@ -10,10 +10,10 @@ import { CurrencyLogo } from '@containers/TransferCurrency/CurrencyLogo'
 import { RootState } from '@store'
 import { RootRoutes } from '@types'
 
-const mapStateToProps = (state: RootState) => ({
-  currency: state.connections.currentCurrency,
-  balance: state.accounts.accountInfo.balance,
-  amount: state.transfer.formData.amount,
+const mapStateToProps = ({ connections, accounts, transfer }: RootState) => ({
+  currency: connections.currentCurrency,
+  balance: accounts.accountInfo.balance,
+  amount: transfer.formData.amount,
 })
 
 const mapDispatchToProps = {

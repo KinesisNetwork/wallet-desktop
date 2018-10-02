@@ -11,16 +11,14 @@ import { Loader } from '@components/Loader'
 import { AccountsInTransfer } from '@containers/TransferCurrency/AccountsInTransfer'
 import { TransferButtons } from '@containers/TransferCurrency/TransferButtons'
 
-const mapStateToProps = (state: RootState) => {
-  const {
-    transfer: { formData },
-  } = state
-  return {
-    currency: state.connections.currentCurrency,
-    formData,
-    isTransferring: state.transfer.isTransferring,
-  }
-}
+const mapStateToProps = ({
+  transfer: { formData, isTransferring },
+  connections: { currentCurrency },
+}: RootState) => ({
+  currency: currentCurrency,
+  formData,
+  isTransferring,
+})
 
 const mapDispatchToProps = {
   goBackToTransformPage: () => goBack(),

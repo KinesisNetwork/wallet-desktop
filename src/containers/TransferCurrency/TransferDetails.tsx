@@ -4,18 +4,12 @@ import { RootState } from '@store'
 import * as React from 'react'
 import { connect } from 'react-redux'
 
-const mapStateToProps = (state: RootState) => {
-  const {
-    transfer: { formData, formMeta },
-    connections,
-  } = state
-  return {
-    amount: formData.amount,
-    currency: connections.currentCurrency,
-    errors: formMeta.errors,
-    memo: formData.memo,
-  }
-}
+const mapStateToProps = ({ transfer: { formMeta, formData }, connections }: RootState) => ({
+  amount: formData.amount,
+  currency: connections.currentCurrency,
+  errors: formMeta.errors,
+  memo: formData.memo,
+})
 
 const mapDispatchToProps = {
   updateTransferForm,
