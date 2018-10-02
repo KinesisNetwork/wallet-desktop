@@ -5,7 +5,7 @@ import { changeUnlockPasswordInput, unlockWalletRequest } from '@actions'
 import { InitialsAvatar } from '@components/InitialsAvatar'
 import { InputField } from '@components/InputField'
 import { RootState } from '@store'
-import { RootRoutes } from '@types'
+import { ImageSize, RootRoutes } from '@types'
 import { Link } from 'react-router-dom'
 
 const mapStateToProps = (state: RootState) => ({
@@ -28,7 +28,7 @@ class HasAccountPresentation extends React.Component<Props> {
         <section className="level is-mobile">
           <div className="level-left">
             <div className="level-item">
-              <InitialsAvatar name={this.props.walletName} size="medium" />
+              <InitialsAvatar name={this.props.walletName} size={ImageSize.medium} />
             </div>
             <div className="level-item">
               <div className="is-size-3-mobile is-size-2-tablet is-size-1-desktop has-text-weight-bold has-text-grey-lighter">

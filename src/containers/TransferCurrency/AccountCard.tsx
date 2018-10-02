@@ -1,6 +1,6 @@
 import { AddressView } from '@components/AddressView'
 import { InitialsAvatar } from '@components/InitialsAvatar'
-import { AddressDisplay } from '@types'
+import { AddressDisplay, ImageSize } from '@types'
 import * as React from 'react'
 
 interface TransferFromAccount {
@@ -16,7 +16,7 @@ export const AccountCard: React.SFC<TransferFromAccount> = (props: TransferFromA
         <div className="level">
           <div className="level-left">
             <div className="level-item">
-              <InitialsAvatar name={props.name} size="small" />
+              <InitialsAvatar name={props.name} size={ImageSize.small} />
             </div>
             <div className="level-item">
               <p className="has-text-grey-lighter">

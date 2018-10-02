@@ -100,7 +100,7 @@ async function newCreateAccountTransaction(
   return createAccountTransaction
 }
 
-export const setImageSize = size => {
+export function setImageSize(size: ImageSize) {
   switch (size) {
     case ImageSize.small:
       return { image: 'is-32x32', font: 'is-size-6' }
@@ -114,6 +114,6 @@ export const setImageSize = size => {
   }
 }
 
-export const validateAmount = (amount: string) => {
+export function validateAmount(amount: string) {
   return /^[0-9]+(\.)?([0-9]{1,5})?$/.test(amount)
 }

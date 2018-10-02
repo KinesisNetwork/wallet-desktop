@@ -1,4 +1,4 @@
-import { Currency } from '@types'
+import { Currency, ImageSize } from '@types'
 import * as React from 'react'
 
 import * as kagLogo from '@icons/kag-icon.svg'
@@ -7,7 +7,7 @@ import { setImageSize } from '@services/transfer'
 
 interface Props {
   currency: string
-  size: string
+  size: ImageSize
   title?: string
 }
 

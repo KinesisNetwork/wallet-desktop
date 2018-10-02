@@ -1,10 +1,11 @@
 import * as React from 'react'
 
 import { setImageSize } from '@services/transfer'
+import { ImageSize } from '@types'
 
 interface Props {
   name: string
-  size: string
+  size: ImageSize
 }
 
 class InitialsAvatar extends React.Component<Props> {

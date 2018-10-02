@@ -20,7 +20,7 @@ import { TransferFormDetails } from '@containers/TransferCurrency/TransferDetail
 import { addMetalColour } from '@helpers/walletUtils'
 import { getCurrentConnection } from '@selectors'
 import { RootState } from '@store'
-import { Contact, NotificationType, RootRoutes } from '@types'
+import { Contact, ImageSize, NotificationType, RootRoutes } from '@types'
 
 const mapStateToProps = ({
   connections,
@@ -154,7 +154,7 @@ export class TransferPagePresentation extends React.Component<Props, State> {
             <section className="section has-text-centered">
               <CurrencyLogo
                 currency={this.props.currency}
-                size="large"
+                size={ImageSize.large}
                 title={`Send ${this.props.currency}`}
               />
             </section>

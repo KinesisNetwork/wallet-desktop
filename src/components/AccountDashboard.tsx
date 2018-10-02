@@ -8,7 +8,7 @@ import { Transactions } from '@containers/Transactions'
 import { AmountPresentation } from '@containers/TransferCurrency/AmountPresentation'
 import { CurrencyLogo } from '@containers/TransferCurrency/CurrencyLogo'
 import { RootState } from '@store'
-import { RootRoutes } from '@types'
+import { ImageSize, RootRoutes } from '@types'
 
 const mapStateToProps = ({ connections, accounts, transfer }: RootState) => ({
   currency: connections.currentCurrency,
@@ -26,7 +26,7 @@ const AccountDashboardPresentation: React.SFC<Props> = props => (
   <div>
     <CurrencySelector />
     <section className="section has-text-centered">
-      <CurrencyLogo currency={props.currency} size="large" />
+      <CurrencyLogo currency={props.currency} size={ImageSize.large} />
       <AmountPresentation amount={props.balance} text={props.currency} currency={props.currency} />
       <div className="level">
         <div className="level-item">

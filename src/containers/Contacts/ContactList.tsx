@@ -3,7 +3,7 @@ import * as React from 'react'
 import { removeContact } from '@actions'
 import { InitialsAvatar } from '@components/InitialsAvatar'
 import { RootState } from '@store'
-import { Contact } from '@types'
+import { Contact, ImageSize } from '@types'
 import { connect } from 'react-redux'
 
 const ContactCard: React.SFC<Contact & typeof mapDispatchToProps> = props => (
@@ -16,7 +16,7 @@ const ContactCard: React.SFC<Contact & typeof mapDispatchToProps> = props => (
     <div className="level">
       <div className="level-left">
         <div className="level-item">
-          <InitialsAvatar name={props.name} size="medium" />
+          <InitialsAvatar name={props.name} size={ImageSize.medium} />
         </div>
         <div className="level-item">
           <h3 className="subtitle">{props.name}</h3>

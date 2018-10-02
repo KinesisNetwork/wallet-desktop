@@ -10,6 +10,7 @@ import { goBack } from 'connected-react-router'
 import { Loader } from '@components/Loader'
 import { AccountsInTransfer } from '@containers/TransferCurrency/AccountsInTransfer'
 import { TransferButtons } from '@containers/TransferCurrency/TransferButtons'
+import { ImageSize } from '@types'
 
 const mapStateToProps = ({
   transfer: { formData, isTransferring },
@@ -45,7 +46,7 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
             <section className="section has-text-centered">
               <CurrencyLogo
                 currency={this.props.currency}
-                size="medium"
+                size={ImageSize.medium}
                 title="Confirm transaction"
               />
             </section>
