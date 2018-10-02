@@ -21,7 +21,7 @@ const mapStateToProps = ({
 })
 
 const mapDispatchToProps = {
-  goBackToTransformPage: () => goBack(),
+  goBackToTransferPage: () => goBack(),
   transferRequest,
   showNotification,
 }
@@ -59,7 +59,7 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
                   <TransferButtons
                     cancelText="Back"
                     nextStepText="Confirm"
-                    cancelButtonClick={this.props.goBackToTransformPage}
+                    cancelButtonClick={this.props.goBackToTransferPage}
                     nextStepButtonClick={this.confirmAndGoToDashboard}
                   />
                 </div>

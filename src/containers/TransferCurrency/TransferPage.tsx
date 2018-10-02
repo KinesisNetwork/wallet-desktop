@@ -142,8 +142,7 @@ export class TransferPagePresentation extends React.Component<Props, State> {
     )
 
   componentDidMount() {
-    this.props.updateRemainingBalance(this.props.balance)
-    this.props.insufficientFunds(false)
+    this.props.updateTransferForm({ field: 'amount', newValue: this.props.formData.amount })
   }
 
   render() {
