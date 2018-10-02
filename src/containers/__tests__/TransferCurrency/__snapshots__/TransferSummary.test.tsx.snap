@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TransferSummary should render correctly 1`] = `
+<Fragment>
+  <div
+    className="has-text-centered content"
+  >
+    <Component />
+    <p
+      className="has-text-grey-lighter"
+    />
+  </div>
+  <hr
+    className="has-background-grey-lighter"
+    style={
+      Object {
+        "marginBottom": "0",
+      }
+    }
+  />
+  <table
+    className="table is-fullwidth is-marginless"
+  >
+    <tbody>
+      <TransferTableRow
+        amount="NaN"
+        description="Transaction fee"
+      />
+      <TransferTableRow
+        amount="NaN"
+        description="TOTAL"
+      />
+    </tbody>
+  </table>
+  <hr
+    className="has-background-grey-lighter"
+    style={
+      Object {
+        "marginTop": "0",
+      }
+    }
+  />
+</Fragment>
+`;
