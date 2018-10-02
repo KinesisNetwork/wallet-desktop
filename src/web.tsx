@@ -3,6 +3,7 @@ import 'autotrack/lib/plugins/event-tracker'
 import 'autotrack/lib/plugins/media-query-tracker'
 import 'autotrack/lib/plugins/page-visibility-tracker'
 import 'autotrack/lib/plugins/url-change-tracker'
+import './dependency-inline.js'
 import './fonts/fontawesome-all.min.js'
 import './style.scss'
 
