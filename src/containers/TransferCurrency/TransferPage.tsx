@@ -18,7 +18,7 @@ import { NewContactTransfer } from '@containers/TransferCurrency/NewContactTrans
 import { TransferButtons } from '@containers/TransferCurrency/TransferButtons'
 import { TransferFormDetails } from '@containers/TransferCurrency/TransferDetails'
 import { addMetalColour } from '@helpers/walletUtils'
-import { getCurrentConnection } from '@selectors'
+import { getActiveAccount, getCurrentConnection } from '@selectors'
 import { RootState } from '@store'
 import { Contact, ImageSize, NotificationType, RootRoutes } from '@types'
 
@@ -27,6 +27,7 @@ const mapStateToProps = ({
   transfer: { formData, formMeta },
   contacts: { contactList, newContact },
   accounts,
+  wallet,
 }: RootState) => ({
   formData,
   formMeta,
@@ -35,6 +36,8 @@ const mapStateToProps = ({
   connection: getCurrentConnection(connections).endpoint,
   savedContacts: contactList,
   newContact,
+  wallet,
+  activeAccount: getActiveAccount(wallet),
 })
 
 const mapDispatchToProps = {
@@ -170,6 +173,8 @@ export class TransferPagePresentation extends React.Component<Props, State> {
                   onFieldChange={this.handlePayeeFieldToggle}
                   payeePublicKey={this.props.formData.targetPayee}
                   handleChange={handleChange}
+                  accountList={this.props.wallet.accounts}
+                  activeAccount={this.props.activeAccount}
                 />
               ) : (
                 <NewContactTransfer
