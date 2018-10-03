@@ -1,16 +1,5 @@
-import {
-  accountLoadFailure,
-  accountLoadRequest,
-  accountLoadSuccess,
-  accountTransactionsLoaded,
-  selectConnectedCurrency,
-  setActiveAccount,
-  transactionSuccess,
-  unlockWalletNew,
-} from '@actions'
-import { getActiveAccount, getLoginState } from '@selectors'
 import { push } from 'connected-react-router'
-import { from, interval, merge, of } from 'rxjs'
+import { from, merge, of, pipe, timer } from 'rxjs'
 import {
   catchError,
   distinctUntilChanged,
@@ -18,7 +7,6 @@ import {
   map,
   mapTo,
   pluck,
-  startWith,
   switchMap,
   takeUntil,
   takeWhile,
@@ -26,8 +14,20 @@ import {
 } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 
+import {
+  accountLoadFailure,
+  accountLoadRequest,
+  accountLoadSuccess,
+  accountTransactionsLoaded,
+  selectConnectedCurrency,
+  setActiveAccount,
+  showNotification,
+  transactionSuccess,
+  unlockWalletNew,
+  updateAccountName,
+} from '@actions'
 import { RootEpic, RootState } from '@store'
-import { RootRoutes } from '@types'
+import { NotificationType, RootRoutes } from '@types'
 
 export const loadAccount$: RootEpic = (
   action$,
@@ -40,9 +40,8 @@ export const loadAccount$: RootEpic = (
 
   const accountLoadPoll$ = accountLoadRequest$.pipe(
     switchMap(action =>
-      interval(20000).pipe(
+      timer(0, 20000).pipe(
         takeUntil(invalidatePoll$),
-        startWith(0),
         withLatestFrom(state$),
         switchMap(([_, { connections }]) =>
           merge(
@@ -68,7 +67,11 @@ export const setActiveAccount$: RootEpic = action$ =>
     mapTo(push(RootRoutes.dashboard) as any),
   )
 
-export const initiateLoadRequest$: RootEpic = (action$, state$) => {
+export const initiateLoadRequest$: RootEpic = (
+  action$,
+  state$,
+  { getActiveAccount, getLoginState },
+) => {
   const initiateActions$ = action$.pipe(
     filter(
       isActionOf([selectConnectedCurrency, unlockWalletNew, setActiveAccount, transactionSuccess]),
@@ -88,3 +91,13 @@ export const initiateLoadRequest$: RootEpic = (action$, state$) => {
     map(({ keypair }) => accountLoadRequest(keypair.publicKey())),
   )
 }
+
+export const accountNameUpdate: RootEpic = pipe(
+  filter(isActionOf(updateAccountName)),
+  mapTo(
+    showNotification({
+      type: NotificationType.success,
+      message: 'Account name successfully updated',
+    }),
+  ),
+)

@@ -16,51 +16,24 @@
     "noEmitHelpers": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "lib": ["es2017", "dom"],
     "target": "es5",
     "jsx": "react",
     "rootDir": "src",
     "baseUrl": "src",
     "paths": {
-      "@services/*": [
-        "services/*"
-      ],
-      "@types": [
-        "types"
-      ],
-      "@helpers/*": [
-        "helpers/*"
-      ],
-      "@components/*": [
-        "components/*"
-      ],
-      "@store": [
-        "store"
-      ],
-      "@actions": [
-        "store/actions"
-      ],
-      "@containers/*": [
-        "containers/*"
-      ],
-      "@selectors": [
-        "store/selectors"
-      ],
-      "@containers": [
-        "containers"
-      ],
-      "@reducers/*": [
-        "store/reducers/*"
-      ],
-      "@images/*": [
-        "images/*"
-      ],
-      "@icons/*": [
-        "icons/*"
-      ]
+      "@services/*": ["services/*"],
+      "@types": ["types"],
+      "@helpers/*": ["helpers/*"],
+      "@components/*": ["components/*"],
+      "@store": ["store"],
+      "@actions": ["store/actions"],
+      "@containers/*": ["containers/*"],
+      "@selectors": ["store/selectors"],
+      "@containers": ["containers"],
+      "@reducers/*": ["store/reducers/*"],
+      "@images/*": ["images/*"],
+      "@icons/*": ["icons/*"]
     }
   },
   "formatCodeOptions": {

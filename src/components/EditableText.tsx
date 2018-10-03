@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 interface EditableProps {
+  hasError?: boolean
   isEditing: boolean
   value: string
   onChangeHandler: React.ChangeEventHandler<HTMLInputElement>
@@ -16,7 +17,7 @@ export class EditableText extends React.Component<EditableProps> {
       <div className={this.controlClasses()}>
         <input
           style={{ textTransform: 'initial' }}
-          className={this.inputClasses() + (isLarge ? ' is-large' : '')}
+          className={this.inputClasses() + (isLarge ? ' is-large' : '') + (this.props.hasError ? ' is-danger' : '')}
           value={this.props.value}
           onChange={this.props.onChangeHandler}
           onBlur={this.onBlur}

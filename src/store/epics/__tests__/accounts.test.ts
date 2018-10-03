@@ -1,44 +1,21 @@
-import { accountLoadRequest } from '@actions'
-import { loadAccount$ } from '../accounts'
+import { showNotification, updateAccountName } from '@actions'
+import { NotificationType } from '@types'
+import { accountNameUpdate } from '../accounts'
 import { epicTest } from './helpers'
 
 describe('Accounts epic', () => {
-  describe('loadAccount$', () => {
-    const account = 'account'
-    const connection = 'connection'
-    const error = 'error'
-    const publicKey = 'public key'
+  it('accountNameUpdate triggers success notification', async () => {
+    const nameUpdate = { existingName: 'name', newName: 'newName' }
 
-    it('success', async () => {
-      const loadAccount = jest.fn(() => Promise.resolve(account))
-      const getCurrentConnection = jest.fn()
-      const getTransactions = jest.fn(() => Promise.resolve([]))
-
-      await epicTest({
-        epic: loadAccount$,
-        inputActions: [accountLoadRequest(publicKey)],
-        state: {
-          router: { location: { pathname: '/dashboard' } },
-          connections: {},
-        },
-        dependencies: { loadAccount, getCurrentConnection, getTransactions },
-      })
-    })
-
-    it('failure', async () => {
-      const getCurrentConnection = jest.fn(() => connection)
-      const loadAccount = jest.fn(() => Promise.reject(error))
-      const getTransactions = jest.fn(() => Promise.resolve([]))
-
-      await epicTest({
-        epic: loadAccount$,
-        inputActions: [accountLoadRequest(publicKey)],
-        state: {
-          router: { location: { pathname: '/dashboard' } },
-          connections: {},
-        },
-        dependencies: { loadAccount, getCurrentConnection, getTransactions },
-      })
+    await epicTest({
+      epic: accountNameUpdate,
+      expectedActions: [
+        showNotification({
+          type: NotificationType.success,
+          message: 'Account name successfully updated',
+        }),
+      ],
+      inputActions: [updateAccountName(nameUpdate)],
     })
   })
 })
