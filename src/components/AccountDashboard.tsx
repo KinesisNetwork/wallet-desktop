@@ -5,17 +5,15 @@ import { connect } from 'react-redux'
 import { CurrencySelector } from '@containers/CurrencySelector'
 import { Transactions } from '@containers/Transactions'
 
-import * as kagLogo from '@icons/kag-icon.svg'
-import * as kauLogo from '@icons/kau-icon.svg'
-
-import { addMetalColour } from '@helpers/walletUtils'
+import { AmountPresentation } from '@containers/TransferCurrency/AmountPresentation'
+import { CurrencyLogo } from '@containers/TransferCurrency/CurrencyLogo'
 import { RootState } from '@store'
-import { Currency, RootRoutes } from '@types'
+import { ImageSize, RootRoutes } from '@types'
 
-const mapStateToProps = (state: RootState) => ({
-  currency: state.connections.currentCurrency,
-  balance: state.accounts.accountInfo.balance,
-  amount: state.transfer.formData.amount,
+const mapStateToProps = ({ connections, accounts, transfer }: RootState) => ({
+  currency: connections.currentCurrency,
+  balance: accounts.accountInfo.balance,
+  amount: transfer.formData.amount,
 })
 
 const mapDispatchToProps = {
@@ -28,20 +26,8 @@ const AccountDashboardPresentation: React.SFC<Props> = props => (
   <div>
     <CurrencySelector />
     <section className="section has-text-centered">
-      <div className="level">
-        <div className="level-item">
-          <figure className="image is-128x128">
-            <img src={props.currency === Currency.KAU ? kauLogo : kagLogo} className="is-rounded" />
-          </figure>
-        </div>
-      </div>
-      <div className="level">
-        <div className="level-item">
-          <h1
-            className={`title is-size-2 has-text-weight-bold ${addMetalColour(props.currency)}`}
-          >{`${props.balance.toFixed(5)} ${props.currency}`}</h1>
-        </div>
-      </div>
+      <CurrencyLogo currency={props.currency} size={ImageSize.large} />
+      <AmountPresentation amount={props.balance} text={props.currency} currency={props.currency} />
       <div className="level">
         <div className="level-item">
           <button

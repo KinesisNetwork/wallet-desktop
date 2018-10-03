@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AmountPresentation renders correctly 1`] = `
+<div
+  className="level"
+>
+  <div
+    className="level-item"
+  >
+    <h1
+      className="title is-size-2 has-text-weight-bold has-text-primary"
+    >
+      1.00000
+       
+      KAU
+    </h1>
+  </div>
+</div>
+`;

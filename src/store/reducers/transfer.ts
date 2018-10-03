@@ -10,6 +10,7 @@ import {
   updateRemainingBalance,
   updateTransferForm,
 } from '@actions'
+import { validateAmount } from '@services/util'
 import { RootAction } from '@store'
 import { FormErrors, TransferRequest } from '@types'
 import { combineReducers } from 'redux'
@@ -93,7 +94,7 @@ function handleChange(name: keyof TransferRequest) {
           if (
             name === 'amount' &&
             action.payload.newValue &&
-            !/^[0-9]+(\.)?([0-9]{1,5})?$/.test(action.payload.newValue)
+            !validateAmount(action.payload.newValue)
           ) {
             return state
           }

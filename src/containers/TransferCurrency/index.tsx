@@ -1,2 +1,2 @@
-export { TransactionPage } from './TransactionPage'
+export { TransferPage } from './TransferPage'
 export { ConfirmationPage } from './ConfirmationPage'

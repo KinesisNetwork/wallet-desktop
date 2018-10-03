@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CurrencyLogo should render correctly 1`] = `
+<Fragment>
+  <div
+    className="level"
+  >
+    <div
+      className="level-item"
+    >
+      <figure
+        className="image is-32x32"
+      >
+        <img
+          className="is-rounded"
+          src={Object {}}
+        />
+      </figure>
+    </div>
+  </div>
+</Fragment>
+`;

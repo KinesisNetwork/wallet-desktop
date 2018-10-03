@@ -63,3 +63,9 @@ export enum AddressDisplay {
   account,
   payee,
 }
+
+export enum ImageSize {
+  small = 'small',
+  medium = 'medium',
+  large = 'large',
+}

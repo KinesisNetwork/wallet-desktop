@@ -1,10 +1,10 @@
 import { InputField } from '@components/InputField'
-import { FormErrors } from '@types'
+import { Contact, FormErrors } from '@types'
 import * as React from 'react'
 
 interface Props {
   onFieldChange: () => void
-  handleChange: (field: 'name' | 'address', value: string) => void
+  handleChange: (field: keyof Contact, value: string) => void
   errors: FormErrors
   onSaveToContactsChange: () => void
   saveToContacts: boolean
@@ -12,7 +12,7 @@ interface Props {
   publicKey: string
 }
 
-export class FilloutFieldPresentation extends React.Component<Props> {
+export class NewContactTransferPresentation extends React.Component<Props> {
   render() {
     return (
       <React.Fragment>
@@ -65,4 +65,4 @@ export class FilloutFieldPresentation extends React.Component<Props> {
   }
 }
 
-export { FilloutFieldPresentation as FilloutField }
+export { NewContactTransferPresentation as NewContactTransfer }

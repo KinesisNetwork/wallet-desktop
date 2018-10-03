@@ -1,6 +1,7 @@
 module.exports = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.svg$': '<rootDir>/src/test/__transforms__/svgTransform.js',
   },
   testEnvironment: 'node', // This may need to change if we test any window dependencies
   testRegex: '/__tests__/.*.(test|spec)\\.(tsx|ts)$',

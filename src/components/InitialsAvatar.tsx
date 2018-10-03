@@ -1,23 +1,23 @@
 import * as React from 'react'
 
+import { setImageSize } from '@services/util'
+import { ImageSize } from '@types'
+
 interface Props {
-  name?: string
-  icon?: string
-  size: string
-  fontSize: string
+  name: string
+  size: ImageSize
 }
 
 class InitialsAvatar extends React.Component<Props> {
   render() {
+    const setAvatarClasses = setImageSize(this.props.size)
     return (
       <div
-        className={`image is-${this.props.size}x${this.props.size} has-background-grey is-flex`}
+        className={`image ${setAvatarClasses.image} has-background-grey is-flex`}
         style={{ justifyContent: 'center', alignItems: 'center', borderRadius: '100px' }}
       >
-        <span className={`has-text-grey-light is-size-${this.props.fontSize} is-uppercase`}>
-          {this.props.name
-            ? this.getInitials()
-            : this.props.icon && <i className={`fal ${this.props.icon}`} />}
+        <span className={`has-text-grey-light ${setAvatarClasses.font} is-uppercase`}>
+          {this.getInitials()}
         </span>
       </div>
     )
