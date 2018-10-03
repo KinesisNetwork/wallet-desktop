@@ -173,7 +173,7 @@ export class TransferPagePresentation extends React.Component<Props, State> {
                   onFieldChange={this.handlePayeeFieldToggle}
                   payeePublicKey={this.props.formData.targetPayee}
                   handleChange={handleChange}
-                  accountList={this.props.wallet.accounts}
+                  accounts={this.props.wallet.accounts}
                   activeAccount={this.props.activeAccount}
                 />
               ) : (

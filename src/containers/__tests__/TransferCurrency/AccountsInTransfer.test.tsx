@@ -27,6 +27,7 @@ describe('AccountsInTransfer', () => {
           publicKey: () => null,
         },
       },
+      accounts: [],
     }
   })
 

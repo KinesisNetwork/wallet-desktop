@@ -7,7 +7,7 @@ interface Props {
   savedContacts: Contact[]
   payeePublicKey: TransferRequest['targetPayee']
   handleChange: FormChangeHandler<TransferRequest>
-  accountList: WalletAccount[]
+  accounts: WalletAccount[]
   activeAccount: WalletAccount
 }
 
@@ -18,7 +18,7 @@ export const DropdownFormPresentation: React.SFC<Props> = props => {
     </option>
   ))
 
-  const inactiveAccounts = getInactiveAccounts(props.accountList, props.activeAccount)
+  const inactiveAccounts = getInactiveAccounts(props.accounts, props.activeAccount)
   const inactiveAccountOptions = inactiveAccounts.map(({ name, address }) => (
     <option key={address} value={address}>
       {name}
@@ -44,7 +44,7 @@ export const DropdownFormPresentation: React.SFC<Props> = props => {
             >
               <option>Select a contact</option>
               {contactNames}
-              {props.accountList.length > 1 && (
+              {props.accounts.length > 1 && (
                 <React.Fragment>
                   <option disabled={true}>
                     &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
