@@ -1,3 +1,4 @@
+import { getInactiveAccounts } from '@services/accounts'
 import { Contact, FormChangeHandler, TransferRequest, WalletAccount } from '@types'
 import * as React from 'react'
 
@@ -17,17 +18,16 @@ export const DropdownFormPresentation: React.SFC<Props> = props => {
     </option>
   ))
 
-  const isOnContactList = props.savedContacts.find(
-    ({ address }) => props.payeePublicKey === address,
-  )
+  const inactiveAccounts = getInactiveAccounts(props.accountList, props.activeAccount)
+  const inactiveAccountOptions = inactiveAccounts.map(({ name, address }) => (
+    <option key={address} value={address}>
+      {name}
+    </option>
+  ))
 
-  const inactiveAccounts = props.accountList
-    .filter(({ keypair }) => keypair.publicKey() !== props.activeAccount.keypair.publicKey())
-    .map(({ name, keypair }) => (
-      <option key={keypair.publicKey()} value={keypair.publicKey()}>
-        {name}
-      </option>
-    ))
+  const isOnContactList = props.savedContacts
+    .concat(inactiveAccounts)
+    .find(({ address }) => props.payeePublicKey === address)
 
   return (
     <React.Fragment>
@@ -49,7 +49,7 @@ export const DropdownFormPresentation: React.SFC<Props> = props => {
                   <option disabled={true}>
                     &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
                   </option>
-                  {inactiveAccounts}
+                  {inactiveAccountOptions}
                 </React.Fragment>
               )}
             </select>

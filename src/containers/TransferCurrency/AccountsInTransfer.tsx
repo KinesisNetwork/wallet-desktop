@@ -1,5 +1,6 @@
 import { AccountCard } from '@containers/TransferCurrency/AccountCard'
 import { getActiveAccount } from '@selectors'
+import { getInactiveAccounts } from '@services/accounts'
 import { RootState } from '@store'
 import { AddressDisplay } from '@types'
 import * as React from 'react'
@@ -10,14 +11,19 @@ const mapStateToProps = ({ wallet, transfer, contacts }: RootState) => ({
   walletName: wallet.persisted.walletName,
   contactList: contacts.contactList,
   activeAccount: getActiveAccount(wallet),
+  accountList: wallet.accounts,
 })
 
 type Props = ReturnType<typeof mapStateToProps>
 
 export const AccountsInTransferPresentation: React.SFC<Props> = props => {
+  const inactiveAccounts = getInactiveAccounts(props.accountList, props.activeAccount)
+
   const getPayeeNameForAvatar = () => {
     const payeeAddress = props.formData.targetPayee
-    const payee = props.contactList.find(contact => contact.address === payeeAddress)
+    const payee = props.contactList
+      .concat(inactiveAccounts)
+      .find(contact => contact.address === payeeAddress)
     return payee ? payee.name : payeeAddress
   }
 
