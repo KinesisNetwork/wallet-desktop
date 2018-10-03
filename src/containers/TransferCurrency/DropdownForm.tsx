@@ -1,4 +1,4 @@
-import { Contact, FormChangeHandler, TransferRequest } from '@types'
+import { Contact, FormChangeHandler, TransferRequest, WalletAccount } from '@types'
 import * as React from 'react'
 
 interface Props {
@@ -6,6 +6,8 @@ interface Props {
   savedContacts: Contact[]
   payeePublicKey: TransferRequest['targetPayee']
   handleChange: FormChangeHandler<TransferRequest>
+  accountList: WalletAccount[]
+  activeAccount: WalletAccount
 }
 
 export const DropdownFormPresentation: React.SFC<Props> = props => {
@@ -18,6 +20,14 @@ export const DropdownFormPresentation: React.SFC<Props> = props => {
   const isOnContactList = props.savedContacts.find(
     ({ address }) => props.payeePublicKey === address,
   )
+
+  const inactiveAccounts = props.accountList
+    .filter(({ keypair }) => keypair.publicKey() !== props.activeAccount.keypair.publicKey())
+    .map(({ name, keypair }) => (
+      <option key={keypair.publicKey()} value={keypair.publicKey()}>
+        {name}
+      </option>
+    ))
 
   return (
     <React.Fragment>
@@ -34,6 +44,14 @@ export const DropdownFormPresentation: React.SFC<Props> = props => {
             >
               <option>Select a contact</option>
               {contactNames}
+              {props.accountList.length > 1 && (
+                <React.Fragment>
+                  <option disabled={true}>
+                    &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
+                  </option>
+                  {inactiveAccounts}
+                </React.Fragment>
+              )}
             </select>
           </div>
         </div>
