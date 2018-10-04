@@ -1,6 +1,8 @@
+import * as React from 'react'
+
+import { DropdownDivider } from '@containers/Sidebar/DropdownDivider'
 import { getInactiveAccounts } from '@services/accounts'
 import { Contact, FormChangeHandler, TransferRequest, WalletAccount } from '@types'
-import * as React from 'react'
 
 interface Props {
   onFieldChange: () => void
@@ -47,7 +49,7 @@ export const DropdownFormPresentation: React.SFC<Props> = props => {
               {props.accounts.length > 1 && (
                 <React.Fragment>
                   <option disabled={true}>
-                    &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
+                    <DropdownDivider />
                   </option>
                   {inactiveAccountOptions}
                 </React.Fragment>
