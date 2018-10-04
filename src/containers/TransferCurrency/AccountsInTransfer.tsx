@@ -1,10 +1,11 @@
+import * as React from 'react'
+import { connect } from 'react-redux'
+
 import { AccountCard } from '@containers/TransferCurrency/AccountCard'
 import { getActiveAccount } from '@selectors'
 import { getInactiveAccounts } from '@services/accounts'
 import { RootState } from '@store'
 import { AddressDisplay } from '@types'
-import * as React from 'react'
-import { connect } from 'react-redux'
 
 const mapStateToProps = ({ wallet, transfer, contacts }: RootState) => ({
   formData: transfer.formData,

@@ -1,9 +1,10 @@
+import * as React from 'react'
+import { connect } from 'react-redux'
+
 import { getActiveAccount } from '@selectors'
 import { getInactiveAccounts } from '@services/accounts'
 import { RootState } from '@store'
 import { AddressDisplay } from '@types'
-import * as React from 'react'
-import { connect } from 'react-redux'
 interface OwnProps {
   address: string
   showFull?: boolean
