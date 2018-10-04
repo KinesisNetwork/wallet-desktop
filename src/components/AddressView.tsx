@@ -12,30 +12,24 @@ interface OwnProps {
   addressDisplay: AddressDisplay
 }
 
-const mapStateToProps = ({ contacts, wallet }: RootState) => ({
-  contactList: contacts.contactList,
-  accounts: wallet.accounts,
-  activeAccount: getActiveAccount(wallet),
+const mapStateToProps = ({ contacts, wallet }: RootState, ownProps: OwnProps) => ({
+  addressInBook:
+    ownProps.addressDisplay === AddressDisplay.payee
+      ? contacts.contactList
+          .concat(getInactiveAccountsInContactFormat(wallet.accounts, getActiveAccount(wallet)))
+          .find(contact => contact.address === ownProps.address)
+      : wallet.accounts.find(account => account.keypair.publicKey() === ownProps.address),
 })
 
 type Props = OwnProps & ReturnType<typeof mapStateToProps>
 
 const AddressPresentation: React.SFC<Props> = props => {
-  const inactiveAccounts = getInactiveAccountsInContactFormat(props.accounts, props.activeAccount)
-
-  const addressInBook =
-    props.addressDisplay === AddressDisplay.payee
-      ? props.contactList
-          .concat(inactiveAccounts)
-          .find(contact => contact.address === props.address)
-      : props.accounts.find(account => account.keypair.publicKey() === props.address)
-
   const addressDisplay = props.showFull
     ? props.address
     : `${props.address.slice(0, 12)}...${props.address.slice(-4)}`
 
-  return addressInBook ? (
-    <React.Fragment>{addressInBook.name}</React.Fragment>
+  return props.addressInBook ? (
+    <React.Fragment>{props.addressInBook.name}</React.Fragment>
   ) : (
     <React.Fragment>{addressDisplay}</React.Fragment>
   )
