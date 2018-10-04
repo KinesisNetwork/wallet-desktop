@@ -5,6 +5,7 @@ import { getActiveAccount } from '@selectors'
 import { getInactiveAccounts } from '@services/accounts'
 import { RootState } from '@store'
 import { AddressDisplay } from '@types'
+
 interface OwnProps {
   address: string
   showFull?: boolean
