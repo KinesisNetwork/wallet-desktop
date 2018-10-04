@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { AccountCard } from '@containers/TransferCurrency/AccountCard'
 import { getActiveAccount } from '@selectors'
-import { getInactiveAccounts } from '@services/accounts'
+import { getInactiveAccountsInContactFormat } from '@services/accounts'
 import { RootState } from '@store'
 import { AddressDisplay } from '@types'
 
@@ -18,7 +18,7 @@ const mapStateToProps = ({ wallet, transfer, contacts }: RootState) => ({
 type Props = ReturnType<typeof mapStateToProps>
 
 export const AccountsInTransferPresentation: React.SFC<Props> = props => {
-  const inactiveAccounts = getInactiveAccounts(props.accounts, props.activeAccount)
+  const inactiveAccounts = getInactiveAccountsInContactFormat(props.accounts, props.activeAccount)
 
   const getPayeeNameForAvatar = () => {
     const payeeAddress = props.formData.targetPayee

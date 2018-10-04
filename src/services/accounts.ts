@@ -43,7 +43,7 @@ export async function getTransactionSigners(server: Server, transaction: Transac
   return signers.filter(kp => transactionSignatures.some(sig => kp.verify(transaction.hash(), sig)))
 }
 
-export function getInactiveAccounts(
+export function getInactiveAccountsInContactFormat(
   accountList: WalletAccount[],
   activeAccount: WalletAccount,
 ): Contact[] {

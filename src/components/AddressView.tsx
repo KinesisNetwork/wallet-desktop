@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 
 import { getActiveAccount } from '@selectors'
-import { getInactiveAccounts } from '@services/accounts'
+import { getInactiveAccountsInContactFormat } from '@services/accounts'
 import { RootState } from '@store'
 import { AddressDisplay } from '@types'
 
@@ -21,7 +21,7 @@ const mapStateToProps = ({ contacts, wallet }: RootState) => ({
 type Props = OwnProps & ReturnType<typeof mapStateToProps>
 
 const AddressPresentation: React.SFC<Props> = props => {
-  const inactiveAccounts = getInactiveAccounts(props.accounts, props.activeAccount)
+  const inactiveAccounts = getInactiveAccountsInContactFormat(props.accounts, props.activeAccount)
 
   const addressInBook =
     props.addressDisplay === AddressDisplay.payee

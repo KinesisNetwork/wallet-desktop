@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import { DropdownDivider } from '@containers/Sidebar/DropdownDivider'
-import { getInactiveAccounts } from '@services/accounts'
+import { getInactiveAccountsInContactFormat } from '@services/accounts'
 import { Contact, FormChangeHandler, TransferRequest, WalletAccount } from '@types'
 
 interface Props {
@@ -14,18 +14,15 @@ interface Props {
 }
 
 export const DropdownFormPresentation: React.SFC<Props> = props => {
-  const contactNames = props.savedContacts.map(({ name, address }) => (
-    <option key={address} value={address}>
-      {name}
-    </option>
-  ))
+  const inactiveAccounts = getInactiveAccountsInContactFormat(props.accounts, props.activeAccount)
 
-  const inactiveAccounts = getInactiveAccounts(props.accounts, props.activeAccount)
-  const inactiveAccountOptions = inactiveAccounts.map(({ name, address }) => (
-    <option key={address} value={address}>
-      {name}
-    </option>
-  ))
+  const renderOption = (contactsToOption: Contact[]) => {
+    return contactsToOption.map(({ name, address }) => (
+      <option key={address} value={address}>
+        {name}
+      </option>
+    ))
+  }
 
   const isOnContactList = props.savedContacts
     .concat(inactiveAccounts)
@@ -45,13 +42,13 @@ export const DropdownFormPresentation: React.SFC<Props> = props => {
               value={props.payeePublicKey}
             >
               <option>Select a contact</option>
-              {contactNames}
+              {renderOption(props.savedContacts)}
               {props.accounts.length > 1 && (
                 <React.Fragment>
                   <option disabled={true}>
                     <DropdownDivider />
                   </option>
-                  {inactiveAccountOptions}
+                  {renderOption(inactiveAccounts)}
                 </React.Fragment>
               )}
             </select>
