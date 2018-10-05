@@ -9,14 +9,14 @@ import {
   unlockWalletNew,
 } from '@actions'
 import { getActiveAccount, getLoginState } from '@selectors'
-import { RootEpic, RootState } from '@store'
-import { RootRoutes } from '@types'
+import { push } from 'connected-react-router'
 import { from, interval, merge, of } from 'rxjs'
 import {
   catchError,
   distinctUntilChanged,
   filter,
   map,
+  mapTo,
   pluck,
   startWith,
   switchMap,
@@ -25,6 +25,9 @@ import {
   withLatestFrom,
 } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
+
+import { RootEpic, RootState } from '@store'
+import { RootRoutes } from '@types'
 
 export const loadAccount$: RootEpic = (
   action$,
@@ -58,6 +61,12 @@ export const loadAccount$: RootEpic = (
 
   return accountLoadPoll$
 }
+
+export const setActiveAccount$: RootEpic = action$ =>
+  action$.pipe(
+    filter(isActionOf(setActiveAccount)),
+    mapTo(push(RootRoutes.dashboard) as any),
+  )
 
 export const initiateLoadRequest$: RootEpic = (action$, state$) => {
   const initiateActions$ = action$.pipe(

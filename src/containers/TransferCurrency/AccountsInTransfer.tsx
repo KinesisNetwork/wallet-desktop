@@ -1,23 +1,30 @@
-import { AccountCard } from '@containers/TransferCurrency/AccountCard'
-import { getActiveAccount } from '@selectors'
-import { RootState } from '@store'
-import { AddressDisplay } from '@types'
 import * as React from 'react'
 import { connect } from 'react-redux'
+
+import { AccountCard } from '@containers/TransferCurrency/AccountCard'
+import { getActiveAccount } from '@selectors'
+import { getInactiveAccountsInContactFormat } from '@services/accounts'
+import { RootState } from '@store'
+import { AddressDisplay } from '@types'
 
 const mapStateToProps = ({ wallet, transfer, contacts }: RootState) => ({
   formData: transfer.formData,
   walletName: wallet.persisted.walletName,
   contactList: contacts.contactList,
   activeAccount: getActiveAccount(wallet),
+  accounts: wallet.accounts,
 })
 
 type Props = ReturnType<typeof mapStateToProps>
 
 export const AccountsInTransferPresentation: React.SFC<Props> = props => {
+  const inactiveAccounts = getInactiveAccountsInContactFormat(props.accounts, props.activeAccount)
+
   const getPayeeNameForAvatar = () => {
     const payeeAddress = props.formData.targetPayee
-    const payee = props.contactList.find(contact => contact.address === payeeAddress)
+    const payee = props.contactList
+      .concat(inactiveAccounts)
+      .find(contact => contact.address === payeeAddress)
     return payee ? payee.name : payeeAddress
   }
 

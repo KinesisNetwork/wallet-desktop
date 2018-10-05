@@ -17,6 +17,11 @@ describe('DropdownForm', () => {
       ],
       payeePublicKey: 'qweasd',
       handleChange: { field: 'amount', newValue: '1' },
+      accounts: [],
+      activeAccount: {
+        name: 'Account 1',
+        keypair: {},
+      },
     }
   })
 

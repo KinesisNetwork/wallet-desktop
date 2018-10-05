@@ -1,7 +1,7 @@
 import { Account, AccountResponse, Asset, Keypair, Server, Transaction } from 'js-kinesis-sdk'
 
 import { AccountMissingError } from '@helpers/errors'
-import { Connection } from '@types'
+import { Connection, Contact, WalletAccount } from '@types'
 import { getServer } from './kinesis'
 
 export async function loadAccount(
@@ -41,4 +41,13 @@ export async function getTransactionSigners(server: Server, transaction: Transac
   const transactionSignatures = transaction.signatures.map((sig: any) => sig.signature())
 
   return signers.filter(kp => transactionSignatures.some(sig => kp.verify(transaction.hash(), sig)))
+}
+
+export function getInactiveAccountsInContactFormat(
+  accountList: WalletAccount[],
+  activeAccount: WalletAccount,
+): Contact[] {
+  return accountList
+    .filter(({ keypair }) => keypair.publicKey() !== activeAccount.keypair.publicKey())
+    .map(({ name, keypair }) => ({ name, address: keypair.publicKey() }))
 }

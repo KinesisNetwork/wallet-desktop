@@ -1,23 +1,32 @@
-import { Contact, FormChangeHandler, TransferRequest } from '@types'
 import * as React from 'react'
+
+import { DropdownDivider } from '@containers/Sidebar/DropdownDivider'
+import { getInactiveAccountsInContactFormat } from '@services/accounts'
+import { Contact, FormChangeHandler, TransferRequest, WalletAccount } from '@types'
 
 interface Props {
   onFieldChange: () => void
   savedContacts: Contact[]
   payeePublicKey: TransferRequest['targetPayee']
   handleChange: FormChangeHandler<TransferRequest>
+  accounts: WalletAccount[]
+  activeAccount: WalletAccount
 }
 
 export const DropdownFormPresentation: React.SFC<Props> = props => {
-  const contactNames = props.savedContacts.map(({ name, address }) => (
-    <option key={address} value={address}>
-      {name}
-    </option>
-  ))
+  const inactiveAccounts = getInactiveAccountsInContactFormat(props.accounts, props.activeAccount)
 
-  const isOnContactList = props.savedContacts.find(
-    ({ address }) => props.payeePublicKey === address,
-  )
+  const renderOption = (contactsToOption: Contact[]) => {
+    return contactsToOption.map(({ name, address }) => (
+      <option key={address} value={address}>
+        {name}
+      </option>
+    ))
+  }
+
+  const isOnContactList = props.savedContacts
+    .concat(inactiveAccounts)
+    .find(({ address }) => props.payeePublicKey === address)
 
   return (
     <React.Fragment>
@@ -33,7 +42,15 @@ export const DropdownFormPresentation: React.SFC<Props> = props => {
               value={props.payeePublicKey}
             >
               <option>Select a contact</option>
-              {contactNames}
+              {renderOption(props.savedContacts)}
+              {props.accounts.length > 1 && (
+                <React.Fragment>
+                  <option disabled={true}>
+                    <DropdownDivider />
+                  </option>
+                  {renderOption(inactiveAccounts)}
+                </React.Fragment>
+              )}
             </select>
           </div>
         </div>

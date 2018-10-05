@@ -1,18 +1,24 @@
-import { RootState } from '@store'
-import { AddressDisplay } from '@types'
 import * as React from 'react'
 import { connect } from 'react-redux'
+
+import { getActiveAccount } from '@selectors'
+import { getInactiveAccountsInContactFormat } from '@services/accounts'
+import { RootState } from '@store'
+import { AddressDisplay } from '@types'
+
 interface OwnProps {
   address: string
   showFull?: boolean
   addressDisplay: AddressDisplay
 }
 
-const mapStateToProps = (state: RootState, ownProps: OwnProps) => ({
+const mapStateToProps = ({ contacts, wallet }: RootState, ownProps: OwnProps) => ({
   addressInBook:
     ownProps.addressDisplay === AddressDisplay.payee
-      ? state.contacts.contactList.find(contact => contact.address === ownProps.address)
-      : state.wallet.accounts.find(account => account.keypair.publicKey() === ownProps.address),
+      ? contacts.contactList
+          .concat(getInactiveAccountsInContactFormat(wallet.accounts, getActiveAccount(wallet)))
+          .find(contact => contact.address === ownProps.address)
+      : wallet.accounts.find(account => account.keypair.publicKey() === ownProps.address),
 })
 
 type Props = OwnProps & ReturnType<typeof mapStateToProps>
