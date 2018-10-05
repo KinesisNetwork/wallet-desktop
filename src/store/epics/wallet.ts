@@ -1,3 +1,8 @@
+import { REHYDRATE } from 'redux-persist'
+import { merge } from 'rxjs'
+import { filter, map, mapTo, switchMap, withLatestFrom } from 'rxjs/operators'
+import { isActionOf } from 'typesafe-actions'
+
 import {
   addAccountToWallet,
   addNextAccountFromSeedphrase,
@@ -5,15 +10,12 @@ import {
   finaliseWalletCreation,
   importAccountFromSecret,
   initialiseWallet,
-  login,
+  login as loginAction,
+  showNotification,
   startWalletCreation,
   unlockWalletNew,
 } from '@actions'
-import { PersistedAccount, WalletAccount } from '@types'
-import { REHYDRATE } from 'redux-persist'
-import { merge } from 'rxjs'
-import { filter, map, mapTo, switchMap, withLatestFrom } from 'rxjs/operators'
-import { isActionOf } from 'typesafe-actions'
+import { NotificationType, PersistedAccount, WalletAccount } from '@types'
 import { RehydrateAction, RootAction } from '../root-action'
 import { RootEpic } from '../root-epic'
 
@@ -24,7 +26,7 @@ export const setupPassphrase$: RootEpic = (action$, _, { generateMnemonic }) => 
     map(() => createPassphrase({ passphrase: generateMnemonic() })),
   )
 
-  return merge(setPassphrase$)
+  return setPassphrase$
 }
 
 export const initialiseWallet$: RootEpic = (
@@ -60,7 +62,7 @@ export const initialiseWallet$: RootEpic = (
     withLatestFrom(state$),
     map(([_, state]) => {
       const password = state.createWallet.createForm.password
-      return login({ password })
+      return loginAction({ password })
     }),
   )
 
@@ -71,15 +73,19 @@ export const addAccountToWalletFromSeedphrase$: RootEpic = (
   action$,
   state$,
   { getKeypairFromMnemonic, encryptWithPassword },
-) =>
-  action$.pipe(
+) => {
+  const addNextAccount$ = action$.pipe(
     filter(isActionOf(addNextAccountFromSeedphrase)),
     withLatestFrom(state$),
-    map(([_, state]) => {
-      const password = state.login.input.lastSuccessfulInput
-      const { persisted, passphrase } = state.wallet
-
-      const existingAccountsCount = persisted.createdAccounts.filter(a => !a.imported).length
+    map(([_, { login, wallet: { passphrase, persisted } }]) => ({
+      password: login.input.lastSuccessfulInput,
+      passphrase,
+      persisted,
+    })),
+    map(({ password, passphrase, persisted }) => {
+      const { createdAccounts } = persisted
+      const existingAccountsCount = createdAccounts.filter(a => !a.imported).length
+      const existingAccountNames = createdAccounts.map(a => a.name)
 
       const keypair = getKeypairFromMnemonic(passphrase, existingAccountsCount)
       const name = `Account ${existingAccountsCount + 1}`
@@ -91,9 +97,20 @@ export const addAccountToWalletFromSeedphrase$: RootEpic = (
 
       const walletAccount: WalletAccount = { name, keypair }
 
-      return addAccountToWallet({ persistedAccount, walletAccount })
+      return { existingAccountNames, name, persistedAccount, walletAccount }
+    }),
+    map(({ existingAccountNames, name, persistedAccount, walletAccount }) => {
+      return !existingAccountNames.includes(name)
+        ? addAccountToWallet({ persistedAccount, walletAccount })
+        : showNotification({
+            type: NotificationType.error,
+            message: `Account "${name}" already exists. Please rename this account before generating new account`,
+          })
     }),
   )
+
+  return addNextAccount$
+}
 
 export const importAccountFromSecret$: RootEpic = (
   action$,
@@ -126,7 +143,7 @@ export const importAccountFromSecret$: RootEpic = (
 // And that the there is a wallet unlock success
 export const login$: RootEpic = (action$, state$, { decryptWithPassword, getKeypairFromSecret }) =>
   action$.pipe(
-    filter(isActionOf(login)),
+    filter(isActionOf(loginAction)),
     withLatestFrom(state$),
     map(([action, state]) => {
       const {
@@ -157,7 +174,7 @@ export const devHelper$: RootEpic = action$ =>
         mapTo(action),
       ),
     ),
-    map(action => login({ password: action.payload.login.input.currentInput })),
+    map(action => loginAction({ password: action.payload.login.input.currentInput })),
   )
 
 function isRehydrate(key: string): (action: RootAction) => action is RehydrateAction {
