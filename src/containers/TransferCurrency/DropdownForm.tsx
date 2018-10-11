@@ -42,15 +42,18 @@ export const DropdownFormPresentation: React.SFC<Props> = props => {
               value={props.payeePublicKey}
             >
               <option>Select a contact</option>
+              {props.savedContacts.length && (
+                <option className="has-text-weight-bold is-uppercase" disabled={true}>
+                  My contacts
+                </option>
+              )}
               {renderOption(props.savedContacts)}
               {props.accounts.length > 1 && (
-                <React.Fragment>
-                  <option disabled={true}>
-                    <DropdownDivider />
-                  </option>
-                  {renderOption(inactiveAccounts)}
-                </React.Fragment>
+                <option disabled={true} className="has-text-weight-bold is-uppercase">
+                  My accounts
+                </option>
               )}
+              {renderOption(inactiveAccounts)}
             </select>
           </div>
         </div>
