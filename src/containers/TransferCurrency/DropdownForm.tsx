@@ -1,6 +1,5 @@
 import * as React from 'react'
 
-import { DropdownDivider } from '@containers/Sidebar/DropdownDivider'
 import { getInactiveAccountsInContactFormat } from '@services/accounts'
 import { Contact, FormChangeHandler, TransferRequest, WalletAccount } from '@types'
 

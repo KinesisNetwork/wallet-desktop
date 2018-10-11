@@ -25,6 +25,12 @@ exports[`DropdownForm renders correctly 1`] = `
             Select a contact
           </option>
           <option
+            className="has-text-weight-bold is-uppercase"
+            disabled={true}
+          >
+            My contacts
+          </option>
+          <option
             key="123qwe"
             value="123qwe"
           >
