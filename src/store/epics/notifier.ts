@@ -8,6 +8,5 @@ import { RootEpic } from '@store'
 export const clearNotifier$: RootEpic = pipe(
   filter(isActionOf(showNotification)),
   map(({ payload }) => payload.displayTime || 5000),
-  switchMap(timer),
-  map(clearNotification),
+  switchMap(delay => timer(delay).pipe(map(clearNotification))),
 )
