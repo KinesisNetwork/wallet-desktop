@@ -39,7 +39,7 @@ class ValidateRestorationPresentation extends React.Component<Props, State> {
   }
 
   completeProgress = (): void => {
-    this.setState({ progressText: 'Wallet restored!' })
+    this.setState({ progressText: 'Wallet imported!' })
     this.timeout = setTimeout(() => this.props.nextPage(), 750)
   }
 
