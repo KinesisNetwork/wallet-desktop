@@ -5,7 +5,7 @@ import * as React from 'react'
 import { AccountPanelComponent } from '@containers/AccountPanel'
 import '../../setupTests'
 
-describe.only('AccountPanel', () => {
+describe('AccountPanel', () => {
   const existingName = 'b'
   const props = {
     activeAccount: {
@@ -51,6 +51,24 @@ describe.only('AccountPanel', () => {
     expect(updateAccountName).not.toHaveBeenCalled()
   })
 
+  it('shows error text if input exists without trailing spaces', () => {
+    const updateAccountName = jest.fn()
+    const localProps = { ...props, updateAccountName }
+
+    const wrapper = shallow(<AccountPanelComponent {...localProps} />)
+    const instance = wrapper.instance() as AccountPanelComponent
+
+    const input = 'c  '
+
+    instance.handleChange({ target: { value: input } })
+    instance.handleStopEditing()
+    const { hasError, errorText } = instance.state
+
+    expect(hasError).toBe(true)
+    expect(errorText).toEqual(`Account with name "${input.trim()}" already exists`)
+    expect(updateAccountName).not.toHaveBeenCalled()
+  })
+
   it('shows error text if the name is over 20 characters', () => {
     const updateAccountName = jest.fn()
     const localProps = { ...props, updateAccountName }
@@ -65,11 +83,29 @@ describe.only('AccountPanel', () => {
     instance.handleStopEditing()
 
     expect(hasError).toBe(true)
-    expect(errorText).toEqual('Maximum name length is 20 characters')
+    expect(errorText).toEqual('Account name must be between 1 and 20 characters in length')
     expect(updateAccountName).not.toHaveBeenCalled()
   })
 
-  it("nothing happens if the name doesn't change", () => {
+  it('shows error text if the name (without spaces) is blank', () => {
+    const updateAccountName = jest.fn()
+    const localProps = { ...props, updateAccountName }
+
+    const wrapper = shallow(<AccountPanelComponent {...localProps} />)
+    const instance = wrapper.instance() as AccountPanelComponent
+
+    const input = ''
+
+    instance.handleChange({ target: { value: input } })
+    const { hasError, errorText } = instance.state
+    instance.handleStopEditing()
+
+    expect(hasError).toBe(true)
+    expect(errorText).toEqual('Account name must be between 1 and 20 characters in length')
+    expect(updateAccountName).not.toHaveBeenCalled()
+  })
+
+  it("nothing happens if the name doesn't change or only spaces are added to end of name", () => {
     const updateAccountName = jest.fn()
     const localProps = { ...props, updateAccountName }
 
@@ -77,6 +113,8 @@ describe.only('AccountPanel', () => {
     const instance = wrapper.instance() as AccountPanelComponent
 
     instance.handleChange({ target: { value: existingName } })
+    instance.handleStopEditing()
+    instance.handleChange({ target: { value: `${existingName} ` } })
     instance.handleStopEditing()
 
     expect(updateAccountName).not.toHaveBeenCalled()

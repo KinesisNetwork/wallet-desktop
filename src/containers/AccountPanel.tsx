@@ -60,8 +60,10 @@ export class AccountPanelComponent extends React.Component<Props, State> {
 
   public handleStopEditing = () => {
     const { activeAccount } = this.props
+    const { name } = this.state
+    const trimmedName = name.trim()
 
-    const errorText = this.validateInput(this.state.name, ValidationType.unique)
+    const errorText = this.validateInput(name, ValidationType.unique)
 
     if (errorText) {
       this.setState({ errorText, hasError: Boolean(errorText) })
@@ -70,13 +72,13 @@ export class AccountPanelComponent extends React.Component<Props, State> {
 
     this.setState({ isEditing: !this.state.isEditing })
 
-    if (activeAccount.name === this.state.name || this.state.hasError) {
+    if (activeAccount.name === trimmedName || this.state.hasError) {
       return
     }
 
     this.props.updateAccountName({
       existingName: activeAccount.name,
-      newName: this.state.name,
+      newName: trimmedName,
     })
   }
 
@@ -84,15 +86,18 @@ export class AccountPanelComponent extends React.Component<Props, State> {
 
   public validateInput = (input: string, type: ValidationType) => {
     const { accountNames, activeAccount } = this.props
+    const trimmedInput = input.trim()
 
     if (type === ValidationType.length) {
-      return input.length > 20 ? 'Maximum name length is 20 characters' : ''
+      return trimmedInput.length === 0 || input.length > 20
+        ? 'Account name must be between 1 and 20 characters in length'
+        : ''
     }
     if (type === ValidationType.unique) {
-      const accountNameExists = accountNames.includes(input)
+      const accountNameExists = accountNames.includes(trimmedInput)
 
-      return accountNameExists && activeAccount.name !== input
-        ? `Account with name "${input}" already exists`
+      return accountNameExists && activeAccount.name !== trimmedInput
+        ? `Account with name "${trimmedInput}" already exists`
         : ''
     }
     return ''
