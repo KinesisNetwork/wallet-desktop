@@ -85,7 +85,7 @@ class PassphraseCheck extends React.Component<PassphraseCheckProps, PassphraseSt
                 currentValue={this.state.validInputs[word] || ''}
                 handleInput={newValue => this.handleInput(word, newValue)}
                 placeholder={`Word ${rowSplit + splitIndex + 1}`}
-                isValid={this.state.validInputs[word] === word}
+                isValid={(this.state.validInputs[word] || '').toLowerCase() === word}
               />
             ) : (
               <input
@@ -108,7 +108,9 @@ class PassphraseCheck extends React.Component<PassphraseCheckProps, PassphraseSt
   }
 
   isVerified = () =>
-    Object.entries(this.state.validInputs).every(([expected, current]) => expected === current)
+    Object.entries(this.state.validInputs).every(
+      ([expected, current]) => expected === current.toLowerCase(),
+    )
 }
 
 const mapStateToProps = (state: RootState) => ({

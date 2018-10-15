@@ -36,14 +36,13 @@ export class ImportPassphrasePresentation extends React.Component<Props, State> 
   }
 
   handlePhraseChange: React.ChangeEventHandler<HTMLTextAreaElement> = ev => {
-    const value = ev.target.value.toLocaleLowerCase()
-    const isValidPassphrase = validateMnemonic(value)
-
-    this.setState({ recoveryPhrase: value, isValidPassphrase })
+    const recoveryPhrase = ev.target.value
+    const isValidPassphrase = validateMnemonic(recoveryPhrase.toLowerCase())
+    this.setState({ isValidPassphrase, recoveryPhrase })
   }
 
   handlePhraseSubmit = () => {
-    this.props.onSubmitPassphrase(this.state.recoveryPhrase)
+    this.props.onSubmitPassphrase(this.state.recoveryPhrase.toLowerCase())
   }
 
   render() {
