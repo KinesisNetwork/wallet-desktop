@@ -5,10 +5,18 @@ exports[`TransferSummary should render correctly 1`] = `
   <div
     className="has-text-centered content"
   >
-    <Component />
+    <Component
+      amount="5"
+      currency="KAU"
+      text="KAU"
+    />
     <p
       className="has-text-grey-lighter"
-    />
+    >
+      <q>
+        memo
+      </q>
+    </p>
   </div>
   <hr
     className="has-background-grey-lighter"
@@ -23,11 +31,13 @@ exports[`TransferSummary should render correctly 1`] = `
   >
     <tbody>
       <TransferTableRow
-        amount="NaN"
-        description="Transaction fee"
+        amount="1.00000"
+        currency="KAU"
+        description="Transaction Fee"
       />
       <TransferTableRow
-        amount="NaN"
+        amount="6.00000"
+        currency="KAU"
         description="TOTAL"
       />
     </tbody>
