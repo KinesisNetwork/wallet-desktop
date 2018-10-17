@@ -1,13 +1,5 @@
 import { from, merge, of } from 'rxjs'
-import {
-  catchError,
-  exhaustMap,
-  filter,
-  map,
-  mapTo,
-  mergeMap,
-  withLatestFrom,
-} from 'rxjs/operators'
+import { catchError, exhaustMap, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 
 import {
@@ -73,7 +65,7 @@ export const transferRequest$: RootEpic = (
     filter(isActionOf(transferRequest)),
     map(({ payload }) => payload),
     withLatestFrom(state$),
-    mergeMap(([request, state]) =>
+    exhaustMap(([request, state]) =>
       from(
         createKinesisTransfer(
           getActiveAccount(state.wallet).keypair.secret(),
@@ -96,7 +88,7 @@ export const transactionSubmission$: RootEpic = (
     filter(isActionOf(transactionRequest)),
     mergeMap(({ payload }) =>
       from(submitSignedTransaction(getCurrentConnection(state$.value.connections), payload)).pipe(
-        mapTo(transactionSuccess()),
+        map(transactionSuccess),
         catchError(err => of(transactionFailed(err))),
       ),
     ),
