@@ -1,3 +1,4 @@
+import { push } from 'connected-react-router'
 import { REHYDRATE } from 'redux-persist'
 import { merge } from 'rxjs'
 import { filter, map, mapTo, switchMap, withLatestFrom } from 'rxjs/operators'
@@ -15,7 +16,7 @@ import {
   startWalletCreation,
   unlockWalletNew,
 } from '@actions'
-import { NotificationType, PersistedAccount, WalletAccount } from '@types'
+import { NotificationType, PersistedAccount, RootRoutes, WalletAccount } from '@types'
 import { RehydrateAction, RootAction } from '../root-action'
 import { RootEpic } from '../root-epic'
 
@@ -84,11 +85,11 @@ export const addAccountToWalletFromSeedphrase$: RootEpic = (
     })),
     map(({ password, passphrase, persisted }) => {
       const { createdAccounts } = persisted
-      const existingAccountsCount = createdAccounts.filter(a => !a.imported).length
+      const createdAccountsCount = createdAccounts.filter(a => !a.imported).length
       const existingAccountNames = createdAccounts.map(a => a.name)
 
-      const keypair = getKeypairFromMnemonic(passphrase, existingAccountsCount)
-      const name = `Account ${existingAccountsCount + 1}`
+      const keypair = getKeypairFromMnemonic(passphrase, createdAccountsCount)
+      const name = `Account ${createdAccountsCount + 1}`
       const persistedAccount: PersistedAccount = {
         name,
         encryptedSecret: encryptWithPassword(keypair.secret(), password),
@@ -116,28 +117,59 @@ export const importAccountFromSecret$: RootEpic = (
   action$,
   state$,
   { getKeypairFromSecret, encryptWithPassword },
-) =>
-  action$.pipe(
+) => {
+  const importAccount$ = action$.pipe(
     filter(isActionOf(importAccountFromSecret)),
     withLatestFrom(state$),
-    map(([{ payload }, state]) => {
-      const password = state.login.input.lastSuccessfulInput
-      const { persisted } = state.wallet
-
+    map(([{ payload }, { login, wallet: { accounts, persisted } }]) => ({
+      accounts,
+      password: login.input.lastSuccessfulInput,
+      payload,
+      persisted,
+    })),
+    map(({ accounts, password, payload, persisted }) => {
       const importedAccountsCount = persisted.createdAccounts.filter(a => a.imported).length
+
       const keypair = getKeypairFromSecret(payload.secret)
       const name = `Imported ${importedAccountsCount + 1}`
+      const encryptedSecret = encryptWithPassword(keypair.secret(), password)
+
       const persistedAccount: PersistedAccount = {
         name,
-        encryptedSecret: encryptWithPassword(keypair.secret(), password),
+        encryptedSecret,
         imported: true,
       }
 
+      const publicKey = keypair.publicKey()
       const walletAccount: WalletAccount = { name, keypair }
 
-      return addAccountToWallet({ persistedAccount, walletAccount })
+      const existingAccountName = persisted.createdAccounts.some(a => a.name === name)
+      const existingAccount = accounts.find(({ keypair: kp }) => kp.publicKey() === publicKey)
+
+      return { existingAccount, existingAccountName, name, persistedAccount, walletAccount }
+    }),
+    map(({ existingAccount, existingAccountName, name, persistedAccount, walletAccount }) => {
+      return !existingAccountName
+        ? !existingAccount
+          ? addAccountToWallet({ persistedAccount, walletAccount })
+          : showNotification({
+              type: NotificationType.error,
+              message: `Account "${existingAccount.name}" already exists based on this private key`,
+            })
+        : showNotification({
+            type: NotificationType.error,
+            message: `Account "${name}" already exists. Please rename this account before generating new account`,
+          })
     }),
   )
+
+  const dashboardRedirects$ = importAccount$.pipe(
+    filter(isActionOf(addAccountToWallet)),
+    mapTo(push(RootRoutes.dashboard) as any),
+  )
+
+  return merge(importAccount$, dashboardRedirects$)
+}
 
 // This assumes that the password has already been validated
 // And that the there is a wallet unlock success

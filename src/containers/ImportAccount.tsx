@@ -1,7 +1,7 @@
 import { importAccountFromSecret, showNotification } from '@actions'
 import { InputField } from '@components/InputField'
 import { isValidSecret } from '@services/kinesis'
-import { NotificationType, RootRoutes } from '@types'
+import { RootRoutes } from '@types'
 import { push } from 'connected-react-router'
 import * as React from 'react'
 import { connect } from 'react-redux'
@@ -28,11 +28,6 @@ export class ImportAccountPresentation extends React.Component<
   public onSubmit = ev => {
     ev.preventDefault()
     this.props.importAccountFromSecret({ secret: this.state.privateKey })
-    this.props.showNotification({
-      message: 'Account successfully imported',
-      type: NotificationType.success,
-    })
-    this.props.push(RootRoutes.dashboard)
   }
 
   public render() {
