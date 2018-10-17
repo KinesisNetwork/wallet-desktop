@@ -1,8 +1,9 @@
+import * as React from 'react'
+import { connect } from 'react-redux'
+
 import { updateTransferForm } from '@actions'
 import { InputField } from '@components/InputField'
 import { RootState } from '@store'
-import * as React from 'react'
-import { connect } from 'react-redux'
 
 const mapStateToProps = ({ transfer: { formMeta, formData }, connections }: RootState) => ({
   amount: formData.amount,
@@ -17,7 +18,7 @@ const mapDispatchToProps = {
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
-const TransferFormDetailsPresentation: React.SFC = (props: Props) => {
+const TransferFormDetailsPresentation: React.SFC<Props> = props => {
   const { updateTransferForm: handleChange } = props
 
   return (
