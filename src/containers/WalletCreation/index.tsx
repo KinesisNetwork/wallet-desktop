@@ -1,5 +1,4 @@
 import * as React from 'react'
-import SVG from 'react-inlinesvg'
 
 import { RootState } from '@store'
 import { RootRoutes, WalletCreationRoutes } from '@types'
@@ -8,7 +7,6 @@ import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-
 import { Passphrase } from './Passphrase'
 
 import { getLoginState } from '@selectors'
-import * as logo from 'images/KinesisWallet.svg'
 import { NamingWallet } from './NamingWallet'
 import { ValidatePassphrase } from './ValidatePassphrase'
 

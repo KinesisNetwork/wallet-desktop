@@ -25,10 +25,15 @@ exports[`SidebarPresentation should render correctly 1`] = `
       <div
         className="tile is-child has-text-centered"
       >
-        <img
-          alt="Logo alpha"
+        <InlineSVG
+          baseURL=""
+          cacheGetRequests={false}
           className="sidebar-logo"
-          src="./icons/png/64x64.png"
+          onLoad={[Function]}
+          src="test-file-stub"
+          supportTest={[Function]}
+          uniquifyIDs={true}
+          wrapper={[Function]}
         />
         <p
           className="has-text-primary"
