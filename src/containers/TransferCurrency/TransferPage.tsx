@@ -191,14 +191,17 @@ export class TransferPagePresentation extends React.Component<Props, State> {
               <section className="columns">
                 <div className="column content has-text-grey-lighter">
                   <p>Transaction fee</p>
+                  <p>Network fee</p>
                   <p>Remaining balance</p>
                 </div>
                 <div
                   className={`column has-text-right content ${addMetalColour(this.props.currency)}`}
                 >
                   <p>
-                    {Number(this.props.formData.fee).toFixed(5) || 0} {this.props.currency}
+                    {(Number(this.props.formData.fee) - 100e-7).toFixed(5) || 0}{' '}
+                    {this.props.currency}
                   </p>
+                  <p>0.00001 {this.props.currency}</p>
                   <p
                     className={`${
                       this.props.formMeta.remainingBalance < 0 ? 'has-text-danger' : ''

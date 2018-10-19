@@ -122,10 +122,30 @@ export class AccountPanelComponent extends React.Component<Props, State> {
                 <p className="help is-danger">{this.state.errorText}</p>
               </div>
             </div>
+            <div className="level-right" style={{ position: 'relative' }}>
+              <div className="level-item">
+                <button
+                  className="button is-inline-flex is-text"
+                  style={{ position: 'absolute', right: 0, bottom: 0 }}
+                  onClick={this.toggleAdvanced}
+                >
+                  <span>Advanced</span>
+                  <span
+                    className="icon is-small"
+                    style={{
+                      transition: 'transform .25s ease-in-out',
+                      transform: this.state.isToggled ? 'rotate(180deg)' : '',
+                    }}
+                  >
+                    <i className="fal fa-lg fa-angle-down" />
+                  </span>
+                </button>
+              </div>
+            </div>
           </div>
-          <div style={{ position: 'relative' }}>
+          <div className="buttons is-centered">
             <div
-              className="tooltip is-tooltip-top"
+              className="tooltip is-tooltip-top level-item"
               data-tooltip={this.state.copied ? 'Copied!' : 'Copy Public Address'}
             >
               <button
@@ -138,22 +158,6 @@ export class AccountPanelComponent extends React.Component<Props, State> {
                 </span>
               </button>
             </div>
-            <button
-              className="button is-inline-flex is-text"
-              style={{ position: 'absolute', right: 0, bottom: 0 }}
-              onClick={this.toggleAdvanced}
-            >
-              <span>Advanced</span>
-              <span
-                className="icon is-small"
-                style={{
-                  transition: 'transform .25s ease-in-out',
-                  transform: this.state.isToggled ? 'rotate(180deg)' : '',
-                }}
-              >
-                <i className="fal fa-lg fa-angle-down" />
-              </span>
-            </button>
           </div>
         </div>
         <div
