@@ -1,3 +1,8 @@
+import * as React from 'react'
+import SVG from 'react-inlinesvg'
+import { connect } from 'react-redux'
+import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router'
+
 import { AccountPage } from '@components/AccountPage'
 import { ConnectionSettings } from '@components/ConnectionSettings'
 import { Contacts } from '@containers/Contacts'
@@ -8,9 +13,7 @@ import { WalletRecoverScreens } from '@containers/WalletRecovery'
 import { WelcomeScreen } from '@containers/WelcomeScreen'
 import { RootState } from '@store'
 import { RootRoutes } from '@types'
-import * as React from 'react'
-import { connect } from 'react-redux'
-import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router'
+import * as logo from 'images/KinesisWallet.svg'
 
 const mapStateToProps = (state: RootState) => ({
   isLoggedIn: !!state.wallet.passphrase,
@@ -24,8 +27,8 @@ const RoutingPresentation: React.SFC<Props> = props =>
         <Sidebar />
       </div>
       <div className="column is-paddingless">
-        <div className="columns is-centered is-marginless">
-          <div className="column is-paddingless container is-fullhd">
+        <div className="columns is-centered">
+          <div className="column is-paddingless is-8-fullhd is-9-widescreen is-10-desktop container is-fullhd">
             <div className="section">
               <Switch>
                 <Route path={RootRoutes.dashboard} component={AccountPage} />
@@ -41,12 +44,25 @@ const RoutingPresentation: React.SFC<Props> = props =>
       </div>
     </div>
   ) : (
-    <Switch>
-      <Route exact={true} path="/" component={WelcomeScreen} />
-      <Route path={RootRoutes.create} component={WalletCreationScreens} />
-      <Route path={RootRoutes.recover} component={WalletRecoverScreens} />
-      <Redirect to="/" />
-    </Switch>
+    <section className="section">
+      <div className="container">
+        <div className="columns is-mobile is-centered">
+          <div className="column is-half-fullhd is-two-thirds-tablet">
+            <div className="level">
+              <div className="level-item">
+                <SVG src={logo} />
+              </div>
+            </div>
+            <Switch>
+              <Route exact={true} path="/" component={WelcomeScreen} />
+              <Route path={RootRoutes.create} component={WalletCreationScreens} />
+              <Route path={RootRoutes.recover} component={WalletRecoverScreens} />
+              <Redirect to="/" />
+            </Switch>
+          </div>
+        </div>
+      </div>
+    </section>
   )
 
 const Routing = withRouter(connect(mapStateToProps)(RoutingPresentation))
