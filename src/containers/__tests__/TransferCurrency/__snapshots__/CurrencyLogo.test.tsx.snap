@@ -11,9 +11,14 @@ exports[`CurrencyLogo should render correctly 1`] = `
       <figure
         className="image is-32x32"
       >
-        <img
-          className="is-rounded"
-          src={Object {}}
+        <InlineSVG
+          baseURL=""
+          cacheGetRequests={false}
+          onLoad={[Function]}
+          src="test-file-stub"
+          supportTest={[Function]}
+          uniquifyIDs={true}
+          wrapper={[Function]}
         />
       </figure>
     </div>

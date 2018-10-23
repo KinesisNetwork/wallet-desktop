@@ -1,9 +1,10 @@
 import * as React from 'react'
+import SVG from 'react-inlinesvg'
 
-import * as kagLogo from '@icons/kag-icon.svg'
-import * as kauLogo from '@icons/kau-icon.svg'
 import { setImageSize } from '@services/util'
 import { Currency, ImageSize } from '@types'
+import * as kagLogo from 'images/kag-icon.svg'
+import * as kauLogo from 'images/kau-icon.svg'
 
 interface Props {
   currency: string
@@ -17,7 +18,7 @@ export const CurrencyLogo: React.SFC<Props> = props => {
       <div className="level">
         <div className="level-item">
           <figure className={`image ${setImageSize(props.size).image}`}>
-            <img src={props.currency === Currency.KAU ? kauLogo : kagLogo} className="is-rounded" />
+            <SVG src={props.currency === Currency.KAU ? kauLogo : kagLogo} />
           </figure>
         </div>
       </div>

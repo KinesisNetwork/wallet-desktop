@@ -1,10 +1,12 @@
-import * as sleeping from 'images/wally-sleeping.svg'
 import * as React from 'react'
+import SVG from 'react-inlinesvg'
+
+import * as sleeping from 'images/wally-sleeping.svg'
 
 const EmptyTransactions = props => (
   <div className="level">
     <div className="level-item">
-      <img src={sleeping} style={{ height: '200px' }} />
+      <SVG src={sleeping} />
     </div>
     <div className="level-item">
       <div>
