@@ -1,4 +1,5 @@
 import * as React from 'react'
+import SVG from 'react-inlinesvg'
 
 import { addNextAccountFromSeedphrase, setActiveAccount } from '@actions'
 import { DropdownDivider } from '@containers/Sidebar/DropdownDivider'
@@ -13,13 +14,9 @@ import { getActiveAccount } from '@selectors'
 import { RootState } from '@store'
 import { PersistedAccount, RootRoutes } from '@types'
 import { push } from 'connected-react-router'
+import * as logo from 'images/KinesisIcon.svg'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
-
-let logo
-if (process.env.IS_WEB) {
-  logo = require('../../icons/png/64x64.png')
-}
 
 export const mapStateToProps = ({ wallet }: RootState) => ({
   activeAccount: getActiveAccount(wallet),
@@ -61,11 +58,7 @@ export class SidebarPresentation extends React.Component<Props> {
         <SidebarUpper>
           <div className="sidebar-header tile is-parent is-vertical">
             <div className="tile is-child has-text-centered">
-              <img
-                src={logo ? logo : './icons/png/64x64.png'}
-                className="sidebar-logo"
-                alt="Logo alpha"
-              />
+              <SVG src={logo} className="sidebar-logo" />
               <p className="has-text-primary" />
             </div>
 
