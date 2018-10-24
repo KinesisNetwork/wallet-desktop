@@ -2,6 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 
 import { AmountPresentation } from '@containers/TransferCurrency/AmountPresentation'
+import { BASE_NETWORK_FEE } from '@services/kinesis'
 import { RootState } from '@store'
 import { Currency } from '@types'
 
@@ -41,7 +42,7 @@ export const TransferSummaryPresentation: React.SFC<Props> = ({ amount, currency
         />
         <TransferTableRow
           description="Network Fee"
-          amount={(100e-7).toFixed(5)}
+          amount={BASE_NETWORK_FEE.toFixed(5)}
           currency={currency}
         />
         <TransferTableRow

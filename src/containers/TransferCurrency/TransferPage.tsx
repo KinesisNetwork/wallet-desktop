@@ -19,10 +19,9 @@ import { TransferButtons } from '@containers/TransferCurrency/TransferButtons'
 import { TransferFormDetails } from '@containers/TransferCurrency/TransferDetails'
 import { addMetalColour } from '@helpers/walletUtils'
 import { getActiveAccount, getCurrentConnection } from '@selectors'
+import { BASE_NETWORK_FEE } from '@services/kinesis'
 import { RootState } from '@store'
 import { Contact, ImageSize, NotificationType, RootRoutes } from '@types'
-
-const BASE_NETWORK_FEE = 100e-7
 
 const mapStateToProps = ({
   connections,
