@@ -22,6 +22,8 @@ import { getActiveAccount, getCurrentConnection } from '@selectors'
 import { RootState } from '@store'
 import { Contact, ImageSize, NotificationType, RootRoutes } from '@types'
 
+const BASE_NETWORK_FEE = 100e-7
+
 const mapStateToProps = ({
   connections,
   transfer: { formData, formMeta },
@@ -198,10 +200,12 @@ export class TransferPagePresentation extends React.Component<Props, State> {
                   className={`column has-text-right content ${addMetalColour(this.props.currency)}`}
                 >
                   <p>
-                    {(Number(this.props.formData.fee) - 100e-7).toFixed(5) || 0}{' '}
+                    {(Number(this.props.formData.fee) - BASE_NETWORK_FEE).toFixed(5) || 0}{' '}
                     {this.props.currency}
                   </p>
-                  <p>0.00001 {this.props.currency}</p>
+                  <p>
+                    {BASE_NETWORK_FEE.toFixed(5)} {this.props.currency}
+                  </p>
                   <p
                     className={`${
                       this.props.formMeta.remainingBalance < 0 ? 'has-text-danger' : ''
