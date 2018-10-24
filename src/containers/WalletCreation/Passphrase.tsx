@@ -5,7 +5,9 @@ import { connect } from 'react-redux'
 import { TermsAndConditions } from '@components/TermsAndConditions'
 import { RootState } from '@store'
 import { RootRoutes, WalletCreationRoutes } from '@types'
+import * as animation from 'images/record-phrase-animation.gif'
 import { RouteComponentProps } from 'react-router'
+import { StepAnimation } from './StepAnimation'
 
 const mapStateToProps = (state: RootState) => ({
   passphrase: state.createWallet.passphrase,
@@ -33,6 +35,7 @@ const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
   nextPage,
 }) => (
   <React.Fragment>
+    <StepAnimation animation={animation} />
     <h1 className="title has-text-primary has-text-centered">Record your recovery phrase</h1>
     <div className="content">
       <p>
