@@ -1,40 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="128px" height="128px" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: sketchtool 51 (57462) - http://www.bohemiancoding.com/sketch -->
-    <title>C53FD313-0439-41D7-8A61-93165080BD29-529-00000D9E2C2364E8</title>
-    <desc>Created with sketchtool.</desc>
-    <defs>
-        <circle id="path-1" cx="64" cy="64" r="64"></circle>
-    </defs>
-    <g id="Funds" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Funds-(empty-state-KAG)" transform="translate(-755.000000, -249.000000)">
-            <g id="Body">
-                <g id="Main-Section" transform="translate(197.000000, 0.000000)">
-                    <g id="Empty-state" transform="translate(225.000000, 249.000000)">
-                        <g id="Currency-Summary" transform="translate(238.000000, 0.000000)">
-                            <g id="Summary">
-                                <g id="KAU-icon" transform="translate(95.000000, 0.000000)">
-                                    <g id="KAG_Icon-01">
-                                        <g id="Colour">
-                                            <mask id="mask-2" fill="white">
-                                                <use xlink:href="#path-1"></use>
-                                            </mask>
-                                            <use id="Mask" fill="#1F2D3B" fill-rule="nonzero" xlink:href="#path-1"></use>
-                                            <g mask="url(#mask-2)" fill="#2B3E50" id="Rectangle">
-                                                <rect x="0" y="0" width="128" height="128"></rect>
-                                            </g>
-                                        </g>
-                                        <path d="M48.4977778,102.603175 L4.06349206,61.8565074 L11.0628571,58.0165074 C11.5314138,57.8089153 12.0797488,58.0173733 12.2920635,58.483809 C12.3948592,58.7058531 12.4043628,58.959836 12.3184483,59.1889414 C12.2325338,59.4180467 12.0583711,59.6031548 11.8349206,59.7028566 L7.40571429,62.3847614 L48.7619048,100.368254 L120.634921,60.0482534 L114.234921,53.7701581 C113.839512,53.4474825 113.780396,52.8654248 114.102857,52.4698406 C114.425533,52.0744317 115.00759,52.0153165 115.403175,52.3377771 L123.936508,60.3326979 L48.4977778,102.603175 Z" id="Shape" fill="#8694A4" fill-rule="nonzero"></path>
-                                        <path d="M48.4876186,88.4012664 L48.5993646,101.465393" id="Shape" fill="#8694A4" fill-rule="nonzero"></path>
-                                        <path d="M47.6546031,100.571432 L47.583492,89.3968287 C47.5780438,89.151634 47.6702528,88.9143233 47.839822,88.737133 C48.0093913,88.5599426 48.2424216,88.4573965 48.487619,88.4520668 C48.7328137,88.4466187 48.9701243,88.5388276 49.1473147,88.7083969 C49.324505,88.8779661 49.4270511,89.1109964 49.4323808,89.3561938 L49.503492,100.530797 C49.5089401,100.775992 49.4167312,101.013303 49.2471619,101.190493 C49.0775926,101.367683 48.8445623,101.470229 48.599365,101.475559 C48.3541702,101.481007 48.1168596,101.388798 47.9396692,101.219229 C47.7624789,101.04966 47.6599328,100.816629 47.6546031,100.571432 Z" id="Shape" fill="#8694A4" fill-rule="nonzero"></path>
-                                        <polygon id="Shape" fill="#8694A4" fill-rule="nonzero" points="107.591111 46.0190471 82.5295239 25.3561895 19.7587309 53.7396822 48.0609529 78.5676192"></polygon>
-                                    </g>
-                                </g>
-                            </g>
-                        </g>
+<svg viewBox="0 0 128 128" version="1.1"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink">
+  <!-- Generator: sketchtool 51 (57462) - http://www.bohemiancoding.com/sketch -->
+  <title>C53FD313-0439-41D7-8A61-93165080BD29-529-00000D9E2C2364E8</title>
+  <desc>Created with sketchtool.</desc>
+  <defs>
+    <circle id="path-1" cx="64" cy="64" r="64"></circle>
+  </defs>
+  <g id="Funds" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Funds-(empty-state-KAG)" transform="translate(-755.000000, -249.000000)">
+      <g id="Body">
+        <g id="Main-Section" transform="translate(197.000000, 0.000000)">
+          <g id="Empty-state" transform="translate(225.000000, 249.000000)">
+            <g id="Currency-Summary" transform="translate(238.000000, 0.000000)">
+              <g id="Summary">
+                <g id="KAU-icon" transform="translate(95.000000, 0.000000)">
+                  <g id="KAG_Icon-01">
+                    <g id="Colour">
+                      <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                      </mask>
+                      <use id="Mask" fill="#1F2D3B" fill-rule="nonzero" xlink:href="#path-1"></use>
+                      <g mask="url(#mask-2)" fill="#2B3E50" id="Rectangle">
+                        <rect x="0" y="0" width="128" height="128"></rect>
+                      </g>
                     </g>
+                    <path d="M48.4977778,102.603175 L4.06349206,61.8565074 L11.0628571,58.0165074 C11.5314138,57.8089153 12.0797488,58.0173733 12.2920635,58.483809 C12.3948592,58.7058531 12.4043628,58.959836 12.3184483,59.1889414 C12.2325338,59.4180467 12.0583711,59.6031548 11.8349206,59.7028566 L7.40571429,62.3847614 L48.7619048,100.368254 L120.634921,60.0482534 L114.234921,53.7701581 C113.839512,53.4474825 113.780396,52.8654248 114.102857,52.4698406 C114.425533,52.0744317 115.00759,52.0153165 115.403175,52.3377771 L123.936508,60.3326979 L48.4977778,102.603175 Z" id="Shape" fill="#8694A4" fill-rule="nonzero"></path>
+                    <path d="M48.4876186,88.4012664 L48.5993646,101.465393" id="Shape" fill="#8694A4" fill-rule="nonzero"></path>
+                    <path d="M47.6546031,100.571432 L47.583492,89.3968287 C47.5780438,89.151634 47.6702528,88.9143233 47.839822,88.737133 C48.0093913,88.5599426 48.2424216,88.4573965 48.487619,88.4520668 C48.7328137,88.4466187 48.9701243,88.5388276 49.1473147,88.7083969 C49.324505,88.8779661 49.4270511,89.1109964 49.4323808,89.3561938 L49.503492,100.530797 C49.5089401,100.775992 49.4167312,101.013303 49.2471619,101.190493 C49.0775926,101.367683 48.8445623,101.470229 48.599365,101.475559 C48.3541702,101.481007 48.1168596,101.388798 47.9396692,101.219229 C47.7624789,101.04966 47.6599328,100.816629 47.6546031,100.571432 Z" id="Shape" fill="#8694A4" fill-rule="nonzero"></path>
+                    <polygon id="Shape" fill="#8694A4" fill-rule="nonzero" points="107.591111 46.0190471 82.5295239 25.3561895 19.7587309 53.7396822 48.0609529 78.5676192"></polygon>
+                  </g>
                 </g>
+              </g>
             </g>
+          </g>
         </g>
+      </g>
     </g>
+  </g>
 </svg>

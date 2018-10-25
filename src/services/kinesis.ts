@@ -3,6 +3,7 @@ import { flatten, get } from 'lodash'
 
 import { Connection, TransactionLoader, TransactionOperationView } from '@types'
 const STROOPS_IN_ONE_KINESIS = 10000000
+export const BASE_NETWORK_FEE = 100e-7
 
 export enum OperationErrors {
   op_low_reserve = 'Transfer amount is lower than the base reserve',

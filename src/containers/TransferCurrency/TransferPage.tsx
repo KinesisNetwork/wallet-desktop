@@ -19,6 +19,7 @@ import { TransferButtons } from '@containers/TransferCurrency/TransferButtons'
 import { TransferFormDetails } from '@containers/TransferCurrency/TransferDetails'
 import { addMetalColour } from '@helpers/walletUtils'
 import { getActiveAccount, getCurrentConnection } from '@selectors'
+import { BASE_NETWORK_FEE } from '@services/kinesis'
 import { RootState } from '@store'
 import { Contact, ImageSize, NotificationType, RootRoutes } from '@types'
 
@@ -191,13 +192,18 @@ export class TransferPagePresentation extends React.Component<Props, State> {
               <section className="columns">
                 <div className="column content has-text-grey-lighter">
                   <p>Transaction fee</p>
+                  <p>Network fee</p>
                   <p>Remaining balance</p>
                 </div>
                 <div
                   className={`column has-text-right content ${addMetalColour(this.props.currency)}`}
                 >
                   <p>
-                    {Number(this.props.formData.fee).toFixed(5) || 0} {this.props.currency}
+                    {(Number(this.props.formData.fee) - BASE_NETWORK_FEE).toFixed(5) || 0}{' '}
+                    {this.props.currency}
+                  </p>
+                  <p>
+                    {BASE_NETWORK_FEE.toFixed(5)} {this.props.currency}
                   </p>
                   <p
                     className={`${

@@ -1,5 +1,5 @@
 # Kinesis Wallet
 
-With Electron, React and Redux. Compatible with the Kinesis Currencies.
+A simple cryptocurrency wallet for the [Kinesis Currencies](https://kinesis.money)
 
-Packaged up nicely with Electron-Forge
+Built for the web and electron
