@@ -37,14 +37,15 @@ const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
   <React.Fragment>
     <StepAnimation animation={animation} alt="" />
     <h1 className="title has-text-primary has-text-centered">Record your recovery phrase</h1>
+    <h2 className="subtitle has-text-danger has-text-centered">
+      Anyone with your recovery phrase will have complete access to your wallet.
+    </h2>
     <div className="content">
       <p>
         Your recovery phrase is the only way to regain access to your wallet if you forget the
         password or lose access to this device.
       </p>
       <p>
-        <strong>Anyone with your recovery phrase will have complete access to your wallet.</strong>
-        <br />
         <strong>Write down and securely store these 12 words:</strong>
       </p>
     </div>
