@@ -14,6 +14,7 @@ import { WelcomeScreen } from '@containers/WelcomeScreen'
 import { RootState } from '@store'
 import { RootRoutes } from '@types'
 import * as logo from 'images/KinesisWallet.svg'
+import TestnetBanner from './TestnetBanner'
 
 const mapStateToProps = (state: RootState) => ({
   isLoggedIn: !!state.wallet.passphrase,
@@ -27,6 +28,7 @@ const RoutingPresentation: React.SFC<Props> = props =>
         <Sidebar />
       </div>
       <div className="column is-paddingless">
+        <TestnetBanner />
         <div className="columns is-centered">
           <div className="column is-paddingless is-8-fullhd is-9-widescreen is-10-desktop container is-fullhd">
             <div className="section">
