@@ -1,10 +1,13 @@
+import { replace } from 'connected-react-router'
+import * as React from 'react'
+import { connect } from 'react-redux'
+
 import { finaliseWalletCreation } from '@actions'
 import { FinaliseSetupModal } from '@containers/WalletCreation/FinaliseSetupModal'
 import { RootState } from '@store'
 import { RootRoutes, WalletCreationRoutes } from '@types'
-import { replace } from 'connected-react-router'
-import * as React from 'react'
-import { connect } from 'react-redux'
+import * as animation from 'images/verify-phrase-animation.gif'
+import { StepAnimation } from './StepAnimation'
 
 interface InputProps {
   placeholder: string
@@ -131,6 +134,7 @@ class ValidatePassphrasePresentation extends React.Component<Props, any> {
   render() {
     return (
       <React.Fragment>
+        <StepAnimation animation={animation} alt="" />
         <h1 className="title has-text-centered has-text-primary">Verify your recovery phrase</h1>
         <div className="content">
           <p>
