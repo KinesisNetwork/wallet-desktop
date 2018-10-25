@@ -35,7 +35,7 @@ const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
   nextPage,
 }) => (
   <React.Fragment>
-    <StepAnimation animation={animation} />
+    <StepAnimation animation={animation} alt="Keep recovery phrase safe" />
     <h1 className="title has-text-primary has-text-centered">Record your recovery phrase</h1>
     <div className="content">
       <p>
