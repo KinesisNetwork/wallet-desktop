@@ -17,7 +17,7 @@ class NamingWallet extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <StepAnimation animation={animation} alt="Name and secure your wallet" />
+        <StepAnimation animation={animation} alt="" />
         <h1 className="title has-text-primary has-text-centered">Create your new wallet</h1>
         <NameWalletForm
           onSubmitButtonClick={this.openConfirmModal}

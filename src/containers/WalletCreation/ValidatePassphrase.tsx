@@ -134,7 +134,7 @@ class ValidatePassphrasePresentation extends React.Component<Props, any> {
   render() {
     return (
       <React.Fragment>
-        <StepAnimation animation={animation} alt="Ensure you have recorded the phrase" />
+        <StepAnimation animation={animation} alt="" />
         <h1 className="title has-text-centered has-text-primary">Verify your recovery phrase</h1>
         <div className="content">
           <p>
