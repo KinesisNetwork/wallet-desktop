@@ -17,7 +17,9 @@ export const NoAccount: React.SFC<any> = () => (
     </section>
     <section className="is-size-7">
       <span className="has-text-grey-lighter">Why choose Kinesis?</span>
-      <a className="is-link u-margin-left-xxs">Learn more</a>
+      <a className="is-link u-margin-left-xxs" href="https://youtu.be/moDBJCemGTM" target="_blank">
+        Learn more
+      </a>
     </section>
   </main>
 )

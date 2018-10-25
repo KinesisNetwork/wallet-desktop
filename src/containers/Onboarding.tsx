@@ -41,7 +41,13 @@ export class OnboardingPresentation extends React.Component<Props> {
                   Kinesis is the world's most stable currency, backed 1:1 against gold (KAU) and
                   silver (KAG) bullion.
                 </p>
-                <a className="is-link is-size-6">Learn more</a>
+                <a
+                  className="is-link is-size-6"
+                  href="https://youtu.be/moDBJCemGTM"
+                  target="_blank"
+                >
+                  Learn more
+                </a>
               </div>
             </div>
             <div className="column">
