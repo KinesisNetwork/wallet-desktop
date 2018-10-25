@@ -128,7 +128,9 @@ const TransactionCard: React.SFC<Props & StateProps> = ({
           value={t.operation.transaction_hash}
           isCompact={true}
         />
-        <HorizontalLabelledField label="Fee:" value={`${t.fee} ${currency}`} isCompact={true} />
+        {!t.isIncoming && (
+          <HorizontalLabelledField label="Fee:" value={`${t.fee} ${currency}`} isCompact={true} />
+        )}
       </div>
     </div>
   </article>

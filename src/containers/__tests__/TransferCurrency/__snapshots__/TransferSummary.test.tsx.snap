@@ -31,9 +31,14 @@ exports[`TransferSummary should render correctly 1`] = `
   >
     <tbody>
       <TransferTableRow
-        amount="1.00000"
+        amount="0.99999"
         currency="KAU"
         description="Transaction Fee"
+      />
+      <TransferTableRow
+        amount="0.00001"
+        currency="KAU"
+        description="Network Fee"
       />
       <TransferTableRow
         amount="6.00000"
