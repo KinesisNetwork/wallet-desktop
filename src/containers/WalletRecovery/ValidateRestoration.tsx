@@ -22,7 +22,7 @@ const progressAnimation = tween({ to: 100, duration: 2500, ease: easing.anticipa
 class ValidateRestorationPresentation extends React.Component<Props, State> {
   state = {
     progress: 0,
-    progressText: 'Restoring wallet...',
+    progressText: 'Importing wallet...',
   }
 
   timeout: NodeJS.Timer
