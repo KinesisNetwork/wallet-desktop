@@ -51,9 +51,9 @@ const RoutingPresentation: React.SFC<Props> = props =>
         <div className="columns is-mobile is-centered">
           <div className="column is-half-fullhd is-two-thirds-tablet">
             <div className="level">
-              <div className="level-item">
-                <SVG src={logo} />
-              </div>
+              <SVG src={logo} wrapper={React.createFactory('div')} className="level-item">
+                <img src={logo} alt="Kinesis Wallet Logo" />
+              </SVG>
             </div>
             <Switch>
               <Route exact={true} path="/" component={WelcomeScreen} />
