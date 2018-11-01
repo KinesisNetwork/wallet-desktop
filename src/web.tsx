@@ -31,3 +31,5 @@ const renderApp = () => {
 }
 
 renderApp()
+
+import('./jira-issue-collector.js')
