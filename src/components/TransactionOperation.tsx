@@ -7,6 +7,7 @@ import * as React from 'react'
 
 import { AddressView } from '@components/AddressView'
 import { HorizontalLabelledField } from '@components/LabelledField'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { AddressDisplay, Currency, TransactionOperationView } from '@types'
 
 export interface Props {
@@ -53,16 +54,16 @@ const TransactionIcon: React.SFC<{ t: TransactionOperationView }> = ({ t }) =>
   isTransfer(t.operation) ? (
     t.isIncoming ? (
       <span className="icon is-large has-text-success">
-        <i className="fal fa-lg fa-arrow-down" />
+        <FontAwesomeIcon icon="arrow-down" size="lg" />
       </span>
     ) : (
       <span className="icon is-large has-text-danger">
-        <i className="fal fa-lg fa-arrow-up" />
+        <FontAwesomeIcon icon="arrow-up" size="lg" />
       </span>
     )
   ) : (
     <span className="icon is-large has-text-grey-light">
-      <i className="fal fa-lg fa-dash" />
+      <FontAwesomeIcon icon="minus" size="lg" />
     </span>
   )
 

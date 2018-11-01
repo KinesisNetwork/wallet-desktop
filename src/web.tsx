@@ -7,6 +7,8 @@ import './dependency-inline.js'
 import './fonts/fontawesome-all.min.js'
 import './style.scss'
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fal } from '@fortawesome/pro-light-svg-icons'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
@@ -21,6 +23,8 @@ register({
   baseUrl: config.compilerOptions.baseUrl,
   paths: config.compilerOptions.paths,
 })
+
+library.add(fal)
 
 const renderApp = () => {
   ReactDOM.render(<App />, document.getElementById('App'))

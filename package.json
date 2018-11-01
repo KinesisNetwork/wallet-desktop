@@ -89,6 +89,9 @@
     }
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.7",
+    "@fortawesome/pro-light-svg-icons": "^5.4.2",
+    "@fortawesome/react-fontawesome": "^0.1.3",
     "autotrack": "^2.4.1",
     "bip39": "^2.5.0",
     "bulma": "0.7.1",
