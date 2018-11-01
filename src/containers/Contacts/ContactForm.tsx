@@ -41,7 +41,8 @@ class ContractFormStateful extends React.Component<StateFulProps, State> {
     )
   }
 
-  private handleAdd = () => {
+  private handleAdd: React.FormEventHandler = ev => {
+    ev.preventDefault()
     const possibleErrors = this.validateForm()
     this.setState({ errors: possibleErrors })
 
@@ -51,22 +52,22 @@ class ContractFormStateful extends React.Component<StateFulProps, State> {
     }
 
     const { name, address } = this.state
-    this.props.addContact({ name, address })
+    this.props.addContact({ name: name.trim(), address: address.trim() })
     this.props.hideForm()
   }
 
   private handleChange = (key: string, value: string) => {
-    this.setState(state => ({ ...state, [key]: value }))
+    this.setState(state => ({ ...state, [key]: value.length > 1 ? value : value.trim() }))
   }
 
   private validateForm = () => {
     const errors = {
       address:
-        (isValidPublicKey(this.state.address) ? '' : 'Invalid address') ||
-        (this.props.currentContacts.every(({ address }) => this.state.address !== address)
+        (isValidPublicKey(this.state.address.trim()) ? '' : 'Invalid address') ||
+        (this.props.currentContacts.every(({ address }) => address !== this.state.address.trim())
           ? ''
           : 'Address already in contacts'),
-      name: this.props.currentContacts.every(({ name }) => name !== this.state.name)
+      name: this.props.currentContacts.every(({ name }) => name !== this.state.name.trim())
         ? ''
         : 'Name already in contacts',
     }
@@ -77,11 +78,11 @@ class ContractFormStateful extends React.Component<StateFulProps, State> {
 interface Props extends State {
   handleChange: (key: keyof Contact, value: string) => any
   cancel: () => any
-  addContact: () => any
+  addContact: React.FormEventHandler
 }
 
 const ContactFormPresentation: React.SFC<Props> = props => (
-  <React.Fragment>
+  <form onSubmit={props.addContact}>
     <div className="field is-grouped">
       <div className="control">
         <InputField
@@ -92,6 +93,7 @@ const ContactFormPresentation: React.SFC<Props> = props => (
           onChangeHandler={value => props.handleChange('name', value)}
           icon="fa-user"
           maxLength={20}
+          required={true}
           helpText={`Characters: ${props.name.length}/20`}
           errorText={props.errors.name}
         />
@@ -106,6 +108,7 @@ const ContactFormPresentation: React.SFC<Props> = props => (
           icon="fa-passport"
           placeholder="e.g. GDUL65KWF..."
           errorText={props.errors.address}
+          required={true}
         />
       </div>
       <div className="control">
@@ -115,8 +118,8 @@ const ContactFormPresentation: React.SFC<Props> = props => (
           </label>
           <div className="control">
             <button
+              type="submit"
               className="button is-success"
-              onClick={props.addContact}
               disabled={!props.address || !props.name}
             >
               <span className="icon">
@@ -132,7 +135,7 @@ const ContactFormPresentation: React.SFC<Props> = props => (
             <br />
           </label>
           <div className="control">
-            <button className="button is-danger" onClick={props.cancel}>
+            <button className="button is-danger" type="button" onClick={props.cancel}>
               <span className="icon">
                 <i className="fal fa-lg fa-times" />
               </span>
@@ -142,7 +145,7 @@ const ContactFormPresentation: React.SFC<Props> = props => (
       </div>
     </div>
     <hr className="has-background-grey-lighter" />
-  </React.Fragment>
+  </form>
 )
 
 const ConnectedContactForm = connect(
