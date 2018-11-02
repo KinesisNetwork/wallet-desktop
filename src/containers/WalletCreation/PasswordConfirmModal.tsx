@@ -25,7 +25,9 @@ export const PasswordConfirmModal: React.SFC<ModalProps> = ({ closeModal, isActi
             forget your password we cannot reset it for you.
           </p>
           <p>
-            <a>Learn more</a>
+            <a href="mailto:marketing@kinesis.money?subject=Keep%20your%20password%20safe%20learn%20more%20request&bcc=it@kinesis.money">
+              Learn more
+            </a>
           </p>
         </div>
         <div className="field is-grouped is-grouped-right">
