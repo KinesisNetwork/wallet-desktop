@@ -5,7 +5,7 @@ interface SidebarLowerItemProps {
   hint: string
   icon: string
   to: string
-  onClick?: () => any
+  onClick?: React.MouseEventHandler
 }
 export const SidebarLowerItem: React.SFC<SidebarLowerItemProps> = ({ icon, hint, to, onClick }) => (
   <NavLink

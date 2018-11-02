@@ -99,7 +99,15 @@ export class SidebarPresentation extends React.Component<Props> {
         </SidebarUpper>
         <SidebarLower>
           <SidebarLowerItem icon="sliders-v" hint="settings" to={RootRoutes.settings} />
-          <SidebarLowerItem icon="question-circle" hint="help" to="#" />
+          <SidebarLowerItem
+            hint="help"
+            icon="question-circle"
+            to="#"
+            onClick={() =>
+              (location.href =
+                'mailto:marketing@kinesis.money&subject=Kinesis%20wallet%20help%20request&bcc=it@kinesis.money')
+            }
+          />
           <SidebarLowerItem
             icon="sign-out-alt"
             hint="logout"
