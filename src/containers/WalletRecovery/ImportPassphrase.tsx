@@ -55,7 +55,9 @@ export class ImportPassphrasePresentation extends React.Component<Props, State> 
         <div className="content">
           <p>
             Your recovery phrase is the 12 word phrase you recorded when the wallet was created.{' '}
-            <a>Learn More</a>.
+            <a href="mailto:marketing@kinesis.money?subject=Record%20recovery%20phrase%20learn%20more%20request&bcc=it@kinesis.money">
+              Learn more
+            </a>
           </p>
         </div>
         <div className="field">

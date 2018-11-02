@@ -72,6 +72,7 @@ exports[`SidebarPresentation should render correctly 1`] = `
     <Component
       hint="help"
       icon="question-circle"
+      onClick={[Function]}
       to="#"
     />
     <Component

@@ -26,10 +26,10 @@ class FinaliseSetupModal extends React.Component<Props> {
           <div className="message-body">
             <div className="content">
               <p>
-                <strong>Your recovery phrase is your last line of defense.</strong>
-              </p>
-              <p>
-                <a>Learn more</a>
+                <strong>Your recovery phrase is your last line of defense.</strong>{' '}
+                <a href="mailto:marketing@kinesis.money?subject=Recovery%20phrase%20learn%20more%20request&bcc=it@kinesis.money">
+                  Learn more
+                </a>
               </p>
             </div>
             <div className="field">

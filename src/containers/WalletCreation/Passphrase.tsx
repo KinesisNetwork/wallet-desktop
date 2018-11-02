@@ -44,6 +44,10 @@ const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
       <p>
         Your recovery phrase is the only way to regain access to your wallet if you forget the
         password or lose access to this device.
+        <a href="mailto:marketing@kinesis.money?subject=Kinesis%20record%20recovery%20phrase%20learn%20more%20request&bcc=it@kinesis.money">
+          {' '}
+          Learn more
+        </a>
       </p>
       <p>
         <strong>Write down and securely store these 12 words:</strong>
