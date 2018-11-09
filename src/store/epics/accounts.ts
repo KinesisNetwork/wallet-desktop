@@ -40,7 +40,7 @@ export const loadAccount$: RootEpic = (
 
   const accountLoadPoll$ = accountLoadRequest$.pipe(
     switchMap(action =>
-      timer(0, 20000).pipe(
+      timer(0, 10000).pipe(
         takeUntil(invalidatePoll$),
         withLatestFrom(state$),
         switchMap(([_, { connections }]) =>
