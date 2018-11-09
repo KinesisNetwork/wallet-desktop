@@ -10,13 +10,6 @@ before_install:
 jobs:
   include:
     - stage: test
-    - stage: deploy electron
-      script: npm run predeploy:travis && npm run deploy:electron
-      if: tag is present and tag =~ ^((?!beta).)*$
-      os: linux
-    - script: npm run predeploy:travis && npm run deploy:electron
-      if: tag is present and tag =~ ^((?!beta).)*$
-      os: osx
     - stage: build and deploy
       env: BUCKET=integration-wallet.kinesisgroup.io TRAVIS_TAG=true
       if: branch = master and type = push
