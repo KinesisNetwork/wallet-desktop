@@ -5,7 +5,13 @@ import { AccountPanel } from '@containers//AccountPanel'
 export const ExchangePage: React.SFC = () => (
   <React.Fragment>
     <AccountPanel />
-    <div className="has-text-grey-dark section">
+    <ComingSoonMessage />
+  </React.Fragment>
+)
+
+const ComingSoonMessage: React.SFC = () => (
+  <div className="has-text-grey-dark section has-text-centered">
+    <div className="container" style={{ maxWidth: '800px' }}>
       <h1
         className="title is-1 has-text-weight-bold has-text-grey-dark has-text-centered"
         style={{ letterSpacing: '1px' }}
@@ -39,5 +45,5 @@ export const ExchangePage: React.SFC = () => (
         </div>
       </div>
     </div>
-  </React.Fragment>
+  </div>
 )
