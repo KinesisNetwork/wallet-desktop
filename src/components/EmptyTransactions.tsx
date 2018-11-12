@@ -1,5 +1,6 @@
 import * as React from 'react'
 import SVG from 'react-inlinesvg'
+import { Link } from 'react-router-dom'
 
 import * as sleeping from 'images/wally-sleeping.svg'
 
@@ -16,7 +17,7 @@ const EmptyTransactions = props => (
         </h2>
         <h2 className="subtitle">Need to buy Kinesis?</h2>
         <div>
-          <a>Visit the exchange</a>
+          <Link to="/exchange">Visit the exchange.</Link>
         </div>
       </div>
     </div>

@@ -94,7 +94,7 @@ export class SidebarPresentation extends React.Component<Props> {
           <div className="sidebar-list tile is-parent is-vertical">
             <SidebarItem title="My Money" to={RootRoutes.dashboard} icon="wallet" />
             <SidebarItem title="Contacts" to={RootRoutes.contacts} icon="address-book" />
-            <SidebarItem title="Exchange" to="/exchange" icon="chart-line" />
+            <SidebarItem title="Exchange" to={RootRoutes.exchange} icon="chart-line" />
           </div>
         </SidebarUpper>
         <SidebarLower>

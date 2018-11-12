@@ -32,6 +32,7 @@ export enum RootRoutes {
   create = '/create',
   importAccount = '/import-account',
   recover = '/recover',
+  exchange = '/exchange',
 }
 
 export enum WalletCreationRoutes {
