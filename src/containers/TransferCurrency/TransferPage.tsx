@@ -216,7 +216,7 @@ export class TransferPagePresentation extends React.Component<Props, State> {
               </section>
               <TransferButtons
                 cancelText="Cancel"
-                nextStepText="Send"
+                nextStepText="Next"
                 cancelButtonClick={this.props.goBackToDashboard}
                 nextStepButtonClick={this.goToConfirmPage}
                 isDisabled={this.hasFieldErrors()}

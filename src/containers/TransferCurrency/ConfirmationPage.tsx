@@ -59,10 +59,10 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
                   <TransferSummary />
                   <TransferButtons
                     cancelButtonClick={this.props.goBackToTransferPage}
-                    cancelText="Back"
+                    cancelText="Edit"
                     isDisabled={this.props.isTransferring}
                     nextStepButtonClick={this.confirmAndGoToDashboard}
-                    nextStepText="Confirm"
+                    nextStepText="Send"
                   />
                 </div>
               </div>
