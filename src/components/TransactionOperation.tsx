@@ -54,16 +54,16 @@ const TransactionIcon: React.SFC<{ t: TransactionOperationView }> = ({ t }) =>
   isTransfer(t.operation) ? (
     t.isIncoming ? (
       <span className="icon is-large has-text-success">
-        <FontAwesomeIcon icon="arrow-down" size="lg" />
+        <FontAwesomeIcon icon={['fal', 'arrow-down']} size="lg" />
       </span>
     ) : (
       <span className="icon is-large has-text-danger">
-        <FontAwesomeIcon icon="arrow-up" size="lg" />
+        <FontAwesomeIcon icon={['fal', 'arrow-up']} size="lg" />
       </span>
     )
   ) : (
     <span className="icon is-large has-text-grey-light">
-      <FontAwesomeIcon icon="minus" size="lg" />
+      <FontAwesomeIcon icon={['fal', 'minus']} size="lg" />
     </span>
   )
 

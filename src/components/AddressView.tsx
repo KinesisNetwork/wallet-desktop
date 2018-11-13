@@ -2,7 +2,10 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 
 import { getActiveAccount } from '@selectors'
-import { getInactiveAccountsInContactFormat } from '@services/accounts'
+import {
+  getEmissionKeyInContactFormat,
+  getInactiveAccountsInContactFormat,
+} from '@services/accounts'
 import { RootState } from '@store'
 import { AddressDisplay } from '@types'
 
@@ -17,6 +20,7 @@ const mapStateToProps = ({ contacts, wallet }: RootState, ownProps: OwnProps) =>
     ownProps.addressDisplay === AddressDisplay.payee
       ? contacts.contactList
           .concat(getInactiveAccountsInContactFormat(wallet.accounts, getActiveAccount(wallet)))
+          .concat(getEmissionKeyInContactFormat())
           .find(contact => contact.address === ownProps.address)
       : wallet.accounts.find(account => account.keypair.publicKey() === ownProps.address),
 })
