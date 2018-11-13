@@ -1,4 +1,13 @@
-import { Account, AccountResponse, Asset, Keypair, Server, Transaction } from 'js-kinesis-sdk'
+import { createHash } from 'crypto'
+import {
+  Account,
+  AccountResponse,
+  Asset,
+  Keypair,
+  Network,
+  Server,
+  Transaction,
+} from 'js-kinesis-sdk'
 
 import { AccountMissingError } from '@helpers/errors'
 import { Connection, Contact, WalletAccount } from '@types'
@@ -50,4 +59,15 @@ export function getInactiveAccountsInContactFormat(
   return accountList
     .filter(({ keypair }) => keypair.publicKey() !== activeAccount.keypair.publicKey())
     .map(({ name, keypair }) => ({ name, address: keypair.publicKey() }))
+}
+
+export function getEmissionKeyInContactFormat(): Contact {
+  const feeSeedString = `${Network.current().networkPassphrase()}emission`
+  const hash = createHash('sha256')
+  hash.update(feeSeedString)
+
+  return {
+    name: 'Kinesis Mint',
+    address: Keypair.fromRawEd25519Seed(hash.digest()).publicKey(),
+  }
 }
