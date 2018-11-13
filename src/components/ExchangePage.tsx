@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import * as React from 'react'
 
 import { AccountPanel } from '@containers//AccountPanel'
@@ -23,7 +24,7 @@ const ComingSoonMessage: React.SFC = () => (
           <div className="level">
             <div className="level-item">
               <span className="icon">
-                <i className="fal fa-9x fa-alarm-clock" />
+                <FontAwesomeIcon icon={['fal', 'alarm-clock']} size="9x" />
               </span>
             </div>
           </div>
