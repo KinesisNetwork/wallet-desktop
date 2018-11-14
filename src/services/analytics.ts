@@ -1,6 +1,6 @@
 interface GAPayload {
   action: string
-  category: string
+  category?: string
   label: string
   value?: string
 }
@@ -15,10 +15,10 @@ interface GAEventPayload {
 
 const w: any = window
 
-export function sendAnalyticsEvent({ action, category, label, value }: GAPayload) {
+export function sendAnalyticsEvent({ action, category = '', label, value = '' }: GAPayload) {
   return sendGA({
     eventAction: action,
-    eventCategory: category,
+    eventCategory: category as string,
     eventLabel: label,
     eventValue: value as string,
     hitType: 'event',

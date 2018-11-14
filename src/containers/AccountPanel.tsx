@@ -1,11 +1,13 @@
+import * as copy from 'copy-to-clipboard'
+import * as React from 'react'
+import { connect } from 'react-redux'
+
 import { updateAccountName } from '@actions'
 import { EditableText } from '@components/EditableText'
 import { Sign } from '@containers/Sign'
 import { getActiveAccount } from '@selectors'
+import { sendAnalyticsEvent } from '@services/analytics'
 import { RootState } from '@store'
-import * as copy from 'copy-to-clipboard'
-import * as React from 'react'
-import { connect } from 'react-redux'
 
 export const mapStateToProps = ({ wallet }: RootState) => ({
   activeAccount: getActiveAccount(wallet),
@@ -173,6 +175,10 @@ export class AccountPanelComponent extends React.Component<Props, State> {
   private copyPublicKey = () => {
     this.setState({ copied: true })
     copy(this.props.activeAccount.keypair.publicKey())
+    sendAnalyticsEvent({
+      action: 'click',
+      label: 'Kinesis address copied',
+    })
     setTimeout(() => this.setState({ copied: false }), 5000)
   }
 }
