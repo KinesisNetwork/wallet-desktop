@@ -3,6 +3,8 @@ import { NotificationType } from '@types'
 import { accountNameUpdate } from '../accounts'
 import { epicTest } from './helpers'
 
+jest.mock('../../../services/analytics', () => ({ sendAnalyticsEvent: () => null }))
+
 describe('Accounts epic', () => {
   it('accountNameUpdate triggers success notification', async () => {
     const nameUpdate = { existingName: 'name', newName: 'newName' }

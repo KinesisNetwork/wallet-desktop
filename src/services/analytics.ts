@@ -18,9 +18,9 @@ const w: any = window
 export function sendAnalyticsEvent({ action, category = '', label, value = '' }: GAPayload) {
   return sendGA({
     eventAction: action,
-    eventCategory: category as string,
+    eventCategory: category,
     eventLabel: label,
-    eventValue: value as string,
+    eventValue: value,
     hitType: 'event',
   })
 }

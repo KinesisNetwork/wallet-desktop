@@ -3,6 +3,8 @@ import { unlockWallet$, walletLockFailure$ } from '../walletLocking'
 
 import { epicTest } from './helpers'
 
+jest.mock('../../../services/analytics', () => ({ sendAnalytics: () => null }))
+
 describe('unlock wallet request', () => {
   const now = new Date()
   it('sends success action', async () => {

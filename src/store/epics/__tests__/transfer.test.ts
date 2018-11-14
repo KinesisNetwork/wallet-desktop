@@ -7,6 +7,8 @@ import { ConnectionsState } from '../../reducers'
 import { transactionSubmission$, transferRequest$ } from '../transfer'
 import { epicTest } from './helpers'
 
+jest.mock('../../../services/analytics', () => ({ sendAnalyticsEvent: () => null }))
+
 describe('Transfer epic', () => {
   const connection: Connection = {
     endpoint: 'endpoint',
