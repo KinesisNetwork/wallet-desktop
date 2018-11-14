@@ -1,11 +1,13 @@
-import { importAccountFromSecret, showNotification } from '@actions'
-import { InputField } from '@components/InputField'
-import { isValidSecret } from '@services/kinesis'
-import { NotificationType, RootRoutes } from '@types'
 import { push } from 'connected-react-router'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+
+import { importAccountFromSecret, showNotification } from '@actions'
+import { InputField } from '@components/InputField'
+import { sendAnalyticsEvent } from '@services/analytics'
+import { isValidSecret } from '@services/kinesis'
+import { NotificationType, RootRoutes } from '@types'
 
 const mapDispatchToProps = { showNotification, importAccountFromSecret, push }
 
@@ -28,6 +30,10 @@ export class ImportAccountPresentation extends React.Component<
   public onSubmit = ev => {
     ev.preventDefault()
     this.props.importAccountFromSecret({ secret: this.state.privateKey })
+    sendAnalyticsEvent({
+      action: 'click',
+      label: 'Imported account',
+    })
     this.props.showNotification({
       type: NotificationType.success,
       message: 'The account has been successfully imported',

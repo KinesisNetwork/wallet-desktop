@@ -1,5 +1,8 @@
+import { push } from 'connected-react-router'
 import * as React from 'react'
 import SVG from 'react-inlinesvg'
+import { connect } from 'react-redux'
+import { RouteComponentProps, withRouter } from 'react-router'
 
 import { addNextAccountFromSeedphrase, setActiveAccount } from '@actions'
 import { DropdownDivider } from '@containers/Sidebar/DropdownDivider'
@@ -11,12 +14,10 @@ import { SidebarItem } from '@containers/Sidebar/SidebarItem'
 import { SidebarLower, SidebarLowerItem } from '@containers/Sidebar/SidebarLower'
 import { SidebarUpper } from '@containers/Sidebar/SidebarUpper'
 import { getActiveAccount } from '@selectors'
+import { sendAnalyticsEvent } from '@services/analytics'
 import { RootState } from '@store'
 import { PersistedAccount, RootRoutes } from '@types'
-import { push } from 'connected-react-router'
 import * as logo from 'images/KinesisIcon.svg'
-import { connect } from 'react-redux'
-import { RouteComponentProps, withRouter } from 'react-router'
 
 export const mapStateToProps = ({ wallet }: RootState) => ({
   activeAccount: getActiveAccount(wallet),
@@ -49,7 +50,13 @@ export class SidebarPresentation extends React.Component<Props> {
     this.props.setActiveAccount({ targetAccount: account, accounts: this.props.accounts })
   }
 
-  public addAccount = () => this.props.addNextAccountFromSeedphrase()
+  public addAccount = () => {
+    this.props.addNextAccountFromSeedphrase()
+    sendAnalyticsEvent({
+      action: 'click',
+      label: 'Added account',
+    })
+  }
   public importAccount = () => this.props.push(RootRoutes.importAccount)
 
   render() {
