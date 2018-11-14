@@ -70,3 +70,16 @@ export enum ImageSize {
   medium = 'medium',
   large = 'large',
 }
+
+export enum GoogleAnalyticsLabel {
+  transferSuccess = 'Funds transferred from wallet',
+  transferFailure = 'Fund transfer from wallet failed',
+  copyAddress = 'Kinesis address copied',
+  addAccount = 'Added account',
+  importAccount = 'Imported account',
+}
+
+export enum GoogleAnalyticsAction {
+  transfer = 'transfer',
+  click = 'click',
+}

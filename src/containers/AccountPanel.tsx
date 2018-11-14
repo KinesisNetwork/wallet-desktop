@@ -8,6 +8,7 @@ import { Sign } from '@containers/Sign'
 import { getActiveAccount } from '@selectors'
 import { sendAnalyticsEvent } from '@services/analytics'
 import { RootState } from '@store'
+import { GoogleAnalyticsAction, GoogleAnalyticsLabel } from '@types'
 
 export const mapStateToProps = ({ wallet }: RootState) => ({
   activeAccount: getActiveAccount(wallet),
@@ -176,8 +177,8 @@ export class AccountPanelComponent extends React.Component<Props, State> {
     this.setState({ copied: true })
     copy(this.props.activeAccount.keypair.publicKey())
     sendAnalyticsEvent({
-      action: 'click',
-      label: 'Kinesis address copied',
+      action: GoogleAnalyticsAction.click,
+      label: GoogleAnalyticsLabel.copyAddress,
     })
     setTimeout(() => this.setState({ copied: false }), 5000)
   }

@@ -7,7 +7,7 @@ import { importAccountFromSecret, showNotification } from '@actions'
 import { InputField } from '@components/InputField'
 import { sendAnalyticsEvent } from '@services/analytics'
 import { isValidSecret } from '@services/kinesis'
-import { NotificationType, RootRoutes } from '@types'
+import { GoogleAnalyticsAction, GoogleAnalyticsLabel, NotificationType, RootRoutes } from '@types'
 
 const mapDispatchToProps = { showNotification, importAccountFromSecret, push }
 
@@ -31,8 +31,8 @@ export class ImportAccountPresentation extends React.Component<
     ev.preventDefault()
     this.props.importAccountFromSecret({ secret: this.state.privateKey })
     sendAnalyticsEvent({
-      action: 'click',
-      label: 'Imported account',
+      action: GoogleAnalyticsAction.click,
+      label: GoogleAnalyticsLabel.importAccount,
     })
     this.props.showNotification({
       type: NotificationType.success,

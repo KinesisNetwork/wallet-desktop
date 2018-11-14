@@ -19,7 +19,7 @@ import { getActiveAccount } from '@selectors'
 import { getFeeInKinesis } from '@services/kinesis'
 import { validateAmount } from '@services/util'
 import { RootEpic } from '@store'
-import { NotificationType, RootRoutes } from '@types'
+import { GoogleAnalyticsAction, GoogleAnalyticsLabel, NotificationType, RootRoutes } from '@types'
 import { replace } from 'connected-react-router'
 
 export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConnection }) => {
@@ -100,9 +100,9 @@ export const transactionSuccess$: RootEpic = (action$, state$, { sendAnalyticsEv
     withLatestFrom(state$),
     map(([_, state]) =>
       sendAnalyticsEvent({
-        action: 'transfer',
+        action: GoogleAnalyticsAction.transfer,
         category: state.connections.currentCurrency,
-        label: 'Funds transferred from wallet',
+        label: GoogleAnalyticsLabel.transferSuccess,
         value: (
           state.accounts.accountInfo.balance - state.transfer.formMeta.remainingBalance
         ).toFixed(5),
@@ -127,9 +127,9 @@ export const transactionFailed$: RootEpic = (action$, state$, { sendAnalyticsEve
     withLatestFrom(state$),
     map(([_, state]) =>
       sendAnalyticsEvent({
-        action: 'transfer',
+        action: GoogleAnalyticsAction.transfer,
         category: state.connections.currentCurrency,
-        label: 'Fund transfer from wallet failed',
+        label: GoogleAnalyticsLabel.transferFailure,
         value: (
           state.accounts.accountInfo.balance - state.transfer.formMeta.remainingBalance
         ).toFixed(5),
