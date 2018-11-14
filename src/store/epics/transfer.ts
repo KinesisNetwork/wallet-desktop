@@ -94,9 +94,20 @@ export const transactionSubmission$: RootEpic = (
     ),
   )
 
-export const transactionSuccess$: RootEpic = action$ =>
+export const transactionSuccess$: RootEpic = (action$, state$, { sendAnalyticsEvent }) =>
   action$.pipe(
     filter(isActionOf(transactionSuccess)),
+    withLatestFrom(state$),
+    map(([_, state]) =>
+      sendAnalyticsEvent({
+        action: 'transfer',
+        category: state.connections.currentCurrency,
+        label: 'Funds transferred from wallet',
+        value: (
+          state.accounts.accountInfo.balance - state.transfer.formMeta.remainingBalance
+        ).toFixed(5),
+      }),
+    ),
     mergeMap(() =>
       merge(
         of(replace(RootRoutes.dashboard) as any),
@@ -110,9 +121,20 @@ export const transactionSuccess$: RootEpic = action$ =>
     ),
   )
 
-export const transactionFailed$: RootEpic = action$ =>
+export const transactionFailed$: RootEpic = (action$, state$, { sendAnalyticsEvent }) =>
   action$.pipe(
     filter(isActionOf(transactionFailed)),
+    withLatestFrom(state$),
+    map(([_, state]) =>
+      sendAnalyticsEvent({
+        action: 'transfer',
+        category: state.connections.currentCurrency,
+        label: 'Fund transfer from wallet failed',
+        value: (
+          state.accounts.accountInfo.balance - state.transfer.formMeta.remainingBalance
+        ).toFixed(5),
+      }),
+    ),
     map(() =>
       showNotification({
         type: NotificationType.error,
