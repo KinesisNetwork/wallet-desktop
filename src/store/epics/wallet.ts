@@ -1,8 +1,7 @@
-import { sendAnalyticsEvent } from '@services/analytics'
 import { push } from 'connected-react-router'
 import { REHYDRATE } from 'redux-persist'
 import { merge } from 'rxjs'
-import { filter, map, mapTo, switchMap, withLatestFrom } from 'rxjs/operators'
+import { filter, ignoreElements, map, mapTo, switchMap, withLatestFrom } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 
 import {
@@ -124,7 +123,7 @@ export const addAccountToWalletFromSeedphrase$: RootEpic = (
 export const importAccountFromSecret$: RootEpic = (
   action$,
   state$,
-  { getKeypairFromSecret, encryptWithPassword },
+  { getKeypairFromSecret, encryptWithPassword, sendAnalyticsEvent },
 ) => {
   const importAccount$ = action$.pipe(
     filter(isActionOf(importAccountFromSecret)),
@@ -173,18 +172,21 @@ export const importAccountFromSecret$: RootEpic = (
 
   const dashboardRedirects$ = action$.pipe(
     filter(isActionOf(addAccountToWallet)),
-    map(({ payload: { persistedAccount: { imported } } }) =>
-      sendAnalyticsEvent({
-        action: GoogleAnalyticsAction.click,
-        label: imported
-          ? `${GoogleAnalyticsLabel.importAccount} success`
-          : `${GoogleAnalyticsLabel.addAccount} success`,
-      }),
-    ),
     mapTo(push(RootRoutes.dashboard) as any),
   )
 
-  return merge(importAccount$, dashboardRedirects$)
+  const sendAnalyticsEvent$ = action$.pipe(
+    filter(isActionOf(addAccountToWallet)),
+    map(({ payload: { persistedAccount: { imported } } }) =>
+      sendAnalyticsEvent({
+        action: GoogleAnalyticsAction.click,
+        label: imported ? GoogleAnalyticsLabel.importAccount : GoogleAnalyticsLabel.addAccount,
+      }),
+    ),
+    ignoreElements(),
+  )
+
+  return merge(importAccount$, dashboardRedirects$, sendAnalyticsEvent$)
 }
 
 // This assumes that the password has already been validated
