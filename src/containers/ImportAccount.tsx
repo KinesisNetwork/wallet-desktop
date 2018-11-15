@@ -1,11 +1,12 @@
-import { importAccountFromSecret, showNotification } from '@actions'
-import { InputField } from '@components/InputField'
-import { isValidSecret } from '@services/kinesis'
-import { NotificationType, RootRoutes } from '@types'
 import { push } from 'connected-react-router'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+
+import { importAccountFromSecret, showNotification } from '@actions'
+import { InputField } from '@components/InputField'
+import { isValidSecret } from '@services/kinesis'
+import { NotificationType, RootRoutes } from '@types'
 
 const mapDispatchToProps = { showNotification, importAccountFromSecret, push }
 
