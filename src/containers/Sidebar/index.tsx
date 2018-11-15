@@ -14,9 +14,8 @@ import { SidebarItem } from '@containers/Sidebar/SidebarItem'
 import { SidebarLower, SidebarLowerItem } from '@containers/Sidebar/SidebarLower'
 import { SidebarUpper } from '@containers/Sidebar/SidebarUpper'
 import { getActiveAccount } from '@selectors'
-import { sendAnalyticsEvent } from '@services/analytics'
 import { RootState } from '@store'
-import { GoogleAnalyticsAction, GoogleAnalyticsLabel, PersistedAccount, RootRoutes } from '@types'
+import { PersistedAccount, RootRoutes } from '@types'
 import * as logo from 'images/KinesisIcon.svg'
 
 export const mapStateToProps = ({ wallet }: RootState) => ({
@@ -50,13 +49,8 @@ export class SidebarPresentation extends React.Component<Props> {
     this.props.setActiveAccount({ targetAccount: account, accounts: this.props.accounts })
   }
 
-  public addAccount = () => {
-    this.props.addNextAccountFromSeedphrase()
-    sendAnalyticsEvent({
-      action: GoogleAnalyticsAction.click,
-      label: GoogleAnalyticsLabel.addAccount,
-    })
-  }
+  public addAccount = () => this.props.addNextAccountFromSeedphrase()
+
   public importAccount = () => this.props.push(RootRoutes.importAccount)
 
   render() {

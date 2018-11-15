@@ -98,14 +98,12 @@ export const transactionSuccess$: RootEpic = (action$, state$, { sendAnalyticsEv
   action$.pipe(
     filter(isActionOf(transactionSuccess)),
     withLatestFrom(state$),
-    map(([_, state]) =>
+    map(([_, { connections, accounts, transfer }]) =>
       sendAnalyticsEvent({
         action: GoogleAnalyticsAction.transfer,
-        category: state.connections.currentCurrency,
-        label: GoogleAnalyticsLabel.transferSuccess,
-        value: (
-          state.accounts.accountInfo.balance - state.transfer.formMeta.remainingBalance
-        ).toFixed(5),
+        category: connections.currentCurrency,
+        label: `${GoogleAnalyticsLabel.transferFund} success`,
+        value: (accounts.accountInfo.balance - transfer.formMeta.remainingBalance).toFixed(5),
       }),
     ),
     mergeMap(() =>
@@ -125,14 +123,12 @@ export const transactionFailed$: RootEpic = (action$, state$, { sendAnalyticsEve
   action$.pipe(
     filter(isActionOf(transactionFailed)),
     withLatestFrom(state$),
-    map(([_, state]) =>
+    map(([_, { connections, accounts, transfer }]) =>
       sendAnalyticsEvent({
         action: GoogleAnalyticsAction.transfer,
-        category: state.connections.currentCurrency,
-        label: GoogleAnalyticsLabel.transferFailure,
-        value: (
-          state.accounts.accountInfo.balance - state.transfer.formMeta.remainingBalance
-        ).toFixed(5),
+        category: connections.currentCurrency,
+        label: `${GoogleAnalyticsLabel.transferFund} failure`,
+        value: (accounts.accountInfo.balance - transfer.formMeta.remainingBalance).toFixed(5),
       }),
     ),
     map(() =>

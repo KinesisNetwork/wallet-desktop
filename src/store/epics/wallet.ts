@@ -1,3 +1,4 @@
+import { sendAnalyticsEvent } from '@services/analytics'
 import { push } from 'connected-react-router'
 import { REHYDRATE } from 'redux-persist'
 import { merge } from 'rxjs'
@@ -16,7 +17,14 @@ import {
   startWalletCreation,
   unlockWalletNew,
 } from '@actions'
-import { NotificationType, PersistedAccount, RootRoutes, WalletAccount } from '@types'
+import {
+  GoogleAnalyticsAction,
+  GoogleAnalyticsLabel,
+  NotificationType,
+  PersistedAccount,
+  RootRoutes,
+  WalletAccount,
+} from '@types'
 import { RehydrateAction, RootAction } from '../root-action'
 import { RootEpic } from '../root-epic'
 
@@ -163,8 +171,16 @@ export const importAccountFromSecret$: RootEpic = (
     }),
   )
 
-  const dashboardRedirects$ = importAccount$.pipe(
+  const dashboardRedirects$ = action$.pipe(
     filter(isActionOf(addAccountToWallet)),
+    map(({ payload: { persistedAccount: { imported } } }) =>
+      sendAnalyticsEvent({
+        action: GoogleAnalyticsAction.click,
+        label: imported
+          ? `${GoogleAnalyticsLabel.importAccount} success`
+          : `${GoogleAnalyticsLabel.addAccount} success`,
+      }),
+    ),
     mapTo(push(RootRoutes.dashboard) as any),
   )
 

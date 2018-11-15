@@ -5,9 +5,8 @@ import { Link } from 'react-router-dom'
 
 import { importAccountFromSecret, showNotification } from '@actions'
 import { InputField } from '@components/InputField'
-import { sendAnalyticsEvent } from '@services/analytics'
 import { isValidSecret } from '@services/kinesis'
-import { GoogleAnalyticsAction, GoogleAnalyticsLabel, NotificationType, RootRoutes } from '@types'
+import { NotificationType, RootRoutes } from '@types'
 
 const mapDispatchToProps = { showNotification, importAccountFromSecret, push }
 
@@ -30,10 +29,6 @@ export class ImportAccountPresentation extends React.Component<
   public onSubmit = ev => {
     ev.preventDefault()
     this.props.importAccountFromSecret({ secret: this.state.privateKey })
-    sendAnalyticsEvent({
-      action: GoogleAnalyticsAction.click,
-      label: GoogleAnalyticsLabel.importAccount,
-    })
     this.props.showNotification({
       type: NotificationType.success,
       message: 'The account has been successfully imported',

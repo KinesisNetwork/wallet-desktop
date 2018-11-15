@@ -13,8 +13,6 @@ interface GAEventPayload {
   hitType: string
 }
 
-const w: any = window
-
 export function sendAnalyticsEvent({ action, category = '', label, value = '' }: GAPayload) {
   return sendGA({
     eventAction: action,
@@ -26,6 +24,8 @@ export function sendAnalyticsEvent({ action, category = '', label, value = '' }:
 }
 
 function sendGA(data: GAEventPayload) {
+  const w: any = window
+
   return w.ga('send', {
     ...data,
     transport: 'beacon',

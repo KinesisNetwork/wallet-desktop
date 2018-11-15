@@ -5,8 +5,6 @@ import { SidebarPresentation } from '@containers/Sidebar'
 import { SidebarDropdown } from '@containers/Sidebar/SidebarDropdown'
 import '../../setupTests'
 
-jest.mock('../../services/analytics', () => ({ sendAnalyticsEvent: () => null }))
-
 describe('SidebarPresentation', () => {
   let props
 

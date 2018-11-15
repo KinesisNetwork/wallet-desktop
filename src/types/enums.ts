@@ -72,8 +72,7 @@ export enum ImageSize {
 }
 
 export enum GoogleAnalyticsLabel {
-  transferSuccess = 'Funds transferred from wallet',
-  transferFailure = 'Fund transfer from wallet failed',
+  transferFund = 'Funds transferred from wallet',
   copyAddress = 'Kinesis address copied',
   addAccount = 'Added account',
   importAccount = 'Imported account',

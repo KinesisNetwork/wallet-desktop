@@ -5,8 +5,6 @@ import * as React from 'react'
 import { AccountPanelComponent } from '@containers/AccountPanel'
 import '../../setupTests'
 
-jest.mock('../../services/analytics', () => ({ sendAnalyticsEvent: () => null }))
-
 describe('AccountPanel', () => {
   const existingName = 'b'
   const props = {
