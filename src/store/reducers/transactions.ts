@@ -25,7 +25,9 @@ export const transactions = combineReducers<TransactionsState, RootAction>({
   isLastPage: (state = false, action) => {
     switch (action.type) {
       case getType(accountTransactionsLoaded):
-        return action.payload.transactionPage === null
+        return action.payload.transactionPage
+          ? !action.payload.transactionPage.records.length
+          : true
       default:
         return state
     }
