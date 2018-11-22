@@ -70,7 +70,11 @@ export async function getTransactions(
 ): Promise<TransactionLoader> {
   const server = getServer(connection)
   try {
-    const transactionPage = await getTransactionPage(server, accountKey)
+    const transactionPage = await server
+      .transactions()
+      .forAccount(accountKey)
+      .order('desc')
+      .call()
     const nestedArray = await Promise.all(getNestedArray(transactionPage, accountKey))
     return { operations: flatten(nestedArray), transactionPage }
   } catch (e) {
@@ -93,14 +97,6 @@ export async function getNextTransactionPage(
   } catch (e) {
     return { operations: [], transactionPage: null }
   }
-}
-
-function getTransactionPage(server: Server, accountKey: string) {
-  return server
-    .transactions()
-    .forAccount(accountKey)
-    .order('desc')
-    .call()
 }
 
 function getNestedArray(transactionPage: CollectionPage<TransactionRecord>, accountKey: string) {

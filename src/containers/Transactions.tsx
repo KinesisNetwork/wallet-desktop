@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import * as React from 'react'
 import { connect } from 'react-redux'
 
@@ -9,13 +10,12 @@ import { TransactionCard } from '@components/TransactionOperation'
 import { TransactionOperationView } from '@types'
 
 const mapStateToProps = ({
-  transactions: { isLastPage, isLoading, transactionOperations },
+  transactions: { transactionOperations, isLoading },
   connections,
 }: RootState) => ({
-  isLastPage,
-  isLoading,
   operations: transactionOperations,
   currency: connections.currentCurrency,
+  isLoading,
 })
 
 const mapDispatchToProps = {
@@ -34,9 +34,22 @@ class TransactionsPresentation extends React.Component<Props> {
   }
 
   render() {
-    if (this.props.operations.length === 0) {
+    const { isLoading, operations } = this.props
+
+    if (isLoading) {
+      return (
+        <div className="has-text-centered">
+          <span className="icon">
+            <FontAwesomeIcon icon={['fal', 'spinner']} size="3x" />
+          </span>
+        </div>
+      )
+    }
+
+    if (operations.length === 0) {
       return <EmptyTransactions />
     }
+
     return this.groupOperationsByDate()
   }
 

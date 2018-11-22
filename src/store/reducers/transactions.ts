@@ -2,6 +2,7 @@ import {
   accountTransactionsLoaded,
   loadAccountTransactions,
   nextTransactionPageLoaded,
+  setActiveAccount,
 } from '@actions'
 import { RootAction } from '@store'
 import { TransactionOperationView } from '@types'
@@ -24,6 +25,8 @@ export const transactions = combineReducers<TransactionsState, RootAction>({
         return state || action.payload.transactionPage
       case getType(nextTransactionPageLoaded):
         return action.payload.transactionPage
+      case getType(setActiveAccount):
+        return null
       default:
         return state
     }
@@ -37,6 +40,7 @@ export const transactions = combineReducers<TransactionsState, RootAction>({
   isLoading: (state = false, action) => {
     switch (action.type) {
       case getType(loadAccountTransactions):
+      case getType(setActiveAccount):
         return true
       case getType(accountTransactionsLoaded):
         return false
@@ -52,17 +56,16 @@ function transactionOperations(
 ): TransactionOperationView[] {
   switch (action.type) {
     case getType(loadAccountTransactions):
+    case getType(setActiveAccount):
       return []
     case getType(accountTransactionsLoaded):
       return action.payload.operations
-        .filter(({ id }) => {
-          return state.every(({ id: existingId }) => id !== existingId)
-        })
+        .filter(({ id }) => state.every(({ id: existingId }) => id !== existingId))
         .concat(state)
     case getType(nextTransactionPageLoaded):
-      const newTransactions = action.payload.operations.filter(({ id }) => {
-        return state.every(({ id: existingId }) => id !== existingId)
-      })
+      const newTransactions = action.payload.operations.filter(({ id }) =>
+        state.every(({ id: existingId }) => id !== existingId),
+      )
       return state.concat(newTransactions)
     default:
       return state
