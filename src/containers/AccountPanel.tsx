@@ -149,7 +149,7 @@ export class AccountPanelComponent extends React.Component<Props, State> {
           <div className="buttons is-centered">
             <div
               className="tooltip is-tooltip-top level-item"
-              data-tooltip={this.state.copied ? 'Copied!' : 'Copy Public Address'}
+              data-tooltip={this.state.copied ? 'Copied!' : 'Copy Kinesis Address'}
             >
               <button
                 className="button is-primary is-outlined has-icons-right"

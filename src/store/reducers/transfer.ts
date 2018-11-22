@@ -55,7 +55,7 @@ function handleError(name: keyof FormErrors) {
           ? `${action.payload.newValue.length} / 25`
           : ''
       case getType(publicKeyValidation):
-        return name === 'targetPayee' && !action.payload ? 'Invalid public address' : ''
+        return name === 'targetPayee' && !action.payload ? 'Invalid Kinesis Address' : ''
       default:
         return state
     }

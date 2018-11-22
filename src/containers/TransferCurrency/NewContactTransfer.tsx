@@ -36,11 +36,11 @@ export class NewContactTransferPresentation extends React.Component<Props> {
             disabled={!this.props.saveToContacts}
           />
           <InputField
-            label="Public Address"
+            label="Kinesis Address"
             value={this.props.publicKey}
             placeholder="example: &quot;GDUL65KWQ4PJA7FLO6467...CM7G&quot;"
             onChangeHandler={value => this.props.handleChange('address', value)}
-            id="public-address"
+            id="kinesis-address"
             icon="fa-qrcode"
             errorText={this.props.errors.targetPayee}
           />
