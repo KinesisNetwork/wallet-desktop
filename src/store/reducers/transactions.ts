@@ -59,15 +59,14 @@ function transactionOperations(
     case getType(setActiveAccount):
       return []
     case getType(accountTransactionsLoaded):
-      return action.payload.operations
-        .filter(({ id }) => state.every(({ id: existingId }) => id !== existingId))
-        .concat(state)
+      return action.payload.operations.filter(uniqueIdList(state)).concat(state)
     case getType(nextTransactionPageLoaded):
-      const newTransactions = action.payload.operations.filter(({ id }) =>
-        state.every(({ id: existingId }) => id !== existingId),
-      )
+      const newTransactions = action.payload.operations.filter(uniqueIdList(state))
       return state.concat(newTransactions)
     default:
       return state
   }
 }
+
+const uniqueIdList = (transactionList: TransactionOperationView[]) => ({ id }) =>
+  transactionList.every(({ id: existingId }) => id !== existingId)

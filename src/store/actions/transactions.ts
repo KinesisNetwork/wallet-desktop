@@ -14,7 +14,7 @@ export const accountTransactionsLoaded = createStandardAction('ACCOUNT_TRANSACTI
 >()
 export const loadAccountTransactions = createStandardAction('LOAD_ACCOUNT_TRANSACTIONS')<string>()
 export const loadNextTransactionPage = createAction('LOAD_NEXT_TRANSACTION_PAGE')
-export const nextTransactionPageLoaded = createStandardAction('NEW_TRANSACTION_PAGE_LOADED')<
+export const nextTransactionPageLoaded = createStandardAction('NEXT_TRANSACTION_PAGE_LOADED')<
   TransactionLoader
 >()
 

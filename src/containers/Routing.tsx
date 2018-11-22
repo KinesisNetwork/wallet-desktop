@@ -24,7 +24,7 @@ const mapStateToProps = (state: RootState) => ({
 type Props = RouteComponentProps<any> & ReturnType<typeof mapStateToProps>
 const RoutingPresentation: React.SFC<Props> = props =>
   props.isLoggedIn ? (
-    <div className="columns is-marginless is-centered is-marginless">
+    <div className="columns is-marginless is-centered">
       <div className="sidebar-wrapper column is-narrow is-paddingless">
         <Sidebar />
       </div>
