@@ -22,7 +22,14 @@ export const transactions = combineReducers<TransactionsState, RootAction>({
         return state
     }
   },
-  isLastPage: (state = false) => state,
+  isLastPage: (state = false, action) => {
+    switch (action.type) {
+      case getType(accountTransactionsLoaded):
+        return action.payload.transactionPage === null
+      default:
+        return state
+    }
+  },
   isLoading: (state = false, action) => {
     switch (action.type) {
       case getType(loadAccountTransactions):
@@ -43,7 +50,10 @@ function transactionOperations(
     case getType(loadAccountTransactions):
       return []
     case getType(accountTransactionsLoaded):
-      return action.payload.operations
+      const newTransactions = action.payload.operations.filter(({ id }) => {
+        return state.every(({ id: existingId }) => id !== existingId)
+      })
+      return state.concat(newTransactions)
     default:
       return state
   }

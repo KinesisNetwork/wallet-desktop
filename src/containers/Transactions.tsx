@@ -8,10 +8,13 @@ import { EmptyTransactions } from '@components/EmptyTransactions'
 import { TransactionCard } from '@components/TransactionOperation'
 import { TransactionOperationView } from '@types'
 
-const mapStateToProps = ({ transactions, connections }: RootState) => ({
-  isLastPage: transactions.isLastPage,
-  isLoading: transactions.isLoading,
-  operations: transactions.transactionOperations,
+const mapStateToProps = ({
+  transactions: { isLastPage, isLoading, transactionOperations },
+  connections,
+}: RootState) => ({
+  isLastPage,
+  isLoading,
+  operations: transactionOperations,
   currency: connections.currentCurrency,
 })
 
@@ -22,6 +25,14 @@ const mapDispatchToProps = {
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
 class TransactionsPresentation extends React.Component<Props> {
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
+  }
+
   render() {
     if (this.props.operations.length === 0) {
       return <EmptyTransactions />
@@ -29,19 +40,35 @@ class TransactionsPresentation extends React.Component<Props> {
     return this.groupOperationsByDate()
   }
 
-  groupOperationsByDate = () =>
-    Object.entries(this.groupOperations()).map(([date, ops]) => (
-      <React.Fragment key={date}>
-        <h1 className="subtitle">{date}</h1>
-        {ops.map(op => (
-          <TransactionCard
-            key={op.operation.id}
-            transactionWithOperation={op}
-            currency={this.props.currency}
-          />
-        ))}
-      </React.Fragment>
-    ))
+  handleScroll = () => {
+    const { isLastPage, loadNextTransactionPage: loadNextPage } = this.props
+    if (isLastPage) {
+      return
+    }
+
+    const { scrollHeight, clientHeight, scrollTop } = document.documentElement
+    const shouldTriggerLoad = scrollTop === scrollHeight - clientHeight
+    if (shouldTriggerLoad) {
+      loadNextPage()
+    }
+  }
+
+  groupOperationsByDate = () => (
+    <div onScroll={this.handleScroll}>
+      {Object.entries(this.groupOperations()).map(([date, ops]) => (
+        <React.Fragment key={date}>
+          <h1 className="subtitle">{date}</h1>
+          {ops.map(op => (
+            <TransactionCard
+              key={op.operation.id}
+              transactionWithOperation={op}
+              currency={this.props.currency}
+            />
+          ))}
+        </React.Fragment>
+      ))}
+    </div>
+  )
 
   groupOperations = (): { [date: string]: TransactionOperationView[] } =>
     this.props.operations.reduce((acc, op) => {
