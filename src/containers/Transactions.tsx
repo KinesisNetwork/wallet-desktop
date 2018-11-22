@@ -11,10 +11,10 @@ import { TransactionOperationView } from '@types'
 
 const mapStateToProps = ({
   transactions: { transactionOperations, isLoading },
-  connections,
+  connections: { currentCurrency },
 }: RootState) => ({
   operations: transactionOperations,
-  currency: connections.currentCurrency,
+  currency: currentCurrency,
   isLoading,
 })
 
