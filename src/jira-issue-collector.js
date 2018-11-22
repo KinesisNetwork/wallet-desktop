@@ -4888,6 +4888,7 @@
       })
 })(window)
 /* module-key = 'com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector', location = '/js/collector/bootstrap.js' */
+
 !(function($) {
   function setDialogHeight(i) {
     $('#atlwdg-container').css('height', i)
@@ -5086,14 +5087,13 @@
             $.isFunction(r)
               ? $.extend(r, filterStrings(r()))
               : $.isPlainObject(r) && $.extend(r, filterStrings(r))),
-          i.recordWebInfo)
+          true /* override the check before sending browser info ... i.recordWebInfo */)
         ) {
           var A = {
             Location: window.location.href,
             Referrer: document.referrer,
             'User-Agent': navigator.userAgent,
             'Screen Resolution': screen.width + ' x ' + screen.height,
-            'App Name': 'Kinesis Wallet',
           }
           if (window.ATL_JQ_PAGE_PROPS) {
             var n = window.ATL_JQ_PAGE_PROPS.environment
@@ -5141,3 +5141,14 @@
   }),
     0 === '3c9704cb'.length && (window.ATL_JQ = ATL_JQ)
 })(jQuery)
+
+window.ATL_JQ_PAGE_PROPS = {
+  fieldValues: () => ({
+    customfield_10007: 'ABX-4137',
+    environment: `*Location* ${window.location.href}\n
+      *Referrer* ${document.referrer}\n
+      *User-Agent* ${navigator.userAgent}\n
+      *Screen Resolution* ${screen.width} x ${screen.height}\n
+      *App Name* ${document.title || 'Kinesis Wallet'}`,
+  }),
+}
