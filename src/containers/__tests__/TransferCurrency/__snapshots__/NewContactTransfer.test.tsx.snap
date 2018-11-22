@@ -41,8 +41,8 @@ exports[`NewContactTransfer should render correctly 1`] = `
     <InputField
       errorText="error"
       icon="fa-qrcode"
-      id="public-address"
-      label="Public Address"
+      id="kinesis-address"
+      label="Kinesis Address"
       onChangeHandler={[Function]}
       placeholder="example: \\"GDUL65KWQ4PJA7FLO6467...CM7G\\""
       value="123qwe"
