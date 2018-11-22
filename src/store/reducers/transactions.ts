@@ -1,4 +1,8 @@
-import { accountTransactionsLoaded, loadAccountTransactions } from '@actions'
+import {
+  accountTransactionsLoaded,
+  loadAccountTransactions,
+  nextTransactionPageLoaded,
+} from '@actions'
 import { RootAction } from '@store'
 import { TransactionOperationView } from '@types'
 import { CollectionPage, TransactionRecord } from 'js-kinesis-sdk'
@@ -17,6 +21,8 @@ export const transactions = combineReducers<TransactionsState, RootAction>({
   currentPage: (state = null, action) => {
     switch (action.type) {
       case getType(accountTransactionsLoaded):
+        return state || action.payload.transactionPage
+      case getType(nextTransactionPageLoaded):
         return action.payload.transactionPage
       default:
         return state
@@ -24,10 +30,6 @@ export const transactions = combineReducers<TransactionsState, RootAction>({
   },
   isLastPage: (state = false, action) => {
     switch (action.type) {
-      case getType(accountTransactionsLoaded):
-        return action.payload.transactionPage
-          ? !action.payload.transactionPage.records.length
-          : true
       default:
         return state
     }
@@ -52,6 +54,12 @@ function transactionOperations(
     case getType(loadAccountTransactions):
       return []
     case getType(accountTransactionsLoaded):
+      return action.payload.operations
+        .filter(({ id }) => {
+          return state.every(({ id: existingId }) => id !== existingId)
+        })
+        .concat(state)
+    case getType(nextTransactionPageLoaded):
       const newTransactions = action.payload.operations.filter(({ id }) => {
         return state.every(({ id: existingId }) => id !== existingId)
       })

@@ -41,10 +41,7 @@ class TransactionsPresentation extends React.Component<Props> {
   }
 
   handleScroll = () => {
-    const { isLastPage, loadNextTransactionPage: loadNextPage } = this.props
-    if (isLastPage) {
-      return
-    }
+    const { loadNextTransactionPage: loadNextPage } = this.props
 
     const { scrollHeight, clientHeight, scrollTop } = document.documentElement
     const shouldTriggerLoad = scrollTop === scrollHeight - clientHeight

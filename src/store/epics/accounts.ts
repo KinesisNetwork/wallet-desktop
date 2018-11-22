@@ -20,6 +20,7 @@ import {
   accountLoadSuccess,
   accountTransactionsLoaded,
   loadNextTransactionPage,
+  nextTransactionPageLoaded,
   selectConnectedCurrency,
   setActiveAccount,
   showNotification,
@@ -74,7 +75,7 @@ export const loadNextTransactionPage$: RootEpic = (
       const currentAccountPublicAddress = getActiveAccount(wallet).keypair.publicKey()
       return from(
         getNextTransactionPage(transactions.currentPage, currentAccountPublicAddress),
-      ).pipe(map(accountTransactionsLoaded))
+      ).pipe(map(nextTransactionPageLoaded))
     }),
   )
 }
