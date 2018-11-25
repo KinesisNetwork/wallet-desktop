@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import * as React from 'react'
 
-import { AccountPanel } from '@containers//AccountPanel'
+import { AccountPanel } from '@containers/AccountPanel'
 
 export const ExchangePage: React.SFC = () => (
   <React.Fragment>

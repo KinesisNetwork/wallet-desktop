@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { RouteComponentProps } from 'react-router'
 
+import { AccountPanel } from '@containers/AccountPanel'
 import { ContactForm } from '@containers/Contacts/ContactForm'
 import { ContactList } from '@containers/Contacts/ContactList'
 
@@ -27,6 +28,7 @@ interface Props extends State {
 
 const Contacts: React.SFC<Props> = props => (
   <React.Fragment>
+    <AccountPanel />
     <div className="level">
       <div className="level-left">
         <p className="subtitle has-text-grey-lighter">Contacts</p>
