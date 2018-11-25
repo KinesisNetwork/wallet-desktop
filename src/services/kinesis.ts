@@ -1,4 +1,4 @@
-import { Keypair, Network, Server, TransactionRecord } from 'js-kinesis-sdk'
+import { CollectionPage, Keypair, Network, Server, TransactionRecord } from 'js-kinesis-sdk'
 import { flatten, get } from 'lodash'
 
 import { Connection, TransactionLoader, TransactionOperationView } from '@types'
@@ -75,13 +75,32 @@ export async function getTransactions(
       .forAccount(accountKey)
       .order('desc')
       .call()
-    const nestedArray = await Promise.all(
-      transactionPage.records.map(t => transactionWithOperations(t, accountKey)),
-    )
+    const nestedArray = await Promise.all(getNestedArray(transactionPage, accountKey))
     return { operations: flatten(nestedArray), transactionPage }
   } catch (e) {
     return { operations: [], transactionPage: null }
   }
+}
+
+export async function getNextTransactionPage(
+  currentPage: CollectionPage<TransactionRecord> | null,
+  accountKey: string,
+): Promise<TransactionLoader> {
+  try {
+    if (!currentPage) {
+      throw new Error()
+    }
+
+    const nextPage = await currentPage.next()
+    const nestedArray = await Promise.all(getNestedArray(nextPage, accountKey))
+    return { operations: flatten(nestedArray), transactionPage: nextPage }
+  } catch (e) {
+    return { operations: [], transactionPage: null }
+  }
+}
+
+function getNestedArray(transactionPage: CollectionPage<TransactionRecord>, accountKey: string) {
+  return transactionPage.records.map(t => transactionWithOperations(t, accountKey))
 }
 
 async function transactionWithOperations(
@@ -97,6 +116,7 @@ async function transactionWithOperations(
       isIncoming: transaction.source_account !== accountKey,
       memo: transaction.memo,
       source: transaction.source_account,
+      id: transaction.id,
     }),
   )
 }

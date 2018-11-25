@@ -19,6 +19,8 @@ import {
   accountLoadRequest,
   accountLoadSuccess,
   accountTransactionsLoaded,
+  loadNextTransactionPage,
+  nextTransactionPageLoaded,
   selectConnectedCurrency,
   setActiveAccount,
   showNotification,
@@ -43,8 +45,8 @@ export const loadAccount$: RootEpic = (
       timer(0, 10000).pipe(
         takeUntil(invalidatePoll$),
         withLatestFrom(state$),
-        switchMap(([_, { connections }]) =>
-          merge(
+        switchMap(([_, { connections }]) => {
+          return merge(
             from(loadAccount(action.payload, getCurrentConnection(connections))).pipe(
               map(accountLoadSuccess),
               catchError(err => of(accountLoadFailure(err))),
@@ -52,13 +54,30 @@ export const loadAccount$: RootEpic = (
             from(getTransactions(getCurrentConnection(connections), action.payload)).pipe(
               map(accountTransactionsLoaded),
             ),
-          ),
-        ),
+          )
+        }),
       ),
     ),
   )
 
   return accountLoadPoll$
+}
+
+export const loadNextTransactionPage$: RootEpic = (
+  action$,
+  state$,
+  { getNextTransactionPage, getActiveAccount },
+) => {
+  return action$.pipe(
+    filter(isActionOf(loadNextTransactionPage)),
+    withLatestFrom(state$),
+    switchMap(([_, { wallet, transactions: { currentPage } }]) => {
+      const currentAccountPublicAddress = getActiveAccount(wallet).keypair.publicKey()
+      return from(getNextTransactionPage(currentPage, currentAccountPublicAddress)).pipe(
+        map(nextTransactionPageLoaded),
+      )
+    }),
+  )
 }
 
 export const setActiveAccount$: RootEpic = action$ =>

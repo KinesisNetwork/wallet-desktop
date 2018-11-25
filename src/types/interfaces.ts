@@ -56,6 +56,7 @@ export interface TransactionOperationView {
   readonly memo: string
   readonly operation: OperationRecord
   readonly date: Date
+  readonly id: string
 }
 
 export interface Contact {

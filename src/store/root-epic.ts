@@ -4,7 +4,12 @@ import { formAlert, generalFailureAlert, generalSuccessAlert } from '@helpers/al
 import { loadAccount } from '@services/accounts'
 import { sendAnalyticsEvent } from '@services/analytics'
 import { decryptWithPassword, encryptWithPassword } from '@services/encryption'
-import { getTransactionErrorMessage, getTransactions, isValidPublicKey } from '@services/kinesis'
+import {
+  getNextTransactionPage,
+  getTransactionErrorMessage,
+  getTransactions,
+  isValidPublicKey,
+} from '@services/kinesis'
 import { createKinesisTransfer, submitSignedTransaction } from '@services/transfer'
 
 import { getActiveAccount, getCurrentConnection, getLoginState } from '@selectors'
@@ -36,6 +41,7 @@ export const epicDependencies = {
   encryptWithPassword,
   isValidPublicKey,
   sendAnalyticsEvent,
+  getNextTransactionPage,
 }
 
 export type EpicDependencies = typeof epicDependencies
