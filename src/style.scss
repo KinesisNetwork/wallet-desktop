@@ -259,6 +259,7 @@ body {
   color: $grey-lighter;
   background-color: $grey-dark;
   resize: none;
+  padding: 12px;
 
   &.is-unselectable {
     cursor: not-allowed;
