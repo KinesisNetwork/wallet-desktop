@@ -1,6 +1,6 @@
 import { replace } from 'connected-react-router'
 import { from, merge, of } from 'rxjs'
-import { catchError, exhaustMap, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators'
+import { catchError, exhaustMap, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 
 import {
@@ -123,16 +123,15 @@ export const transactionFailed$: RootEpic = (action$, state$, { sendAnalyticsEve
   action$.pipe(
     filter(isActionOf(transactionFailed)),
     withLatestFrom(state$),
-    map(([{ payload }, { connections, accounts, transfer }]) => {
+    tap(([_, { connections, accounts, transfer }]) =>
       sendAnalyticsEvent({
         action: GoogleAnalyticsAction.transfer,
         category: connections.currentCurrency,
         label: `${GoogleAnalyticsLabel.transferFund} failure`,
         value: (accounts.accountInfo.balance - transfer.formMeta.remainingBalance).toFixed(5),
-      })
-      return payload
-    }),
-    mergeMap(payload =>
+      }),
+    ),
+    mergeMap(([{ payload }]) =>
       merge(
         of(replace(RootRoutes.dashboard) as any),
         of(
