@@ -9,7 +9,7 @@ import {
   TransactionBuilder,
 } from 'js-kinesis-sdk'
 
-import { WalletLockError } from '@helpers/errors'
+import { HorizonError, WalletLockError } from '@helpers/errors'
 import { Connection, TransferRequest } from '@types'
 import { getAccountIfExists } from './accounts'
 import { getFeeInStroops, getServer } from './kinesis'
@@ -35,7 +35,19 @@ export async function createKinesisTransfer(
 
 export async function submitSignedTransaction(connection: Connection, transaction: Transaction) {
   const server = getServer(connection)
-  await server.submitTransaction(transaction)
+  const TIMEOUT_IN_MS = 10000
+  return await transactionWithTimeout(server.submitTransaction(transaction), TIMEOUT_IN_MS)
+}
+
+function transactionWithTimeout(transactionSubmit: Promise<any>, ms: number) {
+  const rejectOnTimeout = new Promise((_, reject) => {
+    const timeout = setTimeout(() => {
+      clearTimeout(timeout)
+      reject(new HorizonError('Unknown result from Horizon. Check your transaction list.'))
+    }, ms)
+  })
+
+  return Promise.race([transactionSubmit, rejectOnTimeout])
 }
 
 export async function generateTransferTransaction(

@@ -1,3 +1,4 @@
+import { replace } from 'connected-react-router'
 import { from, merge, of } from 'rxjs'
 import { catchError, exhaustMap, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
@@ -20,7 +21,6 @@ import { getFeeInKinesis } from '@services/kinesis'
 import { validateAmount } from '@services/util'
 import { RootEpic } from '@store'
 import { GoogleAnalyticsAction, GoogleAnalyticsLabel, NotificationType, RootRoutes } from '@types'
-import { replace } from 'connected-react-router'
 
 export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConnection }) => {
   const amountUpdate$ = action$.pipe(
@@ -123,18 +123,25 @@ export const transactionFailed$: RootEpic = (action$, state$, { sendAnalyticsEve
   action$.pipe(
     filter(isActionOf(transactionFailed)),
     withLatestFrom(state$),
-    map(([_, { connections, accounts, transfer }]) =>
+    map(([{ payload }, { connections, accounts, transfer }]) => {
       sendAnalyticsEvent({
         action: GoogleAnalyticsAction.transfer,
         category: connections.currentCurrency,
         label: `${GoogleAnalyticsLabel.transferFund} failure`,
         value: (accounts.accountInfo.balance - transfer.formMeta.remainingBalance).toFixed(5),
-      }),
-    ),
-    map(() =>
-      showNotification({
-        type: NotificationType.error,
-        message: 'Transaction error.',
-      }),
+      })
+      return payload
+    }),
+    mergeMap(payload =>
+      merge(
+        of(replace(RootRoutes.dashboard) as any),
+        of(
+          showNotification({
+            type:
+              payload.name === 'HorizonError' ? NotificationType.warning : NotificationType.error,
+            message: payload.message || 'Transaction error.',
+          }),
+        ),
+      ),
     ),
   )
