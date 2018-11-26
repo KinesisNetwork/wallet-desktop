@@ -30,7 +30,7 @@ const RoutingPresentation: React.SFC<Props> = props =>
       </div>
       <div className="column is-paddingless">
         <TestnetBanner />
-        <div className="columns is-centered">
+        <div className="columns is-centered is-marginless">
           <div className="column is-paddingless is-8-fullhd is-9-widescreen is-10-desktop container is-fullhd">
             <div className="section">
               <Switch>
