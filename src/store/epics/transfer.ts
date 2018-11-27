@@ -99,7 +99,7 @@ export const transactionSuccess$: RootEpic = (action$, state$, { sendAnalyticsEv
   action$.pipe(
     filter(isActionOf(transactionSuccess)),
     withLatestFrom(state$),
-    map(([{ payload: { amount, fee } }, { connections }]) =>
+    tap(([{ payload: { amount, fee } }, { connections }]) =>
       sendAnalyticsEvent({
         action: GoogleAnalyticsAction.transfer,
         category: connections.currentCurrency,
