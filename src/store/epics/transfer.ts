@@ -87,9 +87,9 @@ export const transactionSubmission$: RootEpic = (
   action$.pipe(
     filter(isActionOf(transactionRequest)),
     withLatestFrom(state$),
-    mergeMap(([{ payload }, { transfer: { formData } }]) =>
+    mergeMap(([{ payload }, { transfer }]) =>
       from(submitSignedTransaction(getCurrentConnection(state$.value.connections), payload)).pipe(
-        map(() => transactionSuccess(formData)),
+        map(() => transactionSuccess(transfer.formData)),
         catchError(err => of(transactionFailed(err))),
       ),
     ),
