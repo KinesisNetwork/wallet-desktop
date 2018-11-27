@@ -36,31 +36,25 @@ const PassphrasePresentation: React.SFC<Props & StatefulProps> = ({
 }) => (
   <React.Fragment>
     <StepAnimation animation={animation} alt="" />
-    <h1 className="title has-text-primary has-text-centered">Record your recovery phrase</h1>
-    <h2 className="subtitle has-text-danger has-text-centered">
-      Anyone with your recovery phrase will have complete access to your wallet.
+    <h1 className="title has-text-primary has-text-centered is-spaced">
+      Record your recovery phrase
+    </h1>
+    <h2 className="subtitle has-text-warning has-text-weight-bold">
+      This is the only way to recover your wallet if you lose access. Anyone with this will have
+      complete access to your wallet.{' '}
+      <a href="mailto:marketing@kinesis.money?subject=Kinesis%20record%20recovery%20phrase%20learn%20more%20request&bcc=it@kinesis.money">
+        {' '}
+        Learn more.
+      </a>
     </h2>
-    <div className="content">
-      <p>
-        Your recovery phrase is the only way to regain access to your wallet if you forget the
-        password or lose access to this device.
-        <a href="mailto:marketing@kinesis.money?subject=Kinesis%20record%20recovery%20phrase%20learn%20more%20request&bcc=it@kinesis.money">
-          {' '}
-          Learn more
-        </a>
-      </p>
-      <p>
-        <strong>Write down and securely store these 12 words:</strong>
-      </p>
-    </div>
     <div className="field">
-      <label className="label">Your recovery phrase</label>
+      <label className="label">Record and secure these 12 words:</label>
       <div className="control">
         <div className="has-text-centered is-unselectable seedphrase">{passphrase}</div>
         <p className="help">Your recovery phrase is not case sensitive</p>
       </div>
     </div>
-    <div className="field">
+    <div className="field is-marginless">
       <div className="control">
         <input
           className="is-checkradio"
