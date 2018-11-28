@@ -1,5 +1,6 @@
+import { replace } from 'connected-react-router'
 import { from, merge, of } from 'rxjs'
-import { catchError, exhaustMap, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators'
+import { catchError, exhaustMap, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 
 import {
@@ -20,7 +21,6 @@ import { getFeeInKinesis } from '@services/kinesis'
 import { validateAmount } from '@services/util'
 import { RootEpic } from '@store'
 import { GoogleAnalyticsAction, GoogleAnalyticsLabel, NotificationType, RootRoutes } from '@types'
-import { replace } from 'connected-react-router'
 
 export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConnection }) => {
   const amountUpdate$ = action$.pipe(
@@ -86,9 +86,10 @@ export const transactionSubmission$: RootEpic = (
 ) =>
   action$.pipe(
     filter(isActionOf(transactionRequest)),
-    mergeMap(({ payload }) =>
+    withLatestFrom(state$),
+    mergeMap(([{ payload }, { transfer }]) =>
       from(submitSignedTransaction(getCurrentConnection(state$.value.connections), payload)).pipe(
-        map(transactionSuccess),
+        map(() => transactionSuccess(transfer.formData)),
         catchError(err => of(transactionFailed(err))),
       ),
     ),
@@ -98,12 +99,12 @@ export const transactionSuccess$: RootEpic = (action$, state$, { sendAnalyticsEv
   action$.pipe(
     filter(isActionOf(transactionSuccess)),
     withLatestFrom(state$),
-    map(([_, { connections, accounts, transfer }]) =>
+    tap(([{ payload: { amount, fee } }, { connections }]) =>
       sendAnalyticsEvent({
         action: GoogleAnalyticsAction.transfer,
         category: connections.currentCurrency,
         label: `${GoogleAnalyticsLabel.transferFund} success`,
-        value: (accounts.accountInfo.balance - transfer.formMeta.remainingBalance).toFixed(5),
+        value: (Number(amount) + Number(fee)).toFixed(5),
       }),
     ),
     mergeMap(() =>
@@ -123,18 +124,23 @@ export const transactionFailed$: RootEpic = (action$, state$, { sendAnalyticsEve
   action$.pipe(
     filter(isActionOf(transactionFailed)),
     withLatestFrom(state$),
-    map(([_, { connections, accounts, transfer }]) =>
+    tap(([_, { connections }]) =>
       sendAnalyticsEvent({
         action: GoogleAnalyticsAction.transfer,
         category: connections.currentCurrency,
         label: `${GoogleAnalyticsLabel.transferFund} failure`,
-        value: (accounts.accountInfo.balance - transfer.formMeta.remainingBalance).toFixed(5),
       }),
     ),
-    map(() =>
-      showNotification({
-        type: NotificationType.error,
-        message: 'Transaction error.',
-      }),
+    mergeMap(([{ payload }]) =>
+      merge(
+        of(replace(RootRoutes.dashboard) as any),
+        of(
+          showNotification({
+            type:
+              payload.name === 'HorizonError' ? NotificationType.warning : NotificationType.error,
+            message: payload.message || 'Transaction error.',
+          }),
+        ),
+      ),
     ),
   )

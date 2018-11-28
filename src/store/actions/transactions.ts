@@ -19,7 +19,9 @@ export const nextTransactionPageLoaded = createStandardAction('NEXT_TRANSACTION_
 >()
 
 export const transactionRequest = createStandardAction('TRANSACTION_SUBMIT_REQUEST')<Transaction>()
-export const transactionSuccess = createAction('TRANSACTION_SUBMIT_SUCCESS')
+export const transactionSuccess = createStandardAction('TRANSACTION_SUBMIT_SUCCESS')<
+  TransferRequest
+>()
 export const transactionFailed = createStandardAction('TRANSACTION_SUBMIT_FAILED')<Error>()
 
 export const updateFee = createStandardAction('UPDATE_FEE')<string>()

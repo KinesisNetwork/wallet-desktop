@@ -25,3 +25,10 @@ export class TransferSubmitError extends InputError {
     super('A Target Address and Payee cannot both be specified', 'transfer-error')
   }
 }
+
+export class HorizonError extends Error {
+  constructor(message) {
+    super(message)
+    this.name = 'HorizonError'
+  }
+}
