@@ -2,6 +2,7 @@ import {
   accountTransactionsLoaded,
   loadAccountTransactions,
   nextTransactionPageLoaded,
+  selectConnectedCurrency,
   setActiveAccount,
 } from '@actions'
 import { RootAction } from '@store'
@@ -26,6 +27,7 @@ export const transactions = combineReducers<TransactionsState, RootAction>({
       case getType(nextTransactionPageLoaded):
         return action.payload.transactionPage
       case getType(setActiveAccount):
+      case getType(selectConnectedCurrency):
         return null
       default:
         return state
@@ -41,6 +43,7 @@ export const transactions = combineReducers<TransactionsState, RootAction>({
     switch (action.type) {
       case getType(loadAccountTransactions):
       case getType(setActiveAccount):
+      case getType(selectConnectedCurrency):
         return true
       case getType(accountTransactionsLoaded):
         return false
@@ -57,6 +60,7 @@ function transactionOperations(
   switch (action.type) {
     case getType(loadAccountTransactions):
     case getType(setActiveAccount):
+    case getType(selectConnectedCurrency):
       return []
     case getType(accountTransactionsLoaded):
       return action.payload.operations.filter(uniqueIdList(state)).concat(state)
