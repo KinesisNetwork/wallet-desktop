@@ -10,15 +10,20 @@ import { goBack } from 'connected-react-router'
 import { Loader } from '@components/Loader'
 import { AccountsInTransfer } from '@containers/TransferCurrency/AccountsInTransfer'
 import { TransferButtons } from '@containers/TransferCurrency/TransferButtons'
+import { getActiveAccount, getCurrentConnection } from '@selectors'
+import { generateTransferTransaction } from '@services/transfer'
 import { ImageSize } from '@types'
+import * as copy from 'copy-to-clipboard'
 
 const mapStateToProps = ({
   transfer: { formData, isTransferring },
-  connections: { currentCurrency },
+  connections,
+  wallet,
 }: RootState) => ({
-  currency: currentCurrency,
+  connections,
   formData,
   isTransferring,
+  wallet,
 })
 
 const mapDispatchToProps = {
@@ -34,6 +39,21 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
     this.props.transferRequest(this.props.formData)
   }
 
+  copyRawTx = async () => {
+    const rawTx = await generateTransferTransaction(
+      getActiveAccount(this.props.wallet).keypair.publicKey(),
+      getCurrentConnection(this.props.connections),
+      this.props.formData,
+    )
+
+    copy(
+      rawTx
+        .toEnvelope()
+        .toXDR()
+        .toString('base64'),
+    )
+  }
+
   render() {
     return (
       <div style={{ position: 'relative' }}>
@@ -45,7 +65,7 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
           <div className="column is-three-fifths">
             <section className="section has-text-centered">
               <CurrencyLogo
-                currency={this.props.currency}
+                currency={this.props.connections.currentCurrency}
                 size={ImageSize.medium}
                 title="Confirm transaction"
               />
@@ -58,6 +78,8 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
                 <div className="column is-two-thirds">
                   <TransferSummary />
                   <TransferButtons
+                    copyText="Copy"
+                    copyButtonClick={this.copyRawTx}
                     cancelButtonClick={this.props.goBackToTransferPage}
                     cancelText="Edit"
                     isDisabled={this.props.isTransferring}
