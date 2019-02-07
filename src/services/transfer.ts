@@ -57,10 +57,10 @@ export async function generateTransferTransaction(
 ): Promise<Transaction> {
   const server = getServer(connection)
   const sourceAccount = await getAccountIfExists(server, sourcePublicKey)
-  return newTransferTransaction(server, sourceAccount, request)
+  return await newTransferTransaction(server, sourceAccount, request)
 }
 
-export async function newTransferTransaction(
+async function newTransferTransaction(
   server: Server,
   source: Account,
   request: TransferRequest,
