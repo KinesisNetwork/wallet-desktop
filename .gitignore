@@ -6,3 +6,6 @@ build
 .cache
 .web-cache
 dist
+
+.idea
+.idea/
