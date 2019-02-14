@@ -47,13 +47,14 @@ export async function getFeeInStroops(server: Server, amountInKinesis: number): 
   const {
     base_percentage_fee: basePercentageFee,
     base_fee_in_stroops: baseFeeInStroops,
+    max_fee: maxFeeInStroops,
   } = mostRecentLedger.records[0]
   const basisPointsToPercent = 10000
 
   const percentageFee =
     ((Number(amountInKinesis) * basePercentageFee) / basisPointsToPercent) * STROOPS_IN_ONE_KINESIS
 
-  return String(Math.ceil(percentageFee + baseFeeInStroops))
+  return String(Math.min(Math.ceil(percentageFee + baseFeeInStroops), maxFeeInStroops))
 }
 
 export async function getFeeInKinesis(
