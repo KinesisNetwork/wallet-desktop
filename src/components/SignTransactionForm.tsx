@@ -149,20 +149,24 @@ class TransactionView extends React.Component<Props, TransactionState> {
     }
   }
 
+  findNameForAddress = (address: string): string => {
+    const foundContact = this.props.addressInBook.find(contact => contact.address === address)
+    return foundContact ? foundContact.name : address
+  }
+
   renderOperations = () =>
     this.props.transaction.operations.map(op => (
-      <OperationOverview operation={op} key={op.type} getNameForAddress={this.getNameForAddress} />
+      <OperationOverview
+        operation={op}
+        key={op.type}
+        findNameForAddress={this.findNameForAddress}
+      />
     ))
 
   renderSigners = () =>
     this.state.signers.map(sig => (
-      <HorizontalLabelledField key={sig} value={this.getNameForAddress(sig)} label="" />
+      <HorizontalLabelledField key={sig} value={this.findNameForAddress(sig)} label="" />
     ))
-
-  getNameForAddress = (address: string): string => {
-    const foundContact = this.props.addressInBook.find(contact => contact.address === address)
-    return foundContact ? foundContact.name : address
-  }
 
   render() {
     const { transaction } = this.props
@@ -171,7 +175,7 @@ class TransactionView extends React.Component<Props, TransactionState> {
         <h3 className="subtitle">Transaction</h3>
         <HorizontalLabelledField
           label="Source"
-          value={this.getNameForAddress(transaction.source)}
+          value={this.findNameForAddress(transaction.source)}
         />
         <HorizontalLabelledField label="Fee" value={transaction.fee.toString()} />
         {this.renderOperations()}
@@ -185,7 +189,7 @@ class TransactionView extends React.Component<Props, TransactionState> {
 
 class OperationOverview extends React.Component<{
   operation: TransactionOperation
-  getNameForAddress: (address: string) => string
+  findNameForAddress: (address: string) => string
 }> {
   renderOperationRecords = () =>
     Object.entries(this.props.operation)
@@ -193,7 +197,7 @@ class OperationOverview extends React.Component<{
       .map(([key, value]) => (
         <HorizontalLabelledField
           label={startCase(key)}
-          value={key === 'destination' || 'source' ? this.props.getNameForAddress(value) : value}
+          value={key === 'destination' || 'source' ? this.props.findNameForAddress(value) : value}
           key={key}
         />
       ))
