@@ -193,7 +193,7 @@ class OperationOverview extends React.Component<{
       .map(([key, value]) => (
         <HorizontalLabelledField
           label={startCase(key)}
-          value={key === 'destination' ? this.props.getNameForAddress(value) : value}
+          value={key === 'destination' || 'source' ? this.props.getNameForAddress(value) : value}
           key={key}
         />
       ))
