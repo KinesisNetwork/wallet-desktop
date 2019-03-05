@@ -6,7 +6,7 @@ import * as React from 'react'
 import { SignTransactionFormProps } from '@containers/SignTransactionForm'
 import { getTransactionSigners } from '@services/accounts'
 import { getServer } from '@services/kinesis'
-import { Connection } from '@types'
+import { Connection, Contact } from '@types'
 import { InputField } from './InputField'
 import { HorizontalLabelledField } from './LabelledField'
 
@@ -111,6 +111,7 @@ export class SignTransactionForm extends React.Component<SignTransactionFormProp
             transaction={this.state.transaction}
             connection={this.props.connection}
             didSign={this.state.signed}
+            addressInBook={this.props.addressInBook}
           />
         )}
       </div>
@@ -122,6 +123,7 @@ interface Props {
   transaction: Transaction
   connection: Connection
   didSign: boolean
+  addressInBook: Contact[]
 }
 interface TransactionState {
   signers: string[]
@@ -148,17 +150,29 @@ class TransactionView extends React.Component<Props, TransactionState> {
   }
 
   renderOperations = () =>
-    this.props.transaction.operations.map(op => <OperationOverview operation={op} key={op.type} />)
+    this.props.transaction.operations.map(op => (
+      <OperationOverview operation={op} key={op.type} getNameForAddress={this.getNameForAddress} />
+    ))
 
   renderSigners = () =>
-    this.state.signers.map(sig => <HorizontalLabelledField key={sig} value={sig} label="" />)
+    this.state.signers.map(sig => (
+      <HorizontalLabelledField key={sig} value={this.getNameForAddress(sig)} label="" />
+    ))
+
+  getNameForAddress = (address: string): string => {
+    const foundContact = this.props.addressInBook.find(contact => contact.address === address)
+    return foundContact ? foundContact.name : address
+  }
 
   render() {
     const { transaction } = this.props
     return (
       <div className="section">
         <h3 className="subtitle">Transaction</h3>
-        <HorizontalLabelledField label="Source" value={transaction.source} />
+        <HorizontalLabelledField
+          label="Source"
+          value={this.getNameForAddress(transaction.source)}
+        />
         <HorizontalLabelledField label="Fee" value={transaction.fee.toString()} />
         {this.renderOperations()}
         <hr />
@@ -169,12 +183,19 @@ class TransactionView extends React.Component<Props, TransactionState> {
   }
 }
 
-class OperationOverview extends React.Component<{ operation: TransactionOperation }> {
+class OperationOverview extends React.Component<{
+  operation: TransactionOperation
+  getNameForAddress: (address: string) => string
+}> {
   renderOperationRecords = () =>
     Object.entries(this.props.operation)
       .filter(([key, value]) => key !== 'type' && ['string', 'number'].includes(typeof value))
       .map(([key, value]) => (
-        <HorizontalLabelledField label={startCase(key)} value={value} key={key} />
+        <HorizontalLabelledField
+          label={startCase(key)}
+          value={key === 'destination' ? this.props.getNameForAddress(value) : value}
+          key={key}
+        />
       ))
 
   render() {
