@@ -206,7 +206,7 @@ class OperationOverview extends React.Component<OperationProps> {
   renderValue = (key: string, value: number | string) =>
     ['destination', 'source'].includes(key)
       ? this.renderAddress(value as string)
-      : key === 'amount'
+      : ['amount', 'startingBalance'].includes(key)
         ? this.renderAmount(value)
         : value
 
