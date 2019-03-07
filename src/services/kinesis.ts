@@ -2,7 +2,12 @@ import { CollectionPage, Keypair, Network, Server, TransactionRecord } from 'js-
 import { flatten, get } from 'lodash'
 
 import { Connection, TransactionLoader, TransactionOperationView } from '@types'
-const STROOPS_IN_ONE_KINESIS = 10000000
+const STROOPS_IN_ONE_KINESIS = 10_000_000
+
+export function convertStroopsToKinesis(numberInStroops: number) {
+  return numberInStroops / STROOPS_IN_ONE_KINESIS
+}
+
 export const BASE_NETWORK_FEE = 100e-7
 
 export enum OperationErrors {
