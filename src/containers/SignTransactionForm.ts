@@ -14,6 +14,7 @@ const mapStateToProps = ({ contacts, sign, wallet, transfer, connections }: Root
   decryptedPrivateKey: () => getActiveAccount(wallet).keypair.secret(),
   submissionPending: transfer.isTransferring,
   connection: getCurrentConnection(connections),
+  currency: connections.currentCurrency,
   addressInBook: contacts.contactList.concat(
     getInactiveAccountsInContactFormat(wallet.accounts, getActiveAccount(wallet)).concat(
       getEmissionKeyInContactFormat(),

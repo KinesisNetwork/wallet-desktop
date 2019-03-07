@@ -5,8 +5,8 @@ import * as React from 'react'
 
 import { SignTransactionFormProps } from '@containers/SignTransactionForm'
 import { getTransactionSigners } from '@services/accounts'
-import { getServer } from '@services/kinesis'
-import { Connection, Contact } from '@types'
+import { convertStroopsToKinesis, getServer } from '@services/kinesis'
+import { Connection, Contact, Currency } from '@types'
 import { InputField } from './InputField'
 import { HorizontalLabelledField } from './LabelledField'
 
@@ -110,6 +110,7 @@ export class SignTransactionForm extends React.Component<SignTransactionFormProp
           <TransactionView
             transaction={this.state.transaction}
             connection={this.props.connection}
+            currency={this.props.currency}
             didSign={this.state.signed}
             addressInBook={this.props.addressInBook}
           />
@@ -122,6 +123,7 @@ export class SignTransactionForm extends React.Component<SignTransactionFormProp
 interface Props {
   transaction: Transaction
   connection: Connection
+  currency: Currency
   didSign: boolean
   addressInBook: Contact[]
 }
@@ -157,9 +159,10 @@ class TransactionView extends React.Component<Props, TransactionState> {
   renderOperations = () =>
     this.props.transaction.operations.map(op => (
       <OperationOverview
-        operation={op}
-        key={op.type}
+        currency={this.props.currency}
         findNameForAddress={this.findNameForAddress}
+        key={op.type}
+        operation={op}
       />
     ))
 
@@ -169,7 +172,7 @@ class TransactionView extends React.Component<Props, TransactionState> {
     ))
 
   render() {
-    const { transaction } = this.props
+    const { currency, transaction } = this.props
     return (
       <div className="section">
         <h3 className="subtitle">Transaction</h3>
@@ -177,7 +180,10 @@ class TransactionView extends React.Component<Props, TransactionState> {
           label="Source"
           value={this.findNameForAddress(transaction.source)}
         />
-        <HorizontalLabelledField label="Fee" value={transaction.fee.toString()} />
+        <HorizontalLabelledField
+          label="Fee"
+          value={`${convertStroopsToKinesis(transaction.fee)} ${currency}`}
+        />
         {this.renderOperations()}
         <hr />
         <h3 className="subtitle">Signers</h3>
@@ -187,17 +193,30 @@ class TransactionView extends React.Component<Props, TransactionState> {
   }
 }
 
-class OperationOverview extends React.Component<{
+interface OperationProps {
+  currency: Currency
   operation: TransactionOperation
-  findNameForAddress: (address: string) => string
-}> {
+  findNameForAddress(address: string): string
+}
+class OperationOverview extends React.Component<OperationProps> {
+  renderAddress = (address: string) => this.props.findNameForAddress(address)
+
+  renderAmount = (amount: number | string) => `${amount} ${this.props.currency}`
+
+  renderValue = (key: string, value: number | string) =>
+    ['destination', 'source'].includes(key)
+      ? this.renderAddress(value as string)
+      : key === 'amount'
+        ? this.renderAmount(value)
+        : value
+
   renderOperationRecords = () =>
     Object.entries(this.props.operation)
       .filter(([key, value]) => key !== 'type' && ['string', 'number'].includes(typeof value))
       .map(([key, value]) => (
         <HorizontalLabelledField
           label={startCase(key)}
-          value={key === 'destination' || 'source' ? this.props.findNameForAddress(value) : value}
+          value={this.renderValue(key, value) as string}
           key={key}
         />
       ))
