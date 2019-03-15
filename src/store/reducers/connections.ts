@@ -25,12 +25,12 @@ const DEFAULT_CONNECTIONS: Connections = {
   },
   [ConnectionStage.mainnet]: {
     [Currency.KAU]: {
-      endpoint: 'https://kau-testnet.kinesisgroup.io',
-      passphrase: 'Kinesis UAT',
+      endpoint: 'https://kau-mainnet.kinesisgroup.io',
+      passphrase: 'Kinesis Live',
     },
     [Currency.KAG]: {
-      endpoint: 'https://kag-testnet.kinesisgroup.io',
-      passphrase: 'Kinesis KAG UAT',
+      endpoint: 'https://kag-mainnet.kinesisgroup.io',
+      passphrase: 'Kinesis KAG Live',
     },
   },
 }
@@ -68,7 +68,7 @@ export const connections = combineReducers<ConnectionsState, RootAction>({
   updating,
   currentCurrency: (state = Currency.KAU, action) =>
     action.type === getType(selectConnectedCurrency) ? action.payload : state,
-  currentStage: (state = ConnectionStage.testnet, action) =>
+  currentStage: (state = ConnectionStage.mainnet, action) =>
     action.type === getType(selectConnectedStage) ? action.payload : state,
   connections: (state = DEFAULT_CONNECTIONS, action) =>
     action.type === getType(handleConnectionFormChange)
