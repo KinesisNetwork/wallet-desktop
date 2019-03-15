@@ -1,6 +1,16 @@
 import { replace } from 'connected-react-router'
 import { from, merge, of } from 'rxjs'
-import { catchError, exhaustMap, filter, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators'
+import {
+  catchError,
+  distinctUntilChanged,
+  exhaustMap,
+  filter,
+  map,
+  mergeMap,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators'
 import { isActionOf } from 'typesafe-actions'
 
 import {
@@ -17,12 +27,15 @@ import {
   updateTransferForm,
 } from '@actions'
 import { getActiveAccount } from '@selectors'
-import { getFeeInKinesis } from '@services/kinesis'
 import { validateAmount } from '@services/util'
 import { RootEpic } from '@store'
 import { GoogleAnalyticsAction, GoogleAnalyticsLabel, NotificationType, RootRoutes } from '@types'
 
-export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConnection }) => {
+export const amountCalculations$: RootEpic = (
+  action$,
+  state$,
+  { getCurrentConnection, getFeeInKinesis, getMinBalanceInKinesis },
+) => {
   const amountUpdate$ = action$.pipe(
     filter(isActionOf(updateTransferForm)),
     filter(({ payload: { field } }) => field === 'amount'),
@@ -31,17 +44,27 @@ export const amountCalculations$: RootEpic = (action$, state$, { getCurrentConne
   )
 
   return amountUpdate$.pipe(
-    exhaustMap(([action, state]) => {
+    switchMap(([action, state]) => {
       const amount = Number(action.payload.newValue)
       const fee$ = from(getFeeInKinesis(getCurrentConnection(state.connections), amount))
       const updateFee$ = fee$.pipe(map(updateFee))
+
+      // Minimum balance is at least 2 * base reserve.
+      // We may need to implement a more accurate minimum balance formula in the future
+      const minBalance$ = from(
+        getMinBalanceInKinesis(getCurrentConnection(state.connections)),
+      ).pipe(
+        distinctUntilChanged(),
+        map(n => n * 2),
+      )
 
       const calculateRemainingBalance$ = fee$.pipe(
         map(fee => state.accounts.accountInfo.balance - (Number(fee) + amount)),
       )
       const updateRemainingBalance$ = calculateRemainingBalance$.pipe(map(updateRemainingBalance))
       const insufficientFunds$ = calculateRemainingBalance$.pipe(
-        map(remainingBalance => remainingBalance < 0),
+        withLatestFrom(minBalance$),
+        map(([remainingBalance, minBalance]) => remainingBalance < minBalance),
         map(insufficientFunds),
       )
       return merge(updateFee$, updateRemainingBalance$, insufficientFunds$)

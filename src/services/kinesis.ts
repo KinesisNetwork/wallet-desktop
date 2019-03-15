@@ -70,6 +70,20 @@ export async function getFeeInKinesis(
   return String(Number(feeInStroops) / STROOPS_IN_ONE_KINESIS)
 }
 
+export async function getMinBalanceInKinesis(connection: Connection): Promise<number> {
+  const {
+    records: [latestLedger],
+  } = await getServer(connection)
+    .ledgers()
+    .order('desc')
+    .limit(1)
+    .call()
+
+  const { base_reserve_in_stroops: baseReserveInStroops } = latestLedger
+
+  return baseReserveInStroops / STROOPS_IN_ONE_KINESIS
+}
+
 export async function getTransactions(
   connection: Connection,
   accountKey: string,
