@@ -37,7 +37,7 @@ const ComingSoonMessage: React.SFC = () => (
             <p>You will soon be able to buy and sell Kinesis from within your wallet.</p>
             <p>
               In the meantime, you still have the option to{' '}
-              <a href="https://mint-demo.abx.com" target="_blank">
+              <a href="https://mint.abx.com" target="_blank">
                 mint bullion to gain Kinesis
               </a>
               .
