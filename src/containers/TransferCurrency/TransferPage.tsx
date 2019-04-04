@@ -102,25 +102,25 @@ export class TransferPagePresentation extends React.Component<Props, State> {
   }
 
   hasFieldErrors() {
-    const {
-      amount: amountError,
-      memo: memoError,
-      targetPayee: targetPayeeError,
-    } = this.props.formMeta.errors
-    const { amount: amountToTransfer, fee: transferFee } = this.props.formData
+    const { memo: memoError, targetPayee: targetPayeeError } = this.props.formMeta.errors
+    const { amount: amountToTransfer, targetPayee } = this.props.formData
 
-    const hasInputFieldErrors = !!amountError || !!memoError || !!targetPayeeError
+    const hasInputFieldErrors = !!memoError || !!targetPayeeError
 
     const invalidAmount = amountToTransfer === '' || !Number(amountToTransfer)
 
-    const notEnoughFundsToInitiateTransfer =
-      Number(amountToTransfer) + Number(transferFee) > this.props.balance
+    const hasInsufficientFundsToInitiateTransfer = this.props.formMeta.remainingBalance < 0
 
     const hasFormErrors = this.state.isDropdownField
-      ? !this.props.formData.targetPayee || this.props.formData.targetPayee === 'Select a contact'
+      ? !targetPayee || targetPayee === 'Select a contact'
       : !this.props.newContact.address
 
-    return invalidAmount || hasInputFieldErrors || hasFormErrors || notEnoughFundsToInitiateTransfer
+    return (
+      invalidAmount ||
+      hasInputFieldErrors ||
+      hasFormErrors ||
+      hasInsufficientFundsToInitiateTransfer
+    )
   }
 
   goToConfirmPage = () => {
