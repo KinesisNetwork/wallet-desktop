@@ -106,7 +106,7 @@ export class SidebarPresentation extends React.Component<Props> {
             to="#"
             onClick={() =>
               (location.href =
-                'mailto:marketing@kinesis.money&subject=Kinesis%20wallet%20help%20request&bcc=it@kinesis.money')
+                'mailto:marketing@kinesis.money?subject=Kinesis%20wallet%20help%20request&bcc=it@kinesis.money')
             }
           />
           <SidebarLowerItem
