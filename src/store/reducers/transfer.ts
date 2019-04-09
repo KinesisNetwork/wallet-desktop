@@ -7,6 +7,7 @@ import {
   transactionSuccess,
   transferRequest,
   updateFee,
+  updateMinimumBalance,
   updateRemainingBalance,
   updateTransferForm,
 } from '@actions'
@@ -17,8 +18,9 @@ import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 
 interface FormMeta {
-  readonly remainingBalance: number
   readonly errors: FormErrors
+  readonly minimumBalance: number
+  readonly remainingBalance: number
 }
 
 export interface TransferState {
@@ -28,6 +30,14 @@ export interface TransferState {
 }
 
 const formMeta = combineReducers<FormMeta, RootAction>({
+  minimumBalance: (state = 0, action) => {
+    switch (action.type) {
+      case getType(updateMinimumBalance):
+        return action.payload
+      default:
+        return state
+    }
+  },
   remainingBalance: (state = 0, action) => {
     switch (action.type) {
       case getType(updateRemainingBalance):
@@ -93,7 +103,7 @@ function handleChange(name: keyof TransferRequest) {
         if (action.payload.field === name) {
           if (
             name === 'amount' &&
-            action.payload.newValue &&
+            action.payload.newValue !== '' &&
             !validateAmount(action.payload.newValue)
           ) {
             return state

@@ -27,5 +27,7 @@ export const transactionFailed = createStandardAction('TRANSACTION_SUBMIT_FAILED
 export const updateFee = createStandardAction('UPDATE_FEE')<string>()
 export const insufficientFunds = createStandardAction('INSUFFICIENT_FUNDS')<boolean>()
 export const updateRemainingBalance = createStandardAction('UPDATE_REMAINING_BALANCE')<number>()
+export const updateMinimumBalance = createStandardAction('UPDATE_MINIMUM_BALANCE')<number>()
+
 export const publicKeyValidation = createStandardAction('PUBLIC_KEY_VALIDATION')<boolean>()
 export const saveToContact = createAction('SAVE_TO_CONTACT')
