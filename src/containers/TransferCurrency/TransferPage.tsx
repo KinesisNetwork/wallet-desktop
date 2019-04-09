@@ -154,82 +154,85 @@ export class TransferPagePresentation extends React.Component<Props, State> {
     this.props.updateTransferForm({ field: 'amount', newValue: this.props.formData.amount })
   }
 
+  get sufficientBalanceClass() {
+    const { minimumBalance, remainingBalance } = this.props.formMeta
+
+    return remainingBalance < minimumBalance ? 'has-text-danger' : ''
+  }
+
   render() {
-    const { updateTransferForm: handleChange } = this.props
+    const {
+      activeAccount,
+      balance,
+      currency,
+      formData: { fee, targetPayee },
+      formMeta: { errors, remainingBalance },
+      goBackToDashboard,
+      newContact,
+      savedContacts,
+      updateTransferForm: handleChange,
+      wallet: { accounts: walletAccounts },
+    } = this.props
+
+    const transactionFee = Number(fee) - BASE_NETWORK_FEE || 0
+
     return (
-      <React.Fragment>
-        <div className="columns is-mobile is-centered">
-          <div className="column is-one-third">
-            <section className="section has-text-centered">
-              <CurrencyLogo
-                currency={this.props.currency}
-                size={ImageSize.large}
-                title={`Send ${this.props.currency}`}
+      <div className="columns is-mobile is-centered">
+        <div className="column is-one-third">
+          <section className="section has-text-centered">
+            <CurrencyLogo currency={currency} size={ImageSize.large} title={`Send ${currency}`} />
+          </section>
+          <AmountPresentation amount={balance} text="Available" currency={currency} />
+          <div className="field">
+            {this.state.isDropdownField ? (
+              <DropdownForm
+                savedContacts={savedContacts}
+                onFieldChange={this.handlePayeeFieldToggle}
+                payeePublicKey={targetPayee}
+                handleChange={handleChange}
+                accounts={walletAccounts}
+                activeAccount={activeAccount}
               />
+            ) : (
+              <NewContactTransfer
+                errors={errors}
+                handleChange={this.handleNewContactChange}
+                onFieldChange={this.handlePayeeFieldToggle}
+                onSaveToContactsChange={this.handleSaveToContact}
+                saveToContacts={this.state.saveToContacts}
+                name={newContact.name}
+                publicKey={newContact.address}
+              />
+            )}
+            <TransferFormDetails />
+            <section className="columns">
+              <div className="column content has-text-grey-lighter">
+                <p>Transaction fee</p>
+                <p>Network fee</p>
+                <p>Remaining balance</p>
+              </div>
+              <div className={`column has-text-right content ${addMetalColour(currency)}`}>
+                <p>
+                  {transactionFee.toFixed(5)} {currency}
+                </p>
+                <p>
+                  {BASE_NETWORK_FEE.toFixed(5)} {currency}
+                </p>
+                <p className={this.sufficientBalanceClass}>
+                  {remainingBalance.toFixed(5)} {currency}
+                </p>
+              </div>
             </section>
-            <AmountPresentation
-              amount={this.props.balance}
-              text="Available"
-              currency={this.props.currency}
+            <TransferButtons
+              cancelText="Cancel"
+              nextStepText="Next"
+              cancelButtonClick={goBackToDashboard}
+              nextStepButtonClick={this.goToConfirmPage}
+              isDisabled={this.hasFieldErrors()}
             />
-            <div className="field">
-              {this.state.isDropdownField ? (
-                <DropdownForm
-                  savedContacts={this.props.savedContacts}
-                  onFieldChange={this.handlePayeeFieldToggle}
-                  payeePublicKey={this.props.formData.targetPayee}
-                  handleChange={handleChange}
-                  accounts={this.props.wallet.accounts}
-                  activeAccount={this.props.activeAccount}
-                />
-              ) : (
-                <NewContactTransfer
-                  errors={this.props.formMeta.errors}
-                  handleChange={this.handleNewContactChange}
-                  onFieldChange={this.handlePayeeFieldToggle}
-                  onSaveToContactsChange={this.handleSaveToContact}
-                  saveToContacts={this.state.saveToContacts}
-                  name={this.props.newContact.name}
-                  publicKey={this.props.newContact.address}
-                />
-              )}
-              <TransferFormDetails />
-              <section className="columns">
-                <div className="column content has-text-grey-lighter">
-                  <p>Transaction fee</p>
-                  <p>Network fee</p>
-                  <p>Remaining balance</p>
-                </div>
-                <div
-                  className={`column has-text-right content ${addMetalColour(this.props.currency)}`}
-                >
-                  <p>
-                    {(Number(this.props.formData.fee) - BASE_NETWORK_FEE).toFixed(5) || 0}{' '}
-                    {this.props.currency}
-                  </p>
-                  <p>
-                    {BASE_NETWORK_FEE.toFixed(5)} {this.props.currency}
-                  </p>
-                  <p
-                    className={`${
-                      this.props.formMeta.remainingBalance < 0 ? 'has-text-danger' : ''
-                    }`}
-                  >
-                    {this.props.formMeta.remainingBalance.toFixed(5)} {this.props.currency}
-                  </p>
-                </div>
-              </section>
-              <TransferButtons
-                cancelText="Cancel"
-                nextStepText="Next"
-                cancelButtonClick={this.props.goBackToDashboard}
-                nextStepButtonClick={this.goToConfirmPage}
-                isDisabled={this.hasFieldErrors()}
-              />
-            </div>
           </div>
         </div>
-      </React.Fragment>
+      </div>
     )
   }
 }
