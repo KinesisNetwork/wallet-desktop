@@ -81,7 +81,10 @@ export async function getMinBalanceInKinesis(connection: Connection): Promise<nu
 
   const { base_reserve_in_stroops: baseReserveInStroops } = latestLedger
 
-  return baseReserveInStroops / STROOPS_IN_ONE_KINESIS
+  // Minimum balance is at least 2 * base reserve.
+  // We may need to implement a more accurate minimum balance formula in the future
+  // as it depends on the number of signers for the account
+  return (baseReserveInStroops / STROOPS_IN_ONE_KINESIS) * 2
 }
 
 export async function getTransactions(

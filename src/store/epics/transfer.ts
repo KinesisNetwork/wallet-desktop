@@ -2,7 +2,6 @@ import { replace } from 'connected-react-router'
 import { from, merge, of } from 'rxjs'
 import {
   catchError,
-  distinctUntilChanged,
   exhaustMap,
   filter,
   map,
@@ -23,6 +22,7 @@ import {
   transferRequest,
   updateContactForm,
   updateFee,
+  updateMinimumBalance,
   updateRemainingBalance,
   updateTransferForm,
 } from '@actions'
@@ -40,36 +40,52 @@ export const amountCalculations$: RootEpic = (
     filter(isActionOf(updateTransferForm)),
     filter(({ payload: { field } }) => field === 'amount'),
     filter(({ payload: { newValue } }) => newValue === '' || validateAmount(newValue)),
-    withLatestFrom(state$),
+    map(({ payload: { newValue } }) => parseFloat(newValue) || 0),
   )
 
-  return amountUpdate$.pipe(
-    switchMap(([action, state]) => {
-      const amount = Number(action.payload.newValue)
-      const fee$ = from(getFeeInKinesis(getCurrentConnection(state.connections), amount))
-      const updateFee$ = fee$.pipe(map(updateFee))
+  const accountConnectionTransferState$ = state$.pipe(
+    map(({ accounts, connections, transfer }) => {
+      const { balance } = accounts.accountInfo
+      const { fee } = transfer.formData
+      const currentConnection = getCurrentConnection(connections)
 
-      // Minimum balance is at least 2 * base reserve.
-      // We may need to implement a more accurate minimum balance formula in the future
-      const minBalance$ = from(
-        getMinBalanceInKinesis(getCurrentConnection(state.connections)),
-      ).pipe(
-        distinctUntilChanged(),
-        map(n => n * 2),
-      )
-
-      const calculateRemainingBalance$ = fee$.pipe(
-        map(fee => state.accounts.accountInfo.balance - (Number(fee) + amount)),
-      )
-      const updateRemainingBalance$ = calculateRemainingBalance$.pipe(map(updateRemainingBalance))
-      const insufficientFunds$ = calculateRemainingBalance$.pipe(
-        withLatestFrom(minBalance$),
-        map(([remainingBalance, minBalance]) => remainingBalance < minBalance),
-        map(insufficientFunds),
-      )
-      return merge(updateFee$, updateRemainingBalance$, insufficientFunds$)
+      return {
+        balance,
+        currentConnection,
+        fee,
+      }
     }),
   )
+
+  const amountUpdatesWithState$ = amountUpdate$.pipe(
+    withLatestFrom(accountConnectionTransferState$),
+  )
+
+  const fee$ = amountUpdatesWithState$.pipe(
+    switchMap(([amount, { currentConnection }]) =>
+      from(getFeeInKinesis(currentConnection, amount)),
+    ),
+  )
+  const updateFee$ = fee$.pipe(map(updateFee))
+
+  const minBalance$ = amountUpdatesWithState$.pipe(
+    switchMap(([, { currentConnection }]) => from(getMinBalanceInKinesis(currentConnection))),
+  )
+  const updateMinimumBalance$ = minBalance$.pipe(map(updateMinimumBalance))
+
+  const remainingBalance$ = amountUpdatesWithState$.pipe(
+    map(([amount, { balance, fee }]) => balance - (Number(fee) + amount)),
+  )
+
+  const updateRemainingBalance$ = remainingBalance$.pipe(map(updateRemainingBalance))
+
+  const insufficientFunds$ = remainingBalance$.pipe(
+    withLatestFrom(minBalance$),
+    map(([remainingBalance, minBalance]) => remainingBalance < minBalance),
+    map(insufficientFunds),
+  )
+
+  return merge(updateRemainingBalance$, updateFee$, updateMinimumBalance$, insufficientFunds$)
 }
 
 export const publicKeyValidation$: RootEpic = (action$, _, { isValidPublicKey }) =>
