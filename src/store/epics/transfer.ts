@@ -79,9 +79,10 @@ export const amountCalculations$: RootEpic = (
   )
   const updateMinimumBalance$ = minBalance$.pipe(map(updateMinimumBalance))
 
-  const remainingBalance$ = amountUpdateWithState$.pipe(
-    withLatestFrom(fee$),
-    map(([{ amount, balance }, fee]) => balance - (Number(fee) + amount)),
+  // Ensure we have the latest fee when calculating the remainingBalance
+  const remainingBalance$ = fee$.pipe(
+    withLatestFrom(amountUpdateWithState$),
+    map(([fee, { amount, balance }]) => balance - (Number(fee) + amount)),
   )
   const updateRemainingBalance$ = remainingBalance$.pipe(map(updateRemainingBalance))
 
