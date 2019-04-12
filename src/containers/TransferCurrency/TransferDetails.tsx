@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import { updateTransferForm } from '@actions'
 import { InputField } from '@components/InputField'
+import { validateAmount } from '@services/util'
 import { RootState } from '@store'
 
 const mapStateToProps = ({ transfer: { formMeta, formData }, connections }: RootState) => ({
@@ -16,6 +17,22 @@ const mapDispatchToProps = {
   updateTransferForm,
 }
 
+function isValidAmount(amount: string) {
+  return amount === '' || validateAmount(amount)
+}
+
+function handleAmountChange(updateFormHandler: Props['updateTransferForm']) {
+  return (amount: string) => {
+    const isValid = isValidAmount(amount)
+
+    if (isValid) {
+      return updateFormHandler({ field: 'amount', newValue: amount })
+    }
+
+    return false
+  }
+}
+
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
 const TransferFormDetailsPresentation: React.SFC<Props> = props => {
@@ -27,7 +44,7 @@ const TransferFormDetailsPresentation: React.SFC<Props> = props => {
         id="transfer-amount"
         value={props.amount}
         placeholder={`0 ${props.currency}`}
-        onChangeHandler={newValue => handleChange({ field: 'amount', newValue })}
+        onChangeHandler={handleAmountChange(handleChange)}
         label="Amount"
         errorText={props.errors.amount}
       />
