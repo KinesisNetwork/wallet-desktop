@@ -1,7 +1,7 @@
 import { CollectionPage, Keypair, Network, Server, TransactionRecord } from 'js-kinesis-sdk'
 import { flatten, get } from 'lodash'
 
-import { Connection, TransactionLoader, TransactionOperationView } from '@types'
+import { Connection, TransactionLoader, TransactionOperationView, WalletAccount } from '@types'
 const STROOPS_IN_ONE_KINESIS = 10_000_000
 
 export function convertStroopsToKinesis(numberInStroops: number) {
@@ -70,21 +70,55 @@ export async function getFeeInKinesis(
   return String(Number(feeInStroops) / STROOPS_IN_ONE_KINESIS)
 }
 
-export async function getMinBalanceInKinesis(connection: Connection): Promise<number> {
-  const {
-    records: [latestLedger],
-  } = await getServer(connection)
+/**
+ * Minimum Balance
+ *
+ * The minimum account balance is calculated by entries for the account.
+ * Each entry costs 1 * base_reserve.
+ * The minimum balance is 2 * base_reserve for a standard account.
+ *
+ * Each additional signer increases this entry count by 1.
+ *
+ * @example
+ * A standard account (with default signer) has a minimum balance of 2 * base_reserve = 0.02 KAU
+ * An account (with default signer) plus 1 extra signer has a minimum balance of (2 + 1) * base_reserve = 0.03 KAU
+ *
+ * There are other Stellar entries which will increase this count but are unlikely
+ * to occur on our network (eg offers, trustlines).
+ *
+ * @link https://www.stellar.org/developers/guides/concepts/fees.html for more info
+ */
+export async function getMinBalanceInKinesis(
+  connection: Connection,
+  account: WalletAccount,
+): Promise<number> {
+  const server = getServer(connection)
+  const ledgerFetch = server
     .ledgers()
     .order('desc')
     .limit(1)
     .call()
+  const accountFetch = server.loadAccount(account.keypair.publicKey())
+
+  const [
+    {
+      records: [latestLedger],
+    },
+    { signers },
+  ] = await Promise.all([ledgerFetch, accountFetch])
 
   const { base_reserve_in_stroops: baseReserveInStroops } = latestLedger
+  const baseReserveInKinesis = baseReserveInStroops / STROOPS_IN_ONE_KINESIS
 
-  // Minimum balance is at least 2 * base reserve.
-  // We may need to implement a more accurate minimum balance formula in the future
-  // as it depends on the number of signers for the account
-  return (baseReserveInStroops / STROOPS_IN_ONE_KINESIS) * 2
+  const extraSignerEntries = signers.length - 1
+
+  const standardAccountEntries = 2
+
+  const totalAccountEntries = standardAccountEntries + extraSignerEntries
+
+  const minBalance = baseReserveInKinesis * totalAccountEntries
+
+  return minBalance
 }
 
 export async function getTransactions(
