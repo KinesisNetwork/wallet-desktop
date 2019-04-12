@@ -2,14 +2,7 @@ import { goBack, push } from 'connected-react-router'
 import * as React from 'react'
 import { connect } from 'react-redux'
 
-import {
-  addContact,
-  insufficientFunds,
-  showNotification,
-  updateContactForm,
-  updateRemainingBalance,
-  updateTransferForm,
-} from '@actions'
+import { addContact, showNotification, updateContactForm, updateTransferForm } from '@actions'
 
 import { AmountPresentation } from '@containers/TransferCurrency/AmountPresentation'
 import { CurrencyLogo } from '@containers/TransferCurrency/CurrencyLogo'
@@ -20,6 +13,7 @@ import { TransferFormDetails } from '@containers/TransferCurrency/TransferDetail
 import { addMetalColour } from '@helpers/walletUtils'
 import { getActiveAccount, getCurrentConnection } from '@selectors'
 import { BASE_NETWORK_FEE } from '@services/kinesis'
+import { renderAmountToDpWithoutRounding } from '@services/util'
 import { RootState } from '@store'
 import { Contact, ImageSize, NotificationType, RootRoutes } from '@types'
 
@@ -45,8 +39,6 @@ const mapDispatchToProps = {
   goBackToDashboard: () => goBack(),
   goToConfirm: () => push(RootRoutes.dashboard + '/confirm'),
   updateTransferForm,
-  insufficientFunds,
-  updateRemainingBalance,
   addContact,
   showNotification,
   updateContactForm,
@@ -102,18 +94,25 @@ export class TransferPagePresentation extends React.Component<Props, State> {
   }
 
   hasFieldErrors() {
-    const { memo: memoError, targetPayee: targetPayeeError } = this.props.formMeta.errors
-    const { amount: amountToTransfer, targetPayee } = this.props.formData
+    const {
+      formMeta: {
+        errors: { memo: memoError, targetPayee: targetPayeeError },
+        minimumBalance,
+        remainingBalance,
+      },
+      formData: { amount: amountToTransfer, targetPayee },
+      newContact: { address },
+    } = this.props
 
     const hasInputFieldErrors = !!memoError || !!targetPayeeError
 
     const invalidAmount = amountToTransfer === '' || !Number(amountToTransfer)
 
-    const hasInsufficientFundsToInitiateTransfer = this.props.formMeta.remainingBalance < 0
+    const hasInsufficientFundsToInitiateTransfer = remainingBalance < minimumBalance
 
-    const hasFormErrors = this.state.isDropdownField
-      ? !targetPayee || targetPayee === 'Select a contact'
-      : !this.props.newContact.address
+    const noTargetPayeeSelected = !targetPayee || targetPayee === 'Select a contact'
+
+    const hasFormErrors = this.state.isDropdownField ? noTargetPayeeSelected : !address
 
     return (
       invalidAmount ||
@@ -174,7 +173,7 @@ export class TransferPagePresentation extends React.Component<Props, State> {
       wallet: { accounts: walletAccounts },
     } = this.props
 
-    const transactionFee = Number(fee) - BASE_NETWORK_FEE || 0
+    const transactionFee = (Number(fee) - BASE_NETWORK_FEE).toFixed(20)
 
     return (
       <div className="columns is-mobile is-centered">
@@ -213,13 +212,13 @@ export class TransferPagePresentation extends React.Component<Props, State> {
               </div>
               <div className={`column has-text-right content ${addMetalColour(currency)}`}>
                 <p>
-                  {transactionFee.toFixed(5)} {currency}
+                  {renderAmountToDpWithoutRounding(transactionFee, 5)} {currency}
                 </p>
                 <p>
-                  {BASE_NETWORK_FEE.toFixed(5)} {currency}
+                  {renderAmountToDpWithoutRounding(BASE_NETWORK_FEE, 5)} {currency}
                 </p>
                 <p className={this.sufficientBalanceClass}>
-                  {remainingBalance.toFixed(5)} {currency}
+                  {renderAmountToDpWithoutRounding(remainingBalance, 5)} {currency}
                 </p>
               </div>
             </section>
