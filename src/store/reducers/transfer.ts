@@ -11,7 +11,6 @@ import {
   updateRemainingBalance,
   updateTransferForm,
 } from '@actions'
-import { validateAmount } from '@services/util'
 import { RootAction } from '@store'
 import { FormErrors, TransferRequest } from '@types'
 import { combineReducers } from 'redux'
@@ -61,9 +60,11 @@ function handleError(name: keyof FormErrors) {
       case getType(updateTransferForm):
         return name === 'memo' &&
           action.payload.field === 'memo' &&
-          action.payload.newValue.length > 24
+          action.payload.newValue.length > 25
           ? `${action.payload.newValue.length} / 25`
-          : ''
+          : name === 'amount'
+            ? state
+            : ''
       case getType(publicKeyValidation):
         return name === 'targetPayee' && !action.payload ? 'Invalid Kinesis Address' : ''
       default:
@@ -101,13 +102,6 @@ function handleChange(name: keyof TransferRequest) {
     switch (action.type) {
       case getType(updateTransferForm):
         if (action.payload.field === name) {
-          if (
-            name === 'amount' &&
-            action.payload.newValue !== '' &&
-            !validateAmount(action.payload.newValue)
-          ) {
-            return state
-          }
           return action.payload.newValue
         }
         return state
