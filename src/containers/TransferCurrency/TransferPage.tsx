@@ -73,6 +73,7 @@ export class TransferPagePresentation extends React.Component<Props, State> {
       prevState => ({ isDropdownField: !prevState.isDropdownField }),
       () => {
         this.props.updateTransferForm({ field: 'targetPayee', newValue: '' })
+        this.props.updateContactForm({ field: 'address', newValue: '' })
       },
     )
   }
