@@ -98,6 +98,7 @@ export const amountCalculations$: RootEpic = (
       ([
         isInsufficientFunds,
         {
+          connections: { currentCurrency },
           transfer: {
             targetPayeeIsExisted,
             formData: { amount, targetPayee },
@@ -105,7 +106,9 @@ export const amountCalculations$: RootEpic = (
         },
       ]) => {
         if (isValidPublicKey(targetPayee) && !targetPayeeIsExisted && Number(amount) < 0.02) {
-          return insufficientFunds('Minimum transfer amount to create account is 0.02')
+          return insufficientFunds(
+            `The transfer amount of this transaction must be at least 0.02 ${currentCurrency}`,
+          )
         }
         if (isInsufficientFunds) {
           return insufficientFunds('Insufficient funds')
