@@ -102,7 +102,7 @@ export const transfer = combineReducers<TransferState, RootAction>({
         return state
     }
   },
-  targetPayeeIsExisted: (state = false, action) => {
+  targetPayeeIsExisted: (state = true, action) => {
     switch (action.type) {
       case getType(targetPayeeAccountNotExist):
         return false

@@ -36,7 +36,7 @@ import { GoogleAnalyticsAction, GoogleAnalyticsLabel, NotificationType, RootRout
 export const amountCalculations$: RootEpic = (
   action$,
   state$,
-  { getCurrentConnection, getFeeInKinesis, getMinBalanceInKinesis },
+  { getCurrentConnection, getFeeInKinesis, getMinBalanceInKinesis, isValidPublicKey },
 ) => {
   const amountUpdate$ = action$.pipe(
     filter(isActionOf(updateTransferForm)),
@@ -94,15 +94,25 @@ export const amountCalculations$: RootEpic = (
   )
   const updateInsufficientFunds$ = insufficientFunds$.pipe(
     withLatestFrom(state$),
-    map(([isInsufficientFunds, { transfer: { targetPayeeIsExisted, formData: { amount } } }]) => {
-      if (!targetPayeeIsExisted && Number(amount) < 0.02) {
-        return insufficientFunds('Minimum transfer amount to create account is 0.02')
-      }
-      if (isInsufficientFunds) {
-        return insufficientFunds('Insufficient funds')
-      }
-      return insufficientFunds('')
-    }),
+    map(
+      ([
+        isInsufficientFunds,
+        {
+          transfer: {
+            targetPayeeIsExisted,
+            formData: { amount, targetPayee },
+          },
+        },
+      ]) => {
+        if (isValidPublicKey(targetPayee) && !targetPayeeIsExisted && Number(amount) < 0.02) {
+          return insufficientFunds('Minimum transfer amount to create account is 0.02')
+        }
+        if (isInsufficientFunds) {
+          return insufficientFunds('Insufficient funds')
+        }
+        return insufficientFunds('')
+      },
+    ),
   )
 
   return merge(updateFee$, updateMinimumBalance$, updateRemainingBalance$, updateInsufficientFunds$)
