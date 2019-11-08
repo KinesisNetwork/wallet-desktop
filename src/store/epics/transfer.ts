@@ -17,6 +17,8 @@ import {
   insufficientFunds,
   publicKeyValidation,
   showNotification,
+  targetPayeeAccountExist,
+  targetPayeeAccountNotExist,
   transactionFailed,
   transactionRequest,
   transactionSuccess,
@@ -90,7 +92,18 @@ export const amountCalculations$: RootEpic = (
     withLatestFrom(minBalance$),
     map(([remainingBalance, minBalance]) => remainingBalance < minBalance),
   )
-  const updateInsufficientFunds$ = insufficientFunds$.pipe(map(insufficientFunds))
+  const updateInsufficientFunds$ = insufficientFunds$.pipe(
+    withLatestFrom(state$),
+    map(([isInsufficientFunds, { transfer: { targetPayeeIsExisted, formData: { amount } } }]) => {
+      if (!targetPayeeIsExisted && Number(amount) < 0.02) {
+        return insufficientFunds('Minimum amount to transfer is 0.02')
+      }
+      if (isInsufficientFunds) {
+        return insufficientFunds('Insufficient funds')
+      }
+      return insufficientFunds('')
+    }),
+  )
 
   return merge(updateFee$, updateMinimumBalance$, updateRemainingBalance$, updateInsufficientFunds$)
 }
@@ -100,6 +113,27 @@ export const publicKeyValidation$: RootEpic = (action$, _, { isValidPublicKey })
     filter(isActionOf(updateContactForm)),
     filter(({ payload: { field } }) => field === 'address'),
     map(action => publicKeyValidation(isValidPublicKey(action.payload.newValue))),
+  )
+
+export const checkTargetPayeeAccountExist$: RootEpic = (
+  action$,
+  state$,
+  { isValidPublicKey, loadAccount, getCurrentConnection },
+) =>
+  action$.pipe(
+    filter(isActionOf(updateContactForm)),
+    filter(({ payload: { field } }) => field === 'address'),
+    filter(({ payload: { newValue } }) => isValidPublicKey(newValue)),
+    withLatestFrom(state$),
+    switchMap(([{ payload: { newValue } }, { connections }]) =>
+      from(loadAccount(newValue, getCurrentConnection(connections))).pipe(catchError(e => of(e))),
+    ),
+    map(e => {
+      if (!!e.message && e.message === 'Account does not exist on the network') {
+        return targetPayeeAccountNotExist()
+      }
+      return targetPayeeAccountExist()
+    }),
   )
 
 export const transferRequest$: RootEpic = (

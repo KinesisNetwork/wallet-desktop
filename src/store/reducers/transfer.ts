@@ -2,6 +2,8 @@ import {
   addContact,
   insufficientFunds,
   publicKeyValidation,
+  targetPayeeAccountExist,
+  targetPayeeAccountNotExist,
   transactionFailed,
   transactionRequest,
   transactionSuccess,
@@ -26,6 +28,7 @@ export interface TransferState {
   readonly formData: TransferRequest
   readonly isTransferring: boolean
   readonly formMeta: FormMeta
+  readonly targetPayeeIsExisted: boolean
 }
 
 const formMeta = combineReducers<FormMeta, RootAction>({
@@ -56,7 +59,11 @@ function handleError(name: keyof FormErrors) {
   return (state = '', action: RootAction) => {
     switch (action.type) {
       case getType(insufficientFunds):
-        return name === 'amount' && action.payload ? 'Insufficient funds' : ''
+        if (name === 'amount') {
+          return action.payload
+        } else {
+          return state
+        }
       case getType(updateTransferForm):
         return name === 'memo' &&
           action.payload.field === 'memo' &&
@@ -91,6 +98,16 @@ export const transfer = combineReducers<TransferState, RootAction>({
       case getType(transactionFailed):
         return false
 
+      default:
+        return state
+    }
+  },
+  targetPayeeIsExisted: (state = false, action) => {
+    switch (action.type) {
+      case getType(targetPayeeAccountNotExist):
+        return false
+      case getType(targetPayeeAccountExist):
+        return true
       default:
         return state
     }
