@@ -121,6 +121,16 @@ export async function getMinBalanceInKinesis(
   return minBalance
 }
 
+export async function getBaseReserveInKinesis(connection: Connection) {
+  const server = getServer(connection)
+  const mostRecentLedger = await server
+    .ledgers()
+    .order('desc')
+    .call()
+  const { base_reserve_in_stroops: baseReserveInStroops } = mostRecentLedger.records[0]
+  return Number(baseReserveInStroops) / STROOPS_IN_ONE_KINESIS
+}
+
 export async function getTransactions(
   connection: Connection,
   accountKey: string,

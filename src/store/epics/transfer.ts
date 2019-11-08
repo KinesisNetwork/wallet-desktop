@@ -36,7 +36,13 @@ import { GoogleAnalyticsAction, GoogleAnalyticsLabel, NotificationType, RootRout
 export const amountCalculations$: RootEpic = (
   action$,
   state$,
-  { getCurrentConnection, getFeeInKinesis, getMinBalanceInKinesis, isValidPublicKey },
+  {
+    getCurrentConnection,
+    getFeeInKinesis,
+    getMinBalanceInKinesis,
+    getBaseReserveInKinesis,
+    isValidPublicKey,
+  },
 ) => {
   const amountUpdate$ = action$.pipe(
     filter(isActionOf(updateTransferForm)),
@@ -92,11 +98,18 @@ export const amountCalculations$: RootEpic = (
     withLatestFrom(minBalance$),
     map(([remainingBalance, minBalance]) => remainingBalance < minBalance),
   )
+
+  const getBaseReserveInKinesis$ = insufficientFunds$.pipe(
+    withLatestFrom(accountBalanceConnectionState$),
+    switchMap(([, { currentConnection }]) => getBaseReserveInKinesis(currentConnection)),
+  )
+
   const updateInsufficientFunds$ = insufficientFunds$.pipe(
-    withLatestFrom(state$),
+    withLatestFrom(getBaseReserveInKinesis$, state$),
     map(
       ([
         isInsufficientFunds,
+        baseReserveInKinesis,
         {
           connections: { currentCurrency },
           transfer: {
@@ -105,9 +118,14 @@ export const amountCalculations$: RootEpic = (
           },
         },
       ]) => {
-        if (isValidPublicKey(targetPayee) && !targetPayeeIsExisted && Number(amount) < 0.02) {
+        const minimumReserve = 2 * baseReserveInKinesis
+        if (
+          isValidPublicKey(targetPayee) &&
+          !targetPayeeIsExisted &&
+          Number(amount) < minimumReserve
+        ) {
           return insufficientFunds(
-            `The transfer amount of this transaction must be at least 0.02 ${currentCurrency}`,
+            `The transfer amount of this transaction must be at least ${minimumReserve} ${currentCurrency}`,
           )
         }
         if (isInsufficientFunds) {
