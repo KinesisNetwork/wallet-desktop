@@ -96,7 +96,7 @@ export const amountCalculations$: RootEpic = (
     withLatestFrom(state$),
     map(([isInsufficientFunds, { transfer: { targetPayeeIsExisted, formData: { amount } } }]) => {
       if (!targetPayeeIsExisted && Number(amount) < 0.02) {
-        return insufficientFunds('Minimum amount to transfer is 0.02')
+        return insufficientFunds('Minimum transfer amount to create account is 0.02')
       }
       if (isInsufficientFunds) {
         return insufficientFunds('Insufficient funds')
