@@ -17,6 +17,8 @@ import {
   insufficientFunds,
   publicKeyValidation,
   showNotification,
+  targetPayeeAccountExist,
+  targetPayeeAccountNotExist,
   transactionFailed,
   transactionRequest,
   transactionSuccess,
@@ -34,7 +36,13 @@ import { GoogleAnalyticsAction, GoogleAnalyticsLabel, NotificationType, RootRout
 export const amountCalculations$: RootEpic = (
   action$,
   state$,
-  { getCurrentConnection, getFeeInKinesis, getMinBalanceInKinesis },
+  {
+    getCurrentConnection,
+    getFeeInKinesis,
+    getMinBalanceInKinesis,
+    getBaseReserveInKinesis,
+    isValidPublicKey,
+  },
 ) => {
   const amountUpdate$ = action$.pipe(
     filter(isActionOf(updateTransferForm)),
@@ -90,7 +98,43 @@ export const amountCalculations$: RootEpic = (
     withLatestFrom(minBalance$),
     map(([remainingBalance, minBalance]) => remainingBalance < minBalance),
   )
-  const updateInsufficientFunds$ = insufficientFunds$.pipe(map(insufficientFunds))
+
+  const getBaseReserveInKinesis$ = insufficientFunds$.pipe(
+    withLatestFrom(accountBalanceConnectionState$),
+    switchMap(([, { currentConnection }]) => getBaseReserveInKinesis(currentConnection)),
+  )
+
+  const updateInsufficientFunds$ = insufficientFunds$.pipe(
+    withLatestFrom(getBaseReserveInKinesis$, state$),
+    map(
+      ([
+        isInsufficientFunds,
+        baseReserveInKinesis,
+        {
+          connections: { currentCurrency },
+          transfer: {
+            targetPayeeIsExisted,
+            formData: { amount, targetPayee },
+          },
+        },
+      ]) => {
+        const minimumReserve = 2 * baseReserveInKinesis
+        if (
+          isValidPublicKey(targetPayee) &&
+          !targetPayeeIsExisted &&
+          Number(amount) < minimumReserve
+        ) {
+          return insufficientFunds(
+            `The transfer amount of this transaction must be at least ${minimumReserve} ${currentCurrency}`,
+          )
+        }
+        if (isInsufficientFunds) {
+          return insufficientFunds('Insufficient funds')
+        }
+        return insufficientFunds('')
+      },
+    ),
+  )
 
   return merge(updateFee$, updateMinimumBalance$, updateRemainingBalance$, updateInsufficientFunds$)
 }
@@ -100,6 +144,27 @@ export const publicKeyValidation$: RootEpic = (action$, _, { isValidPublicKey })
     filter(isActionOf(updateContactForm)),
     filter(({ payload: { field } }) => field === 'address'),
     map(action => publicKeyValidation(isValidPublicKey(action.payload.newValue))),
+  )
+
+export const checkTargetPayeeAccountExist$: RootEpic = (
+  action$,
+  state$,
+  { isValidPublicKey, loadAccount, getCurrentConnection },
+) =>
+  action$.pipe(
+    filter(isActionOf(updateContactForm)),
+    filter(({ payload: { field } }) => field === 'address'),
+    filter(({ payload: { newValue } }) => isValidPublicKey(newValue)),
+    withLatestFrom(state$),
+    switchMap(([{ payload: { newValue } }, { connections }]) =>
+      from(loadAccount(newValue, getCurrentConnection(connections))).pipe(catchError(e => of(e))),
+    ),
+    map(e => {
+      if (!!e.message && e.message === 'Account does not exist on the network') {
+        return targetPayeeAccountNotExist()
+      }
+      return targetPayeeAccountExist()
+    }),
   )
 
 export const transferRequest$: RootEpic = (

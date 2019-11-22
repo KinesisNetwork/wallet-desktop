@@ -174,7 +174,7 @@ export class TransferPagePresentation extends React.Component<Props, State> {
       wallet: { accounts: walletAccounts },
     } = this.props
 
-    const transactionFee = (Number(fee) - BASE_NETWORK_FEE).toFixed(20)
+    const transactionFee = Number(fee) - BASE_NETWORK_FEE
 
     return (
       <div className="columns is-mobile is-centered">

@@ -1,10 +1,21 @@
 import { Keypair, Transaction } from 'js-kinesis-sdk'
 
-import { transactionFailed, transactionRequest, transferRequest } from '@actions'
-import { Connection, ConnectionStage, Currency } from '@types'
+import {
+  targetPayeeAccountExist,
+  targetPayeeAccountNotExist,
+  transactionFailed,
+  transactionRequest,
+  transferRequest,
+  updateContactForm,
+} from '@actions'
+import { Connection, ConnectionStage, Contact, Currency, FormUpdate } from '@types'
 import { DeepPartial } from 'redux'
 import { ConnectionsState } from '../../reducers'
-import { transactionSubmission$, transferRequest$ } from '../transfer'
+import {
+  checkTargetPayeeAccountExist$,
+  transactionSubmission$,
+  transferRequest$,
+} from '../transfer'
 import { epicTest } from './helpers'
 
 describe('Transfer epic', () => {
@@ -137,6 +148,47 @@ describe('Transfer epic', () => {
       })
       expect(getCurrentConnection).toHaveBeenCalledWith(connections)
       expect(submitSignedTransaction).toHaveBeenCalledWith(connection, transaction)
+    })
+  })
+
+  describe('checkTargetPayeeAccountExist$', () => {
+    it('should dispatch targetPayeeAccountNotExist if the account does not exist', async () => {
+      const getCurrentConnection = jest.fn(() => connection)
+      const isValidPublicKey = jest.fn(() => true)
+      const loadAccount = jest
+        .fn()
+        .mockRejectedValue(Error('Account does not exist on the network'))
+      const form: FormUpdate<Contact> = {
+        field: 'address',
+        newValue: 'GBW6WVHUL2SPEAEAI3Y6HFOX7G2ZS2SPDSCDZS6UET6ZRSFZ4NPIMSOP',
+      }
+      await epicTest({
+        epic: checkTargetPayeeAccountExist$,
+        inputActions: [updateContactForm(form)],
+        state: {
+          connections,
+        },
+        dependencies: { isValidPublicKey, getCurrentConnection, loadAccount },
+        expectedActions: [targetPayeeAccountNotExist()],
+      })
+    })
+    it('should dispatch targetPayeeAccountExist if the account does exist', async () => {
+      const getCurrentConnection = jest.fn(() => connection)
+      const isValidPublicKey = jest.fn(() => true)
+      const loadAccount = jest.fn().mockResolvedValue(true)
+      const form: FormUpdate<Contact> = {
+        field: 'address',
+        newValue: 'GBW6WVHUL2SPEAEAI3Y6HFOX7G2ZS2SPDSCDZS6UET6ZRSFZ4NPIMSOP',
+      }
+      await epicTest({
+        epic: checkTargetPayeeAccountExist$,
+        inputActions: [updateContactForm(form)],
+        state: {
+          connections,
+        },
+        dependencies: { isValidPublicKey, getCurrentConnection, loadAccount },
+        expectedActions: [targetPayeeAccountExist()],
+      })
     })
   })
 })

@@ -5,6 +5,7 @@ import { loadAccount } from '@services/accounts'
 import { sendAnalyticsEvent } from '@services/analytics'
 import { decryptWithPassword, encryptWithPassword } from '@services/encryption'
 import {
+  getBaseReserveInKinesis,
   getFeeInKinesis,
   getMinBalanceInKinesis,
   getNextTransactionPage,
@@ -46,6 +47,7 @@ export const epicDependencies = {
   getNextTransactionPage,
   getFeeInKinesis,
   getMinBalanceInKinesis,
+  getBaseReserveInKinesis,
 }
 
 export type EpicDependencies = typeof epicDependencies
