@@ -1,5 +1,8 @@
-import swal from 'sweetalert'
+import * as _swal from 'sweetalert'
+import { SweetAlert } from 'sweetalert/typings/core'
 import { focus } from './focus'
+
+const swal: SweetAlert = _swal as any
 
 export async function formAlert(message: string, key: string) {
   await swal('Oops!', message, 'error')
