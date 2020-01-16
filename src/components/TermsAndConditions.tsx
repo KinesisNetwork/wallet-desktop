@@ -18,7 +18,7 @@ const TermsAndConditionsPresentation: React.SFC<Props> = props => (
       />
       <label htmlFor="tcs">
         I acknowledge that I have read and agreed to the{' '}
-        <a href="https://kinesis.money/documents/Kinesis_Terms_Of_Use.pdf" target="_blank">
+        <a href="https://kinesis.money/en/terms-of-use-and-service/" target="_blank">
           {' '}
           Terms of Use
         </a>
