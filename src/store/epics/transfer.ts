@@ -167,6 +167,36 @@ export const checkTargetPayeeAccountExist$: RootEpic = (
     }),
   )
 
+export const checkContactAccountExist$: RootEpic = (
+  action$,
+  state$,
+  { isValidPublicKey, loadAccount, getCurrentConnection },
+) =>
+  action$.pipe(
+    filter(isActionOf(updateTransferForm)),
+    filter(({ payload: { field } }) => field === 'targetPayee'),
+    filter(({ payload: { newValue } }) => isValidPublicKey(newValue)),
+    withLatestFrom(state$),
+    switchMap(([{ payload: { newValue } }, { connections }]) =>
+      from(loadAccount(newValue, getCurrentConnection(connections))).pipe(catchError(e => of(e))),
+    ),
+    map(e => {
+      if (!!e.message && e.message === 'Account does not exist on the network') {
+        return targetPayeeAccountNotExist()
+      }
+      return targetPayeeAccountExist()
+    }),
+  )
+
+export const updateTransferFormFromValidationResult$: RootEpic = (action$, state$) =>
+  action$.pipe(
+    filter(isActionOf([targetPayeeAccountNotExist, targetPayeeAccountExist])),
+    withLatestFrom(state$),
+    map(([_, { transfer: { formData: { amount } } }]) => {
+      return updateTransferForm({ field: 'amount', newValue: amount })
+    }),
+  )
+
 export const transferRequest$: RootEpic = (
   action$,
   state$,
