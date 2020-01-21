@@ -152,8 +152,8 @@ export const checkTargetPayeeAccountExist$: RootEpic = (
   { isValidPublicKey, loadAccount, getCurrentConnection },
 ) =>
   action$.pipe(
-    filter(isActionOf(updateTransferForm)),
-    filter(({ payload: { field } }) => field === 'targetPayee'),
+    filter(isActionOf(updateContactForm)),
+    filter(({ payload: { field } }) => field === 'address'),
     filter(({ payload: { newValue } }) => isValidPublicKey(newValue)),
     withLatestFrom(state$),
     switchMap(([{ payload: { newValue } }, { connections }]) =>
@@ -173,8 +173,8 @@ export const checkContactAccountExist$: RootEpic = (
   { isValidPublicKey, loadAccount, getCurrentConnection },
 ) =>
   action$.pipe(
-    filter(isActionOf(updateContactForm)),
-    filter(({ payload: { field } }) => field === 'address'),
+    filter(isActionOf(updateTransferForm)),
+    filter(({ payload: { field } }) => field === 'targetPayee'),
     filter(({ payload: { newValue } }) => isValidPublicKey(newValue)),
     withLatestFrom(state$),
     switchMap(([{ payload: { newValue } }, { connections }]) =>
