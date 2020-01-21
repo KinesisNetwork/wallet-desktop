@@ -97,14 +97,13 @@ export class TransferPagePresentation extends React.Component<Props, State> {
   hasFieldErrors() {
     const {
       formMeta: {
-        errors: { memo: memoError, targetPayee: targetPayeeError },
+        errors: { memo: memoError, targetPayee: targetPayeeError, amount: amountErrors },
         minimumBalance,
         remainingBalance,
       },
       formData: { amount: amountToTransfer, targetPayee },
       newContact: { address },
     } = this.props
-
     const hasInputFieldErrors = !!memoError || !!targetPayeeError
 
     const invalidAmount = amountToTransfer === '' || !Number(amountToTransfer)
@@ -115,11 +114,14 @@ export class TransferPagePresentation extends React.Component<Props, State> {
 
     const hasFormErrors = this.state.isDropdownField ? noTargetPayeeSelected : !address
 
+    const hasAmountErrors = amountErrors !== ''
+
     return (
       invalidAmount ||
       hasInputFieldErrors ||
       hasFormErrors ||
-      hasInsufficientFundsToInitiateTransfer
+      hasInsufficientFundsToInitiateTransfer ||
+      hasAmountErrors
     )
   }
 
