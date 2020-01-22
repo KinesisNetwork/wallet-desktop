@@ -16,6 +16,7 @@ import { BASE_NETWORK_FEE } from '@services/kinesis'
 import { renderAmountToDpWithoutRounding } from '@services/util'
 import { RootState } from '@store'
 import { Contact, ImageSize, NotificationType, RootRoutes } from '@types'
+import Decimal from 'decimal.js'
 
 const mapStateToProps = ({
   connections,
@@ -176,7 +177,7 @@ export class TransferPagePresentation extends React.Component<Props, State> {
       wallet: { accounts: walletAccounts },
     } = this.props
 
-    const transactionFee = Number(fee) - BASE_NETWORK_FEE
+    const transactionFee = new Decimal(fee).minus(BASE_NETWORK_FEE).toFixed(5)
 
     return (
       <div className="columns is-mobile is-centered">
