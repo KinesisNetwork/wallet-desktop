@@ -148,7 +148,6 @@
     "@types/redux-persist": "4.3.1",
     "@types/webpack-env": "^1.13.6",
     "babel-core": "^6.26.3",
-    "decimal.js": "10.2.0",
     "electron": "^2.0.8",
     "enzyme": "^3.4.1",
     "enzyme-adapter-react-16": "^1.2.0",
