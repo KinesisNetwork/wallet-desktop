@@ -139,6 +139,13 @@ export const amountCalculations$: RootEpic = (
   return merge(updateFee$, updateMinimumBalance$, updateRemainingBalance$, updateInsufficientFunds$)
 }
 
+export const setLoading$: RootEpic = (action$, _, {}) =>
+  action$.pipe(
+    filter(isActionOf(updateTransferForm)),
+    tap(() => insufficientFunds('Loading...')),
+    debounceTime(200),
+  )
+
 export const publicKeyValidation$: RootEpic = (action$, _, { isValidPublicKey }) =>
   action$.pipe(
     filter(isActionOf(updateContactForm)),

@@ -152,8 +152,15 @@ export class TransferPagePresentation extends React.Component<Props, State> {
       contact => this.props.newContact[contactProperty] === contact[contactProperty],
     )
 
-  componentDidMount() {
-    this.props.updateTransferForm({ field: 'amount', newValue: this.props.formData.amount })
+  componentWillMount() {
+    this.props.updateTransferForm({
+      field: 'amount',
+      newValue: this.props.formData.amount ? this.props.formData.amount : '0',
+    })
+    this.props.updateTransferForm({
+      field: 'targetPayee',
+      newValue: this.props.formData.targetPayee,
+    })
   }
 
   get sufficientBalanceClass() {
