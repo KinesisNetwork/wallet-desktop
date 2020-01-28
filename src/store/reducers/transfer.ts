@@ -12,6 +12,8 @@ import {
   updateMinimumBalance,
   updateRemainingBalance,
   updateTransferForm,
+  updateTransferFormComplete,
+  updatingTransferForm,
 } from '@actions'
 import { RootAction } from '@store'
 import { FormErrors, TransferRequest } from '@types'
@@ -26,6 +28,7 @@ interface FormMeta {
 
 export interface TransferState {
   readonly formData: TransferRequest
+  readonly formDataLoading: boolean
   readonly isTransferring: boolean
   readonly formMeta: FormMeta
   readonly targetPayeeIsExisted: boolean
@@ -87,6 +90,16 @@ export const transfer = combineReducers<TransferState, RootAction>({
     memo: handleChange('memo'),
     fee: handleChange('fee'),
   }),
+  formDataLoading: (state = false, action) => {
+    switch (action.type) {
+      case getType(updatingTransferForm):
+        return true
+      case getType(updateTransferFormComplete):
+        return false
+      default:
+        return state
+    }
+  },
   formMeta,
   isTransferring: (state = false, action) => {
     switch (action.type) {

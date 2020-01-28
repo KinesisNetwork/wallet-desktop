@@ -9,6 +9,9 @@ export const updateTransferForm = createStandardAction('UPDATE_TRANSFER_FORM')<
   FormUpdate<TransferRequest>
 >()
 
+export const updatingTransferForm = createAction('UPDATING_TRANSFER_FORM')
+export const updateTransferFormComplete = createAction('UPDATE_TRANSFER_FORM_COMPLETE')
+
 export const accountTransactionsLoaded = createStandardAction('ACCOUNT_TRANSACTIONS_LOADED')<
   TransactionLoader
 >()

@@ -28,10 +28,18 @@ import {
   updateMinimumBalance,
   updateRemainingBalance,
   updateTransferForm,
+  updateTransferFormComplete,
+  updatingTransferForm,
 } from '@actions'
 import { getActiveAccount } from '@selectors'
 import { RootEpic } from '@store'
 import { GoogleAnalyticsAction, GoogleAnalyticsLabel, NotificationType, RootRoutes } from '@types'
+
+export const startedCalculation$: RootEpic = action$ =>
+  action$.pipe(
+    filter(isActionOf(updateTransferForm)),
+    map(() => updatingTransferForm()),
+  )
 
 export const amountCalculations$: RootEpic = (
   action$,
@@ -135,8 +143,25 @@ export const amountCalculations$: RootEpic = (
       },
     ),
   )
+  const calculationComplete$ = updateInsufficientFunds$.pipe(
+    withLatestFrom(
+      updateInsufficientFunds$,
+      updateFee$,
+      updateMinimumBalance$,
+      updateRemainingBalance$,
+      state$,
+    ),
+    map(() => updateTransferFormComplete()),
+    debounceTime(500),
+  )
 
-  return merge(updateFee$, updateMinimumBalance$, updateRemainingBalance$, updateInsufficientFunds$)
+  return merge(
+    updateFee$,
+    updateMinimumBalance$,
+    updateRemainingBalance$,
+    updateInsufficientFunds$,
+    calculationComplete$,
+  )
 }
 
 export const publicKeyValidation$: RootEpic = (action$, _, { isValidPublicKey }) =>
