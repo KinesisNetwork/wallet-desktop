@@ -38,6 +38,7 @@ import { GoogleAnalyticsAction, GoogleAnalyticsLabel, NotificationType, RootRout
 export const startedCalculation$: RootEpic = action$ =>
   action$.pipe(
     filter(isActionOf(updateTransferForm)),
+    filter(({ payload: { field } }) => field === 'amount' || field === 'targetPayee'),
     map(() => updatingTransferForm()),
   )
 
