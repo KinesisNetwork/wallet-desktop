@@ -2,7 +2,13 @@ import { goBack, push } from 'connected-react-router'
 import * as React from 'react'
 import { connect } from 'react-redux'
 
-import { addContact, showNotification, updateContactForm, updateTransferForm } from '@actions'
+import {
+  addContact,
+  showNotification,
+  updateContactForm,
+  updateTransferForm,
+  updateTransferFormComplete,
+} from '@actions'
 
 import { AmountPresentation } from '@containers/TransferCurrency/AmountPresentation'
 import { CurrencyLogo } from '@containers/TransferCurrency/CurrencyLogo'
@@ -19,7 +25,7 @@ import { Contact, ImageSize, NotificationType, RootRoutes } from '@types'
 
 const mapStateToProps = ({
   connections,
-  transfer: { formData, formMeta },
+  transfer: { formData, formMeta, formDataLoading },
   contacts: { contactList, newContact },
   accounts,
   wallet,
@@ -33,6 +39,7 @@ const mapStateToProps = ({
   newContact,
   wallet,
   activeAccount: getActiveAccount(wallet),
+  calculatingInProgress: formDataLoading,
 })
 
 const mapDispatchToProps = {
@@ -42,6 +49,7 @@ const mapDispatchToProps = {
   addContact,
   showNotification,
   updateContactForm,
+  updateTransferFormComplete,
 }
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
@@ -153,6 +161,7 @@ export class TransferPagePresentation extends React.Component<Props, State> {
     )
 
   componentWillMount() {
+    this.props.updateTransferFormComplete()
     this.props.updateTransferForm({
       field: 'amount',
       newValue: this.props.formData.amount ? this.props.formData.amount : '0',
@@ -161,6 +170,9 @@ export class TransferPagePresentation extends React.Component<Props, State> {
       field: 'targetPayee',
       newValue: this.props.formData.targetPayee,
     })
+  }
+  componentWillUnMount() {
+    this.props.updateTransferFormComplete()
   }
 
   get sufficientBalanceClass() {
@@ -181,6 +193,7 @@ export class TransferPagePresentation extends React.Component<Props, State> {
       savedContacts,
       updateTransferForm: handleChange,
       wallet: { accounts: walletAccounts },
+      calculatingInProgress,
     } = this.props
 
     const transactionFee = (Number(fee) - BASE_NETWORK_FEE).toFixed(5)
@@ -237,7 +250,7 @@ export class TransferPagePresentation extends React.Component<Props, State> {
               nextStepText="Next"
               cancelButtonClick={goBackToDashboard}
               nextStepButtonClick={this.goToConfirmPage}
-              isDisabled={this.hasFieldErrors()}
+              isDisabled={calculatingInProgress || this.hasFieldErrors()}
             />
           </div>
         </div>
