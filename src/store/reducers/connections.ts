@@ -15,21 +15,21 @@ import { Connection, ConnectionStage, Currency } from '@types'
 const DEFAULT_CONNECTIONS: Connections = {
   [ConnectionStage.testnet]: {
     [Currency.KAU]: {
-      endpoint: 'https://kau-testnet.kinesisgroup.io',
+      endpoint: 'https://kau-testnet-oceania.kinesisgroup.io',
       passphrase: 'Kinesis UAT',
     },
     [Currency.KAG]: {
-      endpoint: 'https://kag-testnet.kinesisgroup.io',
+      endpoint: 'https://kag-testnet-oceania.kinesisgroup.io',
       passphrase: 'Kinesis KAG UAT',
     },
   },
   [ConnectionStage.mainnet]: {
     [Currency.KAU]: {
-      endpoint: 'https://kau-mainnet.kinesisgroup.io',
+      endpoint: 'https://kau-mainnet-oceania.kinesisgroup.io',
       passphrase: 'Kinesis Live',
     },
     [Currency.KAG]: {
-      endpoint: 'https://kag-mainnet.kinesisgroup.io',
+      endpoint: 'https://kag-mainnet-oceania.kinesisgroup.io',
       passphrase: 'Kinesis KAG Live',
     },
   },
