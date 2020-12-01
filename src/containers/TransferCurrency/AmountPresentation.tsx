@@ -5,6 +5,7 @@ interface Amount {
   amount: string | number
   text: string
   currency: string
+  isTestnet?: boolean
 }
 
 export const AmountPresentation: React.SFC<Amount> = (props: Amount) => {
@@ -12,7 +13,7 @@ export const AmountPresentation: React.SFC<Amount> = (props: Amount) => {
     <div className="level">
       <div className="level-item">
         <h1 className={`title is-size-2 has-text-weight-bold ${addMetalColour(props.currency)}`}>
-          {Number(props.amount).toFixed(5)} {props.text}
+          {Number(props.amount).toFixed(5)} {props.isTestnet ? 'T' + props.text : props.text}
         </h1>
       </div>
     </div>

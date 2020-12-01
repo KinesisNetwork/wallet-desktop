@@ -13,6 +13,7 @@ import { AddressDisplay, Currency, TransactionOperationView } from '@types'
 export interface Props {
   transactionWithOperation: TransactionOperationView
   currency: Currency
+  isTestnet: boolean
 }
 
 const isTransfer = (
@@ -46,8 +47,8 @@ const getAmount = (t: TransactionOperationView) => {
   return t.isIncoming ? amount.toFixed(5) : (amount + Number(t.fee)).toFixed(5)
 }
 
-const amountWithCurrency = (amount: number | string, currency: Currency) => {
-  return amount && `${amount} ${currency}`
+const amountWithCurrency = (amount: number | string, currency: Currency, isTestnet: boolean) => {
+  return amount && `${amount} ${isTestnet ? 'T' + currency : currency}`
 }
 
 const TransactionIcon: React.SFC<{ t: TransactionOperationView }> = ({ t }) =>
@@ -76,6 +77,7 @@ const TransactionCard: React.SFC<Props & StateProps> = ({
   currency,
   moreInfoIsHidden,
   toggleMoreInfo,
+  isTestnet,
 }) => (
   <article className="level">
     <div
@@ -101,7 +103,7 @@ const TransactionCard: React.SFC<Props & StateProps> = ({
       </div>
       <div className="column is-2 has-text-weight-bold has-text-right">
         <span className={`has-text-${t.isIncoming ? 'success' : 'danger'}`}>
-          {amountWithCurrency(getAmount(t), currency)}
+          {amountWithCurrency(getAmount(t), currency, isTestnet)}
         </span>
       </div>
       <div className="column is-1 has-text-right">
