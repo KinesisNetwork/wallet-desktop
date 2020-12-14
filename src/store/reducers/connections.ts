@@ -22,6 +22,10 @@ const DEFAULT_CONNECTIONS: Connections = {
       endpoint: 'https://kag-testnet.kinesisgroup.io',
       passphrase: 'Kinesis KAG UAT',
     },
+    [Currency.KEM]: {
+      endpoint: 'https://kem-testnet.kinesisgroup.io',
+      passphrase: 'Kinesis KEM UAT',
+    },
   },
   [ConnectionStage.mainnet]: {
     [Currency.KAU]: {
@@ -31,6 +35,10 @@ const DEFAULT_CONNECTIONS: Connections = {
     [Currency.KAG]: {
       endpoint: 'https://kag-mainnet.kinesisgroup.io',
       passphrase: 'Kinesis KAG Live',
+    },
+    [Currency.KEM]: {
+      endpoint: 'https://kem-mainnet.kinesisgroup.io',
+      passphrase: 'Kinesis KEM Live',
     },
   },
 }

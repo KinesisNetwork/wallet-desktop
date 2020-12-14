@@ -85,6 +85,12 @@ const ConnectionSelectorComponent: React.SFC<Props> = props => (
       >
         {Currency.KAG}
       </a>
+      <a
+        className={props.currentCurrency === Currency.KEM ? 'is-active' : ''}
+        onClick={() => props.selectUpdatingCurrency(Currency.KEM)}
+      >
+        {Currency.KEM}
+      </a>
     </div>
     <div className="panel-block is-block">
       <div className="field is-horizontal">

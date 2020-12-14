@@ -31,7 +31,7 @@ export class SignTransactionForm extends React.Component<SignTransactionFormProp
     this.state.transaction && this.props.transactionRequest(this.state.transaction)
 
   loadTransaction = () => this.setState({ transaction: new Transaction(this.props.message) })
-
+  
   signTransaction = () => {
     if (this.state.transaction) {
       const keypair = Keypair.fromSecret(this.props.decryptedPrivateKey())
@@ -54,6 +54,8 @@ export class SignTransactionForm extends React.Component<SignTransactionFormProp
   }
 
   render() {
+  console.log("helo",this.props);
+
     return (
       <div>
         <div>
