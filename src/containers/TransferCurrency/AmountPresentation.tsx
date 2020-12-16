@@ -8,16 +8,12 @@ interface Amount {
 }
 
 export const AmountPresentation: React.SFC<Amount> = (props: Amount) => {
-  let length = 5
-  if (props.currency === 'KEM') {
-    length = 7
-  }
+  const decimalPlaces = props.currency === 'KEM' ? 7 : 5
   return (
     <div className="level">
       <div className="level-item">
         <h1 className={`title is-size-2 has-text-weight-bold ${addMetalColour(props.currency)}`}>
-          {Number(props.amount).toFixed(length)} {props.text}
-          {/* {Number(props.amount).toFixed(5)} {props.text} */}
+          {Number(props.amount).toFixed(decimalPlaces)} {props.text}
         </h1>
       </div>
     </div>
