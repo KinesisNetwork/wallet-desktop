@@ -16,7 +16,7 @@
     "build:web": "IS_WEB=true parcel build src/index-web.html",
     "prestart": "npm run sass-compile",
     "start": "electron-forge start",
-    "web": "parcel src/index-web.html --cache-dir .web-cache",
+    "web": "IS_WEB=true parcel src/index-web.html --cache-dir .web-cache",
     "tsc:check": "tsc --noEmit",
     "watch:tsc": "npm run tsc:check -- -w",
     "lint": "tslint --project tsconfig.json",
