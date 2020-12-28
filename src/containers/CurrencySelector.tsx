@@ -34,6 +34,14 @@ const CurrencySelectorPresentation: React.SFC<Props> = props => (
           <span>KAG</span>
         </a>
       </li>
+      <li className={props.activeCurrency === Currency.KEM ? 'is-active' : ''}>
+        <a onClick={() => props.selectConnectedCurrency(Currency.KEM)}>
+          <span className="icon is-small">
+            <i className="fal fa-cubes" />
+          </span>
+          <span>KEM</span>
+        </a>
+      </li>
     </ul>
   </div>
 )

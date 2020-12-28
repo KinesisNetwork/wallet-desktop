@@ -18,6 +18,7 @@ export enum TransferView {
 export enum Currency {
   KAU = 'KAU',
   KAG = 'KAG',
+  KEM = 'KEM',
 }
 
 export enum ConnectionStage {

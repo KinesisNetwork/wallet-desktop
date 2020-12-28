@@ -32,7 +32,7 @@ const getAddress = (t: TransactionOperationView) => {
   }
 }
 
-const getAmount = (t: TransactionOperationView) => {
+const getAmount = (t: TransactionOperationView, currency?: Currency) => {
   let amount = 0
   switch (t.operation.type) {
     case 'create_account':
@@ -44,7 +44,8 @@ const getAmount = (t: TransactionOperationView) => {
     default:
       return amount
   }
-  return t.isIncoming ? amount.toFixed(5) : (amount + Number(t.fee)).toFixed(5)
+  const precision: number = currency === 'KEM' ? 7 : 5
+  return t.isIncoming ? amount.toFixed(precision) : (amount + Number(t.fee)).toFixed(precision)
 }
 
 const amountWithCurrency = (amount: number | string, currency: Currency, isTestnet: boolean) => {
@@ -103,7 +104,7 @@ const TransactionCard: React.SFC<Props & StateProps> = ({
       </div>
       <div className="column is-2 has-text-weight-bold has-text-right">
         <span className={`has-text-${t.isIncoming ? 'success' : 'danger'}`}>
-          {amountWithCurrency(getAmount(t), currency, isTestnet)}
+          {amountWithCurrency(getAmount(t, currency), currency, isTestnet)}
         </span>
       </div>
       <div className="column is-1 has-text-right">
