@@ -45,7 +45,9 @@ const getAmount = (t: TransactionOperationView, currency?: Currency) => {
       return amount
   }
   const precision: number = currency === 'KEM' ? 7 : 5
-  return t.isIncoming ? amount.toFixed(precision) : (amount + Number(t.fee)).toFixed(precision)
+  return t.isIncoming
+    ? amount.toFixed(precision)
+    : (amount + (isNaN(Number(t.fee)) ? 0 : Number(t.fee))).toFixed(precision)
 }
 
 const amountWithCurrency = (amount: number | string, currency: Currency, isTestnet: boolean) => {
@@ -133,7 +135,11 @@ const TransactionCard: React.SFC<Props & StateProps> = ({
           isCompact={true}
         />
         {!t.isIncoming && (
-          <HorizontalLabelledField label="Fee:" value={`${t.fee} ${currency}`} isCompact={true} />
+          <HorizontalLabelledField
+            label="Fee:"
+            value={`${t.fee} ${isTestnet ? 'T' + currency : currency}`}
+            isCompact={true}
+          />
         )}
       </div>
     </div>

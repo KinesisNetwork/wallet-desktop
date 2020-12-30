@@ -196,8 +196,9 @@ export class TransferPagePresentation extends React.Component<Props, State> {
       wallet: { accounts: walletAccounts },
       calculatingInProgress,
     } = this.props
-
-    const transactionFee = (Number(fee) - BASE_NETWORK_FEE).toFixed(5)
+    const transactionFee = (
+      Number(fee) - (currency === 'KEM' ? BASE_NETWORK_FEE / 100 : BASE_NETWORK_FEE)
+    ).toFixed(currency === 'KEM' ? 7 : 5)
 
     return (
       <div className="columns is-mobile is-centered">
@@ -240,15 +241,15 @@ export class TransferPagePresentation extends React.Component<Props, State> {
               </div>
               <div className={`column has-text-right content ${addMetalColour(currency)}`}>
                 <p>
-                  {renderAmountToDpWithoutRounding(transactionFee, 5)}{' '}
+                  {renderAmountToDpWithoutRounding(transactionFee, currency === 'KEM' ? 7 : 5)}{' '}
                   {this.props.isTestnet ? 'T' + currency : currency}
                 </p>
                 <p>
-                  {renderAmountToDpWithoutRounding(BASE_NETWORK_FEE, 5)}{' '}
+                  {renderAmountToDpWithoutRounding(BASE_NETWORK_FEE, currency === 'KEM' ? 7 : 5)}{' '}
                   {this.props.isTestnet ? 'T' + currency : currency}
                 </p>
                 <p className={this.sufficientBalanceClass}>
-                  {renderAmountToDpWithoutRounding(remainingBalance, 5)}{' '}
+                  {renderAmountToDpWithoutRounding(remainingBalance, currency === 'KEM' ? 7 : 5)}{' '}
                   {this.props.isTestnet ? 'T' + currency : currency}
                 </p>
               </div>
