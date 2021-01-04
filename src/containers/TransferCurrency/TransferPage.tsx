@@ -21,7 +21,7 @@ import { getActiveAccount, getCurrentConnection } from '@selectors'
 import { BASE_NETWORK_FEE } from '@services/kinesis'
 import { renderAmountToDpWithoutRounding } from '@services/util'
 import { RootState } from '@store'
-import { Contact, ImageSize, NotificationType, RootRoutes } from '@types'
+import { ConnectionStage, Contact, ImageSize, NotificationType, RootRoutes } from '@types'
 
 const mapStateToProps = ({
   connections,
@@ -40,6 +40,7 @@ const mapStateToProps = ({
   wallet,
   activeAccount: getActiveAccount(wallet),
   calculatingInProgress: formDataLoading,
+  isTestnet: connections.currentStage === ConnectionStage.testnet,
 })
 
 const mapDispatchToProps = {
@@ -195,14 +196,19 @@ export class TransferPagePresentation extends React.Component<Props, State> {
       wallet: { accounts: walletAccounts },
       calculatingInProgress,
     } = this.props
-
-    const transactionFee = (Number(fee) - BASE_NETWORK_FEE).toFixed(5)
+    const transactionFee = (
+      Number(fee) - (currency === 'KEM' ? BASE_NETWORK_FEE / 100 : BASE_NETWORK_FEE)
+    ).toFixed(currency === 'KEM' ? 7 : 5)
 
     return (
       <div className="columns is-mobile is-centered">
         <div className="column is-one-third">
           <section className="section has-text-centered">
-            <CurrencyLogo currency={currency} size={ImageSize.large} title={`Send ${currency}`} />
+            <CurrencyLogo
+              currency={currency}
+              size={ImageSize.large}
+              title={`Send ${this.props.isTestnet ? 'T' + currency : currency}`}
+            />
           </section>
           <AmountPresentation amount={balance} text="Available" currency={currency} />
           <div className="field">
@@ -235,13 +241,16 @@ export class TransferPagePresentation extends React.Component<Props, State> {
               </div>
               <div className={`column has-text-right content ${addMetalColour(currency)}`}>
                 <p>
-                  {renderAmountToDpWithoutRounding(transactionFee, 5)} {currency}
+                  {renderAmountToDpWithoutRounding(transactionFee, currency === 'KEM' ? 7 : 5)}{' '}
+                  {this.props.isTestnet ? 'T' + currency : currency}
                 </p>
                 <p>
-                  {renderAmountToDpWithoutRounding(BASE_NETWORK_FEE, 5)} {currency}
+                  {renderAmountToDpWithoutRounding(BASE_NETWORK_FEE, currency === 'KEM' ? 7 : 5)}{' '}
+                  {this.props.isTestnet ? 'T' + currency : currency}
                 </p>
                 <p className={this.sufficientBalanceClass}>
-                  {renderAmountToDpWithoutRounding(remainingBalance, 5)} {currency}
+                  {renderAmountToDpWithoutRounding(remainingBalance, currency === 'KEM' ? 7 : 5)}{' '}
+                  {this.props.isTestnet ? 'T' + currency : currency}
                 </p>
               </div>
             </section>

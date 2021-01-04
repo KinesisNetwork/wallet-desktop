@@ -5,12 +5,14 @@ import { updateTransferForm } from '@actions'
 import { InputField } from '@components/InputField'
 import { validateAmount } from '@services/util'
 import { RootState } from '@store'
+import { ConnectionStage } from '@types'
 
 const mapStateToProps = ({ transfer: { formMeta, formData }, connections }: RootState) => ({
   amount: formData.amount,
   currency: connections.currentCurrency,
   errors: formMeta.errors,
   memo: formData.memo,
+  isTestnet: connections.currentStage === ConnectionStage.testnet,
 })
 
 const mapDispatchToProps = {
@@ -43,7 +45,7 @@ const TransferFormDetailsPresentation: React.SFC<Props> = props => {
       <InputField
         id="transfer-amount"
         value={props.amount}
-        placeholder={`0 ${props.currency}`}
+        placeholder={`0 ${props.isTestnet ? 'T' + props.currency : props.currency}`}
         onChangeHandler={handleAmountChange(handleChange)}
         label="Amount"
         errorText={props.errors.amount}

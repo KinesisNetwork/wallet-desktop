@@ -1,7 +1,6 @@
 .button {
   box-shadow: $shadow;
-  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1),
-    background-color 300ms ease,
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1), background-color 300ms ease,
     color 300ms ease;
   text-transform: uppercase;
   position: relative;
@@ -14,7 +13,7 @@
     background-color: $button-hover-background-color;
   }
 
-  &.is-active ,
+  &.is-active,
   &:active {
     box-shadow: $shadow-large;
   }
@@ -67,7 +66,8 @@
 }
 
 .is-checkradio {
-  &[type="radio"], &[type="checkbox"] {
+  &[type='radio'],
+  &[type='checkbox'] {
     & + label {
       display: inline-block;
       &::before {
@@ -79,4 +79,8 @@
       }
     }
   }
+}
+
+.has-text-kem {
+  color: #00aca9;
 }

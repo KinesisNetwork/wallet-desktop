@@ -11,7 +11,7 @@ import {
 } from '@actions'
 import { RootAction } from '@store'
 import { Connection, ConnectionStage, Currency } from '@types'
-
+// http://ec2-34-252-132-75.eu-west-1.compute.amazonaws.com:8000
 const DEFAULT_CONNECTIONS: Connections = {
   [ConnectionStage.testnet]: {
     [Currency.KAU]: {
@@ -22,6 +22,10 @@ const DEFAULT_CONNECTIONS: Connections = {
       endpoint: 'https://kag-testnet.kinesisgroup.io',
       passphrase: 'Kinesis KAG UAT',
     },
+    [Currency.KEM]: {
+      endpoint: 'https://kem-testnet-europe0.kinesisgroup.io',
+      passphrase: 'KEM UAT',
+    },
   },
   [ConnectionStage.mainnet]: {
     [Currency.KAU]: {
@@ -31,6 +35,10 @@ const DEFAULT_CONNECTIONS: Connections = {
     [Currency.KAG]: {
       endpoint: 'https://kag-mainnet.kinesisgroup.io',
       passphrase: 'Kinesis KAG Live',
+    },
+    [Currency.KEM]: {
+      endpoint: 'https://92qq1uiwi5.execute-api.eu-west-1.amazonaws.com',
+      passphrase: 'KEM UAT',
     },
   },
 }

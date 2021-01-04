@@ -57,9 +57,12 @@ export async function getFeeInStroops(server: Server, amountInKinesis: number): 
   const basisPointsToPercent = 10000
 
   const percentageFee =
-    ((Number(amountInKinesis) * basePercentageFee) / basisPointsToPercent) * STROOPS_IN_ONE_KINESIS
+    ((Number(amountInKinesis) * (basePercentageFee || 45)) / basisPointsToPercent) *
+    STROOPS_IN_ONE_KINESIS
 
-  return String(Math.min(Math.ceil(percentageFee + baseFeeInStroops), maxFeeInStroops))
+  return String(
+    Math.min(Math.ceil(percentageFee + baseFeeInStroops), maxFeeInStroops || 250000000000),
+  )
 }
 
 export async function getFeeInKinesis(
