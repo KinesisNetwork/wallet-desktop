@@ -7,5 +7,11 @@ export const cropPublicKey = (publicKey: string) => {
 }
 
 export const addMetalColour = (currency: string) => {
-  return currency === Currency.KAU ? 'has-text-primary' : 'has-text-grey-light'
+  if (currency === Currency.KAU) {
+    return 'has-text-primary'
+  } else if (currency === Currency.KAG) {
+    return 'has-text-grey-light'
+  } else {
+    return 'has-text-kem'
+  }
 }
