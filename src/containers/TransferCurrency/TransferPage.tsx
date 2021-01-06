@@ -196,8 +196,8 @@ export class TransferPagePresentation extends React.Component<Props, State> {
       wallet: { accounts: walletAccounts },
       calculatingInProgress,
     } = this.props
-    const transactionFee = (
-      Number(fee) - (currency === 'KEM' ? BASE_NETWORK_FEE / 100 : BASE_NETWORK_FEE)
+    const transactionFee = Math.abs(
+      Number(fee) - (currency === 'KEM' ? BASE_NETWORK_FEE / 100 : BASE_NETWORK_FEE),
     ).toFixed(currency === 'KEM' ? 7 : 5)
 
     return (
@@ -245,7 +245,10 @@ export class TransferPagePresentation extends React.Component<Props, State> {
                   {this.props.isTestnet ? 'T' + currency : currency}
                 </p>
                 <p>
-                  {renderAmountToDpWithoutRounding(BASE_NETWORK_FEE, currency === 'KEM' ? 7 : 5)}{' '}
+                  {renderAmountToDpWithoutRounding(
+                    currency === 'KEM' ? '0.0000001' : '0.00001',
+                    currency === 'KEM' ? 7 : 5,
+                  )}{' '}
                   {this.props.isTestnet ? 'T' + currency : currency}
                 </p>
                 <p className={this.sufficientBalanceClass}>

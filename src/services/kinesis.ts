@@ -111,7 +111,9 @@ export async function getMinBalanceInKinesis(
   ] = await Promise.all([ledgerFetch, accountFetch])
 
   const { base_reserve_in_stroops: baseReserveInStroops } = latestLedger
-  const baseReserveInKinesis = baseReserveInStroops / STROOPS_IN_ONE_KINESIS
+  let baseReserveInKinesis = baseReserveInStroops / STROOPS_IN_ONE_KINESIS
+
+  baseReserveInKinesis = connection.passphrase === 'KEM UAT' ? 0.0000001 : baseReserveInKinesis
 
   const extraSignerEntries = signers.length - 1
 
