@@ -180,11 +180,16 @@ async function transactionWithOperations(
   accountKey: string,
 ): Promise<TransactionOperationView[]> {
   const operationsPage = await transaction.operations()
+  const feeCharged = await fetch(operationsPage.records[0]._links.transaction.href)
+    .then(res => res.json())
+    .then(val => val.fee_charged)
   return operationsPage.records.map(
     (operation): TransactionOperationView => ({
       operation,
       date: new Date(transaction.created_at),
-      fee: (Number(transaction.fee_paid) / STROOPS_IN_ONE_KINESIS).toFixed(5),
+      fee: transaction.fee_paid
+        ? (Number(transaction.fee_paid) / STROOPS_IN_ONE_KINESIS).toFixed(5)
+        : (Number(feeCharged) / 10000000).toFixed(7),
       isIncoming: transaction.source_account !== accountKey,
       memo: transaction.memo,
       source: transaction.source_account,
