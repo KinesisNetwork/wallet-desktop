@@ -53,6 +53,14 @@ const mapDispatchToProps = {
   updateTransferFormComplete,
 }
 
+const whiteListedAccount = [
+  'GDRDWNASLH37A7EEPUMUR33T7D4Z7A7GRA4LSIJHT5NOC7SH7D2W7JSP',
+  'GCKNBZQGHXAJRWIYWLIE7WRVUFPHKSGWTRTFL7FKBBSW4KJH6RL6CG4C',
+  'GB2IIUB4RGLM37BZHBALCIDHVEE7BXH5IFML55YPMMKAOK3C7W5RIR2G',
+  'GCDRQFDCHCUPOEXARLKIZDUSN4MV5FS2Z5KDMIDNRX4GKIQORHXJYGVL',
+  'GCV4LZO3ELTLHG55QPSSVSP26VQ4QRLLJL4KM22MXUL3N6FA5NFHL3YW',
+]
+
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 
 interface State {
@@ -183,6 +191,7 @@ export class TransferPagePresentation extends React.Component<Props, State> {
   }
 
   render() {
+    let isWhiteListed = false
     const {
       activeAccount,
       balance,
@@ -196,9 +205,15 @@ export class TransferPagePresentation extends React.Component<Props, State> {
       wallet: { accounts: walletAccounts },
       calculatingInProgress,
     } = this.props
-    const transactionFee = Math.abs(
-      Number(fee) - (currency === 'KEM' ? BASE_NETWORK_FEE / 100 : BASE_NETWORK_FEE),
-    ).toFixed(currency === 'KEM' ? 7 : 5)
+
+    isWhiteListed =
+      currency === 'KEM' && whiteListedAccount.includes(activeAccount.keypair.publicKey())
+
+    const transactionFee = isWhiteListed
+      ? Number(0).toFixed(7)
+      : Math.abs(
+          Number(fee) - (currency === 'KEM' ? BASE_NETWORK_FEE / 100 : BASE_NETWORK_FEE),
+        ).toFixed(currency === 'KEM' ? 7 : 5)
 
     return (
       <div className="columns is-mobile is-centered">

@@ -83,7 +83,7 @@ async function newTransferTransaction(
   server: Server,
   source: Account,
   request: TransferRequest,
-  passphrase?: string,
+  passphrase: string,
 ): Promise<Transaction | STransaction> {
   try {
     await getAccountIfExists(server, request.targetPayee)
@@ -97,9 +97,9 @@ async function newPaymentTransferTransaction(
   server: Server,
   source: Account,
   { amount, targetPayee: destination, memo }: TransferRequest,
-  passphrase?: string,
+  passphrase: string,
 ): Promise<Transaction | STransaction> {
-  const fee = await getFeeInStroops(server, Number(amount))
+  const fee = await getFeeInStroops(server, Number(amount), source.accountId(), passphrase)
   if (passphrase === 'KEM UAT') {
     const paymentTransaction = new STransactionBuilder(source, { fee })
       .addOperation(
@@ -134,9 +134,9 @@ async function newCreateAccountTransaction(
   server: Server,
   source: Account,
   { amount: startingBalance, targetPayee: destination, memo }: TransferRequest,
-  passphrase?: string,
+  passphrase: string,
 ): Promise<Transaction | STransaction> {
-  const fee = await getFeeInStroops(server, Number(startingBalance))
+  const fee = await getFeeInStroops(server, Number(startingBalance), source.accountId(), passphrase)
   if (passphrase === 'KEM UAT') {
     const createAccountTransaction = new STransactionBuilder(source, { fee })
       .addOperation(

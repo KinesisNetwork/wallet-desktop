@@ -44,7 +44,21 @@ export function getServer(connection: Connection): Server {
   return new Server(connection.endpoint)
 }
 
-export async function getFeeInStroops(server: Server, amountInKinesis: number): Promise<string> {
+export async function getFeeInStroops(
+  server: Server,
+  amountInKinesis: number,
+  source: string,
+  passphrase: string,
+): Promise<string> {
+  let isWhitelisted = false
+  const whiteListedAccount = [
+    'GDRDWNASLH37A7EEPUMUR33T7D4Z7A7GRA4LSIJHT5NOC7SH7D2W7JSP',
+    'GCKNBZQGHXAJRWIYWLIE7WRVUFPHKSGWTRTFL7FKBBSW4KJH6RL6CG4C',
+    'GB2IIUB4RGLM37BZHBALCIDHVEE7BXH5IFML55YPMMKAOK3C7W5RIR2G',
+    'GCDRQFDCHCUPOEXARLKIZDUSN4MV5FS2Z5KDMIDNRX4GKIQORHXJYGVL',
+    'GCV4LZO3ELTLHG55QPSSVSP26VQ4QRLLJL4KM22MXUL3N6FA5NFHL3YW',
+  ]
+  isWhitelisted = passphrase === 'KEM UAT' && whiteListedAccount.includes(source)
   const mostRecentLedger = await server
     .ledgers()
     .order('desc')
@@ -56,9 +70,10 @@ export async function getFeeInStroops(server: Server, amountInKinesis: number): 
   } = mostRecentLedger.records[0]
   const basisPointsToPercent = 10000
 
-  const percentageFee =
-    ((Number(amountInKinesis) * (basePercentageFee || 45)) / basisPointsToPercent) *
-    STROOPS_IN_ONE_KINESIS
+  const percentageFee = isWhitelisted
+    ? 0
+    : ((Number(amountInKinesis) * (basePercentageFee || 45)) / basisPointsToPercent) *
+      STROOPS_IN_ONE_KINESIS
 
   return String(
     Math.min(Math.ceil(percentageFee + baseFeeInStroops), maxFeeInStroops || 250000000000),
@@ -68,8 +83,14 @@ export async function getFeeInStroops(server: Server, amountInKinesis: number): 
 export async function getFeeInKinesis(
   connection: Connection,
   amountInKinesis: number,
+  account: string,
 ): Promise<string> {
-  const feeInStroops = await getFeeInStroops(getServer(connection), amountInKinesis).catch(_ => '0')
+  const feeInStroops = await getFeeInStroops(
+    getServer(connection),
+    amountInKinesis,
+    account,
+    connection.passphrase,
+  ).catch(_ => '0')
   return String(Number(feeInStroops) / STROOPS_IN_ONE_KINESIS)
 }
 

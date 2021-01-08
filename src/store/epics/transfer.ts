@@ -85,7 +85,9 @@ export const amountCalculations$: RootEpic = (
   )
 
   const fee$ = amountUpdateWithState$.pipe(
-    switchMap(({ amount, currentConnection }) => from(getFeeInKinesis(currentConnection, amount))),
+    switchMap(({ amount, currentConnection, activeAccount }) =>
+      from(getFeeInKinesis(currentConnection, amount, activeAccount.keypair.publicKey())),
+    ),
   )
   const updateFee$ = fee$.pipe(map(updateFee))
 

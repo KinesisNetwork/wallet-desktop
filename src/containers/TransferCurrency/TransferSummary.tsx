@@ -37,8 +37,8 @@ export const TransferSummaryPresentation: React.SFC<Props> = ({ amount, currency
       <tbody>
         <TransferTableRow
           description="Transaction Fee"
-          amount={(
-            Number(fee) - (currency === 'KEM' ? BASE_NETWORK_FEE / 100 : BASE_NETWORK_FEE)
+          amount={Math.abs(
+            Number(fee) - (currency === 'KEM' ? BASE_NETWORK_FEE / 100 : BASE_NETWORK_FEE),
           ).toFixed(currency === 'KEM' ? 7 : 5)}
           currency={currency}
         />
