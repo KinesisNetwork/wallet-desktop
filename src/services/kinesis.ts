@@ -154,7 +154,9 @@ export async function getBaseReserveInKinesis(connection: Connection) {
     .order('desc')
     .call()
   const { base_reserve_in_stroops: baseReserveInStroops } = mostRecentLedger.records[0]
-  return Number(baseReserveInStroops) / STROOPS_IN_ONE_KINESIS
+  return connection.passphrase === 'KEM UAT'
+    ? 0.0000001
+    : Number(baseReserveInStroops) / STROOPS_IN_ONE_KINESIS
 }
 
 export async function getTransactions(
