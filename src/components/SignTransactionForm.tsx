@@ -2,6 +2,7 @@ import * as copy from 'copy-to-clipboard'
 import { Keypair, Transaction, TransactionOperation } from 'js-kinesis-sdk'
 import { startCase } from 'lodash'
 import * as React from 'react'
+import { Transaction as STransaction } from 'stellar-sdk'
 
 import { SignTransactionFormProps } from '@containers/SignTransactionForm'
 import { getTransactionSigners } from '@services/accounts'
@@ -30,7 +31,15 @@ export class SignTransactionForm extends React.Component<SignTransactionFormProp
   submitTransaction = () =>
     this.state.transaction && this.props.transactionRequest(this.state.transaction)
 
-  loadTransaction = () => this.setState({ transaction: new Transaction(this.props.message) })
+  loadTransaction = () => {
+    if (this.props.currency === 'KEM') {
+      this.setState({
+        transaction: new STransaction(this.props.message, this.props.connection.passphrase),
+      })
+    } else {
+      this.setState({ transaction: new Transaction(this.props.message) })
+    }
+  }
 
   signTransaction = () => {
     if (this.state.transaction) {
