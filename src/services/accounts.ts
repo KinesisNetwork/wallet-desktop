@@ -13,6 +13,14 @@ import { AccountMissingError } from '@helpers/errors'
 import { Connection, Contact, WalletAccount } from '@types'
 import { getServer } from './kinesis'
 
+interface NewAccountResponse extends AccountResponse {
+  signers: Array<{
+    public_key: string
+    weight: number
+    key?: string
+  }>
+}
+
 export async function loadAccount(
   publicKey: string,
   connection: Connection,
@@ -42,10 +50,11 @@ export function getBalance(account: AccountResponse): number {
 }
 
 export async function getTransactionSigners(server: Server, transaction: Transaction) {
-  const account = await server.loadAccount(transaction.source)
-  const signers = account.signers
-    .filter(({ weight }) => weight > 0)
-    .map(({ public_key }) => Keypair.fromPublicKey(public_key))
+  const account: NewAccountResponse = await server.loadAccount(transaction.source)
+  const signers = account.signers.filter(({ weight }) => weight > 0).map(data => {
+    const keys = data.public_key ? data.public_key : data.key
+    return Keypair.fromPublicKey(keys!)
+  })
 
   const transactionSignatures = transaction.signatures.map((sig: any) => sig.signature())
 

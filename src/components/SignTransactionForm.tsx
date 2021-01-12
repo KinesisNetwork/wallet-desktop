@@ -2,7 +2,7 @@ import * as copy from 'copy-to-clipboard'
 import { Keypair, Transaction, TransactionOperation } from 'js-kinesis-sdk'
 import { startCase } from 'lodash'
 import * as React from 'react'
-import { Transaction as STransaction } from 'stellar-sdk'
+import { Keypair as SKeypair, Transaction as STransaction } from 'stellar-sdk'
 
 import { SignTransactionFormProps } from '@containers/SignTransactionForm'
 import { getTransactionSigners } from '@services/accounts'
@@ -43,7 +43,12 @@ export class SignTransactionForm extends React.Component<SignTransactionFormProp
 
   signTransaction = () => {
     if (this.state.transaction) {
-      const keypair = Keypair.fromSecret(this.props.decryptedPrivateKey())
+      let keypair: any
+      if (this.props.connection.passphrase === 'KEM UAT') {
+        keypair = SKeypair.fromSecret(this.props.decryptedPrivateKey())
+      } else {
+        keypair = Keypair.fromSecret(this.props.decryptedPrivateKey())
+      }
       this.state.transaction.sign(keypair)
       this.setState({ signed: true })
     }
