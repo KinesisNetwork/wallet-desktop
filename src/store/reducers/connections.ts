@@ -23,7 +23,7 @@ const DEFAULT_CONNECTIONS: Connections = {
       passphrase: 'Kinesis KAG UAT',
     },
     [Currency.KEM]: {
-      endpoint: 'https://kem-testnet-europe0.kinesisgroup.io',
+      endpoint: 'https://kem-testnet.kinesisgroup.io',
       passphrase: 'KEM UAT',
     },
   },
@@ -37,8 +37,8 @@ const DEFAULT_CONNECTIONS: Connections = {
       passphrase: 'Kinesis KAG Live',
     },
     [Currency.KEM]: {
-      endpoint: 'https://92qq1uiwi5.execute-api.eu-west-1.amazonaws.com',
-      passphrase: 'KEM UAT',
+      endpoint: 'https://kem-mainnet-america1.kinesisgroup.io',
+      passphrase: 'KEM LIVE',
     },
   },
 }

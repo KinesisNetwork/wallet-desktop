@@ -58,7 +58,8 @@ export async function getFeeInStroops(
     'GCDRQFDCHCUPOEXARLKIZDUSN4MV5FS2Z5KDMIDNRX4GKIQORHXJYGVL',
     'GCV4LZO3ELTLHG55QPSSVSP26VQ4QRLLJL4KM22MXUL3N6FA5NFHL3YW',
   ]
-  isWhitelisted = passphrase === 'KEM UAT' && whiteListedAccount.includes(source)
+  isWhitelisted =
+    (passphrase === 'KEM UAT' || passphrase === 'KEM LIVE') && whiteListedAccount.includes(source)
   const mostRecentLedger = await server
     .ledgers()
     .order('desc')
@@ -134,7 +135,10 @@ export async function getMinBalanceInKinesis(
   const { base_reserve_in_stroops: baseReserveInStroops } = latestLedger
   let baseReserveInKinesis = baseReserveInStroops / STROOPS_IN_ONE_KINESIS
 
-  baseReserveInKinesis = connection.passphrase === 'KEM UAT' ? 0.0000001 : baseReserveInKinesis
+  baseReserveInKinesis =
+    connection.passphrase === 'KEM UAT' || connection.passphrase === 'KEM LIVE'
+      ? 0.0000001
+      : baseReserveInKinesis
 
   const extraSignerEntries = signers.length - 1
 
@@ -154,7 +158,7 @@ export async function getBaseReserveInKinesis(connection: Connection) {
     .order('desc')
     .call()
   const { base_reserve_in_stroops: baseReserveInStroops } = mostRecentLedger.records[0]
-  return connection.passphrase === 'KEM UAT'
+  return connection.passphrase === 'KEM UAT' || connection.passphrase === 'KEM LIVE'
     ? 0.0000001
     : Number(baseReserveInStroops) / STROOPS_IN_ONE_KINESIS
 }

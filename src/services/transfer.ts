@@ -32,7 +32,7 @@ export async function createKinesisTransfer(
     throw new WalletLockError()
   }
   let sourceKey: any
-  if (connection.passphrase === 'KEM UAT') {
+  if (connection.passphrase === 'KEM UAT' || connection.passphrase === 'KEM LIVE') {
     sourceKey = SKeypair.fromSecret(decryptedPrivateKey)
   } else {
     sourceKey = Keypair.fromSecret(decryptedPrivateKey)
@@ -100,7 +100,7 @@ async function newPaymentTransferTransaction(
   passphrase: string,
 ): Promise<Transaction | STransaction> {
   const fee = await getFeeInStroops(server, Number(amount), source.accountId(), passphrase)
-  if (passphrase === 'KEM UAT') {
+  if (passphrase === 'KEM UAT' || passphrase === 'KEM LIVE') {
     const paymentTransaction = new STransactionBuilder(source, { fee })
       .addOperation(
         SOperation.payment({
@@ -137,7 +137,7 @@ async function newCreateAccountTransaction(
   passphrase: string,
 ): Promise<Transaction | STransaction> {
   const fee = await getFeeInStroops(server, Number(startingBalance), source.accountId(), passphrase)
-  if (passphrase === 'KEM UAT') {
+  if (passphrase === 'KEM UAT' || passphrase === 'KEM LIVE') {
     const createAccountTransaction = new STransactionBuilder(source, { fee })
       .addOperation(
         SOperation.createAccount({

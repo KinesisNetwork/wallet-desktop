@@ -44,7 +44,10 @@ export class SignTransactionForm extends React.Component<SignTransactionFormProp
   signTransaction = () => {
     if (this.state.transaction) {
       let keypair: any
-      if (this.props.connection.passphrase === 'KEM UAT') {
+      if (
+        this.props.connection.passphrase === 'KEM UAT' ||
+        this.props.connection.passphrase === 'KEM LIVE'
+      ) {
         keypair = SKeypair.fromSecret(this.props.decryptedPrivateKey())
       } else {
         keypair = Keypair.fromSecret(this.props.decryptedPrivateKey())
