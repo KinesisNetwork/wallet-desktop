@@ -33,8 +33,12 @@ export class SignTransactionForm extends React.Component<SignTransactionFormProp
 
   loadTransaction = () => {
     if (this.props.currency === 'KEM') {
+      const transaction: any = new STransaction(
+        this.props.message,
+        this.props.connection.passphrase,
+      )
       this.setState({
-        transaction: new STransaction(this.props.message, this.props.connection.passphrase),
+        transaction: transaction as Transaction,
       })
     } else {
       this.setState({ transaction: new Transaction(this.props.message) })

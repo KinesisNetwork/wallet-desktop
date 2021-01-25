@@ -41,7 +41,7 @@ export async function createKinesisTransfer(
   const server = getServer(connection)
   const sourceAccount = await getAccountIfExists(server, sourceKey.publicKey())
 
-  const transaction = await newTransferTransaction(
+  const transaction: any = await newTransferTransaction(
     server,
     sourceAccount,
     request,
