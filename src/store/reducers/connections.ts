@@ -37,7 +37,7 @@ const DEFAULT_CONNECTIONS: Connections = {
       passphrase: 'Kinesis KAG Live',
     },
     [Currency.KEM]: {
-      endpoint: 'https://kem-mainnet-america1.kinesisgroup.io',
+      endpoint: 'https://kem-mainnet.kinesisgroup.io',
       passphrase: 'KEM LIVE',
     },
   },
