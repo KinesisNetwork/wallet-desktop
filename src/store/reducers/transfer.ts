@@ -22,8 +22,8 @@ import { getType } from 'typesafe-actions'
 
 interface FormMeta {
   readonly errors: FormErrors
-  readonly minimumBalance: number
-  readonly remainingBalance: number
+  readonly minimumBalance: number | string
+  readonly remainingBalance: number | string
 }
 
 export interface TransferState {

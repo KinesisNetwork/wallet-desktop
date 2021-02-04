@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import { replace } from 'connected-react-router'
 import { from, merge, of } from 'rxjs'
 import {
@@ -101,13 +102,24 @@ export const amountCalculations$: RootEpic = (
   // Ensure we have the latest fee when calculating the remainingBalance
   const remainingBalance$ = fee$.pipe(
     withLatestFrom(amountUpdateWithState$),
-    map(([fee, { amount, balance }]) => balance - (Number(fee) + amount)),
+    map(([fee, { amount, balance }]) => {
+      const bigNum = new BigNumber(balance)
+      // balance - (Number(fee) + amount)
+      return bigNum
+        .minus(fee)
+        .minus(amount)
+        .toFixed(7)
+    }),
   )
   const updateRemainingBalance$ = remainingBalance$.pipe(map(updateRemainingBalance))
 
   const insufficientFunds$ = remainingBalance$.pipe(
     withLatestFrom(minBalance$),
-    map(([remainingBalance, minBalance]) => remainingBalance < minBalance),
+    map(([remainingBalance, minBalance]) => {
+      const remaining = new BigNumber(remainingBalance)
+      return remaining.isLessThan(minBalance)
+      // remainingBalance < minBalance
+    }),
   )
 
   const getBaseReserveInKinesis$ = insufficientFunds$.pipe(

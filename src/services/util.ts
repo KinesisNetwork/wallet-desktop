@@ -6,7 +6,7 @@ export function renderAmount(amount: string | number) {
   })
 }
 
-export function renderAmountToDpWithoutRounding(amount: string | number, dp = 5) {
+export function renderAmountToDpWithoutRounding(amount: string | number, dp = 7) {
   const strAmount = amount.toString()
 
   const [digits, decimals] = strAmount.split('.')
