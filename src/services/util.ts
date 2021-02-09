@@ -1,4 +1,4 @@
-import { ImageSize } from '@types'
+import { Currency, ImageSize } from '@types'
 
 export function renderAmount(amount: string | number) {
   return Number(amount).toLocaleString(undefined, {
@@ -6,7 +6,7 @@ export function renderAmount(amount: string | number) {
   })
 }
 
-export function renderAmountToDpWithoutRounding(amount: string | number, dp = 5) {
+export function renderAmountToDpWithoutRounding(amount: string | number, dp = 7) {
   const strAmount = amount.toString()
 
   const [digits, decimals] = strAmount.split('.')
@@ -34,6 +34,8 @@ export function setImageSize(size: ImageSize) {
   }
 }
 
-export function validateAmount(amount: string) {
-  return /^[0-9]+(\.)?([0-9]{1,5})?$/.test(amount)
+export function validateAmount(amount: string, currency?: Currency) {
+  return currency === 'KEM'
+    ? /^[0-9]+(\.)?([0-9]{1,7})?$/.test(amount)
+    : /^[0-9]+(\.)?([0-9]{1,5})?$/.test(amount)
 }

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import SVG from 'react-inlinesvg'
+// import SVG from 'react-inlinesvg'
 import { connect } from 'react-redux'
 import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router'
 
@@ -14,7 +14,7 @@ import { WalletRecoverScreens } from '@containers/WalletRecovery'
 import { WelcomeScreen } from '@containers/WelcomeScreen'
 import { RootState } from '@store'
 import { RootRoutes } from '@types'
-import * as logo from 'images/KinesisWallet.svg'
+// import * as logo from 'images/KinesisWallet.svg'
 import TestnetBanner from './TestnetBanner'
 
 const mapStateToProps = (state: RootState) => ({
@@ -52,11 +52,11 @@ const RoutingPresentation: React.SFC<Props> = props =>
       <div className="container">
         <div className="columns is-mobile is-centered">
           <div className="column is-half-fullhd is-two-thirds-tablet">
-            <div className="level">
+            {/* <div className="level">
               <SVG src={logo} wrapper={React.createFactory('div')} className="level-item">
-                <img src={logo} alt="Kinesis Wallet Logo" />
+                <img width="100px" height="200px" src={logo} alt="Kinesis Wallet Logo" />
               </SVG>
-            </div>
+            </div> */}
             <Switch>
               <Route exact={true} path="/" component={WelcomeScreen} />
               <Route path={RootRoutes.create} component={WalletCreationScreens} />

@@ -7,15 +7,16 @@ import { RootState } from '@store'
 
 import { EmptyTransactions } from '@components/EmptyTransactions'
 import { TransactionCard } from '@components/TransactionOperation'
-import { TransactionOperationView } from '@types'
+import { ConnectionStage, TransactionOperationView } from '@types'
 
 const mapStateToProps = ({
   transactions: { transactionOperations, isLoading },
-  connections: { currentCurrency },
+  connections: { currentCurrency, currentStage },
 }: RootState) => ({
   operations: transactionOperations,
   currency: currentCurrency,
   isLoading,
+  isTestnet: currentStage === ConnectionStage.testnet,
 })
 
 const mapDispatchToProps = {
@@ -73,6 +74,7 @@ class TransactionsPresentation extends React.Component<Props> {
               key={op.operation.id}
               transactionWithOperation={op}
               currency={this.props.currency}
+              isTestnet={this.props.isTestnet}
             />
           ))}
         </React.Fragment>

@@ -5,25 +5,27 @@ import { updateTransferForm } from '@actions'
 import { InputField } from '@components/InputField'
 import { validateAmount } from '@services/util'
 import { RootState } from '@store'
+import { ConnectionStage, Currency } from '@types'
 
 const mapStateToProps = ({ transfer: { formMeta, formData }, connections }: RootState) => ({
   amount: formData.amount,
   currency: connections.currentCurrency,
   errors: formMeta.errors,
   memo: formData.memo,
+  isTestnet: connections.currentStage === ConnectionStage.testnet,
 })
 
 const mapDispatchToProps = {
   updateTransferForm,
 }
 
-function isValidAmount(amount: string) {
-  return amount === '' || validateAmount(amount)
+function isValidAmount(amount: string, currency: Currency) {
+  return amount === '' || validateAmount(amount, currency)
 }
 
-function handleAmountChange(updateFormHandler: Props['updateTransferForm']) {
+function handleAmountChange(updateFormHandler: Props['updateTransferForm'], currency: Currency) {
   return (amount: string) => {
-    const isValid = isValidAmount(amount)
+    const isValid = isValidAmount(amount, currency)
 
     if (isValid) {
       return updateFormHandler({ field: 'amount', newValue: amount })
@@ -43,8 +45,8 @@ const TransferFormDetailsPresentation: React.SFC<Props> = props => {
       <InputField
         id="transfer-amount"
         value={props.amount}
-        placeholder={`0 ${props.currency}`}
-        onChangeHandler={handleAmountChange(handleChange)}
+        placeholder={`0 ${props.isTestnet ? 'T' + props.currency : props.currency}`}
+        onChangeHandler={handleAmountChange(handleChange, props.currency)}
         label="Amount"
         errorText={props.errors.amount}
       />

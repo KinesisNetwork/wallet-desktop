@@ -16,7 +16,7 @@
     "build:web": "IS_WEB=true parcel build src/index-web.html",
     "prestart": "npm run sass-compile",
     "start": "electron-forge start",
-    "web": "IS_WEB=true parcel src/index-web.html --cache-dir .web-cache",
+    "web": "parcel src/index-web.html --cache-dir .web-cache",
     "tsc:check": "tsc --noEmit",
     "watch:tsc": "npm run tsc:check -- -w",
     "lint": "tslint --project tsconfig.json",
@@ -93,6 +93,7 @@
     "@fortawesome/pro-light-svg-icons": "^5.4.2",
     "@fortawesome/react-fontawesome": "^0.1.3",
     "autotrack": "^2.4.1",
+    "bignumber.js": "^9.0.1",
     "bip39": "^2.5.0",
     "bulma": "0.7.1",
     "bulma-checkradio": "^2.1.0",
@@ -124,6 +125,7 @@
     "redux-persist": "5.10.0",
     "redux-persist-electron-storage": "1.1.2",
     "rxjs": "6.1.0",
+    "stellar-sdk": "^7.0.0",
     "sweetalert": "2.1.0"
   },
   "devDependencies": {
@@ -149,6 +151,7 @@
     "@types/webpack-env": "^1.13.6",
     "babel-core": "^6.26.3",
     "electron": "^2.0.8",
+    "electron-prebuilt-compile": "^8.2.0",
     "enzyme": "^3.4.1",
     "enzyme-adapter-react-16": "^1.2.0",
     "enzyme-to-json": "^3.3.4",

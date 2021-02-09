@@ -8,12 +8,13 @@ import { Transactions } from '@containers/Transactions'
 import { AmountPresentation } from '@containers/TransferCurrency/AmountPresentation'
 import { CurrencyLogo } from '@containers/TransferCurrency/CurrencyLogo'
 import { RootState } from '@store'
-import { ImageSize, RootRoutes } from '@types'
+import { ConnectionStage, ImageSize, RootRoutes } from '@types'
 
 const mapStateToProps = ({ connections, accounts, transfer }: RootState) => ({
   currency: connections.currentCurrency,
   balance: accounts.accountInfo.balance,
   amount: transfer.formData.amount,
+  isTestnet: connections.currentStage === ConnectionStage.testnet,
 })
 
 const mapDispatchToProps = {
@@ -27,7 +28,12 @@ const AccountDashboardPresentation: React.SFC<Props> = props => (
     <CurrencySelector />
     <section className="section has-text-centered">
       <CurrencyLogo currency={props.currency} size={ImageSize.large} />
-      <AmountPresentation amount={props.balance} text={props.currency} currency={props.currency} />
+      <AmountPresentation
+        amount={props.balance}
+        text={props.currency}
+        currency={props.currency}
+        isTestnet={props.isTestnet}
+      />
       <div className="level">
         <div className="level-item">
           <button

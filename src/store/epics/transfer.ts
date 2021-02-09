@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import { replace } from 'connected-react-router'
 import { from, merge, of } from 'rxjs'
 import {
@@ -85,7 +86,9 @@ export const amountCalculations$: RootEpic = (
   )
 
   const fee$ = amountUpdateWithState$.pipe(
-    switchMap(({ amount, currentConnection }) => from(getFeeInKinesis(currentConnection, amount))),
+    switchMap(({ amount, currentConnection, activeAccount }) =>
+      from(getFeeInKinesis(currentConnection, amount, activeAccount.keypair.publicKey())),
+    ),
   )
   const updateFee$ = fee$.pipe(map(updateFee))
 
@@ -99,13 +102,27 @@ export const amountCalculations$: RootEpic = (
   // Ensure we have the latest fee when calculating the remainingBalance
   const remainingBalance$ = fee$.pipe(
     withLatestFrom(amountUpdateWithState$),
-    map(([fee, { amount, balance }]) => balance - (Number(fee) + amount)),
+    map(([fee, { amount, balance }]) => {
+      const bigNum = new BigNumber(balance)
+      // balance - (Number(fee) + amount)
+      return String(
+        bigNum
+          .minus(fee)
+          .minus(amount)
+          .toFixed(7)
+          .toString(),
+      )
+    }),
   )
   const updateRemainingBalance$ = remainingBalance$.pipe(map(updateRemainingBalance))
 
   const insufficientFunds$ = remainingBalance$.pipe(
     withLatestFrom(minBalance$),
-    map(([remainingBalance, minBalance]) => remainingBalance < minBalance),
+    map(([remainingBalance, minBalance]) => {
+      const remaining = new BigNumber(remainingBalance)
+      return Boolean(remaining.isLessThan(minBalance))
+      // remainingBalance < minBalance
+    }),
   )
 
   const getBaseReserveInKinesis$ = insufficientFunds$.pipe(

@@ -44,7 +44,30 @@ export function getServer(connection: Connection): Server {
   return new Server(connection.endpoint)
 }
 
-export async function getFeeInStroops(server: Server, amountInKinesis: number): Promise<string> {
+export async function getFeeInStroops(
+  server: Server,
+  amountInKinesis: number,
+  source: string,
+  passphrase: string,
+): Promise<string> {
+  let isWhitelisted = false
+  const mnetWhiteListedAccount = [
+    'GA6BP5AHBADCCHIE7FCIARHH64IQZIZMNKCQWPIMROMYIPWYO7VTUDMQ',
+    'GAFUJGZWMGWVZJ4PUVHQM54GDBPN7Q5FJQ7GEQ35AW5QPSRX74UHTPXS',
+    'GBIHU73FWFDKGZY2XIHZNPO4RBAIHEV433C55XIHC34IYLUGPRY2G4P5',
+    'GD5CMVRI42SUHBRWHX4EPXYGPBJTYU4XB36XSNPMRHYEFBP2WS5LFQAO',
+    'GAKQ4BXFLMB5LQ6IQZXMU4PRHPAQH6MLZNLOH2DUYE7X3TRQYUK2QFYW',
+  ]
+  const tnetWhiteListedAccount = [
+    'GC5Z3MPAZFZGGCGSACYTXQO4RFMNKBEDPULU5XD6ZVRRCWA5C3NVJ3VP',
+    'GBAVVI7NQXNH4PVNWZJCIJPF4C7PPFSMLWB4UZEZDQZQYX52E56AYV35',
+    'GDHCV4C5P2ZCHDFKOHNMAWBK2BPMOJCXQK4QZ74NU2JCPSJRHTZ2SDAN',
+    'GAPZHHMWDW3X6PPKUVB4MQHC5HVZLAAPIL27E3R3NISK7ITINHENAXHO',
+    'GACMG3VV2XINSQYR2DZ2HRWCQBL274UHTNCDKT5R7XWUOELQM2CHUVM6',
+  ]
+  isWhitelisted =
+    (passphrase === 'KEM LIVE' && mnetWhiteListedAccount.includes(source)) ||
+    (passphrase === 'KEM UAT' && tnetWhiteListedAccount.includes(source))
   const mostRecentLedger = await server
     .ledgers()
     .order('desc')
@@ -56,17 +79,27 @@ export async function getFeeInStroops(server: Server, amountInKinesis: number): 
   } = mostRecentLedger.records[0]
   const basisPointsToPercent = 10000
 
-  const percentageFee =
-    ((Number(amountInKinesis) * basePercentageFee) / basisPointsToPercent) * STROOPS_IN_ONE_KINESIS
+  const percentageFee = isWhitelisted
+    ? 0
+    : ((Number(amountInKinesis) * (basePercentageFee || 45)) / basisPointsToPercent) *
+      STROOPS_IN_ONE_KINESIS
 
-  return String(Math.min(Math.ceil(percentageFee + baseFeeInStroops), maxFeeInStroops))
+  return String(
+    Math.min(Math.ceil(percentageFee + baseFeeInStroops), maxFeeInStroops || 250000000000),
+  )
 }
 
 export async function getFeeInKinesis(
   connection: Connection,
   amountInKinesis: number,
+  account: string,
 ): Promise<string> {
-  const feeInStroops = await getFeeInStroops(getServer(connection), amountInKinesis).catch(_ => '0')
+  const feeInStroops = await getFeeInStroops(
+    getServer(connection),
+    amountInKinesis,
+    account,
+    connection.passphrase,
+  ).catch(_ => '0')
   return String(Number(feeInStroops) / STROOPS_IN_ONE_KINESIS)
 }
 
@@ -108,7 +141,12 @@ export async function getMinBalanceInKinesis(
   ] = await Promise.all([ledgerFetch, accountFetch])
 
   const { base_reserve_in_stroops: baseReserveInStroops } = latestLedger
-  const baseReserveInKinesis = baseReserveInStroops / STROOPS_IN_ONE_KINESIS
+  let baseReserveInKinesis = baseReserveInStroops / STROOPS_IN_ONE_KINESIS
+
+  baseReserveInKinesis =
+    connection.passphrase === 'KEM UAT' || connection.passphrase === 'KEM LIVE'
+      ? 0.0000001
+      : baseReserveInKinesis
 
   const extraSignerEntries = signers.length - 1
 
@@ -128,7 +166,9 @@ export async function getBaseReserveInKinesis(connection: Connection) {
     .order('desc')
     .call()
   const { base_reserve_in_stroops: baseReserveInStroops } = mostRecentLedger.records[0]
-  return Number(baseReserveInStroops) / STROOPS_IN_ONE_KINESIS
+  return connection.passphrase === 'KEM UAT' || connection.passphrase === 'KEM LIVE'
+    ? 0.0000001
+    : Number(baseReserveInStroops) / STROOPS_IN_ONE_KINESIS
 }
 
 export async function getTransactions(
@@ -175,11 +215,16 @@ async function transactionWithOperations(
   accountKey: string,
 ): Promise<TransactionOperationView[]> {
   const operationsPage = await transaction.operations()
+  const feeCharged = await fetch(operationsPage.records[0]._links.transaction.href)
+    .then(res => res.json())
+    .then(val => val.fee_charged)
   return operationsPage.records.map(
     (operation): TransactionOperationView => ({
       operation,
       date: new Date(transaction.created_at),
-      fee: (Number(transaction.fee_paid) / STROOPS_IN_ONE_KINESIS).toFixed(5),
+      fee: transaction.fee_paid
+        ? (Number(transaction.fee_paid) / STROOPS_IN_ONE_KINESIS).toFixed(5)
+        : (Number(feeCharged) / 10000000).toFixed(7),
       isIncoming: transaction.source_account !== accountKey,
       memo: transaction.memo,
       source: transaction.source_account,

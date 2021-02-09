@@ -2,6 +2,7 @@ import * as copy from 'copy-to-clipboard'
 import { Keypair, Transaction, TransactionOperation } from 'js-kinesis-sdk'
 import { startCase } from 'lodash'
 import * as React from 'react'
+import { Keypair as SKeypair, Transaction as STransaction } from 'stellar-sdk'
 
 import { SignTransactionFormProps } from '@containers/SignTransactionForm'
 import { getTransactionSigners } from '@services/accounts'
@@ -30,11 +31,31 @@ export class SignTransactionForm extends React.Component<SignTransactionFormProp
   submitTransaction = () =>
     this.state.transaction && this.props.transactionRequest(this.state.transaction)
 
-  loadTransaction = () => this.setState({ transaction: new Transaction(this.props.message) })
+  loadTransaction = () => {
+    if (this.props.currency === 'KEM') {
+      const transaction: any = new STransaction(
+        this.props.message,
+        this.props.connection.passphrase,
+      )
+      this.setState({
+        transaction: transaction as Transaction,
+      })
+    } else {
+      this.setState({ transaction: new Transaction(this.props.message) })
+    }
+  }
 
   signTransaction = () => {
     if (this.state.transaction) {
-      const keypair = Keypair.fromSecret(this.props.decryptedPrivateKey())
+      let keypair: any
+      if (
+        this.props.connection.passphrase === 'KEM UAT' ||
+        this.props.connection.passphrase === 'KEM LIVE'
+      ) {
+        keypair = SKeypair.fromSecret(this.props.decryptedPrivateKey())
+      } else {
+        keypair = Keypair.fromSecret(this.props.decryptedPrivateKey())
+      }
       this.state.transaction.sign(keypair)
       this.setState({ signed: true })
     }
@@ -182,7 +203,7 @@ class TransactionView extends React.Component<Props, TransactionState> {
         />
         <HorizontalLabelledField
           label="Fee"
-          value={`${convertStroopsToKinesis(transaction.fee)} ${currency}`}
+          value={`${convertStroopsToKinesis(Number(transaction.fee))} ${currency}`}
         />
         {this.renderOperations()}
         <hr />
