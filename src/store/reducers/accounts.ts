@@ -5,7 +5,7 @@ import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 
 interface AccountInfo {
-  balance: number
+  balance: number | string
 }
 
 export interface AccountsState {

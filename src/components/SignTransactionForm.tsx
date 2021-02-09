@@ -203,7 +203,7 @@ class TransactionView extends React.Component<Props, TransactionState> {
         />
         <HorizontalLabelledField
           label="Fee"
-          value={`${convertStroopsToKinesis(transaction.fee)} ${currency}`}
+          value={`${convertStroopsToKinesis(Number(transaction.fee))} ${currency}`}
         />
         {this.renderOperations()}
         <hr />

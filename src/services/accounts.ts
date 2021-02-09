@@ -42,11 +42,11 @@ export async function getAccountIfExists(server: Server, publicKey: string): Pro
   }
 }
 
-export function getBalance(account: AccountResponse): number {
+export function getBalance(account: AccountResponse): number | string {
   const nativeBalance = account.balances.find(
     balance => balance.asset_type === Asset.native().getAssetType(),
   )
-  return Number(nativeBalance!.balance)
+  return nativeBalance!.balance
 }
 
 export async function getTransactionSigners(server: Server, transaction: Transaction) {
