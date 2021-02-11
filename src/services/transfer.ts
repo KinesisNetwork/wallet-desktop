@@ -18,38 +18,80 @@ import {
   TransactionBuilder as STransactionBuilder,
 } from 'stellar-sdk'
 
+import {
+  KinesisBlockchainGatewayFactory,
+} from '@abx/js-kinesis-sdk-v2'
+
 import { HorizonError, WalletLockError } from '@helpers/errors'
 import { Connection, TransferRequest } from '@types'
-import { getAccountIfExists } from './accounts'
+import { createCoinNetwork, getAccountIfExists } from './accounts'
 import { getFeeInStroops, getServer } from './kinesis'
 
 export async function createKinesisTransfer(
   decryptedPrivateKey: string,
   connection: Connection,
   request: TransferRequest,
-): Promise<Transaction> {
+): Promise<string> {
   if (!decryptedPrivateKey) {
     throw new WalletLockError()
   }
+  console.log(decryptedPrivateKey, "Private key")
+
+
   let sourceKey: any
-  if (connection.passphrase === 'KEM UAT' || connection.passphrase === 'KEM LIVE') {
-    sourceKey = SKeypair.fromSecret(decryptedPrivateKey)
-  } else {
-    sourceKey = Keypair.fromSecret(decryptedPrivateKey)
+
+
+  /////////////////////////////
+  const result = createCoinNetwork(connection)
+  console.log(result.coin, result.environment, "ppppppppppppppppppppppp")
+  const blockchainGateway = new KinesisBlockchainGatewayFactory().getGatewayInstance(result.coin, result.environment)
+
+  try {
+
+    sourceKey = blockchainGateway.getAddressFromPrivateKey(decryptedPrivateKey)
+
+    console.log("transaction---------------------------------")
+
+    const sequence = await blockchainGateway.getNextSequenceNumberForAccount(sourceKey)
+    console.log("sequence--------------------------------", sequence)
+    const Obj = {
+      senderAddress: sourceKey,
+      sequenceNumber: sequence,
+      toAddress: request.targetPayee
+      , memo: request.memo,
+      amount: Number(request.amount)
+    }
+    const result = await blockchainGateway.createTransactionEnvelopeWithSequenceNumber(Obj)
+    const transaction = await blockchainGateway.sendTransactionEnvelope(result, decryptedPrivateKey)
+    console.log(transaction, "result=======================")
+    return "success"
+
+  } catch (err) {
+    console.log(err, "errrrrrrrrrrrrrrrrrrrrrr")
+    return ""
   }
 
-  const server = getServer(connection)
-  const sourceAccount = await getAccountIfExists(server, sourceKey.publicKey())
 
-  const transaction: any = await newTransferTransaction(
-    server,
-    sourceAccount,
-    request,
-    connection.passphrase,
-  )
 
-  transaction.sign(sourceKey)
-  return transaction as Transaction
+
+  ///////////////////
+
+  // if (connection.passphrase === 'KEM UAT' || connection.passphrase === 'KEM LIVE') {
+  // } else {
+  //   sourceKey = Keypair.fromSecret(decryptedPrivateKey)
+  // }
+  // const server = getServer(connection)
+  // const sourceAccount = await getAccountIfExists(server, sourceKey.publicKey())
+
+  // const transaction: any = await newTransferTransaction(
+  //   server,
+  //   sourceAccount,
+  //   request,
+  //   connection.passphrase,
+  // )
+
+  // transaction.sign(sourceKey)
+  // return transaction as Transaction
 }
 
 export async function submitSignedTransaction(connection: Connection, transaction: Transaction) {

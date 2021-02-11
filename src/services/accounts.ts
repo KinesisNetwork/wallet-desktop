@@ -9,6 +9,11 @@ import {
   Transaction,
 } from 'js-kinesis-sdk'
 
+import {
+  Environment,
+  KinesisCoin
+} from '@abx/js-kinesis-sdk-v2'
+
 import { AccountMissingError } from '@helpers/errors'
 import { Connection, Contact, WalletAccount } from '@types'
 import { getServer } from './kinesis'
@@ -19,6 +24,52 @@ interface NewAccountResponse extends AccountResponse {
     weight: number
     key?: string
   }>
+}
+
+interface FactoryParams {
+  coin: KinesisCoin,
+  environment: Environment
+}
+
+export function createCoinNetwork(connection: Connection): FactoryParams {
+  if (connection.passphrase.includes("KAG")) {
+    if (connection.passphrase.includes("UAT")) {
+      console.log("its uat")
+      return {
+        "coin": KinesisCoin.KAG,
+        "environment": Environment.testnet
+      }
+    } else {
+      return {
+        "coin": KinesisCoin.KAG,
+        "environment": Environment.mainnet
+      }
+    }
+  } else if (connection.passphrase.includes("KEM")) {
+    if (connection.passphrase.includes("UAT")) {
+      return {
+        "coin": KinesisCoin.KEM,
+        "environment": Environment.testnet
+      }
+    } else {
+      return {
+        "coin": KinesisCoin.KEM,
+        "environment": Environment.mainnet
+      }
+    }
+  } else {
+    if (connection.passphrase.includes("UAT")) {
+      return {
+        "coin": KinesisCoin.KAU,
+        "environment": Environment.testnet
+      }
+    } else {
+      return {
+        "coin": KinesisCoin.KAU,
+        "environment": Environment.mainnet
+      }
+    }
+  }
 }
 
 export async function loadAccount(
