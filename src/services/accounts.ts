@@ -31,10 +31,9 @@ interface FactoryParams {
   environment: Environment
 }
 
-export function createCoinNetwork(connection: Connection): FactoryParams {
+export function getFactoryParams(connection: Connection): FactoryParams {
   if (connection.passphrase.includes("KAG")) {
     if (connection.passphrase.includes("UAT")) {
-      console.log("its uat")
       return {
         "coin": KinesisCoin.KAG,
         "environment": Environment.testnet

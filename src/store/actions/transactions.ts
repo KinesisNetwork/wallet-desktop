@@ -21,7 +21,7 @@ export const nextTransactionPageLoaded = createStandardAction('NEXT_TRANSACTION_
   TransactionLoader
 >()
 
-export const transactionRequest = createStandardAction('TRANSACTION_SUBMIT_REQUEST')<Transaction>()
+export const transactionRequest = createStandardAction('TRANSACTION_SUBMIT_REQUEST')<string>()
 export const transactionSuccess = createStandardAction('TRANSACTION_SUBMIT_SUCCESS')<
   TransferRequest
 >()

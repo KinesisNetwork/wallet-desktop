@@ -48,9 +48,6 @@ export class ConfirmationPagePresentation extends React.Component<Props> {
 
     copy(
       rawTx
-        .toEnvelope()
-        .toXDR()
-        .toString('base64'),
     )
   }
 
