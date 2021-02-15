@@ -8,7 +8,7 @@ import {
 
 import { HorizonError, WalletLockError } from '@helpers/errors'
 import { Connection, TransferRequest } from '@types'
-import { getFactoryParams, getAccountIfExists } from './accounts'
+import { getAccountIfExists, getFactoryParams } from './accounts'
 import { getFeeInStroops, getServer } from './kinesis'
 
 export async function createKinesisTransfer(
