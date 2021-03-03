@@ -1,4 +1,3 @@
-import { Transaction } from 'js-kinesis-sdk'
 import { createAction, createStandardAction } from 'typesafe-actions'
 
 import { FormUpdate, TransactionLoader, TransferRequest } from '@types'

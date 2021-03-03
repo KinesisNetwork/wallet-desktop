@@ -66,16 +66,20 @@ export const loadAccount$: RootEpic = (
 export const loadNextTransactionPage$: RootEpic = (
   action$,
   state$,
-  { getNextTransactionPage, getActiveAccount },
+  { getNextTransactionPage, getActiveAccount, getCurrentConnection },
 ) => {
   return action$.pipe(
     filter(isActionOf(loadNextTransactionPage)),
     withLatestFrom(state$),
-    switchMap(([_, { wallet, transactions: { currentPage } }]) => {
+    switchMap(([_, { wallet, transactions: { currentPage }, connections }]) => {
       const currentAccountPublicAddress = getActiveAccount(wallet).keypair.publicKey()
-      return from(getNextTransactionPage(currentPage, currentAccountPublicAddress)).pipe(
-        map(nextTransactionPageLoaded),
-      )
+      return from(
+        getNextTransactionPage(
+          currentPage,
+          currentAccountPublicAddress,
+          getCurrentConnection(connections).endpoint,
+        ),
+      ).pipe(map(nextTransactionPageLoaded))
     }),
   )
 }

@@ -1,4 +1,4 @@
-import { Keypair, Transaction } from 'js-kinesis-sdk'
+import { Keypair } from 'js-kinesis-sdk'
 
 import {
   targetPayeeAccountExist,
@@ -119,7 +119,7 @@ describe('Transfer epic', () => {
   })
 
   describe('transactionSubmission$', () => {
-    const transaction = <Transaction>(<any>{})
+    const transaction = <string>(<any>{})
     it('success', async () => {
       const getCurrentConnection = jest.fn(() => connection)
       const submitSignedTransaction = jest.fn(() => Promise.resolve())

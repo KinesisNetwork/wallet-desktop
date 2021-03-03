@@ -1,8 +1,20 @@
-import { CollectionPage, Keypair, Network, Server, TransactionRecord } from 'js-kinesis-sdk'
+import {
+  KinesisBlockchainGatewayFactory,
+  TransactionRecord,
+  TransactionRecordPage,
+} from '@abx/js-kinesis-sdk-v2'
+import { CollectionPage, Keypair, Network, Server } from 'js-kinesis-sdk'
+
 import { flatten, get } from 'lodash'
+import { getFactoryParams } from './accounts'
 
 import { Connection, TransactionLoader, TransactionOperationView, WalletAccount } from '@types'
 const STROOPS_IN_ONE_KINESIS = 10_000_000
+
+interface TransactionLoaderV2 {
+  transactionPage: TransactionRecordPage<TransactionRecord> | null
+  operations: TransactionOperationView[]
+}
 
 export function convertStroopsToKinesis(numberInStroops: number) {
   return numberInStroops / STROOPS_IN_ONE_KINESIS
@@ -174,15 +186,20 @@ export async function getBaseReserveInKinesis(connection: Connection) {
 export async function getTransactions(
   connection: Connection,
   accountKey: string,
-): Promise<TransactionLoader> {
-  const server = getServer(connection)
+): Promise<TransactionLoaderV2> {
+  const result = getFactoryParams(connection)
+  const blockchainGateway = new KinesisBlockchainGatewayFactory().getGatewayInstance(
+    result.coin,
+    result.environment,
+  )
   try {
-    const transactionPage = await server
-      .transactions()
-      .forAccount(accountKey)
-      .order('desc')
-      .call()
-    const nestedArray = await Promise.all(getNestedArray(transactionPage, accountKey))
+    const transactionPage = await blockchainGateway.getTransactionsForAccount({
+      address: accountKey,
+      order: 'desc',
+    })
+    const nestedArray = await Promise.all(
+      getNestedArray(transactionPage, accountKey, connection.endpoint),
+    )
     return { operations: flatten(nestedArray), transactionPage }
   } catch (e) {
     return { operations: [], transactionPage: null }
@@ -192,41 +209,43 @@ export async function getTransactions(
 export async function getNextTransactionPage(
   currentPage: CollectionPage<TransactionRecord> | null,
   accountKey: string,
+  endpoint: string,
 ): Promise<TransactionLoader> {
   try {
     if (!currentPage) {
       throw new Error()
     }
-
     const nextPage = await currentPage.next()
-    const nestedArray = await Promise.all(getNestedArray(nextPage, accountKey))
+    const nestedArray = await Promise.all(getNestedArray(nextPage, accountKey, endpoint))
     return { operations: flatten(nestedArray), transactionPage: nextPage }
   } catch (e) {
     return { operations: [], transactionPage: null }
   }
 }
 
-function getNestedArray(transactionPage: CollectionPage<TransactionRecord>, accountKey: string) {
-  return transactionPage.records.map(t => transactionWithOperations(t, accountKey))
+function getNestedArray(
+  transactionPage: TransactionRecordPage<TransactionRecord>,
+  accountKey: string,
+  endpoint: string,
+) {
+  return transactionPage.records.map(t => transactionWithOperations(t, accountKey, endpoint))
 }
 
 async function transactionWithOperations(
   transaction: TransactionRecord,
   accountKey: string,
+  endpoint: string,
 ): Promise<TransactionOperationView[]> {
-  const operationsPage = await transaction.operations()
-  const feeCharged = await fetch(operationsPage.records[0]._links.transaction.href)
-    .then(res => res.json())
-    .then(val => val.fee_charged)
-  return operationsPage.records.map(
+  const opData = await fetch(`${endpoint}/transactions/${transaction.id}/operations`).then(res =>
+    res.json(),
+  )
+  return opData._embedded.records.map(
     (operation): TransactionOperationView => ({
       operation,
       date: new Date(transaction.created_at),
-      fee: transaction.fee_paid
-        ? (Number(transaction.fee_paid) / STROOPS_IN_ONE_KINESIS).toFixed(5)
-        : (Number(feeCharged) / 10000000).toFixed(7),
+      fee: (Number(transaction.fee_charged) / 10000000).toFixed(7),
       isIncoming: transaction.source_account !== accountKey,
-      memo: transaction.memo,
+      memo: transaction.memo || '',
       source: transaction.source_account,
       id: transaction.id,
     }),

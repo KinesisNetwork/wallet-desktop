@@ -1,4 +1,5 @@
-import { CollectionPage, Keypair, OperationRecord, TransactionRecord } from 'js-kinesis-sdk'
+import { TransactionRecord } from '@abx/js-kinesis-sdk-v2'
+import { CollectionPage, Keypair, OperationRecord } from 'js-kinesis-sdk'
 
 export interface Wallet {
   publicKey: string

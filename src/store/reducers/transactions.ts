@@ -1,3 +1,4 @@
+import { TransactionRecord } from '@abx/js-kinesis-sdk-v2'
 import {
   accountTransactionsLoaded,
   loadAccountTransactions,
@@ -7,7 +8,7 @@ import {
 } from '@actions'
 import { RootAction } from '@store'
 import { TransactionOperationView } from '@types'
-import { CollectionPage, TransactionRecord } from 'js-kinesis-sdk'
+import { CollectionPage } from 'js-kinesis-sdk'
 import { combineReducers } from 'redux'
 import { getType } from 'typesafe-actions'
 

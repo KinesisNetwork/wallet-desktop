@@ -29,7 +29,13 @@ export class SignTransactionForm extends React.Component<SignTransactionFormProp
   }
 
   submitTransaction = () =>
-    this.state.transaction && this.props.transactionRequest(this.state.transaction)
+    this.state.transaction &&
+    this.props.transactionRequest(
+      this.state.transaction
+        .toEnvelope()
+        .toXDR()
+        .toString('base64'),
+    )
 
   loadTransaction = () => {
     if (this.props.currency === 'KEM') {
