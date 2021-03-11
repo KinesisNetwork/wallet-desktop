@@ -3,7 +3,7 @@ import {
   TransactionRecord,
   TransactionRecordPage,
 } from '@abx/js-kinesis-sdk-v2'
-import { CollectionPage, Keypair, Network, Server } from 'js-kinesis-sdk'
+import { Keypair, Network, Server } from 'js-kinesis-sdk'
 
 import { flatten, get } from 'lodash'
 import { getFactoryParams } from './accounts'
@@ -207,7 +207,7 @@ export async function getTransactions(
 }
 
 export async function getNextTransactionPage(
-  currentPage: CollectionPage<TransactionRecord> | null,
+  currentPage: TransactionRecordPage<TransactionRecord> | null,
   accountKey: string,
   endpoint: string,
 ): Promise<TransactionLoader> {

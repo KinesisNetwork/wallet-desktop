@@ -89,7 +89,7 @@
     }
   },
   "dependencies": {
-    "@abx/js-kinesis-sdk-v2": "0.0.31",
+    "@abx/js-kinesis-sdk-v2": "0.0.33",
     "@fortawesome/fontawesome-svg-core": "^1.2.7",
     "@fortawesome/pro-light-svg-icons": "^5.4.2",
     "@fortawesome/react-fontawesome": "^0.1.3",
