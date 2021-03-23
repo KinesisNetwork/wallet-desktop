@@ -6,7 +6,7 @@ import { Keypair as SKeypair, Transaction as STransaction } from 'stellar-sdk'
 
 import { SignTransactionFormProps } from '@containers/SignTransactionForm'
 import { getTransactionSigners } from '@services/accounts'
-import { convertStroopsToKinesis, getServer } from '@services/kinesis'
+import { convertStroopsToKinesis } from '@services/kinesis'
 import { Connection, Contact, Currency } from '@types'
 import { InputField } from './InputField'
 import { HorizontalLabelledField } from './LabelledField'
@@ -161,10 +161,7 @@ class TransactionView extends React.Component<Props, TransactionState> {
   state: TransactionState = { signers: [] }
 
   getSigners = async () => {
-    const signers = await getTransactionSigners(
-      getServer(this.props.connection),
-      this.props.transaction,
-    )
+    const signers = await getTransactionSigners(this.props.connection, this.props.transaction)
     this.setState({ signers: signers.map(sig => sig.publicKey()) })
   }
 

@@ -1,17 +1,11 @@
 import { createHash } from 'crypto'
-import {
-  Account,
-  AccountResponse,
-  Asset,
-  Keypair,
-  Network,
-  Server,
-  Transaction,
-} from 'js-kinesis-sdk'
+import { Account, Asset, Keypair, Network, Server, Transaction } from 'js-kinesis-sdk'
 
 import {
+  AccountResponse,
   Environment,
-  KinesisCoin
+  KinesisBlockchainGatewayFactory,
+  KinesisCoin,
 } from '@abx/js-kinesis-sdk-v2'
 
 import { AccountMissingError } from '@helpers/errors'
@@ -27,45 +21,45 @@ interface NewAccountResponse extends AccountResponse {
 }
 
 interface FactoryParams {
-  coin: KinesisCoin,
+  coin: KinesisCoin
   environment: Environment
 }
 
 export function getFactoryParams(connection: Connection): FactoryParams {
-  if (connection.passphrase.includes("KAG")) {
-    if (connection.passphrase.includes("UAT")) {
+  if (connection.passphrase.includes('KAG')) {
+    if (connection.passphrase.includes('UAT')) {
       return {
-        "coin": KinesisCoin.KAG,
-        "environment": Environment.testnet
+        coin: KinesisCoin.KAG,
+        environment: Environment.testnet,
       }
     } else {
       return {
-        "coin": KinesisCoin.KAG,
-        "environment": Environment.mainnet
+        coin: KinesisCoin.KAG,
+        environment: Environment.mainnet,
       }
     }
-  } else if (connection.passphrase.includes("KEM")) {
-    if (connection.passphrase.includes("UAT")) {
+  } else if (connection.passphrase.includes('KEM')) {
+    if (connection.passphrase.includes('UAT')) {
       return {
-        "coin": KinesisCoin.KEM,
-        "environment": Environment.testnet
+        coin: KinesisCoin.KEM,
+        environment: Environment.testnet,
       }
     } else {
       return {
-        "coin": KinesisCoin.KEM,
-        "environment": Environment.mainnet
+        coin: KinesisCoin.KEM,
+        environment: Environment.mainnet,
       }
     }
   } else {
-    if (connection.passphrase.includes("UAT")) {
+    if (connection.passphrase.includes('UAT')) {
       return {
-        "coin": KinesisCoin.KAU,
-        "environment": Environment.testnet
+        coin: KinesisCoin.KAU,
+        environment: Environment.testnet,
       }
     } else {
       return {
-        "coin": KinesisCoin.KAU,
-        "environment": Environment.mainnet
+        coin: KinesisCoin.KAU,
+        environment: Environment.mainnet,
       }
     }
   }
@@ -99,8 +93,15 @@ export function getBalance(account: AccountResponse): number | string {
   return nativeBalance!.balance
 }
 
-export async function getTransactionSigners(server: Server, transaction: Transaction) {
-  const account: NewAccountResponse = await server.loadAccount(transaction.source)
+export async function getTransactionSigners(connection: Connection, transaction: Transaction) {
+  const params = getFactoryParams(connection)
+  const blockchainGateway = new KinesisBlockchainGatewayFactory().getGatewayInstance(
+    params.coin,
+    params.environment,
+  )
+  // const server : Server = getServer(connection)
+  // const account: NewAccountResponse = await server.loadAccount(transaction.source)
+  const account: NewAccountResponse = await blockchainGateway.loadAccountData(transaction.source)
   const signers = account.signers.filter(({ weight }) => weight > 0).map(data => {
     const keys = data.public_key ? data.public_key : data.key
     return Keypair.fromPublicKey(keys!)
