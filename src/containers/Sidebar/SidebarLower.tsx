@@ -15,7 +15,6 @@ export const SidebarLowerItem: React.SFC<SidebarLowerItemProps> = ({ icon, hint,
     title={hint}
     onClick={onClick}
     exact={true}
-    style={{ marginLeft: '-22px' }}
   >
     <span className="icon is-large">
       <i className={`fal fa-lg fa-${icon}`} />
