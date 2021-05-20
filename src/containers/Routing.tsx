@@ -5,7 +5,7 @@ import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-
 
 import { AccountPage } from '@components/AccountPage'
 import { ConnectionSettings } from '@components/ConnectionSettings'
-import { ExchangePage } from '@components/ExchangePage'
+// import { ExchangePage } from '@components/ExchangePage'
 import { Contacts } from '@containers/Contacts'
 import { ImportAccount } from '@containers/ImportAccount'
 import { Sidebar } from '@containers/Sidebar'
@@ -39,7 +39,7 @@ const RoutingPresentation: React.SFC<Props> = props =>
                 <Route path={RootRoutes.settings} component={ConnectionSettings} />
                 <Route path={RootRoutes.importAccount} component={ImportAccount} />
                 <Route path={RootRoutes.recover} component={WalletRecoverScreens} />
-                <Route path={RootRoutes.exchange} component={ExchangePage} />
+                {/* <Route path={RootRoutes.exchange} component={ExchangePage} /> */}
                 <Redirect to={RootRoutes.dashboard} />
               </Switch>
             </div>
