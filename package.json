@@ -149,7 +149,7 @@
     "@types/redux-persist": "4.3.1",
     "@types/webpack-env": "^1.13.6",
     "babel-core": "^6.26.3",
-    "electron": "^2.0.8",
+    "electron": "^9.4.0",
     "enzyme": "^3.4.1",
     "enzyme-adapter-react-16": "^1.2.0",
     "enzyme-to-json": "^3.3.4",
