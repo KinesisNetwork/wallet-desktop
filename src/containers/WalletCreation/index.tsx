@@ -7,6 +7,8 @@ import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-
 import { Passphrase } from './Passphrase'
 
 import { getLoginState } from '@selectors'
+import * as logo from 'images/KinesisStep.svg'
+import SVG from 'react-inlinesvg'
 import { NamingWallet } from './NamingWallet'
 import { ValidatePassphrase } from './ValidatePassphrase'
 
@@ -27,6 +29,11 @@ const WalletCreationScreensPresentation: React.SFC<Props> = ({
     <Redirect to="/" />
   ) : (
     <React.Fragment>
+      <div className="level">
+        <SVG src={logo} wrapper={React.createFactory('div')} className="level-item">
+          <img width="100px" height="200px" src={logo} alt="Kinesis Wallet Logo" />
+        </SVG>
+      </div>
       <div className="steps">
         <div className={`step-item is-success is-completed`}>
           <div className="step-marker">

@@ -2,6 +2,8 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 
 import { RootState } from '@store'
+import * as logo from 'images/KinesisWallet.svg'
+import SVG from 'react-inlinesvg'
 import { HasAccount } from './HasAccount'
 import { NoAccount } from './NoAccount'
 
@@ -13,6 +15,11 @@ type Props = ReturnType<typeof mapStateToProps>
 
 const WelcomeScreenPresentation: React.SFC<Props> = props => (
   <React.Fragment>
+    <div className="level">
+      <SVG src={logo} wrapper={React.createFactory('div')} className="level-item">
+        <img width="100px" height="200px" src={logo} alt="Kinesis Wallet Logo" />
+      </SVG>
+    </div>
     <div className="heading has-text-centered">
       <h2 className="is-size-5-mobile is-size-4-tablet is-size-2-desktop has-text-weight-semibold has-text-grey-lighter">
         Welcome to the

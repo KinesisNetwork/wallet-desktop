@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import * as animation from 'images/create-wallet-animation.gif'
+// import * as logo from 'images/KinesisIcon.svg'
 import { NameWalletForm } from './NameWalletForm'
 import { PasswordConfirmModal } from './PasswordConfirmModal'
 import { StepAnimation } from './StepAnimation'

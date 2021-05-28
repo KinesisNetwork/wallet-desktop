@@ -1,11 +1,11 @@
 import * as React from 'react'
-import SVG from 'react-inlinesvg'
+// import SVG from 'react-inlinesvg'
 import { connect } from 'react-redux'
 import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router'
 
 import { AccountPage } from '@components/AccountPage'
 import { ConnectionSettings } from '@components/ConnectionSettings'
-import { ExchangePage } from '@components/ExchangePage'
+// import { ExchangePage } from '@components/ExchangePage'
 import { Contacts } from '@containers/Contacts'
 import { ImportAccount } from '@containers/ImportAccount'
 import { Sidebar } from '@containers/Sidebar'
@@ -14,7 +14,7 @@ import { WalletRecoverScreens } from '@containers/WalletRecovery'
 import { WelcomeScreen } from '@containers/WelcomeScreen'
 import { RootState } from '@store'
 import { RootRoutes } from '@types'
-import * as logo from 'images/KinesisWallet.svg'
+// import * as logo from 'images/KinesisWallet.svg'
 import TestnetBanner from './TestnetBanner'
 
 const mapStateToProps = (state: RootState) => ({
@@ -39,7 +39,7 @@ const RoutingPresentation: React.SFC<Props> = props =>
                 <Route path={RootRoutes.settings} component={ConnectionSettings} />
                 <Route path={RootRoutes.importAccount} component={ImportAccount} />
                 <Route path={RootRoutes.recover} component={WalletRecoverScreens} />
-                <Route path={RootRoutes.exchange} component={ExchangePage} />
+                {/* <Route path={RootRoutes.exchange} component={ExchangePage} /> */}
                 <Redirect to={RootRoutes.dashboard} />
               </Switch>
             </div>
@@ -52,11 +52,11 @@ const RoutingPresentation: React.SFC<Props> = props =>
       <div className="container">
         <div className="columns is-mobile is-centered">
           <div className="column is-half-fullhd is-two-thirds-tablet">
-            <div className="level">
+            {/* <div className="level">
               <SVG src={logo} wrapper={React.createFactory('div')} className="level-item">
-                <img src={logo} alt="Kinesis Wallet Logo" />
+                <img width="100px" height="200px" src={logo} alt="Kinesis Wallet Logo" />
               </SVG>
-            </div>
+            </div> */}
             <Switch>
               <Route exact={true} path="/" component={WelcomeScreen} />
               <Route path={RootRoutes.create} component={WalletCreationScreens} />
